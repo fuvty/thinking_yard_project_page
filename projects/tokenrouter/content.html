@@ -1,0 +1,133 @@
+<a class="tr-skip" href="#main">Skip to content</a>
+<main id="main">
+<section class="hero tr-hero" aria-labelledby="hero-title">
+  <canvas id="routing-roads" aria-hidden="true"></canvas>
+  <div class="tr-hero-copy">
+    <h1 id="hero-title" class="hero-title"><span class="tr-gradient">TokenRouter</span></h1>
+    <p class="hero-subtitle tr-tagline">A serving engine for<br><strong>token-level routing.</strong></p>
+    <div class="tr-hero-stats">
+      <a href="#results"><strong>~64×</strong><span>Peak throughput gain</span><small>vs. the stronger baseline · concurrency 4</small></a>
+      <a href="#programming"><strong>5</strong><span>Routing algorithms</span><small>One shared serving engine</small></a>
+      <a href="#programming"><strong>3</strong><span>Interface functions</span><small>route · send · receive</small></a>
+    </div>
+    <div class="tr-actions" aria-label="Publication status"><span class="btn btn-primary tr-status-pill">Paper Coming Soon</span><span class="btn btn-secondary tr-status-pill">Code Coming Soon</span><span class="btn btn-secondary tr-status-pill">NeurIPS 2026</span></div>
+  </div>
+  <button class="tr-motion-control" id="road-motion" aria-pressed="false" aria-label="Pause background animation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7v10M15 7v10"/></svg></button>
+</section>
+
+<section id="overview" class="section"><div class="container">
+  <div class="tr-heading"><p class="section-eyebrow">The opportunity</p><h2 class="section-title">One response.<br>Different models.</h2><p class="section-subtitle">Token-level routing lets small and large models collaborate within a single response. The serving engine must keep up with every switch.</p></div>
+  <figure class="tr-routing-figure tr-surface" id="granularity-demo">
+    <div class="tr-figure-head"><div><h3>Where does routing happen?</h3><p>Model assignment at three granularities</p></div><div class="tr-segmented" role="group" aria-label="Routing granularity"><button data-granularity="session" aria-pressed="false">Session</button><button data-granularity="query" aria-pressed="false">Query</button><button data-granularity="token" aria-pressed="true">Token</button></div></div>
+    <div id="routing-example" class="tr-routing-example" role="img" aria-label="Token-level routing: individual tokens in each response use different models."></div>
+    <div class="tr-playback"><button type="button" data-playback aria-label="Pause routing illustration">Pause</button><input id="routing-progress" type="range" min="0" max="1000" value="0" aria-label="Routing illustration progress"><output aria-live="off" id="routing-progress-label">Turn 1 · Token 1</output></div>
+    <div class="tr-figure-foot"><p id="granularity-caption">Switch models within a response, at the granularity of a token or a span.</p><div class="tr-legend"><span><i class="tr-key tr-small"></i>Small model</span><span><i class="tr-key tr-large"></i>Large model</span></div></div>
+    <figcaption>Illustrative model assignments for three turns of one session; not a measured generation trace.</figcaption>
+  </figure>
+  <div class="tr-principles">
+    <article><svg class="tr-concept-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h7M4 18h13M15 9v6m-3-3h6"/></svg><h3>Independent progress.</h3><p>A fast model should keep decoding while a slower peer handles routed tokens.</p></article>
+    <article><svg class="tr-concept-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h5v5H4zM4 14h5v5H4zM15 5h5v14h-5zM9 7.5h6M9 16.5h6"/></svg><h3>Useful batches.</h3><p>Irregular token arrivals need a scheduler that brings requests together at the right time.</p></article>
+    <article><svg class="tr-concept-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-13-2 20"/></svg><h3>A simple interface.</h3><p>The routing policy describes one request. The runtime manages batching, handoff and cache state.</p></article>
+  </div>
+</div></section>
+
+<section id="architecture" class="section section-dark"><div class="container">
+  <div class="tr-heading"><p class="section-eyebrow">The engine</p><h2 class="section-title">Each model moves<br>at its own pace.</h2><p class="section-subtitle">Request-centric programming.<br><strong>Model-centric execution.</strong></p></div>
+  <figure class="tr-engine" id="engine-demo" aria-labelledby="engine-caption">
+    <div class="tr-entry"><span class="tr-status-dot"></span>One serving endpoint<span>Request admission &amp; streaming</span></div><div class="tr-entry-line" aria-hidden="true"></div>
+    <div class="tr-subservers">
+      <div class="tr-server" id="engine-small">
+        <div class="tr-server-title"><span class="tr-model-mark">S</span><div><h3>Small model</h3><p>Entry subserver</p></div></div>
+        <div class="tr-server-pipeline"><span>Scheduler</span><span data-stage="small-runner">LLM runner</span><span data-stage="small-router">Router</span></div>
+        <div class="tr-live-batch"><span>Decoding</span><div id="small-batch"><b>A</b><b>B</b><b>C</b></div><output aria-live="off" id="small-step">Step 1</output></div>
+        <div class="tr-cache"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7c0-4 14-4 14 0s-14 4-14 0v10c0 4 14 4 14 0V7M5 12c0 4 14 4 14 0"/></svg><span>Local KV cache<small id="small-cache-state">Request A · running</small></span><span class="tr-kv-slot">A</span></div>
+      </div>
+      <div class="tr-peer"><span>send / receive</span><svg viewBox="0 0 112 48" aria-hidden="true"><path d="M3 13h100m-8-8 8 8-8 8M109 35H9m8-8-8 8 8 8"/><circle id="handoff-packet" r="4" cx="6" cy="13" opacity="0"/></svg><small>Token suffix<br>+ routing state</small></div>
+      <div class="tr-server" id="engine-large">
+        <div class="tr-server-title"><span class="tr-model-mark tr-model-peer">L</span><div><h3>Large model</h3><p>Peer subserver</p></div></div>
+        <div class="tr-server-pipeline"><span>Scheduler</span><span data-stage="large-runner">LLM runner</span><span data-stage="large-router">Router</span></div>
+        <div class="tr-live-batch"><span>Decoding</span><div id="large-batch"><span class="tr-idle">Idle</span></div><output aria-live="off" id="large-step">—</output></div>
+        <div class="tr-cache"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7c0-4 14-4 14 0s-14 4-14 0v10c0 4 14 4 14 0V7M5 12c0 4 14 4 14 0"/></svg><span>Local KV cache<small>Independent model state</small></span></div>
+      </div>
+    </div>
+    <div class="tr-engine-steps" role="group" aria-label="Handoff stage"><button type="button" data-engine-phase="0" aria-pressed="true">Decode</button><button type="button" data-engine-phase="1" aria-pressed="false">Route</button><button type="button" data-engine-phase="2" aria-pressed="false">Send</button><button type="button" data-engine-phase="3" aria-pressed="false">Peer decoding</button><button type="button" data-engine-phase="4" aria-pressed="false">Return</button><button type="button" data-engine-phase="5" aria-pressed="false">Resume</button></div>
+    <div class="tr-engine-message"><h4 id="handoff-title">Decode a local batch.</h4><p id="handoff-description">The small model advances requests A, B and C in one batch.</p></div>
+    <div class="tr-playback"><button type="button" data-playback aria-label="Pause request handoff">Pause</button><input id="handoff-progress" type="range" min="0" max="1000" value="0" aria-label="Request handoff progress"><output aria-live="off" id="handoff-progress-label">Decode</output></div>
+    <figcaption id="engine-caption">Illustrative handoff; animation speed does not represent model latency. Each subserver has its own decoding loop. Only token suffixes and routing state travel between models; KV caches stay local. The architecture extends to more than two models.</figcaption>
+  </figure>
+  <div class="tr-loops"><article><span>Client–server loop</span><p>Admit requests and stream completed tokens.</p></article><article><span>Decoding loop</span><p>Schedule local batches and execute model steps.</p></article><article><span>Inter-model loop</span><p>Send, receive and resume routed requests.</p></article></div>
+  <div class="tr-handoff"><div><h3>Resume without starting over.</h3><p>A pending request keeps its serving state and KV slot. Returning tokens are appended without repeating prefix matching or KV allocation.</p></div><div class="tr-state-flow" aria-label="Running transitions to pending during handoff, then returns to running or finishes"><span>Running</span><b aria-hidden="true">→</b><span class="tr-pending">Pending</span><b aria-hidden="true">→</b><span>Running<small>or finished</small></span></div></div>
+</div></section>
+
+<section id="programming" class="section"><div class="container">
+  <div class="tr-heading"><p class="section-eyebrow">Programming interface</p><h2 class="section-title">Three functions.<br>One routing policy.</h2><p class="section-subtitle">Describe when a request changes models, what travels with it, and how decoding resumes.</p></div>
+  <div class="tr-api tr-surface">
+    <div class="tr-api-tabs tr-segmented" role="group" aria-label="Routing interface"><button data-api="route" aria-pressed="true">route</button><button data-api="send" aria-pressed="false">send</button><button data-api="receive" aria-pressed="false">receive</button></div>
+    <div class="tr-api-body"><div><p class="tr-mini" id="api-signature">route(result)</p><h3 id="api-title">Choose the next model.</h3><p id="api-description">After a forward pass, use logits, hidden states or sampled tokens to select a destination for each request. Zero stays local; a nonzero index selects a peer.</p><p class="tr-note" id="api-note">R-Stitch example: delegate high-entropy tokens from the small model.</p></div><pre tabindex="0" aria-label="Routing interface example"><code id="api-code"></code></pre></div>
+    <p class="tr-api-caption">Interface excerpts from the paper’s R-Stitch example. Configuration and surrounding class definitions are omitted.</p>
+  </div>
+  <details class="tr-detail"><summary>Five policies, the same interface<span aria-hidden="true">+</span></summary><div class="tr-table-scroll" tabindex="0" role="region" aria-label="Supported routing policies"><table><thead><tr><th>Policy</th><th>Models</th><th>Routing decision</th></tr></thead><tbody><tr><th>CITER</th><td>2</td><td>Low confidence routes to a peer for one token.</td></tr><tr><th>R2R</th><td>2</td><td>A learned router predicts when the models would diverge.</td></tr><tr><th>R-Stitch</th><td>2</td><td>Entropy controls switching in both directions.</td></tr><tr><th>Co-LLM</th><td>2</td><td>A learned deferral signal requests a peer token.</td></tr><tr><th>ME</th><td>2+</td><td>Models are selected token by token using ensemble weights.</td></tr></tbody></table></div></details>
+</div></section>
+
+<section id="scheduling" class="section section-gray"><div class="container">
+  <div class="tr-heading"><p class="section-eyebrow">Delayed batching</p><h2 class="section-title">A small wait.<br>A better batch.</h2><p class="section-subtitle">Starting immediately can leave the next arrival waiting for a whole decoding step. A short, controlled wait brings routed requests into the same batch.</p></div>
+  <figure class="tr-schedule tr-surface" id="scheduling-demo">
+    <div class="tr-figure-head"><div><h3>Same tokens. Different schedules.</h3><p>Three requests · five tokens per request</p></div></div>
+    <div class="tr-segmented tr-schedule-tabs" role="group" aria-label="Scheduling strategy"><button data-schedule="step" aria-pressed="false">Step sync</button><button data-schedule="model" aria-pressed="false">Model sync</button><button data-schedule="eager" aria-pressed="false">Eager async</button><button data-schedule="delayed" aria-pressed="true">Delayed batching</button></div>
+    <div class="tr-schedule-chart" tabindex="0" role="region" aria-label="Scheduling timeline"><svg id="schedule-chart" viewBox="0 0 880 220" role="img" aria-labelledby="schedule-title schedule-desc"><title id="schedule-title">Scheduling timeline</title><desc id="schedule-desc">A conceptual comparison of four execution strategies.</desc></svg></div>
+    <div class="tr-playback"><button type="button" data-playback aria-label="Pause scheduling illustration">Pause</button><input id="schedule-progress" type="range" min="0" max="1000" value="0" aria-label="Scheduling time"><output aria-live="off" id="schedule-now">t = 0.0</output></div>
+    <div class="tr-scheduler-state"><div><span><i class="tr-key tr-small"></i>Small model</span><p id="schedule-small">Ready</p></div><div><span><i class="tr-key tr-large"></i>Large model</span><p id="schedule-large">Idle</p></div><div><span>Completed</span><p id="schedule-finished">0 of 3 requests</p></div></div>
+    <div class="tr-schedule-summary"><p id="schedule-copy"></p><div><strong id="schedule-time">—</strong><span>Mean completion time</span></div></div>
+    <div class="tr-figure-foot"><div class="tr-legend"><span><i class="tr-key tr-small"></i>Small model · 1 unit</span><span><i class="tr-key tr-large"></i>Large model · 3.5 units</span></div><span class="tr-note">Illustrative schedule, not a benchmark</span></div>
+    <figcaption>Fixed routing sequences and latencies from the paper’s scheduling example. Each block is one token; shared start times indicate a batch. Delayed batching uses B<sub>small</sub> = 1 and B<sub>large</sub> = 2.</figcaption>
+  </figure>
+  <div class="tr-batch-experiment"><div><p class="tr-mini">Measured threshold sweep</p><h3>The threshold matters.</h3><p>A larger batch is useful until waiting leaves too little work in flight. The best threshold depends on concurrency and routing behavior.</p><div class="tr-segmented" role="group" aria-label="Threshold experiment concurrency"><button data-batch="2" aria-pressed="false">N = 2</button><button data-batch="3" aria-pressed="false">N = 3</button><button data-batch="4" aria-pressed="true">N = 4</button></div></div><figure><p class="tr-chart-unit">Throughput · output tokens/s</p><div id="batch-bars" class="tr-batch-bars"></div><figcaption>R2R · Qwen3-0.6B / 32B · AIME2024. Measured values from the supplied threshold sweep.</figcaption></figure></div>
+  <details class="tr-detail"><summary>How is the threshold selected?<span aria-hidden="true">+</span></summary><div class="tr-detail-copy"><p>A discrete-time Markov chain models queued requests, active batches and remaining execution time for each subserver. Given concurrency, routing probabilities and model step latencies, TokenRouter searches the feasible thresholds for the highest expected throughput.</p><div class="tr-equation">B* = arg max<sub>B</sub> &nbsp; E[committed tokens] / E[elapsed time]</div><p>The condition ∑<sub>i</sub>(B<sub>i</sub> − 1) &lt; N avoids a state where all requests wait in queues. The analytical model assumes stationary routing probabilities and fixed per-step model latencies; it does not model every nonstationary routing pattern.</p></div></details>
+</div></section>
+
+<section id="results" class="section"><div class="container">
+  <div class="tr-heading"><p class="section-eyebrow">Serving efficiency</p><h2 class="section-title">Routing gains.<br>Delivered in tokens per second.</h2><p class="section-subtitle">Five algorithms, three workloads, and two baselines. TokenRouter accelerates the system that executes the routing policy.</p></div>
+  <div class="tr-results-controls"><label class="tr-select-label">Workload<select id="result-workload" aria-label="Workload"><option value="low-effort reasoning">Low-effort reasoning</option><option value="high-effort reasoning" selected>High-effort reasoning</option><option value="agentic">Agentic</option></select></label><div><span class="tr-control-label">Concurrency</span><div class="tr-segmented" role="group" aria-label="Benchmark concurrency"><button data-concurrency="1" aria-pressed="false">1</button><button data-concurrency="4" aria-pressed="true">4</button></div></div><div><span class="tr-control-label">Metric</span><div class="tr-segmented" role="group" aria-label="Benchmark metric"><button data-metric="throughput" aria-pressed="true">Throughput</button><button data-metric="latency" aria-pressed="false">Latency</button></div></div></div>
+  <figure class="tr-results-figure tr-surface">
+    <div class="tr-figure-head"><div><h3 id="results-title">High-effort reasoning</h3><p id="results-units">Concurrency 4 · output tokens/s · higher is better</p></div><div class="tr-legend"><span><i class="tr-key tr-official"></i>Official Code</span><span><i class="tr-key tr-standard"></i>Std. Serving</span><span><i class="tr-key tr-small"></i>TokenRouter</span></div></div>
+    <div id="benchmark-bars" aria-label="Measured serving performance"></div>
+    <figcaption id="results-caption">Ratios compare TokenRouter with the stronger available baseline for each algorithm. All bars share a linear scale starting at zero.</figcaption>
+  </figure>
+  <p id="data-status" class="tr-note" role="status"></p>
+  <noscript><p class="tr-note">The interactive figures require JavaScript.</p></noscript>
+  <details class="tr-detail"><summary>Exact values for this selection<span aria-hidden="true">+</span></summary><div class="tr-table-scroll" tabindex="0" role="region" aria-label="Benchmark measurements"><table id="results-table"></table></div></details>
+  <details class="tr-detail"><summary>Models, workloads and measurement setup<span aria-hidden="true">+</span></summary><div class="tr-setup-grid"><article><h3>Models &amp; hardware</h3><p>CITER, R2R, R-Stitch and Co-LLM use Qwen3-0.6B / 32B. ME adds Qwen3-8B, with weights 0.5 / 0.3 / 0.2.</p><p>Experiments use an 8 × A100-80GB host. Two-model runs share two GPUs via CUDA MPS: the small model uses TP1 and the large model TP2. ME places each model on one GPU.</p></article><article><h3>Workloads</h3><p><strong>Low-effort:</strong> AIME2024, ~100-token inputs and a 2,048-token output cap.</p><p><strong>High-effort:</strong> selected AIME2024 problems, ~100-token inputs and an 8,192-token output cap.</p><p><strong>Agentic:</strong> multi-turn SWE-Smith trajectories, ~8,192 input tokens and a 1,024-token output cap.</p></article><article><h3>Baselines &amp; metrics</h3><p><strong>Official Code:</strong> the algorithm’s released implementation. Unavailable entries are shown as N/A.</p><p><strong>Std. Serving:</strong> one SGLang server per model, returning one token per call to an external dispatcher.</p><p>Throughput is total generated output tokens divided by elapsed time. Latency is end-to-end request completion time. TokenRouter builds on SGLang 0.5.1.</p></article></div></details>
+</div></section>
+
+<section id="scaling" class="section section-gray"><div class="container">
+  <div class="tr-heading"><p class="section-eyebrow">Scaling concurrency</p><h2 class="section-title">More throughput.<br>Responsive generation.</h2><p class="section-subtitle">As concurrency grows, asynchronous execution turns more in-flight requests into useful model work.</p></div>
+  <figure class="tr-tradeoff tr-surface">
+    <div class="tr-figure-head"><div><h3>Generation speed vs. total throughput</h3><p>R2R · concurrency 1–16</p></div><div class="tr-legend"><span><i class="tr-key tr-small"></i>TokenRouter</span><span><i class="tr-key tr-official"></i>R2R official</span></div></div>
+    <svg id="tradeoff-chart" role="img" aria-labelledby="tradeoff-title tradeoff-desc"><title id="tradeoff-title">Throughput and per-user generation speed</title><desc id="tradeoff-desc">TokenRouter and the official R2R implementation across concurrency levels one through sixteen.</desc></svg>
+    <div class="tr-range-label"><label for="tradeoff-concurrency">Concurrent requests</label><output aria-live="off" id="tradeoff-n" for="tradeoff-concurrency">8</output></div><input id="tradeoff-concurrency" type="range" min="1" max="16" step="1" value="8"><div class="tr-range-ends" aria-hidden="true"><span>1</span><span>16</span></div>
+    <div id="tradeoff-values" class="tr-tradeoff-values" aria-live="polite"></div>
+    <figcaption>Each point is a measured concurrency setting; lines connect settings in order. Speed is per-user token generation rate. Throughput aggregates all requests.</figcaption>
+  </figure>
+  <div class="tr-scaling-finding"><strong>18.58×</strong><div><h3>Throughput with comparable per-user speed.</h3><p>TokenRouter at concurrency 16 reaches 630.57 tokens/s and 39.41 tokens/s per user. R2R official at concurrency 1 reaches 33.94 tokens/s and 34.87 tokens/s per user. This comparison uses different concurrency levels.</p></div></div>
+</div></section>
+
+<section id="ablation" class="section"><div class="container">
+  <div class="tr-heading"><p class="section-eyebrow">Inside the gains</p><h2 class="section-title">The runtime matters<br>at every step.</h2><p class="section-subtitle">CUDA graph support, asynchronous execution and delayed batching build on one another.</p></div>
+  <figure class="tr-ablation tr-surface"><div class="tr-figure-head"><div><h3>Cumulative system optimizations</h3><p>R2R · concurrency 8</p></div><span class="tr-unit-label">Output tokens/s</span></div><div id="ablation-bars"></div><figcaption>Each row includes the preceding optimizations. The official R2R implementation reaches 134.90 tokens/s; the complete engine reaches 372.48 tokens/s (2.76×). These are sequential ablations, not independent additive effects.</figcaption></figure>
+  <div class="tr-engineering"><article><h3>Extend CUDA graphs.</h3><p>Capture a wider range of extend lengths encountered when a routed request resumes.</p></article><article><h3>Keep routing local.</h3><p>Run the router alongside the model to avoid a separate IPC round trip on every token.</p></article><article><h3>Preserve serving state.</h3><p>Retain pending requests and coordinate the KV budget across colocated models.</p></article></div>
+  <details class="tr-detail"><summary>Different small / large model pairs<span aria-hidden="true">+</span></summary><div class="tr-table-scroll" tabindex="0" role="region" aria-label="Model pair throughput"><table><caption>R2R · throughput (output tokens/s) across Qwen3 model pairs</caption><thead><tr><th>Small / large model</th><th>R2R official</th><th>TokenRouter</th><th>Gain</th></tr></thead><tbody><tr><th>0.6B / 8B</th><td>105.10</td><td class="tr-best">336.98</td><td>3.21×</td></tr><tr><th>0.6B / 32B</th><td>77.08</td><td class="tr-best">197.40</td><td>2.56×</td></tr><tr><th>1.7B / 8B</th><td>103.37</td><td class="tr-best">285.41</td><td>2.76×</td></tr><tr><th>4B / 8B</th><td>106.67</td><td class="tr-best">211.81</td><td>1.99×</td></tr></tbody></table></div></details>
+  <details class="tr-detail"><summary>Across nodes, with the same model resources<span aria-hidden="true">+</span></summary><div class="tr-detail-copy"><p>Qwen3-0.6B uses one GPU and Qwen3-32B uses two GPUs (TP2), without GPU overlap. Models are deployed on one or two nodes connected by 3.7 GB/s RoCE. The following measurements use low-effort reasoning.</p></div><div class="tr-table-scroll" tabindex="0" role="region" aria-label="Deployment comparison"><table><caption>Throughput in output tokens/s · independent deployment experiment</caption><thead><tr><th>Concurrency</th><th>Deployment</th><th>R-Stitch</th><th>R2R</th><th>CITER</th></tr></thead><tbody><tr><th rowspan="2">1</th><td>Single node</td><td>47.53</td><td>74.90</td><td>108.65</td></tr><tr><td>Two nodes</td><td>46.19</td><td>69.92</td><td>93.99</td></tr><tr><th rowspan="2">4</th><td>Single node</td><td>116.14</td><td>228.94</td><td>308.36</td></tr><tr><td>Two nodes</td><td>104.20</td><td>202.43</td><td>277.56</td></tr></tbody></table></div></details>
+  <details class="tr-detail"><summary>Algorithms in their original model and task settings<span aria-hidden="true">+</span></summary><div class="tr-table-scroll" tabindex="0" role="region" aria-label="Original algorithm settings"><table><caption>Concurrency 4 · latency in seconds · throughput in output tokens/s</caption><thead><tr><th>Algorithm / original setting</th><th>Implementation</th><th>Throughput</th><th>TTFT</th><th>Latency</th></tr></thead><tbody><tr><th rowspan="3">R2R<small>DeepSeek-R1-Distill-Qwen 1.5B / 32B<br>AIME</small></th><td>LLM-only</td><td>145.30</td><td>0.13</td><td>411.98</td></tr><tr><td>Official Code</td><td>89.62</td><td>0.11</td><td>751.15</td></tr><tr class="tr-highlight-row"><td>TokenRouter</td><td>244.56</td><td>0.11</td><td>270.19</td></tr><tr><th rowspan="3">CITER<small>Qwen2 1.5B / 72B<br>CommonsenseQA</small></th><td>LLM-only</td><td>123.72</td><td>0.083</td><td>2.68</td></tr><tr><td>Official Code</td><td>17.16</td><td>0.036</td><td>7.64</td></tr><tr class="tr-highlight-row"><td>TokenRouter</td><td>149.31</td><td>0.036</td><td>0.48</td></tr><tr><th rowspan="3">Co-LLM<small>Tuned LLaMA2 7B / 70B<br>GSM8K</small></th><td>LLM-only</td><td>134.79</td><td>0.069</td><td>13.39</td></tr><tr><td>Official Code</td><td>3.46</td><td>1.14</td><td>247.61</td></tr><tr class="tr-highlight-row"><td>TokenRouter</td><td>76.02</td><td>0.067</td><td>11.46</td></tr><tr><th rowspan="2">R-Stitch<small>L1-1.5B-short / QwQ-32B<br>AIME · official code unavailable</small></th><td>LLM-only</td><td>150.41</td><td>0.15</td><td>360.76</td></tr><tr class="tr-highlight-row"><td>TokenRouter</td><td>140.58</td><td>0.067</td><td>151.30</td></tr></tbody></table></div></details>
+</div></section>
+
+<section id="team" class="section section-gray authors-section"><div class="container"><p class="section-eyebrow">Team</p><h2 class="section-title">Meet the researchers.</h2><div class="authors-list">
+  <span class="author-tag" aria-describedby="equal-contribution">Tianyu Fu<sup>*</sup></span>
+  <span class="author-tag" aria-describedby="equal-contribution">Tengxuan Liu<sup>*</sup></span>
+  <span class="author-tag">Ruoxi Wang</span>
+  <span class="author-tag">Yixin Dong</span>
+  <span class="author-tag">Yi Ge</span>
+  <span class="author-tag">Yichen You</span>
+  <span class="author-tag">Yu Wang</span>
+</div><p id="equal-contribution" class="tr-author-note">*Equal contribution</p></div></section>
+<section id="bibtex" class="section"><div class="container"><p class="section-eyebrow">Citation</p><h2 class="section-title">Cite our work.</h2>{{citation}}</div></section>
+</main>

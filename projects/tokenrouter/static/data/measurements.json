@@ -1,0 +1,1578 @@
+{
+  "results": [
+    {
+      "concurrency": 1,
+      "workload": "low-effort reasoning",
+      "algorithm": "R2R",
+      "implementation": "Official Code",
+      "latency": 56.62,
+      "throughput": 36.17
+    },
+    {
+      "concurrency": 1,
+      "workload": "low-effort reasoning",
+      "algorithm": "R2R",
+      "implementation": "Std. Serving",
+      "latency": 301.69,
+      "throughput": 6.79
+    },
+    {
+      "concurrency": 1,
+      "workload": "low-effort reasoning",
+      "algorithm": "R2R",
+      "implementation": "TokenRouter",
+      "latency": 27.95,
+      "throughput": 73.27
+    },
+    {
+      "concurrency": 1,
+      "workload": "low-effort reasoning",
+      "algorithm": "CITER",
+      "implementation": "Official Code",
+      "latency": 244.34,
+      "throughput": 8.38
+    },
+    {
+      "concurrency": 1,
+      "workload": "low-effort reasoning",
+      "algorithm": "CITER",
+      "implementation": "Std. Serving",
+      "latency": 134.35,
+      "throughput": 15.25
+    },
+    {
+      "concurrency": 1,
+      "workload": "low-effort reasoning",
+      "algorithm": "CITER",
+      "implementation": "TokenRouter",
+      "latency": 20.02,
+      "throughput": 102.29
+    },
+    {
+      "concurrency": 1,
+      "workload": "low-effort reasoning",
+      "algorithm": "R-Stitch",
+      "implementation": "Official Code",
+      "latency": null,
+      "throughput": null
+    },
+    {
+      "concurrency": 1,
+      "workload": "low-effort reasoning",
+      "algorithm": "R-Stitch",
+      "implementation": "Std. Serving",
+      "latency": 163.22,
+      "throughput": 12.55
+    },
+    {
+      "concurrency": 1,
+      "workload": "low-effort reasoning",
+      "algorithm": "R-Stitch",
+      "implementation": "TokenRouter",
+      "latency": 47.56,
+      "throughput": 43.06
+    },
+    {
+      "concurrency": 1,
+      "workload": "low-effort reasoning",
+      "algorithm": "Co-LLM",
+      "implementation": "Official Code",
+      "latency": 4549.31,
+      "throughput": 0.45
+    },
+    {
+      "concurrency": 1,
+      "workload": "low-effort reasoning",
+      "algorithm": "Co-LLM",
+      "implementation": "Std. Serving",
+      "latency": 259.8,
+      "throughput": 7.88
+    },
+    {
+      "concurrency": 1,
+      "workload": "low-effort reasoning",
+      "algorithm": "Co-LLM",
+      "implementation": "TokenRouter",
+      "latency": 18.37,
+      "throughput": 111.46
+    },
+    {
+      "concurrency": 1,
+      "workload": "low-effort reasoning",
+      "algorithm": "ME",
+      "implementation": "Official Code",
+      "latency": 101.01,
+      "throughput": 20.28
+    },
+    {
+      "concurrency": 1,
+      "workload": "low-effort reasoning",
+      "algorithm": "ME",
+      "implementation": "Std. Serving",
+      "latency": 95.22,
+      "throughput": 21.51
+    },
+    {
+      "concurrency": 1,
+      "workload": "low-effort reasoning",
+      "algorithm": "ME",
+      "implementation": "TokenRouter",
+      "latency": 44.93,
+      "throughput": 45.58
+    },
+    {
+      "concurrency": 1,
+      "workload": "high-effort reasoning",
+      "algorithm": "R2R",
+      "implementation": "Official Code",
+      "latency": 226.2,
+      "throughput": 35.4
+    },
+    {
+      "concurrency": 1,
+      "workload": "high-effort reasoning",
+      "algorithm": "R2R",
+      "implementation": "Std. Serving",
+      "latency": 1355.81,
+      "throughput": 6.02
+    },
+    {
+      "concurrency": 1,
+      "workload": "high-effort reasoning",
+      "algorithm": "R2R",
+      "implementation": "TokenRouter",
+      "latency": 112.36,
+      "throughput": 70.83
+    },
+    {
+      "concurrency": 1,
+      "workload": "high-effort reasoning",
+      "algorithm": "CITER",
+      "implementation": "Official Code",
+      "latency": 2520.23,
+      "throughput": 3.25
+    },
+    {
+      "concurrency": 1,
+      "workload": "high-effort reasoning",
+      "algorithm": "CITER",
+      "implementation": "Std. Serving",
+      "latency": 1284.6,
+      "throughput": 6.38
+    },
+    {
+      "concurrency": 1,
+      "workload": "high-effort reasoning",
+      "algorithm": "CITER",
+      "implementation": "TokenRouter",
+      "latency": 70.74,
+      "throughput": 114.8
+    },
+    {
+      "concurrency": 1,
+      "workload": "high-effort reasoning",
+      "algorithm": "R-Stitch",
+      "implementation": "Official Code",
+      "latency": null,
+      "throughput": null
+    },
+    {
+      "concurrency": 1,
+      "workload": "high-effort reasoning",
+      "algorithm": "R-Stitch",
+      "implementation": "Std. Serving",
+      "latency": 678.41,
+      "throughput": 11.9
+    },
+    {
+      "concurrency": 1,
+      "workload": "high-effort reasoning",
+      "algorithm": "R-Stitch",
+      "implementation": "TokenRouter",
+      "latency": 174.93,
+      "throughput": 45.85
+    },
+    {
+      "concurrency": 1,
+      "workload": "high-effort reasoning",
+      "algorithm": "Co-LLM",
+      "implementation": "Official Code",
+      "latency": 21596.05,
+      "throughput": 0.37
+    },
+    {
+      "concurrency": 1,
+      "workload": "high-effort reasoning",
+      "algorithm": "Co-LLM",
+      "implementation": "Std. Serving",
+      "latency": 1246.95,
+      "throughput": 6.45
+    },
+    {
+      "concurrency": 1,
+      "workload": "high-effort reasoning",
+      "algorithm": "Co-LLM",
+      "implementation": "TokenRouter",
+      "latency": 70.95,
+      "throughput": 112.95
+    },
+    {
+      "concurrency": 1,
+      "workload": "high-effort reasoning",
+      "algorithm": "ME",
+      "implementation": "Official Code",
+      "latency": 427.11,
+      "throughput": 19.18
+    },
+    {
+      "concurrency": 1,
+      "workload": "high-effort reasoning",
+      "algorithm": "ME",
+      "implementation": "Std. Serving",
+      "latency": 580.19,
+      "throughput": 14.12
+    },
+    {
+      "concurrency": 1,
+      "workload": "high-effort reasoning",
+      "algorithm": "ME",
+      "implementation": "TokenRouter",
+      "latency": 200.18,
+      "throughput": 40.92
+    },
+    {
+      "concurrency": 1,
+      "workload": "agentic",
+      "algorithm": "R2R",
+      "implementation": "Official Code",
+      "latency": 22.05,
+      "throughput": 26.68
+    },
+    {
+      "concurrency": 1,
+      "workload": "agentic",
+      "algorithm": "R2R",
+      "implementation": "Std. Serving",
+      "latency": 138.2,
+      "throughput": 5.87
+    },
+    {
+      "concurrency": 1,
+      "workload": "agentic",
+      "algorithm": "R2R",
+      "implementation": "TokenRouter",
+      "latency": 17.14,
+      "throughput": 42.81
+    },
+    {
+      "concurrency": 1,
+      "workload": "agentic",
+      "algorithm": "CITER",
+      "implementation": "Official Code",
+      "latency": 533.78,
+      "throughput": 1.37
+    },
+    {
+      "concurrency": 1,
+      "workload": "agentic",
+      "algorithm": "CITER",
+      "implementation": "Std. Serving",
+      "latency": 182.87,
+      "throughput": 4.26
+    },
+    {
+      "concurrency": 1,
+      "workload": "agentic",
+      "algorithm": "CITER",
+      "implementation": "TokenRouter",
+      "latency": 9.71,
+      "throughput": 84.09
+    },
+    {
+      "concurrency": 1,
+      "workload": "agentic",
+      "algorithm": "R-Stitch",
+      "implementation": "Official Code",
+      "latency": null,
+      "throughput": null
+    },
+    {
+      "concurrency": 1,
+      "workload": "agentic",
+      "algorithm": "R-Stitch",
+      "implementation": "Std. Serving",
+      "latency": 58.63,
+      "throughput": 10.92
+    },
+    {
+      "concurrency": 1,
+      "workload": "agentic",
+      "algorithm": "R-Stitch",
+      "implementation": "TokenRouter",
+      "latency": 16.43,
+      "throughput": 35.45
+    },
+    {
+      "concurrency": 1,
+      "workload": "agentic",
+      "algorithm": "Co-LLM",
+      "implementation": "Official Code",
+      "latency": 1002.76,
+      "throughput": 0.54
+    },
+    {
+      "concurrency": 1,
+      "workload": "agentic",
+      "algorithm": "Co-LLM",
+      "implementation": "Std. Serving",
+      "latency": 90.82,
+      "throughput": 6.69
+    },
+    {
+      "concurrency": 1,
+      "workload": "agentic",
+      "algorithm": "Co-LLM",
+      "implementation": "TokenRouter",
+      "latency": 6.44,
+      "throughput": 87.19
+    },
+    {
+      "concurrency": 1,
+      "workload": "agentic",
+      "algorithm": "ME",
+      "implementation": "Official Code",
+      "latency": 71.58,
+      "throughput": 13.9
+    },
+    {
+      "concurrency": 1,
+      "workload": "agentic",
+      "algorithm": "ME",
+      "implementation": "Std. Serving",
+      "latency": 59.16,
+      "throughput": 17.88
+    },
+    {
+      "concurrency": 1,
+      "workload": "agentic",
+      "algorithm": "ME",
+      "implementation": "TokenRouter",
+      "latency": 25.93,
+      "throughput": 45.14
+    },
+    {
+      "concurrency": 4,
+      "workload": "low-effort reasoning",
+      "algorithm": "R2R",
+      "implementation": "Official Code",
+      "latency": 104.43,
+      "throughput": 78.32
+    },
+    {
+      "concurrency": 4,
+      "workload": "low-effort reasoning",
+      "algorithm": "R2R",
+      "implementation": "Std. Serving",
+      "latency": 533.09,
+      "throughput": 15.36
+    },
+    {
+      "concurrency": 4,
+      "workload": "low-effort reasoning",
+      "algorithm": "R2R",
+      "implementation": "TokenRouter",
+      "latency": 39.94,
+      "throughput": 205.05
+    },
+    {
+      "concurrency": 4,
+      "workload": "low-effort reasoning",
+      "algorithm": "CITER",
+      "implementation": "Official Code",
+      "latency": 967.35,
+      "throughput": 8.46
+    },
+    {
+      "concurrency": 4,
+      "workload": "low-effort reasoning",
+      "algorithm": "CITER",
+      "implementation": "Std. Serving",
+      "latency": 269.7,
+      "throughput": 30.32
+    },
+    {
+      "concurrency": 4,
+      "workload": "low-effort reasoning",
+      "algorithm": "CITER",
+      "implementation": "TokenRouter",
+      "latency": 29.12,
+      "throughput": 281.27
+    },
+    {
+      "concurrency": 4,
+      "workload": "low-effort reasoning",
+      "algorithm": "R-Stitch",
+      "implementation": "Official Code",
+      "latency": null,
+      "throughput": null
+    },
+    {
+      "concurrency": 4,
+      "workload": "low-effort reasoning",
+      "algorithm": "R-Stitch",
+      "implementation": "Std. Serving",
+      "latency": 206.93,
+      "throughput": 39.57
+    },
+    {
+      "concurrency": 4,
+      "workload": "low-effort reasoning",
+      "algorithm": "R-Stitch",
+      "implementation": "TokenRouter",
+      "latency": 75.41,
+      "throughput": 108.42
+    },
+    {
+      "concurrency": 4,
+      "workload": "low-effort reasoning",
+      "algorithm": "Co-LLM",
+      "implementation": "Official Code",
+      "latency": 11402.14,
+      "throughput": 0.71
+    },
+    {
+      "concurrency": 4,
+      "workload": "low-effort reasoning",
+      "algorithm": "Co-LLM",
+      "implementation": "Std. Serving",
+      "latency": 247.83,
+      "throughput": 32.58
+    },
+    {
+      "concurrency": 4,
+      "workload": "low-effort reasoning",
+      "algorithm": "Co-LLM",
+      "implementation": "TokenRouter",
+      "latency": 28.05,
+      "throughput": 290.33
+    },
+    {
+      "concurrency": 4,
+      "workload": "low-effort reasoning",
+      "algorithm": "ME",
+      "implementation": "Official Code",
+      "latency": null,
+      "throughput": null
+    },
+    {
+      "concurrency": 4,
+      "workload": "low-effort reasoning",
+      "algorithm": "ME",
+      "implementation": "Std. Serving",
+      "latency": 129.82,
+      "throughput": 63.11
+    },
+    {
+      "concurrency": 4,
+      "workload": "low-effort reasoning",
+      "algorithm": "ME",
+      "implementation": "TokenRouter",
+      "latency": 63.99,
+      "throughput": 127.94
+    },
+    {
+      "concurrency": 4,
+      "workload": "high-effort reasoning",
+      "algorithm": "R2R",
+      "implementation": "Official Code",
+      "latency": 415.05,
+      "throughput": 77.08
+    },
+    {
+      "concurrency": 4,
+      "workload": "high-effort reasoning",
+      "algorithm": "R2R",
+      "implementation": "Std. Serving",
+      "latency": 5867.7,
+      "throughput": 5.55
+    },
+    {
+      "concurrency": 4,
+      "workload": "high-effort reasoning",
+      "algorithm": "R2R",
+      "implementation": "TokenRouter",
+      "latency": 162.6,
+      "throughput": 197.4
+    },
+    {
+      "concurrency": 4,
+      "workload": "high-effort reasoning",
+      "algorithm": "CITER",
+      "implementation": "Official Code",
+      "latency": 12794.97,
+      "throughput": 2.5
+    },
+    {
+      "concurrency": 4,
+      "workload": "high-effort reasoning",
+      "algorithm": "CITER",
+      "implementation": "Std. Serving",
+      "latency": 7190.6,
+      "throughput": 4.49
+    },
+    {
+      "concurrency": 4,
+      "workload": "high-effort reasoning",
+      "algorithm": "CITER",
+      "implementation": "TokenRouter",
+      "latency": 112.87,
+      "throughput": 288.67
+    },
+    {
+      "concurrency": 4,
+      "workload": "high-effort reasoning",
+      "algorithm": "R-Stitch",
+      "implementation": "Official Code",
+      "latency": null,
+      "throughput": null
+    },
+    {
+      "concurrency": 4,
+      "workload": "high-effort reasoning",
+      "algorithm": "R-Stitch",
+      "implementation": "Std. Serving",
+      "latency": 1978.19,
+      "throughput": 16.56
+    },
+    {
+      "concurrency": 4,
+      "workload": "high-effort reasoning",
+      "algorithm": "R-Stitch",
+      "implementation": "TokenRouter",
+      "latency": 260.98,
+      "throughput": 124.69
+    },
+    {
+      "concurrency": 4,
+      "workload": "high-effort reasoning",
+      "algorithm": "Co-LLM",
+      "implementation": "Official Code",
+      "latency": 45389.08,
+      "throughput": 0.68
+    },
+    {
+      "concurrency": 4,
+      "workload": "high-effort reasoning",
+      "algorithm": "Co-LLM",
+      "implementation": "Std. Serving",
+      "latency": 6155.09,
+      "throughput": 5.14
+    },
+    {
+      "concurrency": 4,
+      "workload": "high-effort reasoning",
+      "algorithm": "Co-LLM",
+      "implementation": "TokenRouter",
+      "latency": 115.3,
+      "throughput": 268.66
+    },
+    {
+      "concurrency": 4,
+      "workload": "high-effort reasoning",
+      "algorithm": "ME",
+      "implementation": "Official Code",
+      "latency": null,
+      "throughput": null
+    },
+    {
+      "concurrency": 4,
+      "workload": "high-effort reasoning",
+      "algorithm": "ME",
+      "implementation": "Std. Serving",
+      "latency": 1291.17,
+      "throughput": 24.54
+    },
+    {
+      "concurrency": 4,
+      "workload": "high-effort reasoning",
+      "algorithm": "ME",
+      "implementation": "TokenRouter",
+      "latency": 300.96,
+      "throughput": 105.77
+    },
+    {
+      "concurrency": 4,
+      "workload": "agentic",
+      "algorithm": "R2R",
+      "implementation": "Official Code",
+      "latency": 32.28,
+      "throughput": 75.06
+    },
+    {
+      "concurrency": 4,
+      "workload": "agentic",
+      "algorithm": "R2R",
+      "implementation": "Std. Serving",
+      "latency": 235.4,
+      "throughput": 11.43
+    },
+    {
+      "concurrency": 4,
+      "workload": "agentic",
+      "algorithm": "R2R",
+      "implementation": "TokenRouter",
+      "latency": 18.78,
+      "throughput": 151.17
+    },
+    {
+      "concurrency": 4,
+      "workload": "agentic",
+      "algorithm": "CITER",
+      "implementation": "Official Code",
+      "latency": 2534.38,
+      "throughput": 1.31
+    },
+    {
+      "concurrency": 4,
+      "workload": "agentic",
+      "algorithm": "CITER",
+      "implementation": "Std. Serving",
+      "latency": 152.0,
+      "throughput": 20.4
+    },
+    {
+      "concurrency": 4,
+      "workload": "agentic",
+      "algorithm": "CITER",
+      "implementation": "TokenRouter",
+      "latency": 14.95,
+      "throughput": 217.98
+    },
+    {
+      "concurrency": 4,
+      "workload": "agentic",
+      "algorithm": "R-Stitch",
+      "implementation": "Official Code",
+      "latency": null,
+      "throughput": null
+    },
+    {
+      "concurrency": 4,
+      "workload": "agentic",
+      "algorithm": "R-Stitch",
+      "implementation": "Std. Serving",
+      "latency": 144.33,
+      "throughput": 19.73
+    },
+    {
+      "concurrency": 4,
+      "workload": "agentic",
+      "algorithm": "R-Stitch",
+      "implementation": "TokenRouter",
+      "latency": 31.44,
+      "throughput": 76.64
+    },
+    {
+      "concurrency": 4,
+      "workload": "agentic",
+      "algorithm": "Co-LLM",
+      "implementation": "Official Code",
+      "latency": 2114.87,
+      "throughput": 0.82
+    },
+    {
+      "concurrency": 4,
+      "workload": "agentic",
+      "algorithm": "Co-LLM",
+      "implementation": "Std. Serving",
+      "latency": 102.6,
+      "throughput": 8.94
+    },
+    {
+      "concurrency": 4,
+      "workload": "agentic",
+      "algorithm": "Co-LLM",
+      "implementation": "TokenRouter",
+      "latency": 9.57,
+      "throughput": 220.56
+    },
+    {
+      "concurrency": 4,
+      "workload": "agentic",
+      "algorithm": "ME",
+      "implementation": "Official Code",
+      "latency": null,
+      "throughput": null
+    },
+    {
+      "concurrency": 4,
+      "workload": "agentic",
+      "algorithm": "ME",
+      "implementation": "Std. Serving",
+      "latency": 166.35,
+      "throughput": 23.25
+    },
+    {
+      "concurrency": 4,
+      "workload": "agentic",
+      "algorithm": "ME",
+      "implementation": "TokenRouter",
+      "latency": 31.44,
+      "throughput": 121.92
+    }
+  ],
+  "tradeoff": [
+    {
+      "implementation": "TokenRouter",
+      "concurrency": 1,
+      "speed": 76.29,
+      "throughput": 73.25
+    },
+    {
+      "implementation": "TokenRouter",
+      "concurrency": 2,
+      "speed": 66.03,
+      "throughput": 122.57
+    },
+    {
+      "implementation": "TokenRouter",
+      "concurrency": 3,
+      "speed": 56.94,
+      "throughput": 164.67
+    },
+    {
+      "implementation": "TokenRouter",
+      "concurrency": 4,
+      "speed": 54.7,
+      "throughput": 213.15
+    },
+    {
+      "implementation": "TokenRouter",
+      "concurrency": 5,
+      "speed": 53.46,
+      "throughput": 257.5
+    },
+    {
+      "implementation": "TokenRouter",
+      "concurrency": 6,
+      "speed": 50.61,
+      "throughput": 292.14
+    },
+    {
+      "implementation": "TokenRouter",
+      "concurrency": 7,
+      "speed": 47.71,
+      "throughput": 323.16
+    },
+    {
+      "implementation": "TokenRouter",
+      "concurrency": 8,
+      "speed": 47.12,
+      "throughput": 362.16
+    },
+    {
+      "implementation": "TokenRouter",
+      "concurrency": 9,
+      "speed": 45.44,
+      "throughput": 391.06
+    },
+    {
+      "implementation": "TokenRouter",
+      "concurrency": 10,
+      "speed": 44.55,
+      "throughput": 418.06
+    },
+    {
+      "implementation": "TokenRouter",
+      "concurrency": 11,
+      "speed": 43.64,
+      "throughput": 452.8
+    },
+    {
+      "implementation": "TokenRouter",
+      "concurrency": 12,
+      "speed": 42.31,
+      "throughput": 481.94
+    },
+    {
+      "implementation": "TokenRouter",
+      "concurrency": 13,
+      "speed": 41.66,
+      "throughput": 519.55
+    },
+    {
+      "implementation": "TokenRouter",
+      "concurrency": 14,
+      "speed": 41.43,
+      "throughput": 566.04
+    },
+    {
+      "implementation": "TokenRouter",
+      "concurrency": 15,
+      "speed": 39.69,
+      "throughput": 595.3
+    },
+    {
+      "implementation": "TokenRouter",
+      "concurrency": 16,
+      "speed": 39.41,
+      "throughput": 630.57
+    },
+    {
+      "implementation": "R2R official",
+      "concurrency": 1,
+      "speed": 34.87,
+      "throughput": 33.94
+    },
+    {
+      "implementation": "R2R official",
+      "concurrency": 2,
+      "speed": 26.71,
+      "throughput": 51.55
+    },
+    {
+      "implementation": "R2R official",
+      "concurrency": 3,
+      "speed": 23.26,
+      "throughput": 66.95
+    },
+    {
+      "implementation": "R2R official",
+      "concurrency": 4,
+      "speed": 20.72,
+      "throughput": 79.85
+    },
+    {
+      "implementation": "R2R official",
+      "concurrency": 5,
+      "speed": 18.75,
+      "throughput": 87.96
+    },
+    {
+      "implementation": "R2R official",
+      "concurrency": 6,
+      "speed": 17.45,
+      "throughput": 98.06
+    },
+    {
+      "implementation": "R2R official",
+      "concurrency": 7,
+      "speed": 16.11,
+      "throughput": 104.46
+    },
+    {
+      "implementation": "R2R official",
+      "concurrency": 8,
+      "speed": 14.78,
+      "throughput": 112.07
+    },
+    {
+      "implementation": "R2R official",
+      "concurrency": 9,
+      "speed": 13.7,
+      "throughput": 114.69
+    },
+    {
+      "implementation": "R2R official",
+      "concurrency": 10,
+      "speed": 13.97,
+      "throughput": 126.58
+    },
+    {
+      "implementation": "R2R official",
+      "concurrency": 11,
+      "speed": 12.85,
+      "throughput": 131.38
+    },
+    {
+      "implementation": "R2R official",
+      "concurrency": 12,
+      "speed": 12.46,
+      "throughput": 142.23
+    },
+    {
+      "implementation": "R2R official",
+      "concurrency": 13,
+      "speed": 12.41,
+      "throughput": 152.55
+    },
+    {
+      "implementation": "R2R official",
+      "concurrency": 14,
+      "speed": 12.0,
+      "throughput": 162.2
+    },
+    {
+      "implementation": "R2R official",
+      "concurrency": 15,
+      "speed": 11.23,
+      "throughput": 168.52
+    },
+    {
+      "implementation": "R2R official",
+      "concurrency": 16,
+      "speed": 10.9,
+      "throughput": 174.36
+    }
+  ],
+  "schedules": {
+    "step": {
+      "history": [
+        {
+          "start": 0.0,
+          "end": 1.0,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 0,
+              "tok": 0,
+              "model": "SLM"
+            },
+            {
+              "req": 1,
+              "tok": 0,
+              "model": "SLM"
+            },
+            {
+              "req": 2,
+              "tok": 0,
+              "model": "SLM"
+            }
+          ]
+        },
+        {
+          "start": 1.0,
+          "end": 2.0,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 0,
+              "tok": 1,
+              "model": "SLM"
+            },
+            {
+              "req": 2,
+              "tok": 1,
+              "model": "SLM"
+            }
+          ]
+        },
+        {
+          "start": 1.0,
+          "end": 4.5,
+          "model": "LLM",
+          "tasks": [
+            {
+              "req": 1,
+              "tok": 1,
+              "model": "LLM"
+            }
+          ]
+        },
+        {
+          "start": 4.5,
+          "end": 5.5,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 0,
+              "tok": 2,
+              "model": "SLM"
+            },
+            {
+              "req": 1,
+              "tok": 2,
+              "model": "SLM"
+            }
+          ]
+        },
+        {
+          "start": 4.5,
+          "end": 8.0,
+          "model": "LLM",
+          "tasks": [
+            {
+              "req": 2,
+              "tok": 2,
+              "model": "LLM"
+            }
+          ]
+        },
+        {
+          "start": 8.0,
+          "end": 9.0,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 0,
+              "tok": 3,
+              "model": "SLM"
+            },
+            {
+              "req": 2,
+              "tok": 3,
+              "model": "SLM"
+            }
+          ]
+        },
+        {
+          "start": 8.0,
+          "end": 11.5,
+          "model": "LLM",
+          "tasks": [
+            {
+              "req": 1,
+              "tok": 3,
+              "model": "LLM"
+            }
+          ]
+        },
+        {
+          "start": 11.5,
+          "end": 12.5,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 0,
+              "tok": 4,
+              "model": "SLM"
+            },
+            {
+              "req": 1,
+              "tok": 4,
+              "model": "SLM"
+            }
+          ]
+        },
+        {
+          "start": 11.5,
+          "end": 15.0,
+          "model": "LLM",
+          "tasks": [
+            {
+              "req": 2,
+              "tok": 4,
+              "model": "LLM"
+            }
+          ]
+        }
+      ],
+      "completion": [
+        12.5,
+        12.5,
+        15.0
+      ],
+      "barriers": [
+        0.0,
+        1.0,
+        4.5,
+        8.0,
+        11.5,
+        15.0
+      ]
+    },
+    "model": {
+      "history": [
+        {
+          "start": 0.0,
+          "end": 1.0,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 0,
+              "tok": 0,
+              "model": "SLM"
+            },
+            {
+              "req": 1,
+              "tok": 0,
+              "model": "SLM"
+            },
+            {
+              "req": 2,
+              "tok": 0,
+              "model": "SLM"
+            }
+          ]
+        },
+        {
+          "start": 1.0,
+          "end": 4.5,
+          "model": "LLM",
+          "tasks": [
+            {
+              "req": 1,
+              "tok": 1,
+              "model": "LLM"
+            }
+          ]
+        },
+        {
+          "start": 4.5,
+          "end": 5.5,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 0,
+              "tok": 1,
+              "model": "SLM"
+            },
+            {
+              "req": 1,
+              "tok": 2,
+              "model": "SLM"
+            },
+            {
+              "req": 2,
+              "tok": 1,
+              "model": "SLM"
+            }
+          ]
+        },
+        {
+          "start": 5.5,
+          "end": 9.0,
+          "model": "LLM",
+          "tasks": [
+            {
+              "req": 1,
+              "tok": 3,
+              "model": "LLM"
+            },
+            {
+              "req": 2,
+              "tok": 2,
+              "model": "LLM"
+            }
+          ]
+        },
+        {
+          "start": 9.0,
+          "end": 10.0,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 0,
+              "tok": 2,
+              "model": "SLM"
+            },
+            {
+              "req": 1,
+              "tok": 4,
+              "model": "SLM"
+            },
+            {
+              "req": 2,
+              "tok": 3,
+              "model": "SLM"
+            }
+          ]
+        },
+        {
+          "start": 10.0,
+          "end": 13.5,
+          "model": "LLM",
+          "tasks": [
+            {
+              "req": 2,
+              "tok": 4,
+              "model": "LLM"
+            }
+          ]
+        },
+        {
+          "start": 13.5,
+          "end": 14.5,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 0,
+              "tok": 3,
+              "model": "SLM"
+            }
+          ]
+        },
+        {
+          "start": 14.5,
+          "end": 15.5,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 0,
+              "tok": 4,
+              "model": "SLM"
+            }
+          ]
+        }
+      ],
+      "completion": [
+        15.5,
+        10.0,
+        13.5
+      ],
+      "barriers": [
+        1.0,
+        4.5,
+        5.5,
+        9.0,
+        10.0,
+        13.5,
+        14.5,
+        15.5
+      ]
+    },
+    "eager": {
+      "history": [
+        {
+          "start": 0.0,
+          "end": 1.0,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 0,
+              "tok": 0,
+              "model": "SLM"
+            },
+            {
+              "req": 1,
+              "tok": 0,
+              "model": "SLM"
+            },
+            {
+              "req": 2,
+              "tok": 0,
+              "model": "SLM"
+            }
+          ]
+        },
+        {
+          "start": 1.0,
+          "end": 2.0,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 0,
+              "tok": 1,
+              "model": "SLM"
+            },
+            {
+              "req": 2,
+              "tok": 1,
+              "model": "SLM"
+            }
+          ]
+        },
+        {
+          "start": 1.0,
+          "end": 4.5,
+          "model": "LLM",
+          "tasks": [
+            {
+              "req": 1,
+              "tok": 1,
+              "model": "LLM"
+            }
+          ]
+        },
+        {
+          "start": 2.0,
+          "end": 3.0,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 0,
+              "tok": 2,
+              "model": "SLM"
+            }
+          ]
+        },
+        {
+          "start": 3.0,
+          "end": 4.0,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 0,
+              "tok": 3,
+              "model": "SLM"
+            }
+          ]
+        },
+        {
+          "start": 4.0,
+          "end": 5.0,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 0,
+              "tok": 4,
+              "model": "SLM"
+            }
+          ]
+        },
+        {
+          "start": 4.5,
+          "end": 8.0,
+          "model": "LLM",
+          "tasks": [
+            {
+              "req": 2,
+              "tok": 2,
+              "model": "LLM"
+            }
+          ]
+        },
+        {
+          "start": 5.0,
+          "end": 6.0,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 1,
+              "tok": 2,
+              "model": "SLM"
+            }
+          ]
+        },
+        {
+          "start": 8.0,
+          "end": 9.0,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 2,
+              "tok": 3,
+              "model": "SLM"
+            }
+          ]
+        },
+        {
+          "start": 8.0,
+          "end": 11.5,
+          "model": "LLM",
+          "tasks": [
+            {
+              "req": 1,
+              "tok": 3,
+              "model": "LLM"
+            }
+          ]
+        },
+        {
+          "start": 11.5,
+          "end": 12.5,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 1,
+              "tok": 4,
+              "model": "SLM"
+            }
+          ]
+        },
+        {
+          "start": 11.5,
+          "end": 15.0,
+          "model": "LLM",
+          "tasks": [
+            {
+              "req": 2,
+              "tok": 4,
+              "model": "LLM"
+            }
+          ]
+        }
+      ],
+      "completion": [
+        5.0,
+        12.5,
+        15.0
+      ],
+      "barriers": []
+    },
+    "delayed": {
+      "history": [
+        {
+          "start": 0.0,
+          "end": 1.0,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 0,
+              "tok": 0,
+              "model": "SLM"
+            },
+            {
+              "req": 1,
+              "tok": 0,
+              "model": "SLM"
+            },
+            {
+              "req": 2,
+              "tok": 0,
+              "model": "SLM"
+            }
+          ]
+        },
+        {
+          "start": 1.0,
+          "end": 2.0,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 0,
+              "tok": 1,
+              "model": "SLM"
+            },
+            {
+              "req": 2,
+              "tok": 1,
+              "model": "SLM"
+            }
+          ]
+        },
+        {
+          "start": 2.0,
+          "end": 3.0,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 0,
+              "tok": 2,
+              "model": "SLM"
+            }
+          ]
+        },
+        {
+          "start": 2.0,
+          "end": 5.5,
+          "model": "LLM",
+          "tasks": [
+            {
+              "req": 1,
+              "tok": 1,
+              "model": "LLM"
+            },
+            {
+              "req": 2,
+              "tok": 2,
+              "model": "LLM"
+            }
+          ]
+        },
+        {
+          "start": 3.0,
+          "end": 4.0,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 0,
+              "tok": 3,
+              "model": "SLM"
+            }
+          ]
+        },
+        {
+          "start": 4.0,
+          "end": 5.0,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 0,
+              "tok": 4,
+              "model": "SLM"
+            }
+          ]
+        },
+        {
+          "start": 5.5,
+          "end": 6.5,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 1,
+              "tok": 2,
+              "model": "SLM"
+            },
+            {
+              "req": 2,
+              "tok": 3,
+              "model": "SLM"
+            }
+          ]
+        },
+        {
+          "start": 6.5,
+          "end": 10.0,
+          "model": "LLM",
+          "tasks": [
+            {
+              "req": 1,
+              "tok": 3,
+              "model": "LLM"
+            },
+            {
+              "req": 2,
+              "tok": 4,
+              "model": "LLM"
+            }
+          ]
+        },
+        {
+          "start": 10.0,
+          "end": 11.0,
+          "model": "SLM",
+          "tasks": [
+            {
+              "req": 1,
+              "tok": 4,
+              "model": "SLM"
+            }
+          ]
+        }
+      ],
+      "completion": [
+        5.0,
+        11.0,
+        10.0
+      ],
+      "barriers": []
+    }
+  },
+  "batching": {
+    "2": [
+      94.44,
+      122.32
+    ],
+    "3": [
+      125.87,
+      169.01,
+      158.32
+    ],
+    "4": [
+      161.17,
+      179.08,
+      197.4,
+      193.67
+    ]
+  },
+  "ablation": [
+    [
+      "Base implementation",
+      132.78
+    ],
+    [
+      "+ Extend CUDA graphs",
+      230.79
+    ],
+    [
+      "+ Async execution",
+      296.86
+    ],
+    [
+      "+ Delayed batching",
+      372.48
+    ]
+  ],
+  "ablationOfficial": 134.9
+}
