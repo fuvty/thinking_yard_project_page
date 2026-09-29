@@ -68,23 +68,16 @@ const chartDescriptions = [
   "Route 3 focus: every blue branch is a full scaling instance initialized from a point on the black frontier. It passes its envelope contact, reaches the same cost boundary as black, then recedes into context.",
 ];
 
-// The traveler: one soft gleam glides the length of each route in turn, like
-// light moving inside a fiber. It is the only ambient motion in the overview
-// and the resting curves are never dimmed or redrawn, so the chart stays
-// whole at all times. Glow colors are the route colors blended 38% to white.
-// The traveler: one soft gleam glides the length of each route in turn, like
-// light moving inside a fiber. Speed and gleam width are measured in screen
-// pixels, so the traveler reads as one constant pace on every route and at
-// every viewport size. Glow colors are the route colors blended 38% to white.
-const TRAVELER_SPEED = 250;
-const TRAVELER_MIN_WINDOW = 1.8;
-const TRAVELER_SIGMA = 110;
+// Screen-space trails keep motion legible at every viewport size.
+const TRAVELER_SPEED = 340;
+const TRAVELER_MIN_WINDOW = 2.15;
+const TRAVELER_STAGGER = 0.6;
+const TRAVELER_SETTLE_TIME = 1.15;
 const travelerLegs = [
-  { points: ROUTE_ONE_EXTENSION, glow: "#ad85b6" },
-  { points: ROUTE_TWO_CURVE, glow: "#9cc38d" },
-  { points: ROUTE_THREE_CURVE, glow: "#6e99cd" },
+  { points: ROUTE_ONE_EXTENSION, color: "#7b3a8a" },
+  { points: ROUTE_TWO_CURVE, color: "#5f9f47" },
+  { points: ROUTE_THREE_CURVE, color: "#155bae" },
 ] as const;
-const TRAVELER_GAPS = [0.35, 0.35, 0.9] as const;
 
 type RouteThreeHover = {
   branch: Point[];
@@ -100,12 +93,39 @@ function easeInOutCubic(progress: number) {
     : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
+function smoothStep(progress: number) {
+  const t = clamp(progress);
+  return t * t * (3 - 2 * t);
+}
+
+// Asymmetric cubic-bezier(.42, 0, .12, 1): a short acceleration,
+// a pronounced sweep, and a longer, weightless deceleration. Solve time (x)
+// before evaluating distance (y), rather than treating the parameter as time.
+function travelerMotion(progress: number) {
+  const time = clamp(progress);
+  if (time === 0 || time === 1) return { position: time, velocity: 0 };
+  let low = 0;
+  let high = 1;
+  let t = time;
+  for (let i = 0; i < 18; i += 1) {
+    const x = 3 * (1 - t) ** 2 * t * 0.42 + 3 * (1 - t) * t * t * 0.12 + t ** 3;
+    if (x < time) low = t;
+    else high = t;
+    t = (low + high) / 2;
+  }
+  const dx = 3 * (1 - t) ** 2 * 0.42 + 6 * (1 - t) * t * (0.12 - 0.42) + 3 * t * t * (1 - 0.12);
+  return {
+    position: t * t * (3 - 2 * t),
+    velocity: 6 * t * (1 - t) / dx,
+  };
+}
+
 function getPlot(width: number, height: number) {
-  return width < 980
+  return window.innerWidth < 980
     ? { left: 34, right: width - 24, top: 48, bottom: height - 30 }
     : {
-        left: Math.max(72, width * 0.055),
-        right: Math.min(width * 0.6, width - 520),
+        left: Math.max(60, width * 0.085),
+        right: width - 60,
         top: 102,
         bottom: height - 72,
       };
@@ -172,7 +192,7 @@ function getOverviewRouteAtPoint(
     }
   });
 
-  const hitRadius = pointerType === "touch" ? 32 : rect.width < 980 ? 26 : 20;
+  const hitRadius = pointerType === "touch" ? 32 : window.innerWidth < 980 ? 26 : 20;
   return nearestDistance <= hitRadius ? nearestRoute : null;
 }
 
@@ -226,7 +246,7 @@ export default function Home() {
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
     ctx.clearRect(0, 0, rect.width, rect.height);
 
-    const compact = rect.width < 980;
+    const compact = window.innerWidth < 980;
     const plot = getPlot(rect.width, rect.height);
     const width = plot.right - plot.left;
     const height = plot.bottom - plot.top;
@@ -582,12 +602,8 @@ export default function Home() {
 
     dot(baseEnd, "#1d1d1f", baselineTerminalAlpha, 4);
 
-    // The traveler: a single soft gleam glides along each route in turn.
-    // Amplitude follows a sine envelope and position eases in and out, so the
-    // gleam materializes, travels, and dissolves without any hard edge. Speed
-    // and gleam width are pixel-space quantities, keeping the pace identical
-    // on every route. The gleam is pure addition — resting curves are never
-    // dimmed or redrawn.
+    // Staggered heads travel along the existing curves, leaving a fading
+    // trail behind them. The reference curves remain readable throughout.
     const ambientTime = ambientTimeRef.current;
     const ambientClock = ambientTime != null && stageRef.current === 0 && ambientVisibleSinceRef.current
       ? ambientTime - ambientVisibleSinceRef.current
@@ -601,38 +617,88 @@ export default function Home() {
           length += Math.hypot(pixels[index + 1].x - pixels[index].x, pixels[index + 1].y - pixels[index].y);
           positions.push(length);
         }
-        return { leg, pixels, positions, length, window: Math.max(length / TRAVELER_SPEED, TRAVELER_MIN_WINDOW) };
+        return { leg, pixels, positions, length, duration: Math.max(length / TRAVELER_SPEED, TRAVELER_MIN_WINDOW) };
       });
-      const cycle = legs.reduce((total, { window }, index) => total + window + TRAVELER_GAPS[index], 0);
+      const cycle = Math.max(...legs.map(({ duration }, index) => duration + index * TRAVELER_STAGGER)) + TRAVELER_SETTLE_TIME + 0.35;
       const cycleTime = ambientClock % cycle;
-      let legStart = 0;
-      legs.forEach(({ leg, pixels, positions, length, window }, index) => {
-        const local = cycleTime - legStart;
-        legStart += window + TRAVELER_GAPS[index];
-        if (local < 0 || local >= window) return;
-        const phase = local / window;
-        const amplitude = Math.sin(Math.PI * phase);
-        if (amplitude < 0.02) return;
-        const center = easeInOutCubic(phase) * length;
-        for (let segmentIndex = 0; segmentIndex < positions.length - 1; segmentIndex += 1) {
-          const midpoint = (positions[segmentIndex] + positions[segmentIndex + 1]) / 2;
-          const envelope = Math.exp(-0.5 * ((midpoint - center) / TRAVELER_SIGMA) ** 2);
-          if (envelope < 0.02) continue;
-          ctx.save();
-          ctx.globalAlpha = amplitude * envelope;
-          ctx.strokeStyle = leg.glow;
-          ctx.lineWidth = baseWidth + 2.8 * amplitude * envelope;
-          ctx.lineCap = "round";
+      legs.forEach(({ leg, pixels, positions, length, duration }, index) => {
+        const local = cycleTime - index * TRAVELER_STAGGER;
+        if (local < 0 || local >= duration + TRAVELER_SETTLE_TIME) return;
+        const phase = clamp(local / duration);
+        const motion = travelerMotion(phase);
+        const center = motion.position * length;
+        const speed = clamp(motion.velocity / 3.5);
+        const entrance = smoothStep(local / 0.18);
+        // Let the head merge into the endpoint first; the remaining trail
+        // settles behind it, with zero-slope fades instead of a hard cutoff.
+        const headFade = smoothStep((local - duration + 0.25) / 1.05);
+        const trailFade = smoothStep((local - duration) / TRAVELER_SETTLE_TIME);
+        const headAlpha = entrance * (1 - headFade);
+        const trailAlpha = entrance * (1 - trailFade);
+        // A short history of the head's position gives the tail inertia:
+        // it stretches during the sweep and gathers as the head slows down.
+        const pastPosition = travelerMotion((local - 0.18) / duration).position;
+        const trailLength = Math.min(compact ? 90 : 150, 8 + (motion.position - pastPosition) * length)
+          * (1 - 0.8 * trailFade);
+        let head = pixels[0];
+        ctx.save();
+        ctx.strokeStyle = leg.color;
+        ctx.lineCap = "round";
+        for (let i = 0; i < positions.length - 1; i += 1) {
+          if (positions[i] > center) break;
+          const fraction = clamp((center - positions[i]) / Math.max(0.001, positions[i + 1] - positions[i]));
+          const end = {
+            x: pixels[i].x + (pixels[i + 1].x - pixels[i].x) * fraction,
+            y: pixels[i].y + (pixels[i + 1].y - pixels[i].y) * fraction,
+          };
+          head = end;
+          const strength = clamp(1 - (center - positions[i]) / trailLength);
+          if (!strength) continue;
           ctx.beginPath();
-          ctx.moveTo(pixels[segmentIndex].x, pixels[segmentIndex].y);
-          ctx.lineTo(pixels[segmentIndex + 1].x, pixels[segmentIndex + 1].y);
+          ctx.moveTo(pixels[i].x, pixels[i].y);
+          ctx.lineTo(end.x, end.y);
+          ctx.globalAlpha = trailAlpha * strength * 0.14;
+          ctx.lineWidth = (compact ? 7 : 9) + speed * 5;
           ctx.stroke();
-          ctx.restore();
+          ctx.globalAlpha = trailAlpha * strength * 0.9;
+          ctx.lineWidth = baseWidth + 1.5;
+          ctx.stroke();
         }
+        const haloRadius = 10 + speed * 7;
+        const halo = ctx.createRadialGradient(head.x, head.y, 2, head.x, head.y, haloRadius);
+        halo.addColorStop(0, leg.color + "66");
+        halo.addColorStop(1, leg.color + "00");
+        ctx.globalAlpha = headAlpha;
+        ctx.fillStyle = halo;
+        ctx.beginPath();
+        ctx.arc(head.x, head.y, haloRadius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = leg.color;
+        ctx.beginPath();
+        ctx.arc(head.x, head.y, compact ? 4 : 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#fff";
+        ctx.beginPath();
+        ctx.arc(head.x, head.y, 1.8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
       });
     }
 
     const fontFamily = getComputedStyle(document.body).fontFamily;
+    // Axis labels share the canvas bounds and plot geometry with the axes.
+    ctx.save();
+    ctx.font = `500 10px ${fontFamily}`;
+    ctx.fillStyle = "#86868b";
+    ctx.textAlign = "right";
+    ctx.textBaseline = "alphabetic";
+    ctx.fillText("COST", plot.right + 10, plot.bottom + 22);
+    ctx.translate(plot.left - (compact ? 20 : 30), (plot.top + plot.bottom) / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.textAlign = "center";
+    ctx.fillText("CAPABILITY", 0, 0);
+    ctx.restore();
+
     ctx.font = `600 ${compact ? 10 : 11}px ${fontFamily}`;
     ctx.textBaseline = "middle";
     const label = (text: string, point: Point, offsetX: number, offsetY: number, color: string, alpha: number) => {
@@ -665,7 +731,7 @@ export default function Home() {
     label(
       "ROUTE 02",
       routeTwoRenderedCurve[70],
-      -58,
+      compact ? -32 : -58,
       -17,
       "#467d32",
       animatedAlpha(routeTwoAlpha * inspectionFade, routeTwoProgress, routeTwoIsDrawing, 0.48),
@@ -692,6 +758,7 @@ export default function Home() {
   useEffect(() => {
     stageRef.current = -1;
     lineAnimationRef.current = 0;
+    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     const animateStage = (nextStage: number, nextFocus: number[]) => {
       if (lineAnimationRef.current) cancelAnimationFrame(lineAnimationRef.current);
@@ -709,7 +776,7 @@ export default function Home() {
       revealRef.current = [...nextReveal];
       drawChart(nextFocus, nextReveal);
       const startedAt = performance.now();
-      const duration = nextStage === 3 ? 5000 : 1050;
+      const duration = nextStage === 3 ? 5600 : 2000;
 
       const tick = (now: number) => {
         const elapsed = clamp((now - startedAt) / duration);
@@ -742,7 +809,7 @@ export default function Home() {
 
     const startAmbient = () => {
       if (ambientFrameRef.current) return;
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (motionPreference.matches || document.hidden) return;
       const startedAt = performance.now();
       ambientTimeRef.current = 0;
 
@@ -802,13 +869,29 @@ export default function Home() {
       frameRef.current = requestAnimationFrame(() => update());
     };
     const onResize = () => update(true);
+    const onMotionChange = () => {
+      stopAmbient();
+      if (lineAnimationRef.current) cancelAnimationFrame(lineAnimationRef.current);
+      lineAnimationRef.current = 0;
+      revealRef.current = stages.map(() => 1);
+      update(true);
+      if (stageRef.current === 0) startAmbient();
+    };
+    const onVisibilityChange = () => {
+      if (document.hidden) stopAmbient();
+      else if (stageRef.current === 0) startAmbient();
+    };
 
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
+    motionPreference.addEventListener("change", onMotionChange);
+    document.addEventListener("visibilitychange", onVisibilityChange);
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
+      motionPreference.removeEventListener("change", onMotionChange);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       if (frameRef.current) cancelAnimationFrame(frameRef.current);
       if (lineAnimationRef.current) cancelAnimationFrame(lineAnimationRef.current);
       stopAmbient();
@@ -910,7 +993,7 @@ export default function Home() {
         }
       });
 
-      if (nearestDistance > (rect.width < 980 ? 26 : 22)) {
+      if (nearestDistance > (window.innerWidth < 980 ? 26 : 22)) {
         clearBranchSelection();
         return;
       }
@@ -988,9 +1071,7 @@ export default function Home() {
         >
           <h2 className="sr-only" id="chart-title">Three scaling routes</h2>
           <canvas ref={canvasRef} aria-hidden="true" />
-          <span className="axis-label axis-label-y">capability</span>
-          <span className="axis-label axis-label-x">cost</span>
-          <figcaption className="sr-only" id="chart-description">{chartDescriptions[activeStage]}</figcaption>
+          <figcaption className="sr-only" id="chart-description">Cost on the horizontal axis; capability on the vertical axis. {chartDescriptions[activeStage]}</figcaption>
         </figure>
 
         <div className="story-steps">
@@ -1005,7 +1086,6 @@ export default function Home() {
               <div className={`story-copy story-copy-${index}`}>
                 <div className="story-meta">
                   <div className="story-stage-label">{stage.label}</div>
-                  <span className="chapter-count" aria-hidden="true">{String(index + 1).padStart(2, "0")} / 04</span>
                 </div>
                 <p className="story-eyebrow">{stage.eyebrow}</p>
                 {index === 0 ? <h1>{stage.title}</h1> : <h2>{stage.title}</h2>}

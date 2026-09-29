@@ -80,6 +80,7 @@ a {
 }
 
 .scale-story {
+  --story-panel-width: clamp(420px, 40vw, 560px);
   min-height: 400vh;
   min-height: 400svh;
   position: relative;
@@ -98,8 +99,8 @@ a {
   background: linear-gradient(
     90deg,
     var(--surface) 0,
-    var(--surface) calc(100% - 500px),
-    var(--panel) calc(100% - 500px),
+    var(--surface) calc(100% - var(--story-panel-width)),
+    var(--panel) calc(100% - var(--story-panel-width)),
     var(--panel) 100%
   );
   content: "";
@@ -111,7 +112,7 @@ a {
   background: var(--line);
   bottom: 44px;
   content: "";
-  left: calc(100% - 500px);
+  left: calc(100% - var(--story-panel-width));
   position: absolute;
   top: 76px;
   width: 1px;
@@ -121,35 +122,12 @@ a {
   height: 100%;
   inset: 0;
   position: absolute;
-  width: 100%;
+  width: calc(100% - var(--story-panel-width));
   z-index: 1;
 }
 
 .chart-sticky.is-route-three canvas {
   cursor: crosshair;
-}
-
-.axis-label {
-  color: var(--muted);
-  font-family: inherit;
-  font-size: 10px;
-  font-weight: 520;
-  letter-spacing: .12em;
-  position: absolute;
-  text-transform: uppercase;
-  z-index: 2;
-}
-
-.axis-label-y {
-  left: max(27px, 2.5vw);
-  top: 50%;
-  transform: translateY(-50%) rotate(180deg);
-  writing-mode: vertical-rl;
-}
-
-.axis-label-x {
-  bottom: 44px;
-  left: min(59%, calc(100% - 530px));
 }
 
 .story-steps {
@@ -166,7 +144,7 @@ a {
   justify-content: flex-end;
   min-height: 100vh;
   min-height: 100svh;
-  padding: 108px clamp(48px, 6vw, 96px) 48px;
+  padding: 108px 40px 48px;
   pointer-events: none;
   scroll-snap-align: start;
   scroll-snap-stop: always;
@@ -174,14 +152,13 @@ a {
 
 .story-copy {
   border-left: 1px solid var(--line-strong);
-  max-width: 430px;
   opacity: .25;
   padding: 8px 0 8px 38px;
   pointer-events: auto;
   position: relative;
   transform: translateX(14px);
-  transition: opacity 260ms ease, transform 260ms ease;
-  width: 100%;
+  transition: opacity 500ms ease, transform 650ms cubic-bezier(.22, 1, .36, 1);
+  width: calc(var(--story-panel-width) - 80px);
 }
 
 .story-copy::before {
@@ -210,8 +187,7 @@ a {
   margin-bottom: 30px;
 }
 
-.story-stage-label,
-.chapter-count {
+.story-stage-label {
   color: var(--muted);
   font-family: inherit;
   font-size: 10px;
@@ -581,16 +557,8 @@ a {
     width: auto;
   }
 
-  .axis-label-y {
-    left: 7px;
-    top: 54%;
-  }
-
-  .axis-label-x {
-    bottom: 8px;
-    left: auto;
-    right: 24px;
-    top: auto;
+  .chart-sticky canvas {
+    width: 100%;
   }
 
   .story-steps {
@@ -605,15 +573,19 @@ a {
     justify-content: center;
     min-height: 72svh;
     padding: 72px 28px 88px;
-    scroll-margin-top: calc(50svh + 28px);
     scroll-snap-align: none;
     scroll-snap-stop: normal;
+  }
+
+  .scale-story .story-step {
+    scroll-margin-top: calc(50svh + 28px);
   }
 
   .story-copy {
     border-left: 0;
     border-top: 1px solid var(--line-strong);
     max-width: 680px;
+    width: 100%;
     padding: 25px 0 0;
     transform: translateY(10px);
   }
@@ -682,7 +654,6 @@ a {
   }
 
   .story-copy {
-    max-width: 410px;
     padding-left: 32px;
   }
 
