@@ -16,7 +16,7 @@ Primary source: the supplied `latex/main.tex`, `macro.tex`, `tex/0_abstract.tex`
 - Threshold sweep: measured rows of `R2RSysFigures/data/delayedBatching.md` only.
 - Ablation: original N=8 figure values (base 132.78, CUDA graphs 230.79, async 296.86, delayed batching 372.48, official 134.90). Effects are cumulative.
 - Model-pair, deployment and original-algorithm tables: active tables in `tex/x_appendix.tex` and `tex/5_experiment.tex`. These are separate experimental settings, not mixed into the main CSV chart.
-- Authors: supplied by the user, in the supplied order. Tianyu Fu, Yichen You and Yu Wang retain their existing personal/institutional homepage links from the R2R/TaH pages. Authors without an existing homepage stay plain text; OpenReview links are omitted. Tianyu Fu and Tengxuan Liu share the confirmed equal-contribution marker. The NeurIPS 2026 badge was supplied by the user. Affiliations, paper URL and code URL remain unspecified; citation metadata is preserved pending publication details.
+- Authors: supplied by the user, in the supplied order. Tianyu Fu, Yichen You and Yu Wang retain their existing personal/institutional homepage links from the R2R/TaH pages. Tengxuan Liu links to his institutional homepage and Yixin Dong to github.com/ubospica, both supplied by the user. Authors without a supplied or existing homepage stay plain text; OpenReview links are omitted. Tianyu Fu and Tengxuan Liu share the confirmed equal-contribution marker. The NeurIPS 2026 badge was supplied by the user. Affiliations, paper URL and code URL remain unspecified; citation metadata is preserved pending publication details.
 
 ### Source inconsistencies to resolve in the paper
 
