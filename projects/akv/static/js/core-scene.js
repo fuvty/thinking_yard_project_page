@@ -15,9 +15,10 @@ globalThis.AKVCoreScene = (() => {
     const ours = kind === 'cache';
     const parts = [label(24, 34, ours ? 'Cache Engineering' : 'Context Engineering', 21), label(24, 92, 'Message', 17), label(24, 180, 'Cache', 17)];
     for (const name of ['A', 'B', 'C']) {
-      if (name === 'A' && !ours && time >= 2.4) continue;
+      const opacity = name === 'C' ? smooth(time, .2, .9) : name === 'A' && !ours ? 1 - smooth(time, 2.4, .7) : 1;
+      if (!opacity) continue;
       const x = positions[name];
-      parts.push(`<g data-message="${name}">${rect(x, 63, 174, 44, ...colors[name])}${label(x + 87, 91, name, 21, 'middle')}</g>`);
+      parts.push(`<g data-message="${name}" opacity="${opacity}">${rect(x, 63, 174, 44, ...colors[name])}${label(x + 87, 91, name, 21, 'middle')}</g>`);
     }
     function caches(name, { history = false, inherited = false, inactive = 0, appear = null, dx = 0, dy = 0, fresh = false } = {}) {
       const x = positions[name] + dx, y = 143 + dy;
