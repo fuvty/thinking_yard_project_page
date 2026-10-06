@@ -28,9 +28,10 @@
   function chart(id, column, maximum, step, unit) {
     const svg = document.getElementById(id);
     const x = i => 48 + i * 88, y = v => 235 - v / maximum * 205;
+    const tickLabel = v => column === 6 && v ? `${v / 1000}k` : v;
     let markup = '';
     for (let v=0; v<=maximum; v+=step) {
-      markup += `<line x1="48" x2="400" y1="${y(v)}" y2="${y(v)}" stroke="#e8e8ee"/><text x="38" y="${y(v)+5}" text-anchor="end" fill="#77777f" font-size="15">${v}</text>`;
+      markup += `<line x1="48" x2="400" y1="${y(v)}" y2="${y(v)}" stroke="#e8e8ee"/><text x="38" y="${y(v)+5}" text-anchor="end" fill="#77777f" font-size="15">${tickLabel(v)}</text>`;
     }
     concurrency.forEach((c,i) => { markup += `<text x="${x(i)}" y="259" text-anchor="middle" fill="#77777f" font-size="15">${c}</text>`; });
     markup += '<text x="224" y="284" text-anchor="middle" fill="#77777f" font-size="15">Concurrency</text>';
@@ -38,14 +39,17 @@
       markup += `<polyline points="${s.rows.map((r,i)=>`${x(i)},${y(r[column])}`).join(' ')}" fill="none" stroke="${s.color}" stroke-width="3" stroke-dasharray="${s.dash}" stroke-linecap="round"/>`;
       s.rows.forEach((r,i)=> { markup += `<circle cx="${x(i)}" cy="${y(r[column])}" r="4" fill="${s.color}" stroke="#fff" stroke-width="1.5"><title>${s.name}, C=${concurrency[i]}: ${r[column]} ${unit}</title></circle>`; });
       const end = s.rows.at(-1)[column];
-      markup += `<text x="410" y="${y(end)+5}" fill="${s.color}" font-size="14" font-weight="600">${column===7?end:end.toFixed(1)}</text>`;
+      const endLabel = column === 6 ? `${(end / 1000).toFixed(1)}k` : column === 7 ? end : end.toFixed(1);
+      markup += `<text x="410" y="${y(end)+5}" fill="${s.color}" font-size="14" font-weight="600">${endLabel}</text>`;
     });
     svg.insertAdjacentHTML('beforeend', `<g>${markup}</g>`);
     document.getElementById(`${id}-desc`).textContent = concurrency.map((c,i)=>`Concurrency ${c}: ${series.map(s=>`${s.name} ${s.rows[i][column]} ${unit}`).join(', ')}`).join('. ');
   }
+  chart('serving-input-throughput', 6, 60000, 10000, 'tokens/s');
   chart('serving-throughput', 7, 400, 100, 'tokens/s');
+  chart('serving-ttft', 3, 250, 50, 'seconds');
   chart('serving-latency', 1, 250, 50, 'seconds');
-  document.getElementById('serving-table').innerHTML = '<caption>Table 2 · GPT-OSS-120B · Top-80 SWE-bench workload replay</caption><thead><tr><th scope="col" rowspan="2">C</th><th scope="col" rowspan="2">Method</th><th scope="colgroup" colspan="2">Request latency (s)</th><th scope="colgroup" colspan="2">TTFT (s)</th><th scope="colgroup" colspan="2">TPOT (ms/token)</th><th scope="colgroup" colspan="2">Throughput (tokens/s)</th></tr><tr><th scope="col">Mean</th><th scope="col">P95</th><th scope="col">Mean</th><th scope="col">P95</th><th scope="col">Mean</th><th scope="col">P95</th><th scope="col">Input</th><th scope="col">Output</th></tr></thead><tbody>' + concurrency.map((c,i)=>series.map((s,j)=>`<tr${j===2?' class="akv-ours"':''}><th scope="row">${c}</th><th scope="row">${s.name}</th>${s.rows[i].map((v,k)=>{
+  document.getElementById('serving-table').innerHTML = '<caption>Serving performance across concurrency levels</caption><thead><tr><th scope="col" rowspan="2">Concurrency</th><th scope="col" rowspan="2">Method</th><th scope="colgroup" colspan="2">Request latency (s)</th><th scope="colgroup" colspan="2">TTFT (s)</th><th scope="colgroup" colspan="2">TPOT (ms/token)</th><th scope="colgroup" colspan="2">Throughput (tokens/s)</th></tr><tr><th scope="col">Mean</th><th scope="col">P95</th><th scope="col">Mean</th><th scope="col">P95</th><th scope="col">Mean</th><th scope="col">P95</th><th scope="col">Input</th><th scope="col">Output</th></tr></thead><tbody>' + concurrency.map((c,i)=>series.map((s,j)=>`<tr${j===2?' class="akv-ours"':''}><th scope="row">${c}</th><th scope="row">${s.name}</th>${s.rows[i].map((v,k)=>{
     const best = k<6 ? Math.min(...series.map(m=>m.rows[i][k])) : Math.max(...series.map(m=>m.rows[i][k]));
     const text = k<6 ? v.toFixed(2) : v.toLocaleString('en-US');
     return `<td>${v===best?`<strong>${text}</strong>`:text}</td>`;

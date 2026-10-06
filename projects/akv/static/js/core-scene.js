@@ -15,10 +15,14 @@ globalThis.AKVCoreScene = (() => {
     const ours = kind === 'cache';
     const parts = [label(24, 34, ours ? 'Cache Engineering' : 'Context Engineering', 21), label(24, 92, 'Message', 17), label(24, 180, 'Cache', 17)];
     for (const name of ['A', 'B', 'C']) {
-      const opacity = name === 'C' ? smooth(time, .2, .9) : name === 'A' && !ours ? 1 - smooth(time, 2.4, .7) : 1;
+      const opacity = name === 'C' ? smooth(time, .2, .9) : 1;
+      const inactive = name === 'A' && !ours ? smooth(time, 2.4, .7) : 0;
       if (!opacity) continue;
       const x = positions[name];
-      parts.push(`<g data-message="${name}" opacity="${opacity}">${rect(x, 63, 174, 44, ...colors[name])}${label(x + 87, 91, name, 21, 'middle')}</g>`);
+      const [fill, edge] = colors[name];
+      parts.push(`<g data-message="${name}" opacity="${opacity}"><g opacity="${1 - .86 * inactive}">${rect(x, 63, 174, 44, fill, inactive > .95 ? 'none' : edge)}${label(x + 87, 91, name, 21, 'middle')}</g>`);
+      if (inactive) parts.push(rect(x, 63, 174, 44, 'none', '#9da3ab', 7, `stroke-dasharray="5 5" opacity="${inactive * .55}"`));
+      parts.push('</g>');
     }
     function caches(name, { history = false, inherited = false, inactive = 0, appear = null, dx = 0, dy = 0, fresh = false } = {}) {
       const x = positions[name] + dx, y = 143 + dy;

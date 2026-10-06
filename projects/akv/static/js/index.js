@@ -57,18 +57,21 @@ function renderBenchmarkChart() {
   }
   benchmarks.forEach((benchmark, i) => {
     const center = left + groupWidth * (i + 0.5);
+    const groupValues = rows.map(row => row[i*2 + (isCost ? 1 : 0)]);
+    const best = isCost ? Math.min(...groupValues) : Math.max(...groupValues);
     rows.forEach((row, j) => {
       const value = row[i*2 + (isCost ? 1 : 0)];
+      const highlight = j === 2 && value === best;
       const bx = center - (barWidth*3+gap*2)/2 + j*(barWidth+gap);
-      markup += `<rect class="akv-benchmark-bar" x="${bx}" y="${y(value)}" width="${barWidth}" height="${bottom-y(value)}" rx="3" fill="${colors[j]}" style="--bar-delay:${i*55+j*35}ms"><title>${name} · ${benchmark} · ${labels[j]}: ${value.toFixed(1)}${isCost ? ' cents per task' : '%'}</title></rect><text x="${bx+barWidth/2}" y="${y(value)-9}" text-anchor="middle" font-size="12" font-weight="${j===2?600:400}" fill="${j===2?colors[j]:'#62626e'}">${value.toFixed(1)}</text>`;
+      markup += `<rect class="akv-benchmark-bar" x="${bx}" y="${y(value)}" width="${barWidth}" height="${bottom-y(value)}" rx="3" fill="${colors[j]}" style="--bar-delay:${i*55+j*35}ms"><title>${name} · ${benchmark} · ${labels[j]}: ${value.toFixed(1)}${isCost ? ' cents per task' : '%'}</title></rect><text x="${bx+barWidth/2}" y="${y(value)-9}" text-anchor="middle" font-size="12" font-weight="${highlight?700:400}" fill="${highlight?colors[j]:'#62626e'}">${value.toFixed(1)}</text>`;
     });
     markup += `<text x="${center}" y="${bottom+28}" text-anchor="middle" font-size="13" font-weight="${i===4?600:400}" fill="#51515a">${benchmark}</text>`;
   });
   svg.insertAdjacentHTML('beforeend', `<g>${markup}</g>`);
   document.getElementById('benchmark-chart-title').textContent = `${name}: ${isCost?'cost':'accuracy'} across agent benchmarks`;
   document.getElementById('benchmark-chart-desc').textContent = benchmarks.map((benchmark,i)=>`${benchmark}: ${rows.map((row,j)=>`${labels[j]} ${row[i*2+(isCost?1:0)].toFixed(1)}${isCost?' cents':'%'}`).join(', ')}`).join('. ');
-  document.getElementById('benchmark-chart-label').textContent = isCost ? 'Cost (¢ / task) · lower is better' : 'Pass rate (%) · higher is better';
-  document.getElementById('benchmark-caption').textContent = isCost ? 'API-equivalent inference cost per task. Lower bars indicate less spending.' : 'Pass rate across four benchmarks. Higher bars indicate better task performance.';
+  document.getElementById('benchmark-chart-label').textContent = isCost ? 'Cost (cents / task) · Lower is better' : 'Accuracy (%) · Higher is better';
+  document.getElementById('benchmark-caption').textContent = isCost ? 'API-equivalent cost per task.' : 'Accuracy is measured as task pass rate.';
   document.querySelectorAll('[data-metric]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.metric===selectedMetric)));
 }
 function renderBenchmarks(key) {
@@ -76,7 +79,7 @@ function renderBenchmarks(key) {
   const { rows } = models[key];
   document.querySelectorAll('[data-model]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.model === key)));
   renderBenchmarkChart();
-  document.getElementById('benchmark-average').innerHTML = `<span>Average score <strong>${rows[0][8].toFixed(1)} → ${rows[2][8].toFixed(1)}%</strong></span><span>Average cost <strong>${rows[0][9].toFixed(1)} → ${rows[2][9].toFixed(1)}¢</strong></span><span>Standard → AKV</span>`;
+  document.getElementById('benchmark-average').innerHTML = `<span>Average accuracy <strong><span class="akv-average-standard">${rows[0][8].toFixed(1)}%</span> <span class="akv-average-arrow">→</span> <span class="akv-average-ours">${rows[2][8].toFixed(1)}%</span></strong></span><span>Average cost <strong><span class="akv-average-standard">${rows[0][9].toFixed(1)}</span> <span class="akv-average-arrow">→</span> <span class="akv-average-ours">${rows[2][9].toFixed(1)}</span> <small>cents / task</small></strong></span><span class="akv-average-key"><span class="akv-average-standard">Standard</span><span class="akv-average-arrow">→</span><span class="akv-average-ours">AKV</span></span>`;
 
 }
 document.querySelectorAll('[data-model]').forEach(button => button.addEventListener('click', () => renderBenchmarks(button.dataset.model)));
@@ -114,7 +117,7 @@ function buildChart() {
   clip.append(element('rect',{id:'replay-clip-rect',x:chartLeft-2,y:chartTop-12,width:chartRight-chartLeft+8,height:chartBottom-chartTop+20}));
   defs.append(clip); chart.append(defs);
   const fontSize = narrow.matches ? 20 : 13;
-  chart.append(element('text',{x:chartLeft,y:17,fill:'#77777f','font-size':fontSize},'Cumulative pass rate (%)'));
+  chart.append(element('text',{x:chartLeft,y:17,fill:'#77777f','font-size':fontSize},'Cumulative success rate (%)'));
   for(let value=0;value<=50;value+=10){
     chart.append(element('line',{x1:chartLeft,x2:chartRight,y1:y(value),y2:y(value),stroke:'#e8e8ee','stroke-width':1}));
     chart.append(element('text',{x:chartLeft-12,y:y(value)+5,'text-anchor':'end',fill:'#77777f','font-size':fontSize},String(value)));
@@ -143,7 +146,6 @@ function buildChart() {
 function renderTime(next) {
   time = Math.max(0,Math.min(maxTime,next));
   timeOutput.textContent = `${time.toFixed(1)} GPU h`;
-  document.getElementById('replay-status').textContent = time >= maxTime ? 'All tasks completed' : 'Experiment in progress';
   chart.querySelector('#replay-clip-rect').setAttribute('width',x(time)-chartLeft+3);
   const cursor = chart.querySelector('#replay-cursor');
   cursor.setAttribute('x1',x(time)); cursor.setAttribute('x2',x(time));
@@ -159,8 +161,8 @@ function renderTime(next) {
 function stop() { cancelAnimationFrame(frame); frame = null; previousFrame = null; }
 function updateControls() {
   toggle.disabled = reducedMotion.matches;
-  toggle.textContent = reducedMotion.matches ? 'Static' : paused ? 'Resume' : 'Pause';
-  toggle.setAttribute('aria-label',reducedMotion.matches ? 'Animation disabled for reduced motion' : `${paused?'Resume':'Pause'} animation`);
+  toggle.textContent = reducedMotion.matches ? 'Static' : paused ? 'Play' : 'Pause';
+  toggle.setAttribute('aria-label',reducedMotion.matches ? 'Animation disabled for reduced motion' : `${paused?'Play':'Pause'} animation`);
   toggle.setAttribute('aria-pressed',String(paused));
 }
 function tick(now) {

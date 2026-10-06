@@ -19,13 +19,13 @@
       "id": "results",
       "label": "Benchmarks",
       "group": "evaluation",
-      "description": "Three models, four agent workloads"
+      "description": "Accuracy, cost, and task success under a GPU budget"
     },
     {
       "id": "efficiency",
       "label": "Serving efficiency",
       "group": "evaluation",
-      "description": "More solved tasks with fewer GPU hours"
+      "description": "Output throughput and request latency across concurrency levels"
     },
     {
       "id": "strategies",

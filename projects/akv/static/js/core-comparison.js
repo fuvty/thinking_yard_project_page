@@ -18,7 +18,7 @@
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const descriptions = {
     cache: "A's cache fades while B keeps the yellow information from A. Only C's new cache entries appear in order.",
-    context: "Message A disappears. The old A and B caches fade, then new B entries appear, followed by C's cache."
+    context: "Message A fades to a dashed outline. The old A and B caches fade, then new B entries appear, followed by C's cache."
   };
   let approach = 'cache', paused = motion.matches, elapsed = paused ? 11 : 0;
   let visible = true, previous = null, request = null, markup = '';
