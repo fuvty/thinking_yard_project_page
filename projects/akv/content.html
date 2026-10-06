@@ -19,24 +19,43 @@
     <div class="container-wide">
       <div class="akv-heading">
         <p class="section-eyebrow">The core idea</p>
-        <h2 class="section-title">Drop selected KV.<br><span class="akv-gradient">Reuse the rest.</span></h2>
-        <p class="akv-intro">Long agent histories make attention expensive. Trimming or summarizing old messages invalidates the cache that follows. Cache engineering lets agents remove selected KV entries and keep using the states already computed.</p>
+        <h2 class="section-title">Give agents control<br><span class="akv-gradient">over their KV cache.</span></h2>
+        <p class="akv-intro">As LLM agents tackle longer tasks, growing histories make KV storage and access increasingly costly. Context engineering manages this growth through message edits, controlling the cache indirectly. We introduce <strong>cache engineering</strong> to give agents direct control over which KV states remain active.</p>
       </div>
-      <figure class="akv-figure akv-scheme"><div class="akv-figure-label"><span>FROM CONTEXT ENGINEERING TO CACHE ENGINEERING</span></div><img src="static/figures/scheme.svg" alt="Three approaches to historical context. Full-context inference reuses all KV. Context engineering deletes earlier text and recomputes the retained suffix. Cache engineering keeps the logical text history, drops selected KV, and reuses retained states." width="960" height="260" loading="lazy"><figcaption>Retained states can still carry information from earlier history, even after that history’s own KV entries have been dropped.</figcaption></figure>
-      <details id="method" class="akv-detail akv-method-detail">
-        <summary>How it works: append, drop, and reposition <span aria-hidden="true">+</span></summary>
-        <p class="akv-body">Three operations shape the active cache while keeping the full message history intact. Explore each step below.</p>
-      <div class="akv-operation-demo">
-        <div class="akv-segmented" role="group" aria-label="Cache operation"><button type="button" data-operation="append" aria-pressed="true">1. Append</button><button type="button" data-operation="drop" aria-pressed="false">2. Drop</button><button type="button" data-operation="repos" aria-pressed="false">3. Repos</button></div>
-        <div class="akv-cache-scene" data-stage="append">
-          <div class="akv-cache-row"><span class="akv-row-label">Logical history</span><div class="akv-blocks"><span class="akv-block akv-old">Tool A</span><span class="akv-block akv-thought">Reasoning</span><span class="akv-block akv-recent">Tool B</span><span class="akv-block akv-new">New input</span></div></div>
-          <div class="akv-cache-row"><span class="akv-row-label">Active KV cache</span><div class="akv-blocks akv-live"><span class="akv-block akv-old" id="drop-block">K / V <small>pos 0</small></span><span class="akv-block akv-thought">K / V <small data-position="1">pos 1</small></span><span class="akv-block akv-recent">K / V <small data-position="2">pos 2</small></span><span class="akv-block akv-new">K / V <small data-position="3">pos 3</small></span></div></div>
-          <p class="akv-operation-caption" id="operation-caption" aria-live="polite"><strong>Append.</strong> Process new input against the current active cache and add its KV state.</p>
+      <div class="akv-comparison">
+        <div class="akv-comparison-point">
+          <h3>Context Engineering</h3>
+          <p>Edit messages to reduce the cache. Changing an earlier prefix invalidates subsequent KV states, requiring re-prefill of the retained history.</p>
         </div>
-        <p class="akv-fine">Schematic: each block represents a message. Repos adjusts the keys’ rotary position encodings; values and previously computed hidden states remain unchanged.</p>
+        <div class="akv-comparison-point akv-comparison-ours">
+          <h3><span class="akv-gradient">Cache Engineering</span></h3>
+          <p>Drop selected KV directly. Retained states can preserve information from dropped history and be reused without re-prefill.</p>
+        </div>
       </div>
-      </details>
+      <div id="method" class="akv-operations">
+        <p class="akv-body">To enable cache engineering, we define three cache operations: <strong>Append, Drop, and Repos</strong>. Agents combine them to control the active cache throughout execution.</p>
+      </div>
 
+      <figure class="akv-core-demo" aria-labelledby="core-demo-title">
+        <div class="akv-core-demo-header">
+          <h3 id="core-demo-title">Two ways to reduce the cache</h3>
+          <div class="akv-core-selector" role="group" aria-label="Engineering approach" hidden>
+            <button type="button" data-engineering="context" aria-pressed="false" aria-controls="core-animation">Context Engineering</button>
+            <button type="button" data-engineering="cache" aria-pressed="true" aria-controls="core-animation">Cache Engineering</button>
+          </div>
+        </div>
+        <img id="core-animation" class="akv-core-animation" src="static/figures/cache-engineering.svg" width="760" height="220" alt="Cache engineering keeps messages A, B and C. A's cache fades while B's retained cache keeps the yellow information from A. Only C's new cache entries appear in order. Schematic timing.">
+        <figcaption class="akv-core-caption">Inset blocks represent information carried from earlier messages.</figcaption>
+        <div class="akv-core-controls"><button id="core-animation-toggle" type="button" aria-pressed="false" hidden>Pause animation</button></div>
+      </figure>
+        <details class="akv-detail akv-method-detail">
+          <summary>Explore the three operations <span aria-hidden="true">+</span></summary>
+          <ul class="akv-operation-definitions">
+            <li><strong>Append:</strong> Add new tokens and their KV states.</li>
+            <li><strong>Drop:</strong> Remove selected KV entries from future attention while preserving the logical history and retained states.</li>
+            <li><strong>Repos:</strong> Adjust the positions encoded in retained keys, leaving values unchanged.</li>
+          </ul>
+        </details>
     </div>
   </section>
 
