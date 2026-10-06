@@ -115,7 +115,7 @@
         <figcaption id="benchmark-caption">Accuracy is measured as task pass rate.</figcaption>
       </figure>
       <div class="akv-average" id="benchmark-average" aria-live="polite"></div>
-      <p class="akv-fine akv-results-note">Costs are API-equivalent estimates based on active input and generated output lengths.</p>
+      <p class="akv-fine akv-results-note">Costs are API-equivalent estimates from active input and generated output lengths. They use Groq's GPT-OSS-120B rates, MiniMax's MiniMax-M2.7 rates, and the official Qwen3-30B-A3B rates for MiroThinker-1.7-Mini. Repositioned tokens count as cache hits.</p>
       <noscript><p>Average accuracy / cost (cents per task), Standard → AKV: GPT-OSS-120B 51.0 / 11.2 → 53.1 / 7.3; MiniMax-M2.7 52.4 / 5.0 → 53.7 / 4.4; MiroThinker-1.7-Mini 44.1 / 20.4 → 45.8 / 14.8.</p></noscript>
       <div id="benchmark-improvements" class="akv-benchmark-details">
       <details class="akv-detail akv-improvement-analysis" id="benchmark-accuracy">
