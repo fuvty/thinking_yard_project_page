@@ -1,5 +1,5 @@
 {
-  "title": "AKV · Cache Engineering for Agents",
+  "title": "AKV \u00b7 Cache Engineering for Agents",
   "description": "AKV gives agents direct control over their KV cache, reusing retained states to reduce cost and improve long-horizon task performance.",
   "theme": "research",
   "sections": [
@@ -13,13 +13,7 @@
       "id": "system",
       "label": "Serving design",
       "group": "research",
-      "description": "Cache operations, reuse, and restoration"
-    },
-    {
-      "id": "efficiency",
-      "label": "Serving efficiency",
-      "group": "evaluation",
-      "description": "More solved tasks with fewer GPU hours"
+      "description": "History-aware reuse, eviction, and restoration"
     },
     {
       "id": "results",
@@ -28,10 +22,16 @@
       "description": "Three models, four agent workloads"
     },
     {
+      "id": "efficiency",
+      "label": "Serving efficiency",
+      "group": "evaluation",
+      "description": "More solved tasks with fewer GPU hours"
+    },
+    {
       "id": "strategies",
       "label": "Policy learning",
       "group": "evaluation",
-      "description": "From rolling drop to agent-designed policies"
+      "description": "Recursive self-improvement of cache policies"
     },
     {
       "id": "team",

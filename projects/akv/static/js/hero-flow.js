@@ -1,209 +1,127 @@
+/* Paired text/cache traces. Timing illustrates behavior, not measured speed. */
 (() => {
   const hero = document.querySelector('.akv-hero');
   const canvas = document.getElementById('akv-hero-canvas');
   const ctx = canvas?.getContext('2d');
   if (!hero || !ctx) return;
-
-  const status = document.getElementById('hero-flow-status');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const cycleLength = 12000;
-  const ink = '134, 134, 139';
-  // A moving window over a growing logical history. Only KV entries are dropped.
-  let active = Array.from({ length: 8 }, (_, i) => i);
-  let nextId = 8, elapsed = 0, runningTime = 0, previous = null, frame = null;
-  let width = 0, height = 0, visible = false, lastPhase = '', lastClick = -Infinity;
-  let hitAreas = [], hovered = null;
-  const dropped = new Map();
-  const clamp = n => Math.max(0, Math.min(1, n));
-  const ease = n => { const t = clamp(n); return t * t * (3 - 2 * t); };
-  const progress = (t, start, length) => ease((t - start) / length);
+  const status = document.getElementById('hero-flow-status');
+  const gray = '145,153,175', purple = '124,105,182';
+  const duration = 18000;
+  let width=0,height=0,time=0,last=null,raf=null,visible=false,cuts=[],hitAreas=[];
+  const clamp=x=>Math.max(0,Math.min(1,x));
+  const ease=x=>{x=clamp(x);return x*x*(3-2*x);};
+  const progress=(t,a,b)=>ease((t-a)/(b-a));
+  function groups() {
+    const layouts=width<600
+      ? [[-.12,.13,.52,'cache',1700],[.76,.27,.43,'context',6700],
+         [-.27,.48,.48,'context',11300],[.77,.74,.46,'cache',12100],[.05,.94,.52,'cache',3900]]
+      : [[-.04,.14,.27,'cache',800],[.77,.12,.25,'context',5900],
+         [-.09,.29,.29,'context',11200],[.84,.28,.24,'cache',3200],
+         [-.14,.45,.29,'cache',14300],[.77,.45,.30,'context',8700],
+         [-.08,.61,.25,'context',4100],[.87,.60,.25,'cache',12800],
+         [.02,.78,.29,'cache',7200],[.77,.79,.26,'context',15500],
+         [.15,.94,.28,'context',10200],[.57,.95,.29,'cache',2100]];
+    return layouts.map(([x,y,span,mode,offset],id)=>({x:x*width,y:y*height,span:span*width,mode,offset,id,
+      rise:[-38,25,-62,40,-20,55][id%6]*(width<600?.65:1),
+      bend:[19,-27,11,32,-17,24][id%6],gap:width<600?10:12+id%3}));
+  }
+  // Varied rising, falling and S-shaped paths; paired strands share exactly one geometry.
+  function point(group,u,cache=false) {
+    return {x:group.x+u*group.span,
+      y:group.y+u*group.rise+Math.sin(u*Math.PI*(group.id%3===0?2:1))*group.bend+(cache?group.gap:0)};
+  }
 
-  function phaseAt(t) {
-    return t < 3000 ? 'append' : t < 5600 ? 'drop' : t < 8000 ? 'repos' : 'continue';
+  function bead(p,color,alpha,r=2.8) {
+    if(alpha<.005)return;
+    const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,20);
+    g.addColorStop(0,`rgba(${color},${alpha*.22})`);g.addColorStop(1,`rgba(${color},0)`);
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,20,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=`rgba(${color},${alpha})`;ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fill();
   }
-  function advance() {
-    // Keep identities and their internal pattern across cycles, including the oldest anchor.
-    active = active.filter((_, i) => ![1, 2, 4, 5].includes(i)).concat(nextId, nextId + 1, nextId + 2, nextId + 3);
-    nextId += 4;
-    for (const [key, entry] of dropped) if (!active.includes(entry.id)) dropped.delete(key);
+  function segment(a,b,color,alpha) {
+    if(alpha<.005)return;
+    ctx.strokeStyle=`rgba(${color},${alpha})`;ctx.lineWidth=1.25;
+    ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
   }
-  function setPhase(t) {
-    const phase = reduced.matches ? 'static' : runningTime - lastClick < 950 ? 'drop' : phaseAt(t);
-    if (phase === lastPhase) return;
-    lastPhase = phase;
-    hero.dataset.flowPhase = phase;
-  }
-  function rect(x, y, w, h, radius) {
-    ctx.beginPath();
-    ctx.roundRect(x, y, w, h, radius);
-  }
-  function block(x, y, id, opacity, isKV, scale, lane = -1) {
-    if (opacity <= 0 || x < -70 || x > width + 70) return;
-    const w = 36 * scale, h = 27 * scale;
-    const color = ink;
-    if (isKV) {
-      const removal = dropped.get(`${lane}:${id}`);
-      const fade = removal ? reduced.matches ? 1 : ease((runningTime - removal.at) / 700) : 0;
-      opacity *= 1 - fade;
-      if (opacity > .18 && x + w > 0 && x < width) hitAreas.push({ x, y, w, h, id, lane });
-      if (hovered?.lane === lane && Math.abs(hovered.x - x) < 52 * scale) opacity = Math.min(1, opacity * 1.5);
-      if (removal && fade < 1 && !reduced.matches) {
-        ctx.save();
-        ctx.globalAlpha = .38 * (1 - fade);
-        ctx.strokeStyle = '#a1a1a6';
-        ctx.lineWidth = 1;
-        rect(x - 7 * fade, y - 7 * fade, w + 14 * fade, h + 14 * fade, 6 * scale + 3 * fade);
-        ctx.stroke();
-        ctx.restore();
-      }
-    }
-    ctx.save();
-    ctx.globalAlpha = opacity;
-    rect(x, y, w, h, 6 * scale);
-    ctx.fillStyle = `rgba(${color},${isKV ? '.07' : '.025'})`;
-    ctx.fill();
-    ctx.strokeStyle = `rgba(${color},${isKV ? '.30' : '.18'})`;
-    ctx.lineWidth = .8;
-    ctx.stroke();
-    if (isKV) {
-      // A stable pattern identifies retained states; compaction never regenerates it.
-      ctx.fillStyle = `rgba(${color},.22)`;
-      for (let j = 0; j < 3; j++) {
-        const bar = (9 + ((id * 7 + j * 5) % 13)) * scale;
-        ctx.fillRect(x + 7 * scale, y + (7 + j * 5) * scale, bar, 2 * scale);
-      }
-    } else {
-      ctx.strokeStyle = `rgba(${color},.18)`;
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(x + 8 * scale, y + 10 * scale);
-      ctx.lineTo(x + 27 * scale, y + 10 * scale);
-      ctx.moveTo(x + 8 * scale, y + 16 * scale);
-      ctx.lineTo(x + (16 + id % 8) * scale, y + 16 * scale);
-      ctx.stroke();
-    }
-    ctx.restore();
-  }
-  function stream(origin, y, scale, t, weight, lane) {
-    const pitch = 47 * scale, gap = 44 * scale;
-    const append = [progress(t, 350, 900), progress(t, 1550, 900)];
-    const drop = progress(t, 3250, 1400);
-    const repos = progress(t, 5800, 1700);
-    const more = [progress(t, 8250, 850), progress(t, 9350, 850)];
-    // The viewport advances only after generation. History leaves the screen, not the history.
-    const travel = 4 * progress(t, 10600, 1400);
-    const base = origin - travel * pitch;
-    const entering = [...append, ...more];
-    const historyStart = nextId - 8;
-
-    ctx.save();
-    ctx.globalAlpha = weight;
-    ctx.strokeStyle = 'rgba(134,134,139,.06)';
-    ctx.lineWidth = 1;
-    for (const offset of [13.5 * scale, gap + 13.5 * scale]) {
-      ctx.beginPath(); ctx.moveTo(origin - pitch, y + offset); ctx.lineTo(origin + 12 * pitch, y + offset); ctx.stroke();
-    }
-    ctx.restore();
-
-    // A complete, unedited sequence in the upper row, clipped only by the viewport.
-    for (let i = 0; i < 12; i++) {
-      const alpha = i < 8 ? 1 : entering[i - 8];
-      block(base + i * pitch, y, historyStart + i, weight * alpha, false, scale);
-    }
-    const beforeDrop = [...active, nextId, nextId + 1];
-    let retainedIndex = 0;
-    beforeDrop.forEach((id, i) => {
-      const removed = [1, 2, 4, 5].includes(i);
-      const appeared = i < 8 ? 1 : append[i - 8];
-      const target = retainedIndex;
-      if (!removed) retainedIndex++;
-      const slot = removed ? i : i + (target - i) * repos;
-      const opacity = appeared * (removed ? 1 - drop : 1);
-      block(origin + slot * pitch, y + gap, id, weight * opacity, true, scale, lane);
-      if (removed && drop > 0 && repos < 1) {
-        ctx.save(); ctx.globalAlpha = weight * drop * (1 - repos) * .26;
-        ctx.strokeStyle = '#b5b5ba'; ctx.setLineDash([2, 4]);
-        rect(origin + i * pitch, y + gap, 36 * scale, 27 * scale, 6 * scale); ctx.stroke(); ctx.restore();
-      }
-    });
-    for (let i = 0; i < 2; i++) block(origin + (6 + i) * pitch, y + gap, nextId + 2 + i, weight * more[i], true, scale, lane);
-  }
+  function gap(u,a,b) {return progress(u,a,a+.016)*(1-progress(u,b-.016,b));}
   function draw() {
-    ctx.clearRect(0, 0, width, height);
-    hitAreas = [];
-    const t = reduced.matches ? 7900 : elapsed;
-    setPhase(t);
-    // Independent windows of the same cache trajectory, away from the central reading area.
-    const scale = width < 600 ? .82 : 1;
-    const left = width < 600 ? -180 : -105;
-    const right = width < 600 ? width - 190 : width - 350;
-    const lanes = width < 600 ? [.18, .80] : [.23, .49, .77];
-    for (let i = 0; i < lanes.length; i++) {
-      stream(left - i * 24, height * lanes[i], scale, t, .84, i * 2);
-      stream(right + i * 17, height * lanes[i] - 45, scale, t, .84, i * 2 + 1);
+    ctx.clearRect(0,0,width,height);hitAreas=[];if(!width)return;
+    for(const group of groups()) {
+    const side=group.mode;
+    const clock=reduced.matches?9000:time,t=(clock+group.offset)%duration;
+    const generation=Math.floor((clock+group.offset)/duration);
+    const fade=progress(t,0,700)*(1-progress(t,16800,18000));
+    const initial=.15+.51*clamp(t/4700);
+    const continuing=.66+.43*clamp((t-4700)/10800);
+    const ordinary=t<4700?initial:continuing;
+    const deleted=progress(t,4700,5500);
+    // The context head stops, retreats to the edit, then replays the retained suffix.
+    let rebuiltHead;
+    if(t<5700)rebuiltHead=t<4700?initial:.66;
+    else if(t<6800)rebuiltHead=.66-(.66-.31)*progress(t,5700,6800);
+    else if(t<10800)rebuiltHead=.31+(.66-.31)*clamp((t-6800)/4000);
+    else rebuiltHead=.66+.43*clamp((t-10800)/5200);
+    hero.dataset.flowPhase=reduced.matches?'static':'staggered';
+      for(const isCache of [false,true]) {
+        const color=isCache?purple:gray;
+        const head=side==='cache'?ordinary:rebuiltHead;
+        function alpha(u,p) {
+          let a=1;
+          if(side==='cache'&&isCache) {
+            a*=1-deleted*gap(u,.25,.36);
+            a*=1-progress(t,8700,9500)*gap(u,.47,.57);
+            a*=1-progress(t,12200,13000)*gap(u,.71,.79);
+          }
+          if(side==='context') {
+            // Both strands depict processing progress, not persistence of source text.
+            // The head trims their common suffix during retreat and redraws it on replay.
+            a*=1-deleted*gap(u,.25,.31);
+          }
+          if(isCache)for(const cut of cuts)if(cut.group===group.id&&cut.generation===generation) {
+            const dist=Math.hypot(p.x-cut.x,p.y-cut.y);
+            a*=1-(1-ease((dist-12)/22))*(reduced.matches?1:progress(clock,cut.at,cut.at+650));
+          }
+          return a*fade;
+        }
+        // Both context trails end at the processing heads, including during retreat.
+        const extent=head;
+        const count=85;
+        for(let j=1;j<=count;j++) {
+          const u=extent*j/count,prev=point(group,extent*(j-1)/count,isCache),p=point(group,u,isCache);
+          segment(prev,p,color,(isCache?.57:.35)*alpha(u,p));
+        }
+        for(let u=.10;u<extent;u+=.14) {
+          const p=point(group,u,isCache);const a=alpha(u,p);
+          ctx.fillStyle=`rgba(${color},${a*(isCache?.55:.32)})`;
+          ctx.beginPath();ctx.arc(p.x,p.y,isCache?1.25:.9,0,Math.PI*2);ctx.fill();
+        }
+        // Both heads stay visible while their trails are erased and redrawn.
+        const p=point(group,head,isCache);
+        bead(p,color,fade*(isCache?.95:.65),isCache?2.6:2.1);
+        if(side==='cache'&&isCache&&fade>.4)for(let u=.04;u<head;u+=.035) {
+          const q=point(group,u,true);
+          if(alpha(u,q)>.4)hitAreas.push({...q,group:group.id,generation});
+        }
+      }
     }
   }
-  function resize() {
-    const bounds = hero.getBoundingClientRect();
-    width = bounds.width; height = bounds.height;
-    const dpr = Math.min(devicePixelRatio || 1, 2);
-    canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    draw();
-  }
-  function stop() { cancelAnimationFrame(frame); frame = null; previous = null; }
-  function tick(now) {
-    frame = null;
-    if (reduced.matches || !visible || document.hidden) { previous = null; return; }
-    if (previous !== null) {
-      const delta = now - previous;
-      if (delta < 1000 / 30) { frame = requestAnimationFrame(tick); return; }
-      const step = Math.min(delta, 120);
-      elapsed += step; runningTime += step;
-      if (elapsed >= cycleLength) { elapsed %= cycleLength; advance(); }
-    }
-    previous = now; draw(); frame = requestAnimationFrame(tick);
-  }
-  function play() {
-    if (frame === null && !reduced.matches && visible && !document.hidden) frame = requestAnimationFrame(tick);
-  }
-  function hitAt(event) {
-    const bounds = canvas.getBoundingClientRect();
-    const x = event.clientX - bounds.left, y = event.clientY - bounds.top;
-    // Protect the central reading area. Only the visible background is interactive.
-    if (x > width * .3 && x < width * .7) return null;
-    let nearest = null, best = 50;
-    for (const item of hitAreas) {
-      const distance = Math.hypot(x - item.x - item.w / 2, y - item.y - item.h / 2);
-      if (distance < best) { nearest = item; best = distance; }
-    }
-    return nearest;
-  }
-  canvas.addEventListener('pointermove', event => {
-    hovered = hitAt(event);
-    canvas.style.cursor = hovered ? 'pointer' : 'default';
-    if (reduced.matches) draw();
+  function resize(){const r=hero.getBoundingClientRect();width=r.width;height=r.height;const dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);cuts=[];draw();}
+  function stop(){cancelAnimationFrame(raf);raf=null;last=null;}
+  function tick(now){raf=null;if(reduced.matches||!visible||document.hidden){last=null;return;}if(last!==null&&now-last<1000/60-.5){raf=requestAnimationFrame(tick);return;}if(last!==null)time+=Math.min(now-last,100);last=now;cuts=cuts.filter(cut=>time-cut.at<duration);draw();raf=requestAnimationFrame(tick);}
+  function play(){if(raf===null&&!reduced.matches&&visible&&!document.hidden)raf=requestAnimationFrame(tick);}
+  hero.addEventListener('click',event=>{
+    if(event.target.closest('a,button,summary'))return;
+    const r=canvas.getBoundingClientRect(),p={x:event.clientX-r.left,y:event.clientY-r.top};
+    // Only visible, retained cache segments can be pruned by a click.
+    let nearest=null;
+    for(const q of hitAreas){const d=Math.hypot(p.x-q.x,p.y-q.y);if(d<20&&(!nearest||d<nearest.d))nearest={...q,d};}
+    if(!nearest)return;
+    cuts.push({...nearest,at:reduced.matches?9000:time});cuts=cuts.slice(-12);
+    if(status)status.textContent='Dropped a local cache segment; text and forward progress are retained.';draw();
   });
-  canvas.addEventListener('pointerleave', () => {
-    hovered = null; canvas.style.cursor = 'default';
-    if (reduced.matches) draw();
-  });
-  canvas.addEventListener('click', event => {
-    const hit = hitAt(event);
-    if (!hit) return;
-    const segment = hitAreas.filter(item => item.lane === hit.lane && Math.abs(item.x - hit.x) < 52);
-    for (const item of segment) dropped.set(`${item.lane}:${item.id}`, { id:item.id, at:runningTime });
-    lastClick = runningTime;
-    hovered = null;
-    status.textContent = `Dropped ${segment.length} KV ${segment.length === 1 ? 'state' : 'states'}. Message history is unchanged.`;
-    draw();
-  });
-  reduced.addEventListener('change', () => { stop(); draw(); play(); });
-  document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); else play(); });
-  new IntersectionObserver(entries => {
-    visible = entries[0].isIntersecting;
-    if (visible) play(); else stop();
-  }, { threshold: .05 }).observe(hero);
-  new ResizeObserver(resize).observe(hero);
-  resize();
+  reduced.addEventListener('change',()=>{stop();draw();play();});
+  document.addEventListener('visibilitychange',()=>document.hidden?stop():play());
+  new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;visible?play():stop();},{threshold:.05}).observe(hero);
+  new ResizeObserver(resize).observe(hero);window.addEventListener('pagehide',stop);window.addEventListener('pageshow',play);resize();
 })();

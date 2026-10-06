@@ -73,16 +73,11 @@ function renderBenchmarkChart() {
 }
 function renderBenchmarks(key) {
   selectedModel = key;
-  const { name, rows } = models[key];
+  const { rows } = models[key];
   document.querySelectorAll('[data-model]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.model === key)));
   renderBenchmarkChart();
   document.getElementById('benchmark-average').innerHTML = `<span>Average score <strong>${rows[0][8].toFixed(1)} → ${rows[2][8].toFixed(1)}%</strong></span><span>Average cost <strong>${rows[0][9].toFixed(1)} → ${rows[2][9].toFixed(1)}¢</strong></span><span>Standard → AKV</span>`;
-  document.getElementById('table-model').textContent = name;
-  const labels = ['Standard','Text Engineering','AKV'];
-  document.getElementById('benchmark-table').innerHTML = `<caption>${name} · Scores (%) and API-equivalent costs (cents per task)</caption><thead><tr><th scope="col" rowspan="2">Method</th>${benchmarks.map(b=>`<th scope="colgroup" colspan="2">${b}</th>`).join('')}</tr><tr>${benchmarks.map(()=>'<th scope="col">Score ↑</th><th scope="col">Cost ↓</th>').join('')}</tr></thead><tbody>${rows.map((row,i)=>`<tr${i===2?' class="akv-ours"':''}><th scope="row">${labels[i]}</th>${row.map((v,j)=>{
-    const best = j%2 === 0 ? Math.max(...rows.map(r=>r[j])) : Math.min(...rows.map(r=>r[j]));
-    return `<td>${v===best ? `<strong>${v.toFixed(1)}</strong>` : v.toFixed(1)}</td>`;
-  }).join('')}</tr>`).join('')}</tbody>`;
+
 }
 document.querySelectorAll('[data-model]').forEach(button => button.addEventListener('click', () => renderBenchmarks(button.dataset.model)));
 document.querySelectorAll('[data-metric]').forEach(button => button.addEventListener('click', () => { selectedMetric=button.dataset.metric; renderBenchmarkChart(); }));

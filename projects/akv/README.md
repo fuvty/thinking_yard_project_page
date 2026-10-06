@@ -1,6 +1,6 @@
 # AKV · Cache Engineering for Agents
 
-First local draft, added to the shared project registry under Context Scaling / Route 03.
+Registered under Context Scaling / Route 03. The content revision follows the supplied `main.pdf`, retaining the original visual theme.
 
 ## Content sources
 
@@ -14,15 +14,19 @@ First local draft, added to the shared project registry under Context Scaling / 
 
 ## Page narrative
 
-The page introduces the idea before the evidence: cache engineering → serving design → serving replay → benchmark evidence → policy learning. The hero uses the shared full-viewport layout, a text-only project title, one subtitle, and three headline metrics. The logo is reserved for project menus, hub cards, and the favicon. Navigation, footer, back-to-top, and citation controls come from the shared site components; do not add local copies.
+The page distinguishes cache engineering (operations), AKV serving (interface and state management), and cache policies (RSI). Reading order: context/cache comparison → three operations → state-history challenge → reuse, eviction and restoration → benchmarks → GPU-budget experiment and serving measurements → RSI. The hero retains the full-viewport layout, text-only title, subtitle and three headline metrics. The logo remains in menus, hub cards and the favicon. Navigation, footer, back-to-top and citation controls stay shared.
 
-The core comparison figure stays visible in the overview, followed by the optional append / drop / reposition demo at `#method`. Below the three **Serving Design** contributions, the radix-tree explainer and full token-prefix explanation appear as two adjacent disclosures. Both start collapsed; the radix-tree disclosure retains the `#radix-tree` anchor. That chapter explains the history-dependence challenge and the reuse / eviction / restoration contributions. The GPU-hour replay remains a separate experiment section. API request JSON and parameter grammar are omitted; repeated overview and rolling-drop explanations are condensed.
+The overview uses the Core Idea section from feat commit `ed07e82`, including its copy, side-by-side comparison, switchable Context/Cache Engineering SVG animation, and collapsed operation definitions. `core-scene.js` renders both the live animation and generated static fallbacks; `core-comparison.js` handles switching and playback. Imported styles live in `core-comparison.css` and are scoped to `#overview`. Previous overview figures remain as unused assets. All other sections and the current hero animation are preserved.
+
+The serving section starts with history-dependent KV states and the original three-trajectory figure. The figure also contains the extended radix tree and retains the `#radix-tree` anchor. Three equal cards summarize reuse, eviction, and one-pass restoration. Duplicate tree, reposition, and restoration disclosures are omitted. The section ends with the three cards; there is no separate stateless-interface explanation. Resident compatible states are reused directly; restoration applies to missing states. API JSON and parameter grammar remain omitted.
+
+Evaluation starts with the definitions of Standard (96K summarization), Text Engineering (48K summarization) and AKV (retain the latest 12 tool responses’ KV). Table 1 is presented through the benchmark selectors and labeled bars; the duplicate full-comparison table is omitted. Figure 9(a) follows as a separate 100-task experiment, then two compact Table 2 charts show output throughput and P95 latency across concurrency 8–16. The complete Table 2 and replay protocol are collapsed below. `static/js/serving.js` is the single numeric source for these two charts and the full serving table. It transcribes the supplied paper’s Table 2; these Top-80 measurements are distinct from Figure 9(a), and neither changes the headline benchmark aggregation. No Figure 7 or Cache-As-Tool section is included. RSI remains the sole policy-search example.
 
 ## Hero cache flow
 
-`static/js/hero-flow.js` draws a decorative, schematic history/KV flow in paired rows behind the hero. A 12-second cycle appends new messages and states, drops selected KV only, repositions retained states, and continues generation. Internal patterns retain their identities. The logical-history viewport advances at the end of each cycle; it does not delete messages. The background uses a muted neutral-gray palette and contains no labels or numeric indices. Repositioning is illustrated by the movement of retained blocks, not a physical-memory layout.
+`static/js/hero-flow.js` shows twelve short, unlabelled text/cache pairs around the desktop hero (five on phones). Rising, falling, and S-shaped paths mix the two behaviors across the background and use staggered phases, so they never reset together. Context edits fade a local span; both processing heads retreat together, erasing both trails behind their retreat and redrawing them on replay. Here the strands represent processing progress: erasing the text trail does not imply deleting the underlying source text. Direct cache edits leave gaps while both heads continue. Each illustrative cycle lasts 18 seconds; its timing is not measured performance.
 
-Clicking a background KV segment fades out its nearby states while the message history remains unchanged. Hovering gently emphasizes the target segment. The background pauses outside the hero and in hidden tabs; there is no pause button. Reduced-motion users get a static post-reposition snapshot. Rendering is capped at 30 fps and device pixel ratio 2. The central fade keeps the title, copy, metrics, and links readable. No simulated performance numbers are displayed.
+Clicking a visible retained segment in a cache-engineering pair removes it locally until that pair's next cycle. The reading area stays clear. Rendering pauses offscreen and in hidden tabs, targets 60 fps with DPR capped at 2, and uses a static frame for reduced motion.
 
 ## Figure 9(a) replay
 
@@ -40,7 +44,7 @@ Public CSV contains only the plotting and timing fields; internal paths, timesta
 
 Replay loops automatically while visible, drawing for 12 seconds and holding the completed curves for 3.5 seconds. The figure always shows the mean of all three runs, with a compact pause/resume control. Reduced-motion users see the complete plot. Playback suspends outside the viewport or while the document is hidden and resumes on return. Timing normalization remains documented here rather than in the public-facing page.
 
-Benchmark results use TaH2-style grouped bars for all three methods, with model and Accuracy/Cost selectors. Axes start at zero; accuracy uses a fixed 0–100% scale. The full numeric table is available in a collapsed disclosure.
+Benchmark results use TaH2-style grouped bars for all three methods, with model and Accuracy/Cost selectors. Axes start at zero; accuracy uses a fixed 0–100% scale. Exact values appear on the bars; there is no duplicate benchmark table.
 
 ## Pending release details
 
@@ -48,7 +52,7 @@ Per the owner's instruction, authors, paper URL, code URL, and citation are inte
 
 ## Editing / preview
 
-Edit `content.html`, `page.json`, and `static/css/index.css`. Interactive behavior and benchmark table data live in `static/js/index.js`; replay math is in `static/js/replay-math.js`.
+Edit `content.html`, `page.json`, and `static/css/index.css`. Interactive behavior and benchmark table data live in `static/js/index.js`; replay math is in `static/js/replay-math.js`; Table 2 data and rendering live in `static/js/serving.js`.
 
 ```sh
 npm run check

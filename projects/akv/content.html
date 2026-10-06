@@ -4,7 +4,7 @@
     <canvas id="akv-hero-canvas" aria-hidden="true"></canvas>
     <div class="akv-hero-wash" aria-hidden="true"></div>
     <h1 class="hero-title"><span class="akv-gradient">AKV</span></h1>
-    <p class="hero-subtitle akv-hero-tagline"><em>Cache Engineering</em> for Agents — let agents directly manage their KV cache, reuse retained states, and explore longer horizons at lower cost.</p>
+    <p class="hero-subtitle akv-hero-tagline"><em>Cache Engineering</em> for Agents — direct control over active KV, powered by AKV serving.</p>
     <div class="akv-metrics">
       <a href="#results"><strong>−27.7<span>%</span></strong><span>Average inference cost</span><small>Across 3 models and 4 benchmarks</small></a>
       <a href="#results"><strong>+1.7<span>pts</span></strong><span>Average benchmark score</span><small>Compared with Standard</small></a>
@@ -62,56 +62,52 @@
   <section id="system" class="section">
     <div class="container-wide">
       <div class="akv-heading">
-        <p class="section-eyebrow">The serving design</p>
-        <h2 class="section-title">The same tokens.<br><span class="akv-gradient">Different cache states.</span></h2>
-        <p class="akv-intro">Cache states depend on when earlier states were dropped or repositioned. Matching token prefixes alone is no longer enough. AKV tracks the operation history so agents can control the cache without managing its storage.</p>
+        <p class="section-eyebrow">The AKV serving system</p>
+        <h2 class="section-title">Making cache engineering<br><span class="akv-gradient">work in serving.</span></h2>
+        <p class="akv-intro">Cache operations change what a serving system must track. AKV identifies compatible states to reuse, reclaims storage without disrupting other requests, and restores missing states efficiently.</p>
       </div>
-      <div class="akv-principles">
-        <article><span class="akv-number">01 / REUSE</span><h3>Match the full history.</h3><p>An extended radix tree tracks tokens and cache operations together, so requests share only compatible states.</p></article>
-        <article><span class="akv-number">02 / EVICT</span><h3>Free what is no longer needed.</h3><p>Request isolation lets the server reclaim dropped KV when it is no longer needed for computation or restoration.</p></article>
-        <article><span class="akv-number">03 / RESTORE</span><h3>Recover in one prefill pass.</h3><p>Segment-batch attention reconstructs missing states using the visibility and positions from their original trajectory.</p></article>
+      <div class="akv-system-challenge">
+        <p class="akv-number">THE CHALLENGE / HISTORY-DEPENDENT STATES</p>
+        <h3>The same tokens. Different KV states.</h3>
+        <p class="akv-body">Compute A, B and C, <strong>then drop A</strong>: C was computed with A available. <strong>Drop A before computing C</strong>: C cannot directly attend to A, but still uses B’s state computed with A. <strong>Start from B alone</strong>: B itself has never attended to A. All three paths retain B and C, yet their cached states differ.</p>
+        <p class="akv-body">Reusing the right states requires knowing how they were produced. Token-prefix matching alone is no longer enough; cache-operation history matters too.</p>
       </div>
-      <details id="radix-tree" class="akv-detail">
-        <summary>How the extended radix tree works <span aria-hidden="true">+</span></summary>
-      <figure class="akv-radix">
-        <div class="akv-radix-heading">
-          <div><p class="akv-number">INSIDE THE CACHE</p><h3>An extended radix tree.</h3></div>
-          <p>Share the common prefix. Branch when cache operations change the states that follow.</p>
-        </div>
-        <div class="akv-radix-scroll" tabindex="0" role="region" aria-label="Scrollable radix tree diagram">
-          <img src="static/figures/radix-tree.svg" width="800" height="330" loading="lazy" alt="Two requests share A and B. One appends C before dropping A; the other drops A first. Drop markers separate the resulting C cache states into different branches.">
-        </div>
-        <figcaption>
-          <div><strong>Drop markers preserve history.</strong><p>Δ(A) records where A is dropped. Before D, both paths retain B and C, but C has different KV states. B’s shared cache can still carry information from A.</p></div>
-          <div><strong>Eviction preserves the tree.</strong><p>When A’s KV is no longer needed, its storage can be freed while its tree node remains. Cached descendants stay reachable for reuse.</p></div>
-        </figcaption>
-        <p class="akv-fine akv-radix-note">Schematic of two trajectories from the paper; nodes represent message blocks. Repositioning additionally distinguishes branches by encoded position and records a reposition marker.</p>
+      <figure id="radix-tree" class="akv-figure akv-trajectory">
+        <div class="akv-figure-label"><span>WHY CACHE HISTORY MATTERS</span></div>
+        <div class="akv-trajectory-scroll" tabindex="0" role="region" aria-label="Scrollable cache-operation trajectories"><img src="static/figures/trajectory.svg" alt="Three histories retain B and C. In the first, C is computed before A is dropped; in the second, after A is dropped. Their B states match but their C states differ. The third starts from B alone, so its B state also differs. An extended radix tree distinguishes the trajectories." loading="lazy"></div>
+        <figcaption>In trajectories 1 and 2, B has the same state, but C does not. Trajectory 3 starts from B alone, producing a different B state as well. AKV shares compatible prefixes and distinguishes states produced by different operation histories.</figcaption>
       </figure>
-      </details>
-      <details class="akv-detail"><summary>Why token-prefix matching is no longer enough <span aria-hidden="true">+</span></summary><figure class="akv-figure"><img src="static/figures/trajectory.svg" alt="Three operation histories retain B and C but yield different KV states. An extended radix tree branches at the drop operation to distinguish those histories." loading="lazy"><figcaption>Dropping A before or after generating C changes C’s cache. AKV records this difference in the tree.</figcaption></figure></details>
 
-    </div>
-  </section>
+      <div class="akv-system-designs">
+        <article class="akv-system-design">
+          <p class="akv-number">01 / REUSE</p>
+          <h3>Reuse the right states.</h3>
+          <p>The extended radix tree matches token and cache-operation histories. Compatible states remain shared across requests.</p>
+        </article>
+        <article class="akv-system-design">
+          <p class="akv-number">02 / EVICT</p>
+          <h3>Free unused KV safely.</h3>
+          <p>Dropping KV from one request does not immediately free shared storage. AKV reclaims it when no active computation or restoration needs it, while keeping cached descendants reachable.</p>
+        </article>
+        <article class="akv-system-design">
+          <p class="akv-number">03 / RESTORE</p>
+          <h3>Restore in one prefill pass.</h3>
+          <p>Missing states are reconstructed with segment-batch attention. It reproduces historical attention visibility and positions in one prefill pass.</p>
+        </article>
+      </div>
 
-  <section id="efficiency" class="section section-dark">
-    <div class="container-wide">
-      <div class="akv-heading"><p class="section-eyebrow">The experiment</p><h2 class="section-title">More solved tasks.<br><span class="akv-gradient">Less GPU time.</span></h2><p class="akv-intro">On 100 SWE-bench Verified tasks, AKV reaches a higher final pass rate with fewer GPU hours. Watch the mean of three runs unfold.</p></div>
-      <figure class="akv-replay" id="replay-figure">
-        <div class="akv-replay-top"><div><strong>Success over the serving budget</strong><span>GPT-OSS-120B · 100 tasks · 8 A800 GPUs</span></div><div class="akv-replay-tools"><button type="button" id="replay-toggle" aria-label="Pause animation" aria-pressed="false">Pause</button></div></div>
-        <div class="akv-legend"><span><i class="akv-key standard"></i>Standard <small>C=12</small></span><span><i class="akv-key text"></i>Text Engineering <small>C=14</small></span><span><i class="akv-key ours"></i>AKV <small>C=14</small></span></div>
-        <div class="akv-chart-wrap"><svg id="replay-chart" viewBox="0 0 900 420" role="img" aria-labelledby="replay-title replay-description"><title id="replay-title">Cumulative pass rate versus GPU hours</title><desc id="replay-description">Automatically looping cumulative pass-rate curves from observed task completions. The curves show the mean of three runs. Pause the animation to inspect a point in time.</desc></svg></div>
-        <div class="akv-replay-status"><span id="replay-status">Experiment in progress</span><span id="replay-time">0.0 GPU h</span></div>
-        <div class="akv-replay-readout" id="replay-readout"></div>
-        <figcaption id="replay-caption">GPT-OSS-120B on 100 SWE-bench Verified tasks. Mean of three runs; shading shows the run-to-run range.</figcaption>
-        <noscript><img src="static/figures/swe_gpu_hours_cumulative_pass_rate.svg" alt="Figure 9(a): AKV reaches approximately 47% cumulative pass rate, Standard 40.7%, and Text Engineering 32.3%."><p>Enable JavaScript to play the experiment.</p></noscript>
-      </figure>
-      <div class="akv-serving-stats"><div><strong>3.54×</strong><span>Max. mean latency speedup</span></div><div><strong>7.51×</strong><span>Max. P95 latency speedup</span></div><div><strong>4.68×</strong><span>Max. input throughput gain</span></div></div><p class="akv-dark-note">Versus Standard in the serving study at concurrency 8–16. Maximum gains occur at C=16; Figure 9(a) uses the separate 100-task setting above.</p>
     </div>
   </section>
 
   <section id="results" class="section">
     <div class="container-wide">
-      <p class="section-eyebrow">Benchmark results</p><h2 class="section-title">Across models.<br><span class="akv-gradient">Across agent workloads.</span></h2><p class="akv-intro">A simple rolling-drop policy keeps the latest 12 tool responses. AKV achieves the best average score and the lowest average cost for each evaluated model.</p>
+      <p class="section-eyebrow">Benchmark results</p><h2 class="section-title">Across models.<br><span class="akv-gradient">Across agent workloads.</span></h2><p class="akv-intro">A simple rolling-drop policy tests the value of cache engineering across three models and four benchmarks. AKV achieves the best average score and the lowest average cost for each evaluated model.</p>
+      <div class="akv-principles akv-baselines" aria-label="Methods compared in the benchmark and serving experiments">
+        <article><span class="akv-number">STANDARD</span><h3>Summarize at 96K.</h3><p>Accumulate history until it reaches 75% of the 128K context window, then summarize.</p></article>
+        <article><span class="akv-number">TEXT ENGINEERING</span><h3>Summarize at 48K.</h3><p>Apply the same summarization approach earlier to reduce the active context.</p></article>
+        <article><span class="akv-number">AKV</span><h3>Drop older tool KV.</h3><p>Keep the latest 12 tool responses’ KV and retain reasoning states, using a simple rolling-drop policy.</p></article>
+      </div>
+      <p class="akv-fine akv-experiment-label">Table 1 · Three models, four benchmarks · Pass rate and API-equivalent inference cost per task</p>
       <div class="akv-results-toolbar"><div class="akv-segmented" role="group" aria-label="Benchmark model"><button data-model="gpt" aria-pressed="true">GPT-OSS-120B</button><button data-model="minimax" aria-pressed="false">MiniMax-M2.7</button><button data-model="miro" aria-pressed="false">MiroThinker-1.7-Mini</button></div><div class="akv-segmented akv-metric-picker" role="group" aria-label="Benchmark metric"><button data-metric="score" aria-pressed="true">Accuracy</button><button data-metric="cost" aria-pressed="false">Cost</button></div></div>
       <figure class="akv-benchmark-figure">
         <div class="akv-benchmark-top"><span id="benchmark-chart-label">Pass rate (%) · higher is better</span><div class="akv-bar-legend"><span><i class="akv-bar-standard"></i>Standard</span><span><i class="akv-bar-text"></i>Text Engineering</span><span><i class="akv-bar-ours"></i>AKV</span></div></div>
@@ -119,14 +115,44 @@
         <figcaption id="benchmark-caption">Three methods, four benchmarks. Exact values are shown above every bar.</figcaption>
       </figure>
       <div class="akv-average" id="benchmark-average" aria-live="polite"></div>
-      <details class="akv-detail"><summary>Full comparison for <span id="table-model">GPT-OSS-120B</span><span aria-hidden="true">+</span></summary><div class="akv-table-wrap" tabindex="0" role="region" aria-label="Scrollable benchmark comparison"><table id="benchmark-table"></table></div></details>
-      <p class="akv-fine akv-results-note">Scores are pass rates (%); costs are API-equivalent cents per task. Standard summarizes at 96K tokens; Text Engineering at 48K. Headline cost reduction is aggregated across all model–benchmark settings.</p>
+      <p class="akv-fine akv-results-note">Scores are pass rates (%); costs are API-equivalent cents per task, based on active input and generated output lengths. Headline cost reduction is aggregated across the three models and four benchmarks.</p>
       <noscript><p>Average score / cost (cents), Standard → AKV: GPT-OSS-120B 51.0 / 11.2 → 53.1 / 7.3; MiniMax-M2.7 52.4 / 5.0 → 53.7 / 4.4; MiroThinker-1.7-Mini 44.1 / 20.4 → 45.8 / 14.8.</p></noscript>
     </div>
   </section>
 
+  <section id="efficiency" class="section section-dark">
+    <div class="container-wide">
+      <div class="akv-heading"><p class="section-eyebrow">Serving efficiency</p><h2 class="section-title">More solved tasks.<br><span class="akv-gradient">Less GPU time.</span></h2><p class="akv-intro">How do task quality and serving efficiency translate into a GPU budget? In a separate 100-task SWE-bench Verified experiment, AKV reaches a higher final pass rate with fewer GPU hours.</p></div>
+      <figure class="akv-replay" id="replay-figure">
+        <div class="akv-replay-top"><div><strong>Success over the serving budget</strong><span>Figure 9(a) · 100-task experiment · GPT-OSS-120B · 8 A800 GPUs</span></div><div class="akv-replay-tools"><button type="button" id="replay-toggle" aria-label="Pause animation" aria-pressed="false">Pause</button></div></div>
+        <div class="akv-legend"><span><i class="akv-key standard"></i>Standard <small>C=12</small></span><span><i class="akv-key text"></i>Text Engineering <small>C=14</small></span><span><i class="akv-key ours"></i>AKV <small>C=14</small></span></div>
+        <div class="akv-chart-wrap"><svg id="replay-chart" viewBox="0 0 900 420" role="img" aria-labelledby="replay-title replay-description"><title id="replay-title">Cumulative pass rate versus GPU hours</title><desc id="replay-description">Automatically looping cumulative pass-rate curves from observed task completions. The curves show the mean of three runs. Pause the animation to inspect a point in time.</desc></svg></div>
+        <div class="akv-replay-status"><span id="replay-status">Experiment in progress</span><span id="replay-time">0.0 GPU h</span></div>
+        <div class="akv-replay-readout" id="replay-readout"></div>
+        <figcaption id="replay-caption">Mean of three runs; shading shows the min–max range. Concurrency is shown in the legend. This 100-task experiment has a different evaluation scope from the benchmark scores above.</figcaption>
+        <noscript><img src="static/figures/swe_gpu_hours_cumulative_pass_rate.svg" alt="Figure 9(a): AKV reaches approximately 47% cumulative pass rate, Standard 40.7%, and Text Engineering 32.3%."><p>Enable JavaScript to play the experiment.</p></noscript>
+      </figure>
+      <div class="akv-serving-panel">
+        <div class="akv-replay-top"><div><strong>Throughput and latency under concurrency</strong><span>Table 2 · Top-80 workload replay · GPT-OSS-120B · 8 A800 GPUs</span></div></div>
+        <p class="akv-body">A separate replay of the 80 SWE-bench tasks with the longest recorded contexts measures serving performance. At high concurrency, Standard’s cache pressure increases re-prefill work; AKV sustains output throughput with lower request latency.</p>
+        <div class="akv-legend"><span><i class="akv-key standard"></i>Standard</span><span><i class="akv-key text"></i>Text Engineering</span><span><i class="akv-key ours"></i>AKV</span></div>
+        <div class="akv-serving-charts">
+          <figure><h3>Output throughput</h3><p>Tokens / second · higher is better</p><svg id="serving-throughput" viewBox="0 0 480 290" role="img" aria-labelledby="serving-throughput-title serving-throughput-desc"><title id="serving-throughput-title">Output throughput by concurrency</title><desc id="serving-throughput-desc">Table 2 measurements at concurrency 8, 10, 12, 14 and 16.</desc></svg></figure>
+          <figure><h3>P95 request latency</h3><p>Seconds · lower is better</p><svg id="serving-latency" viewBox="0 0 480 290" role="img" aria-labelledby="serving-latency-title serving-latency-desc"><title id="serving-latency-title">P95 request latency by concurrency</title><desc id="serving-latency-desc">Table 2 measurements at concurrency 8, 10, 12, 14 and 16.</desc></svg></figure>
+        </div>
+        <p class="akv-fine">At C=16, AKV reaches 369 output tokens/s versus 138 for Standard (2.67×), and 30.63 s P95 latency versus 229.90 s (7.51× speedup). These measurements come from the Top-80 replay, independently of Figure 9(a).</p>
+        <details class="akv-detail"><summary>Full serving results and measurement protocol <span aria-hidden="true">+</span></summary>
+          <div class="akv-table-wrap" tabindex="0" role="region" aria-label="Scrollable serving performance table"><table id="serving-table"></table></div>
+          <div class="akv-protocol"><h3>Measurement protocol</h3><p>Eight A800-80GB GPUs serve GPT-OSS-120B in BF16: four for prefill and four for decode, each with tensor parallelism 4. Both baselines use SGLang; AKV extends SGLang with cache-operation support.</p><p>The same 80 tasks and ordering are used, selected by peak context length. Each method replays its own recorded policy trajectories, so turn counts and output budgets can differ. Tool responses are replayed; each turn generates its prescribed output length at temperature 0.</p><p>For AKV at C=14 and 16, measurement windows end after the first 30 task completions and include all requests within the window. High-concurrency Standard runs use a one-hour window, with some requests unfinished at cutoff. Supplemental tasks maintain concurrency. See the paper’s Appendix A.1.3–A.1.4 for the full setup.</p><p>TTFT is time to first token; TPOT is time per output token. Lower TPOT alone does not imply better serving performance when fewer requests are decoding and more are waiting for prefill.</p></div>
+        </details>
+        <noscript><p>At C=8 / 10 / 12 / 14 / 16, output throughput (tokens/s): Standard 217 / 254 / 313 / 146 / 138; Text Engineering 228 / 246 / 264 / 267 / 267; AKV 245 / 295 / 339 / 369 / 369. P95 latency (s): Standard 43.57 / 45.03 / 43.16 / 108.86 / 229.90; Text Engineering 43.57 / 50.27 / 52.82 / 60.67 / 69.96; AKV 25.93 / 27.11 / 27.18 / 28.49 / 30.63.</p></noscript>
+      </div>
+      <div class="akv-serving-stats"><div><strong>3.54×</strong><span>Max. mean latency speedup</span></div><div><strong>7.51×</strong><span>Max. P95 latency speedup</span></div><div><strong>4.68×</strong><span>Max. input throughput gain</span></div></div><p class="akv-dark-note">Top-80 workload replay, versus Standard at C=16. Full concurrency results are available in the table above.</p>
+    </div>
+  </section>
+
   <section id="strategies" class="section section-gray">
-    <div class="container-wide akv-strategy-grid"><div><p class="section-eyebrow">Beyond a fixed policy</p><h2 class="section-title">Agents can learn<br><span class="akv-gradient">what to keep.</span></h2><p class="akv-intro">Rolling drop is a starting point. AKV also lets agents choose cache operations and search for better policies.</p><div class="akv-strategy"><h3>Search for a better policy.</h3><p>MiniMax-M2.7 recursively refines its cache policy on BrowseComp-Plus, reaching a <strong>17.8% cost reduction relative to Standard</strong> at iteration 6 while maintaining Standard’s accuracy.</p></div><div class="akv-strategy"><h3>Let the agent choose.</h3><p>Cache-As-Tool reaches 61.0% on BCP with GPT-OSS-120B and 64.0% with MiniMax-M2.7. This policy is evaluated separately from rolling drop.</p></div></div><figure class="akv-figure akv-rsi"><div class="akv-figure-label"><span>RECURSIVE SELF-IMPROVEMENT</span></div><img src="static/figures/minimax_self_evolution.svg" alt="MiniMax-M2.7 policy search. Best policies reduce per-task cost by 15.6% at iteration 3 and 17.8% at iteration 6 relative to Standard while meeting baseline accuracy." width="520" height="336" loading="lazy"><figcaption>MiniMax-M2.7 · BrowseComp-Plus<br>The human-designed policy uses rolling drop with K=12.</figcaption></figure></div>
+    <div class="container-wide akv-strategy-grid"><div><p class="section-eyebrow">Cache policy · Recursive self-improvement</p><h2 class="section-title">Agents can learn<br><span class="akv-gradient">what to keep.</span></h2><p class="akv-intro">Rolling drop is a starting point. AKV’s cache interface also lets agents search, evaluate, and refine their own cache-engineering policies.</p><div class="akv-strategy"><h3>Search for a better policy.</h3><p>MiniMax-M2.7 recursively refines its cache policy on BrowseComp-Plus, reaching a <strong>17.8% cost reduction relative to Standard</strong> at iteration 6 while maintaining Standard’s accuracy.</p></div><p class="akv-fine akv-results-note">A separate policy-search experiment. The reduction is measured against its Standard baseline.</p></div><figure class="akv-figure akv-rsi"><div class="akv-figure-label"><span>RECURSIVE SELF-IMPROVEMENT</span></div><img src="static/figures/minimax_self_evolution.svg" alt="MiniMax-M2.7 policy search. Best policies reduce per-task cost by 15.6% at iteration 3 and 17.8% at iteration 6 relative to Standard while meeting baseline accuracy." width="520" height="336" loading="lazy"><figcaption>MiniMax-M2.7 · BrowseComp-Plus<br>The human-designed policy uses rolling drop with K=12.</figcaption></figure></div>
   </section>
 
   <section id="team" class="section section-gray akv-team"><div class="container"><p class="section-eyebrow">Team &amp; resources</p><h2 class="section-title">Follow the research.</h2><p class="akv-intro">Author information, the paper, and implementation will be added with the project release.</p><div class="akv-resource-status"><span>Paper <small>Forthcoming</small></span><span>Code <small>Forthcoming</small></span></div></div></section>
