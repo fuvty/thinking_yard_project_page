@@ -192,3 +192,6 @@ main a{text-decoration:none}main button,main select,main input{font:inherit}main
   .akv-comparison { gap:28px; }
   .akv-system-design { padding:24px; }
 }
+
+/* Allow the final glyph to overhang its negative letter-spacing advance. */
+.akv-hero .hero-title > .akv-gradient { display:inline-block; padding-inline:.1em; margin-inline:-.1em; }
