@@ -22,11 +22,20 @@ The serving section starts with history-dependent KV states and the original thr
 
 Evaluation starts with the definitions of Standard (96K summarization), Text Engineering (48K summarization) and AKV (retain the latest 12 tool responses’ KV). Table 1 is presented through the benchmark selectors and labeled bars; the duplicate full-comparison table is omitted. Figure 9(a) follows as a separate 100-task experiment, then two compact Table 2 charts show output throughput and P95 latency across concurrency 8–16. The complete Table 2 and replay protocol are collapsed below. `static/js/serving.js` is the single numeric source for these two charts and the full serving table. It transcribes the supplied paper’s Table 2; these Top-80 measurements are distinct from Figure 9(a), and neither changes the headline benchmark aggregation. No Figure 7 or Cache-As-Tool section is included. RSI remains the sole policy-search example.
 
-## Hero cache flow
+## Hero cache tree
 
-`static/js/hero-flow.js` shows twelve short, unlabelled text/cache pairs around the desktop hero (five on phones). Rising, falling, and S-shaped paths mix the two behaviors across the background and use staggered phases, so they never reset together. Context edits fade a local span; both processing heads retreat together, erasing both trails behind their retreat and redrawing them on replay. Here the strands represent processing progress: erasing the text trail does not imply deleting the underlying source text. Direct cache edits leave gaps while both heads continue. Each illustrative cycle lasts 18 seconds; its timing is not measured performance.
+`static/js/hero-flow.js` draws one stationary-root tree from the lower-left corner into a broad fan. Ordered angular sectors prevent crossings. A per-load seed varies binary/ternary forks, sector widths, fork positions and twig lengths; resizing preserves the seed. Later forks fill the middle and outer crown, with shorter companion twigs among branches that reach the frame. Phones use fewer branching levels. A soft central veil protects readability, and measured hero content bounds keep release sites outside the copy.
 
-Clicking a visible retained segment in a cache-engineering pair removes it locally until that pair's next cycle. The reading area stays clear. Rendering pauses offscreen and in hidden tabs, targets 60 fps with DPR capped at 2, and uses a static frame for reduced motion.
+The canopy unfolds along connected Bézier segments within 2 seconds, including a 0.2-second delay. Cubic ease-in continuously accelerates the reveal, with slight pace differences between branches. Subsequent updates send an orb along the live tree using cubic ease-in-out and the Home page’s Gaussian path gleam:
+
+- **Growth:** a purple orb reaches a tip, carries a new segment outward, then fades over 1.05 seconds.
+- **Release:** a yellow orb stops at the first selected node. Candidates brighten during approach, hold for 0.18 seconds after arrival, then fade and contract over 0.65 seconds. Descendants reconnect smoothly. Affected tips wait 20–36 seconds before growing again; releases vary in depth and location, preserving structural junctions.
+
+Clicking the hero alternates release and growth on eligible branches. Repeated clicks launch concurrent orbs; reservations protect selected spans and growing tips. Arrived drops run one at a time while growth can proceed independently. Waiting orbs stay visible. A root pulse gives immediate feedback; clicks during entrance accelerate the reveal and queue their actions. Autoplay resumes after four seconds without input. Links, controls and text selection do not advance the tree. A focus-visible button supports keyboard input.
+
+Rendering targets 30 fps, caps DPR at 2, and pauses offscreen or in hidden tabs. Reduced motion shows the complete tree and applies manual actions immediately. ResizeObserver updates the composition and text bounds. Timing is illustrative, not measured performance.
+
+Closing gaps is an abstract visual metaphor: AKV retains its logical token and operation history, and request-local Drop does not imply immediate eviction of shared storage or automatic key repositioning. The detailed system section explains these distinctions.
 
 ## Figure 9(a) replay
 
@@ -49,6 +58,10 @@ Benchmark results use TaH2-style grouped bars for all three methods, with model 
 ## Pending release details
 
 Per the owner's instruction, authors, paper URL, code URL, and citation are intentionally unfilled. `citation.bib` is empty and its required shared citation slot is hidden until details are supplied. No fabricated author or publication information is included. Add actual links and author pills to `content.html`, populate `citation.bib`, and unhide the citation slot at release.
+
+## Reload position
+
+An early script in `head.html` disables native scroll restoration for reloads without a URL fragment, so the cover and its entrance animation start in view without first flashing a previous reading position. Explicit chapter fragments and back/forward navigation retain native behavior. The prior restoration mode resumes after the initial display, and also when leaving the page.
 
 ## Editing / preview
 

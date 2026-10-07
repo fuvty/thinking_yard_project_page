@@ -1,3 +1,20 @@
+<script>
+(() => {
+  // Disable native reload restoration before the first paint. Keep explicit
+  // chapter links and back/forward navigation at their intended positions.
+  const navigation = performance.getEntriesByType('navigation')[0];
+  if (navigation?.type !== 'reload' || location.hash) return;
+  const previous = history.scrollRestoration;
+  history.scrollRestoration = 'manual';
+  const reset = () => window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  reset();
+  window.addEventListener('pageshow', event => {
+    if (!event.persisted) reset();
+    window.requestAnimationFrame(() => { history.scrollRestoration = previous; });
+  }, { once: true });
+  window.addEventListener('pagehide', () => { history.scrollRestoration = previous; }, { once: true });
+})();
+</script>
 <meta name="theme-color" content="#fbfbfd">
 <link rel="icon" type="image/jpeg" href="{{base}}/shared/assets/akv.jpg">
 <link rel="stylesheet" href="./static/css/index.css">
