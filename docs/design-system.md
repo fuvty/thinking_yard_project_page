@@ -10,13 +10,13 @@ Derived from the workspace's `alpha_design_system` and approved C2C prototype.
 - Pill CTAs, softly rounded figures/cards, restrained shadows; no decorative stock imagery.
 - Scientific content remains precise and declarative; preserve the authors' claims and numbers.
 
-`shared/styles/tokens.css` is the maintained token source. C2C, TaH, TaH2 and R2R share `research.css`; all project pages share `components.css`. Project overrides load after shared primitives. Shared navigation and UI controls load last so each page has identical control styles. Modifier selectors such as `.section.section-dark` remain more specific than base selectors.
+`shared/styles/tokens.css` is the maintained token source. Pages with `"theme": "research"` in `page.json` share `research.css`; all project pages share `components.css`. Project overrides load after shared primitives. Shared navigation and UI controls load last so each page has identical control styles. Modifier selectors such as `.section.section-dark` remain more specific than base selectors.
 
 Navigation is entirely namespaced with `sp-` so Bulma and project-specific styles cannot change it. Its complete markup is generated at build time by `shared/navigation/render.mjs`, including in the Next.js hub. `controller.js` adds behavior without fetching a registry at runtime. The local copies in `shared/assets` make menu logos independent of old repository hosts.
 
 ## Navigation taxonomy and motion
 
-The global menu classifies projects by research mechanism: Adaptivity Scaling (R2R, TokenRouter, TaH, TaH2), Context Scaling (C2C), and Model Compression (MoA, FrameFusion), in that order on desktop and mobile. The hub's numbered routes are a separate conceptual axis; they do not change these project categories.
+The global menu reads project membership from [config/projects.json](../config/projects.json), the sole project registry. Category labels and order come from [config/categories.json](../config/categories.json) on both desktop and mobile. The hub's numbered routes are a separate conceptual axis; they do not change these project categories. Do not maintain a second project list in documentation.
 
 The local **On this page** menu classifies sections by reading purpose, with labels defined once in `config/section-groups.json`:
 

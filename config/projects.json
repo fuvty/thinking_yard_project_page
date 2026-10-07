@@ -12,7 +12,7 @@
     "name": "TokenRouter",
     "category": "adaptivity",
     "route": "02",
-    "description": "A serving engine for token-level routing",
+    "description": "A serving engine for token-level LLM routing",
     "logo": "shared/assets/tokenrouter.png"
   },
   {
@@ -28,7 +28,7 @@
     "name": "TaH2",
     "category": "adaptivity",
     "route": "03",
-    "description": "Better test-time scaling for looped models",
+    "description": "Better test-time scaling for looped LLMs",
     "logo": "shared/assets/tah2.png"
   },
   {
