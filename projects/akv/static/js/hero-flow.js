@@ -109,8 +109,7 @@
       const tip = path(fork, count, fan);
       tips.push({ node: tip, maxLength, growAfter: random() * 12 });
     }
-    const stem = path(root, 2, 0, true);
-    stem.parent.structural = true;
+    const stem = path(root, 1, 0, true);
     // Adjacent subtrees have disjoint, ordered sectors. The projection opens
     // a flat tree into a fan without weaving one branch across another.
     const bounds = [-89, -60, -31, -2];
@@ -498,9 +497,22 @@
     last = now; draw(); raf = requestAnimationFrame(tick);
   }
   function play() { if (raf === null && visible && !document.hidden && !reduced.matches) raf = requestAnimationFrame(tick); }
+  // Multi-clicking text creates a browser selection too. Suppress actual
+  // drags, not selected text, so every click can launch its own traveler.
+  let pointerOrigin = null, pointerDragged = false;
+  hero.addEventListener('pointerdown', event => {
+    pointerOrigin = { id: event.pointerId, x: event.clientX, y: event.clientY };
+    pointerDragged = false;
+  });
+  hero.addEventListener('pointermove', event => {
+    if (pointerOrigin?.id === event.pointerId &&
+        Math.hypot(event.clientX - pointerOrigin.x, event.clientY - pointerOrigin.y) > 6) pointerDragged = true;
+  });
+  hero.addEventListener('pointercancel', () => { pointerOrigin = null; pointerDragged = true; });
   hero.addEventListener('click', event => {
-    if (event.target.closest('a,button,input,select,textarea,summary,[contenteditable="true"]')) return;
-    if (window.getSelection()?.isCollapsed === false) return;
+    const dragged = pointerDragged;
+    pointerOrigin = null; pointerDragged = false;
+    if (dragged || event.target.closest('a,button,input,select,textarea,summary,[contenteditable="true"]')) return;
     advanceAction();
   });
   document.getElementById('akv-hero-advance')?.addEventListener('click', advanceAction);
