@@ -8,6 +8,14 @@
     "logo": "shared/assets/r2r.png"
   },
   {
+    "slug": "tokenrouter",
+    "name": "TokenRouter",
+    "category": "adaptivity",
+    "route": "02",
+    "description": "A serving engine for token-level routing",
+    "logo": "shared/assets/tokenrouter.png"
+  },
+  {
     "slug": "tah",
     "name": "TaH",
     "category": "adaptivity",

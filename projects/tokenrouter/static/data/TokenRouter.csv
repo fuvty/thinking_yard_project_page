@@ -1,0 +1,121 @@
+,,,,latency,throughput
+1,low-effort reasoning,R2R,Official Code,56.62,36.17
+,,,Std. Serving,301.69,6.79
+,,,TokenRouter,27.95,73.27
+,,CITER,Official Code,244.34,8.38
+,,,Std. Serving,134.35,15.25
+,,,TokenRouter,20.02,102.29
+,,R-Stitch,Official Code,-,-
+,,,Std. Serving,163.22,12.55
+,,,TokenRouter,47.56,43.06
+,,Co-LLM,Official Code,4549.31,0.45
+,,,Std. Serving,259.8,7.88
+,,,TokenRouter,18.37,111.46
+,,ME,Official Code,101.01,20.28
+,,,Std. Serving,95.22,21.51
+,,,TokenRouter,44.93,45.58
+,high-effort reasoning,R2R,Official Code,226.2,35.4
+,,,Std. Serving,1355.81,6.02
+,,,TokenRouter,112.36,70.83
+,,CITER,Official Code,2520.23,3.25
+,,,Std. Serving,1284.6,6.38
+,,,TokenRouter,70.74,114.8
+,,R-Stitch,Official Code,-,-
+,,,Std. Serving,678.41,11.9
+,,,TokenRouter,174.93,45.85
+,,Co-LLM,Official Code,"21,596.05",0.37
+,,,Std. Serving,1246.95,6.45
+,,,TokenRouter,70.95,112.95
+,,ME,Official Code,427.11,19.18
+,,,Std. Serving,580.19,14.12
+,,,TokenRouter,200.18,40.92
+,agentic_single,R2R,Official Code,16.24,23.27
+,,,Std. Serving,39.41,9.28
+,,,TokenRouter,9.19,42.61
+,,CITER,Official Code,189.96,1.67
+,,,Std. Serving,15.47,19.27
+,,,TokenRouter,5.17,64.24
+,,R-Stitch,Official Code,-,-
+,,,Std. Serving,24.83,15.24
+,,,TokenRouter,13.54,30.97
+,,Co-LLM,Official Code,459.03,0.72
+,,,Std. Serving,32.77,11.29
+,,,TokenRouter,4.38,78.39
+,,ME,Official Code,27.22,12.56
+,,,Std. Serving,18.18,17.18
+,,,TokenRouter,9.6,32.55
+,agentic,R2R,Official Code,22.05,26.68
+,,,Std. Serving,138.2,5.87
+,,,TokenRouter,17.14,42.81
+,,CITER,Official Code,533.78,1.37
+,,,Std. Serving,182.87,4.26
+,,,TokenRouter,9.71,84.09
+,,R-Stitch,Official Code,-,-
+,,,Std. Serving,58.63,10.92
+,,,TokenRouter,16.43,35.45
+,,Co-LLM,Official Code,1002.76,0.54
+,,,Std. Serving,90.82,6.69
+,,,TokenRouter,6.44,87.19
+,,ME,Official Code,71.58,13.9
+,,,Std. Serving,59.16,17.88
+,,,TokenRouter,25.93,45.14
+4,low-effort reasoning,R2R,Official Code,104.43,78.32
+,,,Std. Serving,533.09,15.36
+,,,TokenRouter,39.94,205.05
+,,CITER,Official Code,967.35,8.46
+,,,Std. Serving,269.7,30.32
+,,,TokenRouter,29.12,281.27
+,,R-Stitch,Official Code,-,-
+,,,Std. Serving,206.93,39.57
+,,,TokenRouter,75.41,108.42
+,,Co-LLM,Official Code,"11,402.14",0.71
+,,,Std. Serving,247.83,32.58
+,,,TokenRouter,28.05,290.33
+,,ME,Official Code,-,-
+,,,Std. Serving,129.82,63.11
+,,,TokenRouter,63.99,127.94
+,high-effort reasoning,R2R,Official Code,415.05,77.08
+,,,Std. Serving,5867.7,5.55
+,,,TokenRouter,162.6,197.4
+,,CITER,Official Code,"12,794.97",2.5
+,,,Std. Serving,7190.6,4.49
+,,,TokenRouter,112.87,288.67
+,,R-Stitch,Official Code,-,-
+,,,Std. Serving,1978.19,16.56
+,,,TokenRouter,260.98,124.69
+,,Co-LLM,Official Code,"45,389.08",0.68
+,,,Std. Serving,6155.09,5.14
+,,,TokenRouter,115.3,268.66
+,,ME,Official Code,-,-
+,,,Std. Serving,1291.17,24.54
+,,,TokenRouter,300.96,105.77
+,agentic_single,R2R,Official Code,45.53,36.87
+,,,Std. Serving,74.12,19.35
+,,,TokenRouter,22.7,83.37
+,,CITER,Official Code,811.61,1.48
+,,,Std. Serving,55.26,21.02
+,,,TokenRouter,14.39,89.99
+,,R-Stitch,Official Code,-,-
+,,,Std. Serving,50.21,35.54
+,,,TokenRouter,27.06,72.93
+,,Co-LLM,Official Code,"1,526.88",0.85
+,,,Std. Serving,54.58,18.89
+,,,TokenRouter,10.13,93.9
+,,ME,Official Code,-,-
+,,,Std. Serving,31.21,45.27
+,,,TokenRouter,20.99,64.84
+,agentic,R2R,Official Code,32.28,75.06
+,,,Std. Serving,235.4,11.43
+,,,TokenRouter,18.78,151.17
+,,CITER,Official Code,2534.38,1.31
+,,,Std. Serving,152,20.4
+,,,TokenRouter,14.95,217.98
+,,R-Stitch,Official Code,-,-
+,,,Std. Serving,144.33,19.73
+,,,TokenRouter,31.44,76.64
+,,Co-LLM,Official Code,"2,114.87",0.82
+,,,Std. Serving,102.6,8.94
+,,,TokenRouter,9.57,220.56
+,,ME,Official Code,-,-
+,,,Std. Serving,166.35,23.25
+,,,TokenRouter,31.44,121.92

@@ -384,3 +384,7 @@ figure[id] { scroll-margin-top: 76px; }
 .demo-player video { display: block; width: 100%; height: auto; aspect-ratio: 764 / 504; border-radius: 16px; background: #fff; box-shadow: 0 2px 20px rgba(0,0,0,.06); }
 .demo-player video:focus-visible { outline: 2px solid var(--apple-blue); outline-offset: 4px; }
 .demo-player figcaption { margin-top: 16px; color: var(--apple-gray); font-size: 14px; line-height: 1.5; text-align: center; }
+
+/* Interaction strokes sit above the veil and below the research content. */
+.iteration-response { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+.hero-copy, .hero-metrics, .hero-actions { z-index: 2; }

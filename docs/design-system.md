@@ -16,7 +16,7 @@ Navigation is entirely namespaced with `sp-` so Bulma and project-specific style
 
 ## Navigation taxonomy and motion
 
-The global menu classifies projects by research mechanism: Adaptivity Scaling (R2R, TaH, TaH2), Context Scaling (C2C), and Model Compression (MoA, FrameFusion), in that order on desktop and mobile. The hub's numbered routes are a separate conceptual axis; they do not change these project categories.
+The global menu classifies projects by research mechanism: Adaptivity Scaling (R2R, TokenRouter, TaH, TaH2), Context Scaling (C2C, AKV), and Model Compression (MoA, FrameFusion), in that order on desktop and mobile. The hub's numbered routes are a separate conceptual axis; they do not change these project categories.
 
 The local **On this page** menu classifies sections by reading purpose, with labels defined once in `config/section-groups.json`:
 

@@ -1,0 +1,16 @@
+{
+  "title": "TokenRouter · A serving engine for token-level routing",
+  "description": "TokenRouter combines request-centric programming, asynchronous model-centric execution and delayed batching to serve token-level LLM routing efficiently.",
+  "theme": "research",
+  "sections": [
+    {"id":"overview","label":"Overview","group":"research","description":"Why token-level routing needs a new engine"},
+    {"id":"architecture","label":"Architecture","group":"research","description":"Independent subservers and retained state"},
+    {"id":"programming","label":"Programming","group":"research","description":"The route, send and receive interface"},
+    {"id":"scheduling","label":"Delayed batching","group":"research","description":"Scheduling irregular token arrivals"},
+    {"id":"results","label":"Results","group":"evaluation","description":"Five algorithms across three workloads"},
+    {"id":"scaling","label":"Concurrency scaling","group":"evaluation","description":"Throughput and per-user generation speed"},
+    {"id":"ablation","label":"System analysis","group":"evaluation","description":"Runtime ablations and deployment settings"},
+    {"id":"team","label":"Team","group":"resources","description":"The researchers behind TokenRouter"},
+    {"id":"bibtex","label":"Citation","group":"resources","description":"Paper title, authors and BibTeX"}
+  ]
+}
