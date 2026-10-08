@@ -46,6 +46,7 @@
           </figure>
         </article>
       </div>
+      <p class="akv-core-information-note">Colored blocks inside the cache represent information carried from earlier messages.</p>
       <div id="core-animation-stages" class="akv-core-stages" role="group" aria-label="Animation stages" hidden></div>
       <div class="akv-core-controls">
         <p id="core-animation-stage-description" class="akv-core-stage-description" hidden></p>
@@ -81,11 +82,11 @@
       <div class="akv-heading">
         <p class="section-eyebrow">The AKV serving system</p>
         <h2 class="section-title">Making <span class="akv-title-phrase">cache engineering</span> <span class="akv-title-phrase">work in serving.</span></h2>
-        <p class="section-subtitle">AKV tracks tokens and cache operations to reuse the right states, free unused KV, and restore missing states.</p>
+        <p class="section-subtitle">With Append, Drop, and Repos, the same token prefix and retained positions can yield different cache states. AKV tracks both token and operation histories to correctly reuse and restore these states.</p>
       </div>
       <figure id="radix-tree" class="akv-history" aria-labelledby="history-title">
         <div class="akv-history-header">
-          <div><p class="akv-number">WHY CACHE HISTORY MATTERS</p><h3 id="history-title">The same tokens.<br>Different KV states.</h3></div>
+          <div><p class="akv-number">WHY CACHE HISTORY MATTERS</p><h3 id="history-title">The same tokens.<br> Different KV states.</h3></div>
           <div class="akv-history-playback" hidden><button type="button" id="history-replay" aria-label="Replay cache-history animation">↺ <span>Replay</span></button><button type="button" id="history-toggle" aria-pressed="false">Pause</button></div>
         </div>
         <div id="history-animation" class="akv-history-animation" hidden>
@@ -97,24 +98,55 @@
         <figcaption><span><b>ΔA</b> = drop A’s KV</span><span>Insets show information carried from earlier messages.</span></figcaption>
       </figure>
 
-      <div class="akv-system-designs">
-        <article class="akv-system-design">
-          <p class="akv-number">01 / REUSE</p>
-          <h3>Reuse the right states.</h3>
-          <p>The extended radix tree matches token and cache-operation histories. Compatible states remain shared across requests.</p>
+      <div class="akv-system-mechanisms">
+        <article class="akv-mechanism-row akv-mechanism-reuse">
+          <div class="akv-mechanism-copy">
+            <p class="akv-number">01 / REUSE</p><h3>Extended radix tree.</h3>
+            <p class="akv-mechanism-body">The tree shares compatible prefixes and branches when operation histories differ. Position labels distinguish cached positional versions.</p>
+          </div>
+          <details class="akv-detail akv-mechanism-detail">
+            <summary>Reusing repositioned states <span aria-hidden="true">+</span></summary>
+            <p>AKV directly reuses states with matching histories and encoded positions. When reusable states need different positions, it copies the affected branch and re-encodes K without recomputing hidden states. The original branch remains available to other requests; reposition markers record when the operation occurred.</p>
+          </details>
         </article>
-        <article class="akv-system-design">
-          <p class="akv-number">02 / EVICT</p>
-          <h3>Free unused KV safely.</h3>
-          <p>Dropping KV from one request does not immediately free shared storage. AKV reclaims it when no active computation or restoration needs it, while keeping cached descendants reachable.</p>
+        <article class="akv-mechanism-row">
+          <div class="akv-mechanism-copy">
+            <p class="akv-number">02 / EVICT</p>
+            <h3>Drop-aware eviction.</h3>
+            <p class="akv-mechanism-body">Drop changes a request’s active KV. AKV frees physical storage only when no active computation or restoration needs it, keeping tree nodes and cached descendants reachable.</p>
+          </div>
+          <figure class="akv-mechanism-figure">
+            <img src="static/figures/system-eviction.svg" alt="Before Drop, a request uses A and B and both occupy physical storage. After Drop A, this request uses only B, while another request still needs A. Once A is no longer needed, its storage can be freed; the empty A tree node still connects to cached B." loading="lazy">
+            <figcaption>Dropping A changes visibility first; its storage can be reclaimed later.</figcaption>
+          </figure>
+
+          <details class="akv-detail akv-mechanism-detail">
+            <summary>When can dropped KV be freed? <span aria-hidden="true">+</span></summary>
+            <p>A request can drop A while another still needs it. Once no active computation or restoration references A’s KV, its storage becomes eligible for eviction—even if requests that dropped it are still running. The empty tree node preserves access to cached descendants.</p>
+          </details>
         </article>
-        <article class="akv-system-design">
-          <p class="akv-number">03 / RESTORE</p>
-          <h3>Restore in one prefill pass.</h3>
-          <p>Missing states are reconstructed with segment-batch attention. It reproduces historical attention visibility and positions in one prefill pass.</p>
+        <article class="akv-mechanism-row">
+          <div class="akv-mechanism-copy">
+            <p class="akv-number">03 / RESTORE</p>
+            <h3>Segment-batch attention.</h3>
+            <p class="akv-mechanism-body">Each query segment sees the KV available in its original history. AKV batches these segments within each layer to restore missing states in one prefill pass.</p>
+          </div>
+          <figure class="akv-mechanism-figure">
+            <img src="static/figures/system-restoration.svg" alt="A simplified one-token-per-message example restores A, B, Drop A, C in one prefill pass. Segment 1 computes A attending to A, and B attending to A and B. Segment 2 computes C attending to B and C; A is excluded. Both segments are batched within each attention layer." loading="lazy">
+            <figcaption>One token per message for illustration. Both segments use causal attention within the same forward pass.</figcaption>
+          </figure>
+
+          <details class="akv-detail akv-mechanism-detail">
+            <summary>Preserving visibility and positions <span aria-hidden="true">+</span></summary>
+            <p>Drop and Repos boundaries split queries into segments, each with its own KV view and standard causal attention. Repos also requires temporary positional versions, constructed by re-encoding K and copying V. Segments are batched within each layer, without replaying a separate model forward pass for each operation.</p>
+          </details>
         </article>
       </div>
 
+      <div class="akv-system-interface-intro">
+        <h3>Stateless interface. Stateful serving.</h3>
+        <p class="akv-system-interface-bridge">AKV handles reuse, eviction, and restoration internally, so agents do not need to track which KV states remain on the server. Each request simply carries the full message and operation histories, giving AKV the information needed to reuse available states or restore missing ones.</p>
+      </div>
       <details id="stateless-interface" class="akv-detail akv-stateless">
         <summary>Stateless interface: a request example <span aria-hidden="true">+</span></summary>
         <div class="akv-stateless-body">

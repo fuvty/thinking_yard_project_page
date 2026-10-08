@@ -265,6 +265,29 @@ main a{text-decoration:none}main button,main select,main input{font:inherit}main
 /* Keyboard equivalent of clicking the cover; visible only while focused. */
 #akv-hero-advance:focus-visible { position:absolute; top:64px; left:24px; z-index:3; width:auto; height:auto; margin:0; padding:10px 16px; clip:auto; overflow:visible; border-radius:980px; border:1px solid #0071e3; background:#fff; color:#0071e3; outline:2px solid #0071e3; outline-offset:3px; }
 
+/* System mechanisms: reuse explains the main figure; eviction and restoration get their own views. */
+.akv-system-mechanisms { margin-top:28px; }
+.akv-system-mechanisms h3 { margin:10px 0 18px; font-size:27px; line-height:1.22; letter-spacing:-.035em; }
+.akv-mechanism-body,.akv-system-interface-bridge { margin:0; font-size:17px; line-height:1.6; color:#6e6e73; }
+.akv-mechanism-row { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,480px); align-items:center; gap:20px 36px; padding:28px 0 0; }
+.akv-mechanism-row:first-child { padding-top:0; }
+.akv-mechanism-reuse > .akv-mechanism-copy { grid-column:1 / -1; max-width:760px; }
+.akv-mechanism-figure { min-width:0; margin:0; padding:12px; background:#fcfbfd; border:1px solid #e7e5ed; border-radius:18px; }
+.akv-mechanism-figure img { display:block; width:100%; height:auto; }
+.akv-mechanism-figure figcaption { padding:12px 4px 2px; font-size:12px; line-height:1.5; color:#89818f; }
+.akv-mechanism-row > .akv-mechanism-detail { grid-column:1 / -1; margin:0; }
+.akv-mechanism-detail summary { font-size:13px; padding:14px 0; gap:12px; min-height:44px; }
+.akv-mechanism-detail > p { margin:0; padding:0 0 18px; font-size:14px; line-height:1.65; color:#6e6e73; }
+.akv-system-interface-intro { margin:44px 0 22px; }
+.akv-system-interface-intro h3 { margin:0 0 16px; font-size:27px; line-height:1.25; letter-spacing:-.035em; }
+.akv-system-interface-bridge { margin:0; max-width:800px; }
+#stateless-interface { margin-top:0; }
+@media(max-width:800px) {
+  .akv-mechanism-row { grid-template-columns:minmax(0,1fr); gap:18px; }
+  .akv-system-mechanisms h3 { font-size:25px; }
+  .akv-mechanism-figure { width:100%; max-width:480px; margin-inline:auto; }
+}
+
 /* Optional protocol example: client history and server cache responsibilities. */
 .akv-stateless-body { padding:0 0 30px; }
 .akv-stateless-intro { max-width:840px; margin:0 0 26px; color:#6e6e73; font-size:16px; line-height:1.65; }

@@ -16,8 +16,8 @@
     return control;
   });
   const descriptions = {
-    cache: "A's cache fades while B keeps the yellow information from A. B remains complete and is marked Already cached while Context recomputes B. Temporary lines connect message C and retained B to C's new cache, which fills in sync with Context.",
-    context: "Message A and the old A and B caches fade together to dashed outlines. A temporary line connects message B to its recomputed cache. Then lines connect message C and the new B cache to C's cache, which fills in sync with Cache Engineering."
+    cache: "A's cache fades while B keeps the yellow information from A. B remains complete and is marked Already cached while Context recomputes B. C's cache appears as a purple dashed outline, attends to retained B, and fades in with inherited information in sync with Context.",
+    context: "Message A and the old A and B caches fade together to dashed outlines. B's recomputed cache appears as a purple dashed outline and fills. C's pending cache then attends to the new B cache and fills in sync with Cache Engineering."
   };
   const scenes = [...container.querySelectorAll('[data-core-engineering]')].map(fallback => {
     const approach = fallback.dataset.coreEngineering;

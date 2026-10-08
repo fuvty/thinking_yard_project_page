@@ -10,6 +10,7 @@
 #overview .akv-comparison-ours .akv-core-status { background:#eee9fb; color:#6650ac; font-weight:650; }
 #overview .akv-core-status:empty { visibility:hidden; }
 #overview .akv-core-animation { display:block; width:100%; height:auto; margin:0 auto; }
+#overview .akv-core-information-note { margin:14px 0 0; color:#8a8393; font-size:12px; line-height:1.5; text-align:center; }
 #overview .akv-core-controls { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:16px; margin:8px 0 0; }
 #overview .akv-core-stages:not([hidden]) { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-top:24px; }
 #overview .akv-core-stages button { border:0; border-top:2px solid #dedee5; background:none; color:#6e6e73; min-height:48px; padding:12px 4px; font:inherit; font-size:13px; cursor:pointer; }
