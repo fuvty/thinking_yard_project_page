@@ -32,6 +32,13 @@ test('copy preserves citation text and resets consistent success feedback',async
  const n=ui();await n.copy.emit('click');assert.deepEqual(n.written,[n.code.textContent]);assert.equal(n.copy.dataset.state,'success');assert.equal(n.label.textContent,'Copied');assert.equal(n.copy.disabled,false);
  n.flush();assert.equal(n.label.textContent,'Copy BibTeX');assert.equal(n.copy.dataset.state,undefined);
 });
+test('empty citations do not clear the clipboard or report copy success',async()=>{
+ for(const clipboard of ['success','missing'])for(const text of ['', ' \n\t ']){
+  const n=ui({clipboard});n.code.textContent=text;await n.copy.emit('click');
+  assert.deepEqual(n.written,[]);assert.equal(n.document.field,undefined);
+  assert.equal(n.copy.dataset.state,undefined);assert.notEqual(n.label.textContent,'Copied');
+ }
+});
 test('copy fallback cleans up and never claims success when clipboard and fallback fail',async()=>{
  for(const clipboard of ['failure','missing']){
   const success=ui({clipboard});await success.copy.emit('click');assert.equal(success.copy.dataset.state,'success');assert(success.document.field.removed);assert.equal(success.document.activeElement,success.copy);

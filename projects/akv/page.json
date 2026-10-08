@@ -37,7 +37,7 @@
       "id": "team",
       "label": "Team",
       "group": "resources",
-      "description": "Project team and resources"
+      "description": "Authors and affiliations"
     },
     {
       "id": "citation",

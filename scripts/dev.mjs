@@ -1,7 +1,21 @@
 import { watch } from 'node:fs';
 import { spawn } from 'node:child_process';
-import { resolve } from 'node:path';
-import { generate, root } from './generate.mjs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+function generate({clean = false} = {}) {
+  // Each run reloads the generator and shared renderers after source edits.
+  return new Promise((done, reject) => {
+    const worker = spawn(process.execPath, ['--input-type=module', '--eval',
+      `import('./scripts/generate.mjs').then(({generate}) => generate({clean: ${clean}}))`,
+    ], {cwd:root, stdio:'inherit'});
+    worker.once('error', reject);
+    worker.once('exit', (code, signal) => {
+      if (code === 0) done();
+      else reject(new Error(`Page generation failed (${signal || code})`));
+    });
+  });
+}
 await generate({clean:true});
 let timer, running=false, dirty=false;
 async function rebuild() {

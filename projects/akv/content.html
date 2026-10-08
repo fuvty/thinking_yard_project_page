@@ -11,7 +11,11 @@
       <a href="#results"><strong>+1.7<span>pts</span></strong><span>Average benchmark score</span><small>Compared with Standard</small></a>
       <a href="#efficiency"><strong>2.67<span>×</span></strong><span>Peak output throughput gain</span><small>GPT-OSS-120B · SWE-bench</small></a>
     </div>
-    <div class="hero-actions"><a class="btn btn-primary" href="#overview">Explore the research <span aria-hidden="true">↓</span></a><a class="btn btn-secondary" href="#efficiency">Watch the experiment</a></div>
+    <div class="hero-actions">
+      <button class="btn btn-primary" type="button" disabled title="Paper forthcoming"><i class="fas fa-file-alt" aria-hidden="true"></i> Read Paper</button>
+      <button class="btn btn-secondary" type="button" disabled title="Code forthcoming"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-14-2 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> View Code</button>
+      <a class="btn btn-secondary" href="#citation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7a4 4 0 0 0-4 4v6h6v-6H6a1 1 0 0 1 1-1zm10 0a4 4 0 0 0-4 4v6h6v-6h-3a1 1 0 0 1 1-1z" fill="currentColor"/></svg> Citation</a>
+    </div>
     <p class="akv-release">Paper &amp; code forthcoming</p>
   </section>
 
@@ -20,7 +24,7 @@
       <div class="akv-heading">
         <p class="section-eyebrow">The core idea</p>
         <h2 class="section-title"><span class="akv-title-phrase">Cache engineering</span> for LLM agents.</h2>
-        <p class="akv-intro">As LLM agents tackle longer tasks, growing histories make KV storage and access increasingly costly. Context engineering manages this growth through message edits, controlling the cache indirectly. We introduce <strong>cache engineering</strong> to give agents direct control over which KV states remain active.</p>
+        <p class="section-subtitle">As LLM agents tackle longer tasks, growing histories make KV storage and access increasingly costly. Context engineering manages this growth through message edits, controlling the cache indirectly. We introduce <strong>cache engineering</strong> to give agents direct control over which KV states remain active.</p>
       </div>
       <div class="akv-comparison">
         <div class="akv-comparison-point">
@@ -64,7 +68,7 @@
       <div class="akv-heading">
         <p class="section-eyebrow">The AKV serving system</p>
         <h2 class="section-title">Making <span class="akv-title-phrase">cache engineering</span> <span class="akv-title-phrase">work in serving.</span></h2>
-        <p class="akv-intro">Cache operations change what a serving system must track. AKV identifies compatible states to reuse, reclaims storage without disrupting other requests, and restores missing states efficiently.</p>
+        <p class="section-subtitle">Cache operations change what a serving system must track. AKV identifies compatible states to reuse, reclaims storage without disrupting other requests, and restores missing states efficiently.</p>
       </div>
       <div class="akv-system-challenge">
         <p class="akv-number">THE CHALLENGE / HISTORY-DEPENDENT STATES</p>
@@ -101,7 +105,7 @@
 
   <section id="results" class="section">
     <div class="container">
-      <p class="section-eyebrow">Benchmark results</p><h2 class="section-title">Higher success rates.<br>Lower inference cost.</h2><p class="akv-intro">Across three models and four agent benchmarks, AKV improves average success rate by 1.7 percentage points while reducing inference cost by 27.7% relative to Standard.</p>
+      <p class="section-eyebrow">Benchmark results</p><h2 class="section-title">Higher success rates.<br>Lower inference cost.</h2><p class="section-subtitle">Across three models and four agent benchmarks, AKV improves average success rate by 1.7 percentage points while reducing inference cost by 27.7% relative to Standard.</p>
       <div class="akv-baselines" aria-label="Methods compared in the benchmark and serving experiments">
         <article><strong>Standard</strong><p>Summarize at 96K tokens.</p></article>
         <article><strong>Text Engineering</strong><p>Summarize at 48K tokens.</p></article>
@@ -156,7 +160,7 @@
       </div>
       <div class="akv-budget-heading">
         <h3>More solved tasks.<br>Less GPU time.</h3>
-        <p class="akv-intro">These gains also translate into better task outcomes under a GPU budget. In a separate 100-task SWE-bench Verified experiment, AKV reaches a higher final success rate with fewer GPU hours.</p>
+        <p class="section-subtitle">These gains also translate into better task outcomes under a GPU budget. In a separate 100-task SWE-bench Verified experiment, AKV reaches a higher final success rate with fewer GPU hours.</p>
       </div>
       <figure class="akv-replay" id="replay-figure">
         <div class="akv-replay-top"><div><strong>Task success under a GPU budget</strong><span>GPT-OSS-120B · 100 SWE-bench Verified tasks · 8 A800 GPUs</span></div><div class="akv-replay-tools"><button type="button" id="replay-toggle" aria-label="Pause animation" aria-pressed="false">Pause</button></div></div>
@@ -176,7 +180,7 @@
 
   <section id="efficiency" class="section">
     <div class="container">
-      <div class="akv-heading"><p class="section-eyebrow">Serving efficiency</p><h2 class="section-title">Higher throughput.<br>Lower latency.</h2><p class="akv-intro">Across all tested concurrency levels, AKV delivers higher input and output throughput, with lower P95 TTFT and request latency than both baselines on long-context agent workloads.</p></div>
+      <div class="akv-heading"><p class="section-eyebrow">Serving efficiency</p><h2 class="section-title">Higher throughput.<br>Lower latency.</h2><p class="section-subtitle">Across all tested concurrency levels, AKV delivers higher input and output throughput, with lower P95 TTFT and request latency than both baselines on long-context agent workloads.</p></div>
       <div class="akv-serving-panel">
         <p class="akv-serving-setup">GPT-OSS-120B · 80 long-context SWE-bench tasks · 8 A800 GPUs</p>
         <div class="akv-legend"><span><i class="akv-key standard"></i>Standard</span><span><i class="akv-key text"></i>Text Engineering</span><span><i class="akv-key ours"></i>AKV</span></div>
@@ -220,9 +224,38 @@
   </section>
 
   <section id="strategies" class="section section-gray">
-    <div class="container akv-strategy-grid"><div><p class="section-eyebrow">Cache policy · Recursive self-improvement</p><h2 class="section-title">Agents can learn what to keep.</h2><p class="akv-intro">Rolling drop is a starting point. AKV’s cache interface also lets agents search, evaluate, and refine their own cache-engineering policies.</p><div class="akv-strategy"><h3>Search for a better policy.</h3><p>MiniMax-M2.7 recursively refines its cache policy on BrowseComp-Plus, reaching a <strong>17.8% cost reduction relative to Standard</strong> at iteration 6 while maintaining Standard’s accuracy.</p></div><p class="akv-fine akv-results-note">A separate policy-search experiment. The reduction is measured against its Standard baseline.</p></div><figure class="akv-figure akv-rsi"><div class="akv-figure-label"><span>RECURSIVE SELF-IMPROVEMENT</span></div><img src="static/figures/minimax_self_evolution.svg" alt="MiniMax-M2.7 policy search. Best policies reduce per-task cost by 15.6% at iteration 3 and 17.8% at iteration 6 relative to Standard while meeting baseline accuracy." width="520" height="336" loading="lazy"><figcaption>MiniMax-M2.7 · BrowseComp-Plus<br>The human-designed policy uses rolling drop with K=12.</figcaption></figure></div>
+    <div class="container akv-strategy-grid"><div><p class="section-eyebrow">Cache policy · Recursive self-improvement</p><h2 class="section-title">Agents can learn what to keep.</h2><p class="section-subtitle">Rolling drop is a starting point. AKV’s cache interface also lets agents search, evaluate, and refine their own cache-engineering policies.</p><div class="akv-strategy"><h3>Search for a better policy.</h3><p>MiniMax-M2.7 recursively refines its cache policy on BrowseComp-Plus, reaching a <strong>17.8% cost reduction relative to Standard</strong> at iteration 6 while maintaining Standard’s accuracy.</p></div><p class="akv-fine akv-results-note">A separate policy-search experiment. The reduction is measured against its Standard baseline.</p></div><figure class="akv-figure akv-rsi"><div class="akv-figure-label"><span>RECURSIVE SELF-IMPROVEMENT</span></div><img src="static/figures/minimax_self_evolution.svg" alt="MiniMax-M2.7 policy search. Best policies reduce per-task cost by 15.6% at iteration 3 and 17.8% at iteration 6 relative to Standard while meeting baseline accuracy." width="520" height="336" loading="lazy"><figcaption>MiniMax-M2.7 · BrowseComp-Plus<br>The human-designed policy uses rolling drop with K=12.</figcaption></figure></div>
   </section>
 
-  <section id="team" class="section section-gray akv-team"><div class="container"><p class="section-eyebrow">Team &amp; resources</p><h2 class="section-title">Follow the research.</h2><p class="akv-intro">Author information, the paper, and implementation will be added with the project release.</p><div class="akv-resource-status"><span>Paper <small>Forthcoming</small></span><span>Code <small>Forthcoming</small></span></div></div></section>
-  <section id="citation" class="section"><div class="container"><p class="section-eyebrow">Citation</p><h2 class="section-title">Reference this work.</h2><p class="akv-intro">Citation details will be added with the paper release.</p><div hidden>{{citation}}</div></div></section>
+  <section id="team" class="section section-gray authors-section">
+    <div class="container">
+      <p class="section-eyebrow">Team</p>
+      <h2 class="section-title">Meet the researchers.</h2>
+      <div class="authors-list">
+        <a class="author-tag" href="https://nicsefc.ee.tsinghua.edu.cn/people/TianyuFu" target="_blank" rel="noopener" aria-describedby="equal-contribution">Tianyu Fu<sup>1*</sup></a>
+        <span class="author-tag" aria-describedby="equal-contribution">Ruoxi Wang<sup>1*</sup></span>
+        <a class="author-tag" href="https://nicsefc.ee.tsinghua.edu.cn/people/ZihanMin" target="_blank" rel="noopener" aria-describedby="equal-contribution">Zihan Min<sup>1*</sup></a>
+        <a class="author-tag" href="https://github.com/rzhongqicode" target="_blank" rel="noopener">Zhongqi Ren<sup>1</sup></a>
+        <span class="author-tag">Zhihao Li<sup>1</sup></span>
+        <a class="author-tag" href="https://nicsefc.ee.tsinghua.edu.cn/people/TengxuanLiu" target="_blank" rel="noopener">Tengxuan Liu<sup>1</sup></a>
+        <a class="author-tag" href="https://github.com/phlf24" target="_blank" rel="noopener">Shengxu Mu<sup>1</sup></a>
+        <span class="author-tag">Hanling Zhang<sup>2</sup></span>
+        <a class="author-tag" href="https://nicsefc.ee.tsinghua.edu.cn/people/YuWang" target="_blank" rel="noopener" aria-describedby="corresponding-author">Yu Wang<sup>1†</sup></a>
+      </div>
+      <div class="affiliations">
+        <sup>1</sup>Tsinghua University &nbsp;&nbsp;
+        <sup>2</sup>The Chinese University of Hong Kong<br>
+        <span id="equal-contribution" class="akv-author-note">*Equal contribution</span> &nbsp;&nbsp;
+        <span id="corresponding-author" class="akv-author-note">†Corresponding author</span>
+      </div>
+    </div>
+  </section>
+  <section id="citation" class="section citation-section">
+    <div class="container">
+      <p class="section-eyebrow">Citation</p>
+      <h2 class="section-title">Cite our work.</h2>
+      <p class="section-subtitle">If you find AKV useful for your research, please consider citing our paper.</p>
+      {{citation}}
+    </div>
+  </section>
 </main>
