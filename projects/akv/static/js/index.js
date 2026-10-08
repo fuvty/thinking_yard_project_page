@@ -1,22 +1,6 @@
 (() => {
 const { valueAt, aggregateRuns, stepCoordinates, stepPath } = window.AKVMath;
 
-// Three cache operations. These message-sized blocks are explanatory, not measured data.
-const operationCopy = {
-  append: '<strong>Append.</strong> Process new input against the current active cache and add its KV state.',
-  drop: '<strong>Drop.</strong> Remove Tool A’s KV from future attention. Retained states and the logical history stay unchanged.',
-  repos: '<strong>Repos.</strong> Close the positional gap by re-encoding retained keys. Continue at the next compact position without re-prefilling the history.'
-};
-document.querySelectorAll('[data-operation]').forEach(button => {
-  button.addEventListener('click', () => {
-    const operation = button.dataset.operation;
-    document.querySelectorAll('[data-operation]').forEach(b => b.setAttribute('aria-pressed', String(b === button)));
-    document.querySelector('.akv-cache-scene').dataset.stage = operation;
-    document.querySelectorAll('[data-position]').forEach(el => { el.textContent = `pos ${Number(el.dataset.position) - (operation === 'repos' ? 1 : 0)}`; });
-    document.getElementById('operation-caption').innerHTML = operationCopy[operation];
-  });
-});
-
 // Benchmark table values are from tex/4_experiment.tex, including its rounded averages.
 const benchmarks = ['BrowseComp-Plus', 'GAIA-Text', 'SWE-Verified', 'xbench-DS', 'Average'];
 const models = {

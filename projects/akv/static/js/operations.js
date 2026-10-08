@@ -1,0 +1,95 @@
+(() => {
+  const scene = document.getElementById('operation-scene');
+  const playback = document.getElementById('operation-playback');
+  if (!scene || !playback) return;
+  const details = scene.closest('details');
+  const caption = document.getElementById('operation-caption');
+  const selectors = [...document.querySelectorAll('[data-operation]')];
+  const tokens = [...scene.querySelectorAll('.akv-cache-row:first-child .akv-block')];
+  const entries = [...scene.querySelectorAll('.akv-live .akv-block')];
+  const copy = {
+    append: '<strong>Append.</strong> Compute new tokens against the active cache, append their KV states, and advance the logical sequence and encoding positions.',
+    drop: '<strong>Drop.</strong> Remove selected KV entries from future attention without recomputing retained states. The logical token sequence, retained positions, and next encoding position remain unchanged.',
+    repos: '<strong>Repos.</strong> Re-encode retained keys at consecutive positions starting from zero, in logical token order, and continue new tokens after them. Values and previously computed hidden states remain unchanged.'
+  };
+  const nextPosition = document.createElement('p');
+  nextPosition.className = 'akv-operation-next';
+  caption.before(nextPosition);
+  scene.classList.add('akv-operation-animated');
+  const states = entries.map((entry, index) => {
+    entry.innerHTML = `<span class="akv-operation-state"><span class="akv-operation-key">K<small><span class="akv-position-old">pos ${index}</span><span class="akv-position-new">pos ${Math.max(0, index - 1)}</span></small></span><span class="akv-operation-value">V</span></span>`;
+    return entry.querySelector('.akv-operation-state');
+  });
+  const motion = matchMedia('(prefers-reduced-motion: reduce)');
+  let operation = 'append', paused = motion.matches, elapsed = paused ? 4 : 0;
+  let visible = false, frame = null, previous = null;
+  const smooth = (time, start, duration) => {
+    const x = Math.max(0, Math.min(1, (time - start) / duration));
+    return x * x * (3 - 2 * x);
+  };
+  function render() {
+    const append = operation === 'append', repos = operation === 'repos';
+    const arrival = append ? smooth(elapsed, .45, .55) : 1;
+    const fill = append ? smooth(elapsed, 1.25, .9) : 1;
+    const drop = operation === 'drop' ? smooth(elapsed, 1, .85) : repos ? 1 : 0;
+    const compact = repos ? smooth(elapsed, 1.1, 1.1) : 0;
+    const encoding = repos ? smooth(elapsed, 1.35, .65) : 0;
+    const gap = parseFloat(getComputedStyle(scene.querySelector('.akv-live')).columnGap) || 12;
+    const step = entries[1].getBoundingClientRect().width + gap;
+    tokens[3].style.opacity = arrival;
+    tokens[3].style.transform = `translateY(${(1 - arrival) * 8}px)`;
+    tokens[3].querySelector('small').hidden = !append;
+    entries.forEach((entry, index) => {
+      const inactive = index === 0 ? drop : 0;
+      entry.style.transform = `translateX(${-step * compact * (index > 0 ? 1 : 0)}px)`;
+      entry.style.opacity = index === 0 && repos ? 1 - compact : index === 3 && append ? smooth(elapsed, 1.05, .2) : 1;
+      entry.classList.toggle('is-dropped', inactive > .8);
+      states[index].style.opacity = 1 - .85 * inactive;
+      states[index].style.clipPath = index === 3 && append ? `inset(0 ${(1 - fill) * 100}% 0 0)` : 'none';
+      entry.style.setProperty('--position-change', index > 0 ? encoding : 0);
+    });
+    nextPosition.textContent = `Next position: ${append ? (fill === 1 ? 4 : 3) : repos && compact === 1 ? 3 : 4}`;
+    scene.dataset.progress = String(elapsed);
+  }
+  function updateControl() {
+    playback.textContent = paused ? 'Play' : 'Pause';
+    playback.setAttribute('aria-label', `${paused ? 'Play' : 'Pause'} ${operation} animation`);
+    playback.setAttribute('aria-pressed', String(!paused));
+  }
+  function tick(now) {
+    frame = null;
+    if (previous !== null) elapsed = (elapsed + (now - previous) / 1000) % 5.5;
+    previous = now;
+    render();
+    frame = requestAnimationFrame(tick);
+  }
+  function schedule() {
+    if (frame !== null) cancelAnimationFrame(frame);
+    frame = null;
+    previous = null;
+    if (!paused && visible && details.open && !document.hidden) frame = requestAnimationFrame(tick);
+  }
+  function restart() {
+    paused = motion.matches;
+    elapsed = paused ? 4 : 0;
+    render(); updateControl(); schedule();
+  }
+  selectors.forEach(button => button.addEventListener('click', () => {
+    operation = button.dataset.operation;
+    scene.dataset.stage = operation;
+    selectors.forEach(other => other.setAttribute('aria-pressed', String(other === button)));
+    caption.innerHTML = copy[operation];
+    restart();
+  }));
+  playback.addEventListener('click', () => {
+    paused = !paused;
+    updateControl(); schedule();
+  });
+  details.addEventListener('toggle', () => { if (details.open) restart(); else schedule(); });
+  new IntersectionObserver(entries => { visible = entries[0].isIntersecting; schedule(); }).observe(scene.closest('.akv-operation-demo'));
+  document.addEventListener('visibilitychange', schedule);
+  motion.addEventListener('change', restart);
+  new ResizeObserver(render).observe(scene);
+  playback.hidden = false;
+  render(); updateControl();
+})();

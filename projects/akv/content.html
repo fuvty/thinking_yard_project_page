@@ -26,39 +26,52 @@
         <h2 class="section-title"><span class="akv-title-phrase">Cache engineering</span> for LLM agents.</h2>
         <p class="section-subtitle">As LLM agents tackle longer tasks, growing histories make KV storage and access increasingly costly. Context engineering manages this growth through message edits, controlling the cache indirectly. We introduce <strong>cache engineering</strong> to give agents direct control over which KV states remain active.</p>
       </div>
-      <div class="akv-comparison">
-        <div class="akv-comparison-point">
-          <h3>Context Engineering</h3>
-          <p>Edit messages to reduce the cache. Changing an earlier prefix invalidates subsequent KV states, requiring re-prefill of the retained history.</p>
-        </div>
-        <div class="akv-comparison-point akv-comparison-ours">
-          <h3><span class="akv-gradient">Cache Engineering</span></h3>
-          <p>Drop selected KV directly. Retained states can preserve information from dropped history and be reused without re-prefill.</p>
-        </div>
+      <div class="akv-comparison" id="core-comparison">
+        <article class="akv-comparison-point">
+          <div class="akv-comparison-copy">
+            <h3 id="core-context-title">Context Engineering</h3>
+            <p>Edit messages to reduce the cache. Changing an earlier prefix invalidates subsequent KV states, requiring re-prefill of the retained history.</p>
+          </div>
+          <figure class="akv-core-demo" aria-labelledby="core-context-title">
+            <img id="core-context-animation" data-core-engineering="context" class="akv-core-animation" src="static/figures/context-engineering.svg" width="760" height="170" alt="Message A and the old A and B caches fade to dashed outlines. B must be prefilled again before C’s cache is added.">
+          </figure>
+        </article>
+        <article class="akv-comparison-point akv-comparison-ours">
+          <div class="akv-comparison-copy">
+            <h3 id="core-cache-title"><span class="akv-gradient">Cache Engineering</span></h3>
+            <p>Drop selected KV directly. Retained states can preserve information from dropped history and be reused without re-prefill.</p>
+          </div>
+          <figure class="akv-core-demo" aria-labelledby="core-cache-title">
+            <img id="core-animation" data-core-engineering="cache" class="akv-core-animation" src="static/figures/cache-engineering.svg" width="760" height="170" alt="A’s cache fades while B’s retained cache keeps the yellow information from A. Only C’s new cache entries are prefilled.">
+          </figure>
+        </article>
+      </div>
+      <div id="core-animation-stages" class="akv-core-stages" role="group" aria-label="Animation stages" hidden></div>
+      <div class="akv-core-controls">
+        <p id="core-animation-stage-description" class="akv-core-stage-description" hidden></p>
+        <button id="core-animation-toggle" type="button" aria-pressed="false" aria-controls="core-context-animation core-animation" hidden>Pause animations</button>
       </div>
       <div id="method" class="akv-operations">
         <p class="akv-body">To enable cache engineering, we define three cache operations: <strong>Append, Drop, and Repos</strong>. Agents combine them to control the active cache throughout execution.</p>
       </div>
 
-      <figure class="akv-core-demo" aria-labelledby="core-demo-title">
-        <div class="akv-core-demo-header">
-          <h3 id="core-demo-title">Two ways to reduce the cache</h3>
-          <div class="akv-core-selector" role="group" aria-label="Engineering approach" hidden>
-            <button type="button" data-engineering="context" aria-pressed="false" aria-controls="core-animation">Context Engineering</button>
-            <button type="button" data-engineering="cache" aria-pressed="true" aria-controls="core-animation">Cache Engineering</button>
-          </div>
-        </div>
-        <img id="core-animation" class="akv-core-animation" src="static/figures/cache-engineering.svg" width="760" height="220" alt="Cache engineering keeps messages A, B and C. A's cache fades while B's retained cache keeps the yellow information from A. Only C's new cache entries appear in order. Schematic timing.">
-        <figcaption class="akv-core-caption">Inset blocks represent information carried from earlier messages.</figcaption>
-        <div class="akv-core-controls"><button id="core-animation-toggle" type="button" aria-pressed="false" hidden>Pause animation</button></div>
-      </figure>
         <details class="akv-detail akv-method-detail">
           <summary>Explore the three operations <span aria-hidden="true">+</span></summary>
-          <ul class="akv-operation-definitions">
-            <li><strong>Append:</strong> Add new tokens and their KV states.</li>
-            <li><strong>Drop:</strong> Remove selected KV entries from future attention while preserving the logical history and retained states.</li>
-            <li><strong>Repos:</strong> Adjust the positions encoded in retained keys, leaving values unchanged.</li>
-          </ul>
+          <div class="akv-operation-demo">
+            <div class="akv-operation-toolbar">
+            <div class="akv-segmented" role="group" aria-label="Cache operation">
+              <button type="button" data-operation="append" aria-pressed="true" aria-controls="operation-scene operation-caption">1. Append</button>
+              <button type="button" data-operation="drop" aria-pressed="false" aria-controls="operation-scene operation-caption">2. Drop</button>
+              <button type="button" data-operation="repos" aria-pressed="false" aria-controls="operation-scene operation-caption">3. Repos</button>
+            </div>
+            <button id="operation-playback" type="button" aria-controls="operation-scene" hidden>Pause</button>
+            </div>
+            <div class="akv-cache-scene" id="operation-scene" data-stage="append">
+              <div class="akv-cache-row"><span class="akv-row-label">Logical tokens</span><div class="akv-blocks"><span class="akv-block akv-old">A</span><span class="akv-block akv-thought">B</span><span class="akv-block akv-recent">C</span><span class="akv-block akv-new">D<small>New token</small></span></div></div>
+              <div class="akv-cache-row"><span class="akv-row-label">Active KV cache</span><div class="akv-blocks akv-live"><span class="akv-block akv-old" id="drop-block">K / V <small>pos 0</small></span><span class="akv-block akv-thought">K / V <small data-position="1">pos 1</small></span><span class="akv-block akv-recent">K / V <small data-position="2">pos 2</small></span><span class="akv-block akv-new">K / V <small data-position="3">pos 3</small></span></div></div>
+              <p class="akv-operation-caption" id="operation-caption" aria-live="polite"><strong>Append.</strong> Compute new tokens against the active cache, append their KV states, and advance the logical sequence and encoding positions.</p>
+            </div>
+          </div>
         </details>
     </div>
   </section>
