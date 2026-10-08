@@ -49,13 +49,11 @@ globalThis.AKVCoreScene = (() => {
         if (!opacity) continue;
         const progress = appear === null ? 1 : smooth(time, appear + i * .48, .4);
         const left = x + i * 60;
-        const clipId = `core-${kind}-${name}-${fresh ? 'new' : 'old'}-${i}`;
         tiles.push(`<g data-slot="${i}" opacity="${opacity}">`);
-        // Empty destination outlines appear first; a downward reveal fills each tile.
+        // Empty outlines appear first; each complete tile and its information fade in together.
         tiles.push(rect(left, y, 54, 61, '#fff'));
         if (progress > 0) {
-          tiles.push(`<defs><clipPath id="${clipId}">${rect(left, y, 54, 61 * progress, '#fff', 'none', 0)}</clipPath></defs>`);
-          tiles.push(`<g data-entry="${i}" data-fill="${progress}" clip-path="url(#${clipId})"><g opacity="${1 - .86 * inactive}">`, rect(left, y, 54, 61, fill));
+          tiles.push(`<g data-entry="${i}" data-fill="${progress}" opacity="${progress}"><g opacity="${1 - .86 * inactive}">`, rect(left, y, 54, 61, fill));
           if (history) tiles.push(rect(left + 7, y + 32, 40, 19, colors.A[1], 'none', 3));
           if (inherited) {
             tiles.push(rect(left + 7, y + 22, 40, 29, colors.B[1], 'none', 3));
