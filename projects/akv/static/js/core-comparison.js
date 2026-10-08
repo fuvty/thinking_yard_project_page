@@ -64,7 +64,8 @@
   }
   function updateControls() {
     scenes.forEach(({svg}) => { svg.dataset.paused = String(paused); });
-    button.textContent = paused ? 'Play animations' : 'Pause animations';
+    // Match the concise playback labels used by the other AKV demos.
+    button.textContent = paused ? 'Play' : 'Pause';
     button.setAttribute('aria-pressed', String(paused));
   }
   function tick(now) {
