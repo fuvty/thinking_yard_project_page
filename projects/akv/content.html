@@ -81,18 +81,20 @@
       <div class="akv-heading">
         <p class="section-eyebrow">The AKV serving system</p>
         <h2 class="section-title">Making <span class="akv-title-phrase">cache engineering</span> <span class="akv-title-phrase">work in serving.</span></h2>
-        <p class="section-subtitle">Cache operations change what a serving system must track. AKV identifies compatible states to reuse, reclaims storage without disrupting other requests, and restores missing states efficiently.</p>
+        <p class="section-subtitle">AKV tracks tokens and cache operations to reuse the right states, free unused KV, and restore missing states.</p>
       </div>
-      <div class="akv-system-challenge">
-        <p class="akv-number">THE CHALLENGE / HISTORY-DEPENDENT STATES</p>
-        <h3>The same tokens. Different KV states.</h3>
-        <p class="akv-body">Compute A, B and C, <strong>then drop A</strong>: C was computed with A available. <strong>Drop A before computing C</strong>: C cannot directly attend to A, but still uses B’s state computed with A. <strong>Start from B alone</strong>: B itself has never attended to A. All three paths retain B and C, yet their cached states differ.</p>
-        <p class="akv-body">Reusing the right states requires knowing how they were produced. Token-prefix matching alone is no longer enough; cache-operation history matters too.</p>
-      </div>
-      <figure id="radix-tree" class="akv-figure akv-trajectory">
-        <div class="akv-figure-label"><span>WHY CACHE HISTORY MATTERS</span></div>
-        <div class="akv-trajectory-scroll" tabindex="0" role="region" aria-label="Scrollable cache-operation trajectories"><img src="static/figures/trajectory.svg" alt="Three histories retain B and C. In the first, C is computed before A is dropped; in the second, after A is dropped. Their B states match but their C states differ. The third starts from B alone, so its B state also differs. An extended radix tree distinguishes the trajectories." loading="lazy"></div>
-        <figcaption>In trajectories 1 and 2, B has the same state, but C does not. Trajectory 3 starts from B alone, producing a different B state as well. AKV shares compatible prefixes and distinguishes states produced by different operation histories.</figcaption>
+      <figure id="radix-tree" class="akv-history" aria-labelledby="history-title">
+        <div class="akv-history-header">
+          <div><p class="akv-number">WHY CACHE HISTORY MATTERS</p><h3 id="history-title">The same tokens.<br>Different KV states.</h3></div>
+          <div class="akv-history-playback" hidden><button type="button" id="history-replay" aria-label="Replay cache-history animation">↺ <span>Replay</span></button><button type="button" id="history-toggle" aria-pressed="false">Pause</button></div>
+        </div>
+        <div id="history-animation" class="akv-history-animation" hidden>
+          <div class="akv-history-panel"><h4>Three operation histories</h4><svg id="history-trajectories" viewBox="0 0 440 450" role="img" aria-labelledby="history-trajectories-title history-trajectories-description"><title id="history-trajectories-title">Messages and active KV along three histories</title><desc id="history-trajectories-description">A dashed, empty KV block represents a message being computed. It points to earlier KV available for attention, then fills and gains inset colors representing historical information. In history 1, B attends to A, and C attends to A and B before A is dropped. History 2 reuses A and B, drops A, then computes C attending only to B. History 3 starts from B alone; C attends to this different B. All retain B and C. Dropping KV leaves messages unchanged.</desc><g data-history-scene></g></svg></div>
+          <div class="akv-history-panel akv-history-tree"><h4>One extended radix tree</h4><svg id="history-tree" viewBox="0 0 420 450" role="img" aria-labelledby="history-tree-title history-tree-description"><title id="history-tree-title">A radix tree grows from the root</title><desc id="history-tree-description">The first path is Root, A, B, C, drop A. The second shares A and B, then branches to drop A followed by a different C. The third branches from Root to its own B and C. Drop markers record when an operation happened; they do not remove earlier tree nodes.</desc><g data-history-scene></g></svg></div>
+        </div>
+        <div class="akv-history-fallback"><img src="static/figures/trajectory.svg" alt="Three histories retain B and C but produce different KV states. The extended radix tree shares A and B for the first two histories, branches at their different drop times, and stores the third history from the root." loading="lazy"></div>
+        <div class="akv-history-stages" role="group" aria-label="Cache-history animation stages" hidden><button type="button" data-history-stage="0" aria-controls="history-animation"><span>01</span> C, then drop A</button><button type="button" data-history-stage="1" aria-controls="history-animation"><span>02</span> Drop A, then C</button><button type="button" data-history-stage="2" aria-controls="history-animation"><span>03</span> Start from B</button><button type="button" data-history-stage="3" aria-controls="history-animation">Compare states</button></div>
+        <figcaption><span><b>ΔA</b> = drop A’s KV</span><span>Insets show information carried from earlier messages.</span></figcaption>
       </figure>
 
       <div class="akv-system-designs">
@@ -112,6 +114,57 @@
           <p>Missing states are reconstructed with segment-batch attention. It reproduces historical attention visibility and positions in one prefill pass.</p>
         </article>
       </div>
+
+      <details id="stateless-interface" class="akv-detail akv-stateless">
+        <summary>Stateless interface: a request example <span aria-hidden="true">+</span></summary>
+        <div class="akv-stateless-body">
+          <p class="akv-stateless-intro">Each request includes the full message history and cache-operation history. The client does not need to track which KV states are stored on the server.</p>
+          <div class="akv-stateless-example">
+            <div class="akv-stateless-request">
+              <div class="akv-stateless-request-heading"><span>CLIENT REQUEST</span><small>Illustrative example from the paper</small></div>
+              <pre tabindex="0" role="region" aria-label="Illustrative AKV request JSON"><code>{
+  "model": "gpt-oss-120b",
+  <span class="akv-request-field">"messages"</span>: [
+    <span data-interface-code="append0">{"role": "user", "content": "Search ICLR"}</span>,
+    <span data-interface-code="append1">{"role": "assistant", "content": "Searching"}</span>,
+    <span data-interface-code="append2">{"role": "tool", "content": "ICLR is..."}</span>
+  ],
+  <span class="akv-request-field">"cache"</span>: {
+    "drop": {<span class="akv-request-op" data-interface-code="drop0">"1": [0]</span>, <span class="akv-request-op" data-interface-code="drop1">"2": [1]</span>},
+    <span class="akv-request-op" data-interface-code="repos">"reposition": [2]</span>
+  }
+}</code></pre>
+              <p class="akv-stateless-code-note">Message indices start at 0. Message fields are abbreviated.</p>
+            </div>
+            <div class="akv-stateless-server">
+              <div class="akv-interface-demo-heading"><p class="akv-stateless-label">SERVER · CACHE HISTORY</p><div class="akv-interface-controls" hidden><button id="interface-replay" type="button" aria-label="Replay request example">↺</button><button id="interface-toggle" type="button" aria-pressed="false">Pause</button></div></div>
+              <h3>One request. The complete history.</h3>
+              <div class="akv-interface-animation" hidden>
+                <svg id="interface-scene" viewBox="0 0 420 285" role="img" aria-labelledby="interface-scene-title interface-scene-description"><title id="interface-scene-title">The cache operations encoded by the example request</title><desc id="interface-scene-description">The full message history stays intact. Append message 0, append message 1, then drop message 0's KV. Append message 2 using message 1's KV, drop message 1's KV, then reposition the retained keys of message 2. Hollow KV blocks attend to available history before filling with inherited information. Block movement schematically illustrates repositioning, not physical memory allocation. This shows logical history; the server may reuse or restore cached states internally.</desc><g data-interface-scene></g></svg>
+                <div class="akv-interface-stages" role="group" aria-label="Request example operations"></div>
+              </div>
+              <ol class="akv-stateless-steps" data-interface-fallback>
+                <li><code>"1": [0]</code><p>After message 1, drop message 0’s KV.</p></li>
+                <li><code>"2": [1]</code><p>After message 2, drop message 1’s KV.</p></li>
+                <li><code>"reposition": [2]</code><p>After message 2, reposition the retained KV.</p></li>
+              </ol>
+              <p class="akv-stateless-retained">Logical state transitions. Dropped messages remain in <code>messages</code>; reposition changes the retained keys’ positions.</p>
+            </div>
+          </div>
+          <div class="akv-stateless-next">
+            <div>
+              <p class="akv-stateless-label">NEXT REQUEST · CLIENT</p>
+              <div class="akv-stateless-history" aria-label="Keep messages 0, 1, and 2, then append new messages"><span>m<sub>0</sub></span><span>m<sub>1</sub></span><span>m<sub>2</sub></span><span class="akv-stateless-new">+ new messages</span></div>
+              <p>Append new messages and carry forward the earlier <code>cache</code> instructions.</p>
+            </div>
+            <div>
+              <p class="akv-stateless-label">CACHE MANAGEMENT · SERVER</p>
+              <h4>Reuse if available. Restore if missing.</h4>
+              <p>The histories specify the required states. AKV handles cache residency and restoration internally.</p>
+            </div>
+          </div>
+        </div>
+      </details>
 
     </div>
   </section>
