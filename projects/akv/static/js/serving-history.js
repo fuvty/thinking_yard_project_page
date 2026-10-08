@@ -9,6 +9,8 @@
   const replay=figure.querySelector('#history-replay');
   const stages=[...figure.querySelectorAll('[data-history-stage]')];
   const motion=window.matchMedia('(prefers-reduced-motion: reduce)');
+  // Give each attention, fill and drop transition more time to read.
+  const playbackRate=.6;
   let paused=motion.matches, elapsed=paused?23:0, visible=false;
   let request=null, previous=null, painted=null;
   function draw() {
@@ -34,7 +36,7 @@
   }
   function tick(now) {
     request=null;
-    if(previous!==null) elapsed=(elapsed+(now-previous)/1000)%renderer.duration;
+    if(previous!==null) elapsed=(elapsed+(now-previous)/1000*playbackRate)%renderer.duration;
     previous=now;
     // Thirty frames per second is sufficient for these slow vector transitions.
     if(painted===null || now-painted>=1000/30) { draw(); painted=now; }

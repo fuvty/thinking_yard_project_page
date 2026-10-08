@@ -1,76 +1,116 @@
-// Interpret the illustrative request from the paper. This is a logical history,
-// not a scheduler trace: AKV may reuse KV or restore it in one prefill pass.
+// Three self-contained request histories. Only prefill state is illustrated;
+// decoding, physical eviction and unrelated requests are intentionally omitted.
 globalThis.AKVInterfaceScene = (() => {
-  const duration=18.8;
-  const steps=[
-    { key:'append0',at:0,label:'Append m₀',description:'Append message 0' },
-    { key:'append1',at:2.4,label:'Append m₁',description:'Append message 1' },
-    { key:'drop0',at:5.4,label:'Drop m₀',description:'After message 1, drop message 0’s KV' },
-    { key:'append2',at:7.6,label:'Append m₂',description:'Append message 2' },
-    { key:'drop1',at:10.6,label:'Drop m₁',description:'After message 2, drop message 1’s KV' },
-    { key:'repos',at:12.8,label:'Reposition',description:'After message 2, reposition the retained keys' }
+  const duration=54;
+  const messages=[
+    {role:'user',content:'Search ICLR'},
+    {role:'assistant',content:'Searching'},
+    {role:'tool',content:'ICLR is...'}
   ];
-  const appendAt=[0,2.4,7.6], dropAt=[5.4,10.6,null];
+  const requests=[
+    {start:0,end:14,still:10,label:'Append m₀',body:{model:'gpt-oss-120b',messages:messages.slice(0,1),cache:{}}},
+    {start:14,end:32,still:28,label:'Append m₁ → Drop m₀',body:{model:'gpt-oss-120b',messages:messages.slice(0,2),cache:{drop:{'1':[0]}}}},
+    {start:32,end:duration,still:50,label:'Append m₂ → Drop m₁ → Repos',body:{model:'gpt-oss-120b',messages:[...messages],cache:{drop:{'1':[0],'2':[1]},reposition:[2]}}}
+  ];
+  const appendAt=[2.5,17,35],dropAt=[22,40,null],reposAt=43.5;
+  const slots=[36,162,288],labels=['m₀','m₁','m₂'];
   const palette=[['#fff0dc','#d7a65e'],['#e5eedc','#91ac72'],['#e3edfa','#81a4ce']];
-  const labels=['m₀','m₁','m₂'], roles=['user','assistant','tool'];
-  const slots=[47,170,293], accent='#8570b6';
+  const accent='#8570b6',ink='#544b5e',muted='#928899';
   const smooth=(time,start,length)=>{const p=Math.max(0,Math.min(1,(time-start)/length));return p*p*(3-2*p);};
   const fixed=n=>Number(n.toFixed(3));
-  const rect=(x,y,w,h,fill,stroke='none',extra='')=>`<rect x="${fixed(x)}" y="${y}" width="${w}" height="${h}" rx="7" fill="${fill}" stroke="${stroke}" ${extra}/>`;
-  const text=(x,y,value,size=13,color='#5a5261',extra='')=>`<text x="${fixed(x)}" y="${y}" font-size="${size}" fill="${color}" ${extra}>${value}</text>`;
+  const rect=(x,y,w,h,fill,stroke='none',extra='')=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="6" fill="${fill}" stroke="${stroke}" ${extra}/>`;
+  const text=(x,y,value,size=13,color=ink,extra='')=>`<text x="${x}" y="${y}" font-size="${size}" fill="${color}" ${extra}>${value}</text>`;
+  const centered='text-anchor="middle"';
   function frame(time) {
     const t=Math.max(0,Math.min(duration,time));
-    return {time:t,step:steps.findLastIndex(step=>t>=step.at),messages:[0,1,2],
-      caches:appendAt.filter(at=>t>=at+.15).map((at,id)=>({
-        id,ready:t>=at+1.85,active:t>=at+1.85&&(dropAt[id]===null||t<dropAt[id]+1.1),
-        inherits:id===0?[]:id===1?[0]:[1],
-        repositioned:id===2&&t>=14.6
-      }))};
+    const request=requests.findLastIndex(item=>t>=item.start);
+    const chapter=requests[request];
+    // Hide the text swap between a 0.9 s fade-out and a 1.2 s fade-in.
+    // Server KV stays visible through request boundaries.
+    const requestOpacity=smooth(t,chapter.start,1.2)*(1-smooth(t,chapter.end-.9,.9));
+    const caches=appendAt.flatMap((at,id)=>t<at+.2?[]:[{
+      id,x:slots[id],computedAt:at,ready:t>=at+2.6,
+      active:t>=at+2.6&&(dropAt[id]===null||t<dropAt[id]+1.1),
+      reused:request>id,
+      inherits:id===0?[]:id===1?[0]:[1],
+      keyPositions:Array.from({length:4},(_,i)=>(id===2&&t>=reposAt+2?0:id*4)+i),
+      repositioned:id===2&&t>=reposAt+2,
+      valueState:['m0','m1(m0)','m2(m1(m0))'][id]
+    }]);
+    const attention=caches.flatMap(cache=>{
+      const at=appendAt[cache.id];
+      return cache.id>0&&t>=at+.6&&t<at+1.8?[{from:cache.id,to:cache.id-1}]:[];
+    });
+    return {time:t,request,requestOpacity,messages:chapter.body.messages.map((_,id)=>id),caches,attention};
+  }
+  function requestText(index) {
+    const body=requests[index].body;
+    const lines=['{',`  "model": "${body.model}",`,'  "messages": ['];
+    body.messages.forEach((message,id)=>lines.push(`    {"role":"${message.role}", "content":"${message.content}"}${id<body.messages.length-1?',':''}`));
+    lines.push('  ],');
+    if(!body.cache.drop) lines.push('  "cache": {}');
+    else {
+      lines.push('  "cache": {');
+      const drops=Object.entries(body.cache.drop).map(([after,ids])=>`"${after}": [${ids.join(', ')}]`).join(', ');
+      lines.push(`    "drop": {${drops}}${body.cache.reposition?',':''}`);
+      if(body.cache.reposition) lines.push(`    "reposition": [${body.cache.reposition.join(', ')}]`);
+      lines.push('  }');
+    }
+    lines.push('}');
+    return lines.join('\n');
   }
   function draw(time) {
-    const {step}=frame(time), current=steps[step], parts=[];
-    const moved=smooth(time,13.2,1.4);
-    parts.push(text(16,26,'Messages · full history',12,'#928899'));
+    const state=frame(time),t=state.time,parts=[];
+    parts.push(text(16,22,'Full message history',12,muted),text(402,22,`Request 0${state.request+1}`,11,accent,`text-anchor="end" opacity="${fixed(state.requestOpacity)}"`));
     labels.forEach((label,id)=>{
-      const x=slots[id], [fill,edge]=palette[id];
-      parts.push(rect(x-7,43,94,33,fill,edge),text(x+40,65,label,16,'#4a4352','text-anchor="middle" font-weight="600"'),text(x+40,94,roles[id],11,'#a096a7','text-anchor="middle"'));
+      const x=slots[id],present=state.messages.includes(id),[fill,edge]=palette[id];
+      const arrival=present?smooth(t,requests[id].start+.3,1):0;
+      if(arrival<1) parts.push(`<g opacity="${fixed(.32*(1-arrival))}">`,rect(x,43,96,32,'none','#bcb4c5','stroke-dasharray="4 4"'),text(x+48,65,'…',16,muted,centered),'</g>');
+      if(present) parts.push(`<g data-interface-message="${id}" opacity="${fixed(arrival)}">`,rect(x,43,96,32,fill,edge),text(x+48,65,label,16,ink,`${centered} font-weight="600"`),text(x+48,93,messages[id].role,11,muted,centered),'</g>');
     });
-    parts.push(text(16,133,'Active KV',12,'#928899'));
-    appendAt.forEach((at,id)=>{
-      const appear=smooth(time,at+.15,.3);
-      if(!appear) return;
-      const dropped=dropAt[id]===null?0:smooth(time,dropAt[id]+.4,.7);
-      const fill=smooth(time,at+1.15,.7), inherited=smooth(time,at+1.35,.5);
-      const x=slots[id]-(id===2?246*moved:0), y=158;
+    parts.push(text(16,124,'Active KV · this request',12,muted),text(16,252,'K positions',11,muted));
+    state.caches.forEach(cache=>{
+      const {id,x}=cache,at=appendAt[id],y=145;
+      const appear=smooth(t,at+.2,.4),fill=smooth(t,at+1.8,.8),inherited=smooth(t,at+2,.6);
+      const dropped=dropAt[id]===null?0:smooth(t,dropAt[id]+.2,.9),kept=1-dropped;
       const [color,edge]=palette[id];
-      const obsolete=id<2?1-smooth(time,13.0,.5):1;
-      parts.push(`<g data-interface-kv="${id}" data-fill="${fixed(fill)}" opacity="${fixed(appear*obsolete)}">`);
-      parts.push(rect(x,y,80,62,'#fff'));
-      parts.push(`<g opacity="${fixed(1-dropped)}">`,rect(x,y,80,62,color,'none',`opacity="${fixed(fill)}"`));
-      if(fill<1) parts.push(rect(x,y,80,62,'none',accent,`stroke-dasharray="4 4" opacity="${fixed(1-fill)}"`));
-      parts.push(rect(x,y,80,62,'none',edge,`opacity="${fixed(fill)}"`),text(x+40,y+25,labels[id],16,'#544b5e','font-weight="600" text-anchor="middle"'));
-      if(id>0&&inherited>0) {
+      const reposition=id===2?smooth(t,reposAt,2):0;
+      parts.push(`<g data-interface-kv="${id}" data-x="${x}" data-fill="${fixed(fill)}" opacity="${fixed(appear)}">`,rect(x,y,96,66,'#fff'));
+      parts.push(`<g opacity="${fixed(kept)}">`,rect(x,y,96,66,color,'none',`opacity="${fixed(fill)}"`));
+      if(fill<1) parts.push(rect(x,y,96,66,'none',accent,`stroke-dasharray="4 4" opacity="${fixed(1-fill)}"`));
+      parts.push(rect(x,y,96,66,'none',edge,`opacity="${fixed(fill)}"`),text(x+48,y+26,labels[id],17,ink,`${centered} font-weight="600"`));
+      if(id>0) {
         parts.push(`<g data-interface-inherited="${id}" opacity="${fixed(inherited)}">`);
-        if(id===1) parts.push(rect(x+11,y+36,58,15,'#e4ad55'));
-        if(id===2) parts.push(rect(x+11,y+32,58,22,'#91ac72'),rect(x+21,y+42,38,8,'#e4ad55'));
+        if(id===1) parts.push(rect(x+14,y+38,68,15,'#d7a65e'));
+        if(id===2) parts.push(rect(x+14,y+34,68,24,'#91ac72'),rect(x+27,y+46,42,8,'#d7a65e'));
         parts.push('</g>');
       }
       parts.push('</g>');
-      if(dropped>0) parts.push(`<g opacity="${fixed(dropped*.65)}">`,rect(x,y,80,62,'none','#bcb4c5','stroke-dasharray="3 4"'),text(x+40,y+36,'—',14,'#aaa0b3','text-anchor="middle"'),'</g>');
+      if(dropped>0) parts.push(`<g opacity="${fixed(dropped*.6)}">`,rect(x,y,96,66,'none','#bcb4c5','stroke-dasharray="4 4"'),text(x+48,y+38,'—',16,muted,centered),'</g>');
       parts.push('</g>');
-      if(id>0&&time>=at+.45&&time<at+1.15) {
-        // The empty destination is a proxy for the message being computed.
-        const from=x+40,to=slots[id-1]+40;
-        const opacity=smooth(time,at+.45,.15)*(1-smooth(time,at+1,.15));
-        parts.push(`<g data-interface-attention="${id}-${id-1}" opacity="${fixed(opacity)}"><path d="M ${from} 156 C ${from} 115, ${to} 115, ${to} 156" fill="none" stroke="${accent}" stroke-width="1.8"/><path d="M ${to-3} 151 L ${to} 157 L ${to+3} 151" fill="none" stroke="${accent}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>`);
+      if(dropped>.5) parts.push(text(x+48,231,'Dropped',11,muted,centered));
+      else if(reposition>0) parts.push(text(x+48,231,'V unchanged',11,accent,centered));
+      else if(cache.reused&&cache.ready) parts.push(text(x+48,231,'Reused',11,accent,centered));
+      if(fill>0&&kept>0) {
+        parts.push(`<g data-interface-positions="${id}" opacity="${fixed(fill*kept)}">`);
+        for(let i=0;i<4;i++) {
+          const px=x+i*25;
+          parts.push(rect(px,264,21,25,reposition>0?'#ece5f6':'#f3f0f7'));
+          if(reposition<1) parts.push(text(px+10.5,281,id*4+i,11,muted,`${centered} opacity="${fixed(1-reposition)}"`));
+          if(reposition>0) parts.push(text(px+10.5,281,i,11,accent,`${centered} opacity="${fixed(reposition)}" font-weight="600"`));
+        }
+        parts.push('</g>');
       }
     });
-    if(current.key==='repos') {
-      parts.push(text(333-246*moved,246,'K repositioned',12,accent,`text-anchor="middle" opacity="${fixed(moved)}"`));
-    }
+    state.attention.forEach(({from,to})=>{
+      const at=appendAt[from],sx=slots[from]+48,tx=slots[to]+48;
+      const opacity=smooth(t,at+.6,.25)*(1-smooth(t,at+1.5,.3));
+      parts.push(`<g data-interface-attention="${from}-${to}" opacity="${fixed(opacity)}"><path d="M ${sx} 143 C ${sx} 107, ${tx} 107, ${tx} 143" fill="none" stroke="${accent}" stroke-width="1.7"/><circle cx="${sx}" cy="143" r="2" fill="${accent}"/><path d="M ${tx-3} 137 L ${tx} 144 L ${tx+3} 137" fill="none" stroke="${accent}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></g>`);
+    });
+    if(t>=reposAt) parts.push(text(210,321,'Same m₂ · re-encoded K positions',12,accent,`${centered} opacity="${fixed(smooth(t,reposAt,.5))}"`));
     return parts.join('');
   }
-  return {duration,steps,frame,draw};
+  return {duration,requests,frame,draw,requestText};
 })();
 
 (() => {
@@ -82,40 +122,54 @@ globalThis.AKVInterfaceScene = (() => {
   const drawing=disclosure.querySelector('[data-interface-scene]');
   const button=disclosure.querySelector('#interface-toggle');
   const stages=disclosure.querySelector('.akv-interface-stages');
-  const code=[...disclosure.querySelectorAll('[data-interface-code]')];
-  const controls=renderer.steps.map((step,index)=>{
-    const element=document.createElement('button');
-    element.type='button'; element.textContent=step.label;
-    element.setAttribute('aria-label',step.description);
-    element.setAttribute('aria-controls','interface-scene');
-    element.addEventListener('click',()=>{
-      elapsed=renderer.steps[index].at+(motion.matches?1.9:0);
-      paused=motion.matches;
-      updateButton(); paint(); schedule();
-    });
-    stages.append(element); return element;
-  });
+  const code=disclosure.querySelector('#interface-request-code');
+  const counter=disclosure.querySelector('#interface-request-count');
+  const example=disclosure.querySelector('.akv-stateless-example');
   const motion=matchMedia('(prefers-reduced-motion: reduce)');
-  let paused=motion.matches,elapsed=paused?15:0,visible=false;
-  let request=null,previous=null,painted=null,lastStep=-1;
+  let paused=motion.matches,elapsed=paused?renderer.requests.at(-1).still:0,visible=false;
+  let request=null,previous=null,painted=null,lastRequest=-1;
+  const controls=renderer.requests.map((item,index)=>{
+    const element=document.createElement('button');
+    element.type='button';
+    const number=document.createElement('span'),label=document.createElement('span');
+    number.textContent=`Request 0${index+1}`;label.textContent=item.label;
+    element.append(number,label);
+    element.setAttribute('aria-label',`Request ${index+1}: ${item.label}`);
+    element.setAttribute('aria-controls','interface-request-code interface-scene');
+    element.addEventListener('click',()=>{
+      // While paused, the request tabs are stable inspection views.
+      paused=paused||motion.matches;
+      elapsed=paused?item.still:item.start;
+      updateButton();paint();schedule();
+    });
+    stages.append(element);return element;
+  });
   function paint() {
     drawing.innerHTML=renderer.draw(elapsed);
-    const {step}=renderer.frame(elapsed);
-    if(step!==lastStep) {
-      lastStep=step;
-      controls.forEach((control,index)=>{
-        if(index===step) control.setAttribute('aria-current','step');
-        else control.removeAttribute('aria-current');
-      });
-      code.forEach(line=>line.classList.toggle('is-current',line.dataset.interfaceCode===renderer.steps[step].key));
+    const state=renderer.frame(elapsed);
+    if(state.request!==lastRequest) {
+      lastRequest=state.request;
+      code.textContent=renderer.requestText(state.request);
+      counter.textContent=`Request ${state.request+1} / 3`;
     }
-    disclosure.dataset.interfaceStep=renderer.steps[step].key;
+    // Follow the playback clock so pausing, closing and leaving the viewport
+    // also freeze the transition. Paused inspection keeps the text readable.
+    code.style.opacity=counter.style.opacity=String(paused?1:state.requestOpacity);
+    controls.forEach((control,index)=>{
+      const item=renderer.requests[index];
+      if(index===state.request) control.setAttribute('aria-current','step');
+      else control.removeAttribute('aria-current');
+      control.style.setProperty('--interface-progress',String(Math.max(0,Math.min(1,(elapsed-item.start)/(item.end-item.start)))));
+    });
+    // A fade marks a new illustrative sequence, not a server rollback.
+    example.style.opacity=String(paused?1:elapsed>renderer.duration-.8?(renderer.duration-elapsed)/.8:Math.min(1,elapsed/.6+.4));
+    disclosure.dataset.interfaceRequest=String(state.request+1);
     disclosure.dataset.interfacePaused=String(paused);
   }
   function updateButton() {
     button.textContent=paused?'Play':'Pause';
     button.setAttribute('aria-pressed',String(paused));
-    button.setAttribute('aria-label',`${paused?'Play':'Pause'} request example`);
+    button.setAttribute('aria-label',`${paused?'Play':'Pause'} request sequence`);
   }
   function tick(now) {
     request=null;
@@ -126,17 +180,17 @@ globalThis.AKVInterfaceScene = (() => {
   }
   function schedule() {
     if(request!==null) cancelAnimationFrame(request);
-    request=null; previous=null; painted=null;
+    request=null;previous=null;painted=null;
     if(disclosure.open&&visible&&!paused&&!document.hidden) request=requestAnimationFrame(tick);
   }
   button.addEventListener('click',()=>{paused=!paused;updateButton();paint();schedule();});
-  disclosure.querySelector('#interface-replay').addEventListener('click',()=>{elapsed=0;paused=false;updateButton();paint();schedule();});
+  disclosure.querySelector('#interface-replay').addEventListener('click',()=>{elapsed=motion.matches?renderer.requests[0].still:0;paused=motion.matches;updateButton();paint();schedule();});
   disclosure.addEventListener('toggle',schedule);
   document.addEventListener('visibilitychange',schedule);
-  motion.addEventListener('change',()=>{paused=motion.matches;elapsed=paused?15:0;updateButton();paint();schedule();});
+  motion.addEventListener('change',()=>{paused=motion.matches;elapsed=paused?renderer.requests.at(-1).still:0;updateButton();paint();schedule();});
   new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;schedule();},{threshold:.2}).observe(container);
   disclosure.querySelector('[data-interface-fallback]').hidden=true;
   disclosure.querySelector('.akv-interface-controls').hidden=false;
-  container.hidden=false;
+  container.hidden=false;stages.hidden=false;
   updateButton();paint();schedule();
 })();

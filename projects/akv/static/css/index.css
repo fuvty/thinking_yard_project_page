@@ -265,74 +265,56 @@ main a{text-decoration:none}main button,main select,main input{font:inherit}main
 /* Keyboard equivalent of clicking the cover; visible only while focused. */
 #akv-hero-advance:focus-visible { position:absolute; top:64px; left:24px; z-index:3; width:auto; height:auto; margin:0; padding:10px 16px; clip:auto; overflow:visible; border-radius:980px; border:1px solid #0071e3; background:#fff; color:#0071e3; outline:2px solid #0071e3; outline-offset:3px; }
 
-/* System mechanisms: reuse explains the main figure; eviction and restoration get their own views. */
-.akv-system-mechanisms { margin-top:28px; }
-.akv-system-mechanisms h3 { margin:10px 0 18px; font-size:27px; line-height:1.22; letter-spacing:-.035em; }
-.akv-mechanism-body,.akv-system-interface-bridge { margin:0; font-size:17px; line-height:1.6; color:#6e6e73; }
-.akv-mechanism-row { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,480px); align-items:center; gap:20px 36px; padding:28px 0 0; }
-.akv-mechanism-row:first-child { padding-top:0; }
-.akv-mechanism-reuse > .akv-mechanism-copy { grid-column:1 / -1; max-width:760px; }
-.akv-mechanism-figure { min-width:0; margin:0; padding:12px; background:#fcfbfd; border:1px solid #e7e5ed; border-radius:18px; }
-.akv-mechanism-figure img { display:block; width:100%; height:auto; }
-.akv-mechanism-figure figcaption { padding:12px 4px 2px; font-size:12px; line-height:1.5; color:#89818f; }
-.akv-mechanism-row > .akv-mechanism-detail { grid-column:1 / -1; margin:0; }
-.akv-mechanism-detail summary { font-size:13px; padding:14px 0; gap:12px; min-height:44px; }
-.akv-mechanism-detail > p { margin:0; padding:0 0 18px; font-size:14px; line-height:1.65; color:#6e6e73; }
-.akv-system-interface-intro { margin:44px 0 22px; }
-.akv-system-interface-intro h3 { margin:0 0 16px; font-size:27px; line-height:1.25; letter-spacing:-.035em; }
-.akv-system-interface-bridge { margin:0; max-width:800px; }
-#stateless-interface { margin-top:0; }
-@media(max-width:800px) {
-  .akv-mechanism-row { grid-template-columns:minmax(0,1fr); gap:18px; }
-  .akv-system-mechanisms h3 { font-size:25px; }
-  .akv-mechanism-figure { width:100%; max-width:480px; margin-inline:auto; }
-}
-
-/* Optional protocol example: client history and server cache responsibilities. */
-.akv-stateless-body { padding:0 0 30px; }
-.akv-stateless-intro { max-width:840px; margin:0 0 26px; color:#6e6e73; font-size:16px; line-height:1.65; }
-.akv-stateless-example { display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:32px; align-items:start; }
-.akv-stateless-request { min-width:0; border:1px solid #e7e5ed; border-radius:18px; background:#fbfafd; overflow:hidden; }
-.akv-stateless-request-heading { display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px 16px; padding:18px 20px; border-bottom:1px solid #eae6f0; }
-.akv-stateless-request-heading>span,.akv-stateless-label { color:#89818f; font-size:10px; letter-spacing:.08em; font-weight:600; }
-.akv-stateless-request-heading small { color:#97909e; font-size:10px; }
-.akv-stateless-request pre { margin:0; padding:20px; overflow-x:auto; background:transparent; color:#514957; font-size:12px; line-height:1.9; tab-size:2; }
+/* Three self-contained requests share one continuing server cache. */
+#stateless-interface { margin-top:30px; }
+.akv-stateless-body { padding:0 0 26px; }
+.akv-interface-demo-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:24px; margin-bottom:24px; }
+.akv-stateless-intro { max-width:690px; margin:0; color:#6e6e73; font-size:16px; line-height:1.65; }
+.akv-interface-controls { display:flex; flex-shrink:0; gap:5px; }
+.akv-interface-controls button { min-height:44px; min-width:44px; padding:8px 12px; border:1px solid #e6e1ed; border-radius:22px; background:#fff; color:#82758f; font-size:12px; }
+.akv-interface-stages { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; margin-bottom:24px; }
+.akv-interface-stages button { position:relative; display:flex; flex-direction:column; align-items:flex-start; gap:6px; min-height:64px; padding:12px 0 8px; border:0; border-top:2px solid #e5dfee; background:none; text-align:left; color:#928899; transition:color .35s ease; }
+.akv-interface-stages button::before { position:absolute; content:''; top:-2px; left:0; width:calc(var(--interface-progress,0)*100%); height:2px; background:#8570b6; }
+.akv-interface-stages button span:first-child { font-size:10px; letter-spacing:.06em; text-transform:uppercase; }
+.akv-interface-stages button span:last-child { font-size:14px; font-weight:500; line-height:1.45; text-wrap:balance; }
+.akv-interface-stages button[aria-current='step'] { color:#72508f; }
+.akv-stateless-example { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:32px; align-items:start; }
+.akv-stateless-request { min-width:0; border:1px solid #e2daec; border-radius:18px; background:#fbf9fd; overflow:hidden; }
+.akv-stateless-request-heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px 12px; padding:17px 20px; border-bottom:1px solid #eae6f0; }
+.akv-stateless-request-heading>span,.akv-stateless-label { color:#89818f; font-size:10px; letter-spacing:.055em; font-weight:600; }
+.akv-stateless-request-heading small { color:#897399; font-size:11px; font-variant-numeric:tabular-nums; }
+.akv-stateless-request pre { min-height:293px; margin:0; padding:20px; overflow-x:auto; background:transparent; color:#514957; font-size:11.5px; line-height:1.8; tab-size:2; }
 .akv-stateless code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
 .akv-stateless-request pre code { color:inherit; font-size:inherit; }
-.akv-request-field { color:#6e4e99; font-weight:600; }
-.akv-request-op { color:#73539c; background:#ede6f7; border-radius:3px; box-decoration-break:clone; -webkit-box-decoration-break:clone; }
+#interface-request-code { display:block; }
 .akv-stateless-code-note { margin:0; padding:0 20px 18px; color:#938b9b; font-size:11px; line-height:1.5; }
-.akv-stateless-server { padding:6px 0; }
-.akv-stateless-server h3 { margin:12px 0 20px; font-size:25px; line-height:1.25; letter-spacing:-.03em; }
+.akv-stateless-server { min-width:0; padding:17px 0 0; }
+.akv-stateless-label { margin:0; }
+.akv-stateless-server h3 { margin:12px 0 10px; font-size:23px; line-height:1.25; letter-spacing:-.03em; }
+.akv-interface-animation svg { display:block; width:100%; height:auto; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
+.akv-stateless-retained { margin:0; color:#938b9b; font-size:11px; line-height:1.6; }
 .akv-stateless-steps { list-style:none; padding:0; margin:0; }
 .akv-stateless-steps li { padding:12px 0; border-top:1px solid #eae6ef; }
-.akv-stateless-steps code { color:#765896; font-size:12px; }
+.akv-stateless-steps strong { color:#765896; font-size:12px; font-weight:500; }
 .akv-stateless-steps p { margin:5px 0 0; color:#62606a; font-size:14px; line-height:1.5; }
-.akv-stateless-retained { margin:16px 0 0; color:#88808f; font-size:12px; line-height:1.6; }
-.akv-stateless-next { display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:32px; margin-top:26px; padding:24px; border-radius:16px; background:#f8f6fb; }
-.akv-stateless-next h4 { margin:15px 0 12px; font-size:17px; font-weight:600; letter-spacing:-.02em; line-height:1.4; }
-.akv-stateless-next p:not(.akv-stateless-label) { margin:12px 0 0; max-width:420px; color:#7a7183; font-size:13px; line-height:1.6; }
-.akv-stateless-history { display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin-top:14px; }
-.akv-stateless-history span { padding:6px 10px; border:1px solid #e2dbea; border-radius:7px; background:#fff; color:#797180; font-size:13px; }
-.akv-stateless-history .akv-stateless-new { border-style:dashed; color:#8264a1; background:transparent; font-size:12px; }
 .akv-stateless [hidden] { display:none!important; }
-.akv-stateless-request [data-interface-code] { border-radius:3px; transition:background .2s,color .2s; }
-.akv-stateless-request [data-interface-code].is-current { background:#e6daf6; color:#5f3e86; box-shadow:0 0 0 3px #e6daf6; }
-.akv-interface-demo-heading { display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:44px; }
-.akv-interface-controls { display:flex; gap:4px; }
-.akv-interface-controls button { min-height:44px; min-width:44px; padding:8px; border:1px solid #e6e1ed; border-radius:22px; background:#fff; color:#82758f; font-size:11px; }
-.akv-stateless-server .akv-interface-demo-heading+h3 { margin:8px 0 4px; font-size:23px; }
-.akv-interface-animation svg { display:block; width:100%; height:auto; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
-.akv-interface-stages { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; }
-.akv-interface-stages button { min-height:44px; padding:7px 4px; border:1px solid #e8e4ed; border-radius:8px; background:#fff; font-size:11px; color:#918797; }
-.akv-interface-stages button[aria-current='step'] { background:#f0eaf8; border-color:#cdbdde; color:#72508f; }
+@media(prefers-reduced-motion:reduce) {
+  .akv-interface-stages button { transition:none; }
+}
 @media(max-width:800px) {
-  .akv-stateless-example,.akv-stateless-next { grid-template-columns:minmax(0,1fr); gap:24px; }
-  .akv-stateless-next>div+div { padding-top:20px; border-top:1px solid #e4ddec; }
+  .akv-stateless-example { grid-template-columns:minmax(0,1fr); gap:24px; }
+  .akv-stateless-server { max-width:480px; width:100%; margin-inline:auto; padding-top:0; }
+  .akv-stateless-request pre { min-height:278px; }
 }
 @media(max-width:600px) {
-  .akv-stateless-request pre { padding:16px 14px; font-size:11px; }
-  .akv-stateless-request-heading { padding:16px 14px; }
-  .akv-stateless-code-note { padding-inline:14px; }
-  .akv-stateless-next { padding:20px; }
+  .akv-interface-demo-heading { gap:14px; }
+  .akv-stateless-intro { font-size:14px; }
+  .akv-interface-controls { flex-direction:column; gap:4px; }
+  .akv-interface-controls button { padding:7px 10px; }
+  .akv-interface-stages { gap:10px; }
+  .akv-interface-stages button span:last-child { font-size:12px; }
+  .akv-stateless-request pre { padding:16px 12px; font-size:10.5px; min-height:260px; }
+  .akv-stateless-request-heading { padding:15px 12px; }
+  .akv-stateless-request-heading>span { font-size:9px; }
+  .akv-stateless-code-note { padding-inline:12px; font-size:10px; }
 }
