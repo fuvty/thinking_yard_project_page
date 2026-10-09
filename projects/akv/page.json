@@ -29,9 +29,9 @@
     },
     {
       "id": "strategies",
-      "label": "Policy learning",
+      "label": "Self-improvement",
       "group": "evaluation",
-      "description": "Recursive self-improvement of cache policies"
+      "description": "Agents refine their own cache policies"
     },
     {
       "id": "team",
