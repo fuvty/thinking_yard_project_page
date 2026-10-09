@@ -20,7 +20,7 @@ Primary source: the supplied `latex/main.tex`, `macro.tex`, `tex/0_abstract.tex`
 
 ### Source inconsistencies to resolve in the paper
 
-1. The prose reports a maximum 64.15× throughput gain, whereas CITER / high-effort / N=4 in the CSV is 288.67 / 4.49 = 64.29×. The hero says approximately 64× and the interactive figure computes directly from the measurements.
+1. The prose reports a maximum 64.15× throughput gain, whereas CITER / high-effort / N=4 in the CSV is 288.67 / 4.49 = 64.29×. The hero uses the paper’s rounded 2–64× throughput gain range, and the interactive figure computes directly from the measurements.
 2. The delayed-batching prose uses p=0.35, while the supplied plotting script compares the measured sweep with the p=0.2 predictions. Those two prediction tables have different optima. The page displays measured results only and describes the analytical model without claiming that this inconsistent prediction table validates its optimum.
 3. Some referenced paper figure PDFs are absent. Web diagrams and plots are reconstructed from text, simulation source and original data; no missing paper link is exposed.
 4. The model-pair sweep appears as an active table in `tex/5_experiment.tex`; its duplicate in the appendix is commented out. The page uses the active table. Workload labels for the threshold sweep and ablation stay within explicitly supplied metadata (AIME2024 and R2R / N=8, respectively).
