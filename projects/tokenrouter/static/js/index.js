@@ -18,33 +18,28 @@ function controls(attribute,callback) {
 initGranularity();
 initHandoff();
 const api={
- route:{signature:'route(result)',title:'Choose the next model.',description:'After a forward pass, use logits, hidden states or sampled tokens to select a destination for each request. Zero stays local; a nonzero index selects a peer.',note:'R-Stitch example: delegate high-entropy tokens from the small model.',code:`def route(self, result):
+ route:{signature:'route(batch, result)',title:'Choose the next model.',description:'After each forward pass, return one model name per request. Returning the current model name continues local decoding. Existing two-model schedulers also accept Boolean decisions.',note:'R-Stitch example: True delegates to the only peer; False keeps decoding locally.',code:`def route(self, batch, result):
     probs = result.logits_output.next_token_logits.softmax(dim=-1)
     entropy = -(probs * probs.log()).sum(-1) / math.log(probs.shape[-1])
-
-    destination = torch.zeros_like(entropy, dtype=torch.long)
-    destination[entropy > self.tau] = self.peer_idx
-    return destination.cpu()`},
- send:{signature:'send(req)',title:'Transfer the unseen suffix.',description:'Build a PeerReq with the request ID, new tokens, a decoding-position anchor and status. Algorithm-specific fields can travel with the request.',note:'R-Stitch excludes the just-sampled token so the peer can regenerate it. KV-cache tensors are not transferred.',code:`def send(self, req) -> PeerReq:
-    token_ids = req.origin_input_ids + req.output_ids[:-1]
-    peer_anchor = req.peer_locs[self.peer_idx] or 0
-    return PeerReq(
-        rid=req.rid,
-        token_ids=token_ids[peer_anchor:],
-        loc=len(token_ids),
-        finished=req.finished(),
-        ...
+    return (entropy > self.threshold).cpu()`},
+ send:{signature:'send(req, destination)',title:'Address the handoff.',description:'Build a PeerReq for the destination scheduler with the request state and token IDs. The default send includes the prompt and all generated tokens.',note:'R-Stitch rolls back the just-sampled token so the peer can regenerate it. KV-cache tensors stay local.',code:`def send(self, req, destination=None):
+    destination = destination or self.peer_name
+    req.model_tokens[self.server_args.server_name][1] -= 1
+    current_token_ids = req.origin_input_ids + req.output_ids[:-1]
+    return PeerReq.construct_from_req(
+        req=req,
+        source=self.server_args.server_name,
+        destination=destination,
+        current_token_ids=current_token_ids,
+        entry_model=self.server_args.entry_model_name,
+        handoff_seq=req.handoff_seq,
     )`},
- receive:{signature:'receive(peer_req)',title:'Resume the request.',description:'Convert the incoming PeerReq into the local request format. The default behavior commits transferred tokens, then resumes decoding from the preserved local state.',note:'Override receive only when the policy needs custom acceptance or additional handoff state.',code:`# The R-Stitch example uses the default receive.
-# It accepts all tokens transferred by the peer.
-
-# Incoming message:
-#   rid        — request identity
-#   token_ids  — the peer-unseen suffix
-#   loc        — decoding-position anchor
-#   finished   — active or terminated
-
-# The runtime restores the pending local request.`}
+ receive:{signature:'receive(msgs)',title:'Resume the request.',description:'Process a list of PeerReq messages from peer schedulers. The default implementation accepts all tokens sent by the peer and resumes the local request.',note:'Override receive only when the policy needs custom preprocessing before applying peer tokens.',code:`# R-Stitch inherits receive(msgs) from
+# BaseTokenRoutingScheduler.
+#
+# The default implementation processes PeerReq messages
+# and accepts all tokens sent by the peer.
+# No receive override is needed for R-Stitch.`}
 };
 function renderAPI(key) {
  const item=api[key];

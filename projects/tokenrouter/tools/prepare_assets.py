@@ -77,7 +77,7 @@ points=[]
 for n in range(901):
     t=n/900;points.append(tuple((1-t)**3*p0[i]+3*(1-t)**2*t*p1[i]+3*(1-t)*t*t*p2[i]+t**3*p3[i] for i in range(2)))
 def arm(degrees):return points[:-1]+[guide(theta+math.radians(degrees)*i/900)[0] for i in range(901)]
-shutil.copyfile(source / 'logo.png',page.parents[1] / 'shared/assets/tokenrouter.png')
+# The shared logo is maintained separately from the released code repository.
 # Sampled paths share the source geometry with the animated hero.
 (data_dir / 'roads.json').write_text(json.dumps(dict(count=ROAD_COUNT,points=[list(p) for p in arm(180)[::8]]),separators=(',',':')))
 print(f'Prepared {len(results)} measurements, {len(tradeoff)} trade-off points, 4 schedules and the road mark.')
