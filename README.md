@@ -2,7 +2,7 @@
 
 NICS-EFC 的研究主页与项目页面，共用导航、视觉组件和构建入口。主页使用 Next.js，项目页输出静态 HTML/CSS/JS。
 
-[线上站点](https://fuvty.github.io/thinking_yard_project_page/) · [设计规范](docs/design-system.md)
+[线上站点](https://fuvty.github.io/thinking_yard_project_page/) · [Agent / 开发者设计指南](docs/design-system/README.md)
 
 **项目清单只维护在 [config/projects.json](config/projects.json)。** 全站导航、主页卡片和研究路线从这里生成；README 不再重复列举项目。项目地址统一为 `/projects/<slug>/`。
 
@@ -32,6 +32,7 @@ npm run dev
 | 项目素材、样式与交互 | `projects/<slug>/static/`；依赖在 `head.html` 引入 |
 | 共享导航与公共控件 | `shared/navigation/`、`shared/ui/` |
 | 设计变量、公共样式与 logo 文件 | `shared/styles/`、`shared/assets/` |
+| 设计规范、交互动效和页面编写参考 | `docs/design-system/`（agent 从 `README.md` 开始） |
 
 - 只编辑源文件；`public/`、`out/`、`.next/` 均为生成目录，不提交。
 - 导航、页尾、回到顶部和复制引用统一由共享组件提供，不在项目内复制。

@@ -1,0 +1,6 @@
+/* Prototype entry point. Production pages get these files from the generator.
+   Values and components remain owned by shared/; do not duplicate tokens here. */
+@import url("../../shared/styles/tokens.css");
+@import url("../../shared/styles/components.css");
+@import url("../../shared/styles/research.css");
+@import url("../../shared/ui/styles.css");

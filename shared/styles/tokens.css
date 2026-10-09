@@ -1,4 +1,4 @@
-/* Source: alpha_design_system; Apple system fonts follow the repository house style. */
+/* Shared visual tokens. Usage guidance: docs/design-system/README.md. */
 :root {
   --apple-black: #1d1d1f;
   --apple-gray: #86868b;

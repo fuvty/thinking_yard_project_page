@@ -6,7 +6,7 @@ This page uses the shared project generator, navigation, tokens, CTAs, team pill
 
 Primary source: the supplied `latex/main.tex`, `macro.tex`, `tex/0_abstract.tex` through `tex/6_conclusion.tex`, and active (uncommented) content in `tex/x_appendix.tex`. Supplementary writing drafts and commented-out experiment tables were not used as current paper claims.
 
-- Hero: “A serving engine for token-level LLM routing.” Links to [the paper](https://arxiv.org/abs/2610.12242) and [the code](https://github.com/thu-nics/TokenRouter), alongside the NeurIPS 2026 badge. The five-algorithm statistic refers to the paper evaluation, not all available schedulers.
+- Hero: “A serving engine for token-level LLM routing.” Links to [the paper PDF](https://arxiv.org/pdf/2610.12242) and [the code](https://github.com/thu-nics/TokenRouter), alongside the NeurIPS 2026 badge. The five-algorithm statistic refers to the paper evaluation, not all available schedulers.
 - Architecture: model-local subservers, the client–server / decoding / inter-model loops, and pending-state handoff/resume.
 - Programming: API signatures and R-Stitch route/send excerpts follow the released code and its README. The receive panel describes inherited behavior. A folded quick start links to client, Python engine, multi-node and reproduction instructions.
 - Routing-granularity diagram: illustrative assignments, explicitly labeled, not a generation trace. Session mode assigns the full conversation immediately; Query mode colors one entire response at a time; only Token mode advances individual tokens. Playback controls and progress labels follow the selected granularity, with no playback control for the immediate session assignment.
