@@ -6,9 +6,9 @@ This page uses the shared project generator, navigation, tokens, CTAs, team pill
 
 Primary source: the supplied `latex/main.tex`, `macro.tex`, `tex/0_abstract.tex` through `tex/6_conclusion.tex`, and active (uncommented) content in `tex/x_appendix.tex`. Supplementary writing drafts and commented-out experiment tables were not used as current paper claims.
 
-- Hero: “A serving engine for token-level routing.” Three status pills requested by the authors: Paper Coming Soon, Code Coming Soon, and NeurIPS 2026. Paper and code remain non-link placeholders until URLs are supplied.
+- Hero: “A serving engine for token-level LLM routing.” Links to [the paper PDF](https://arxiv.org/pdf/2610.12242) and [the code](https://github.com/thu-nics/TokenRouter), alongside the NeurIPS 2026 badge. The five-algorithm statistic refers to the paper evaluation, not all available schedulers.
 - Architecture: model-local subservers, the client–server / decoding / inter-model loops, and pending-state handoff/resume.
-- Programming: the supplied R-Stitch route/send excerpt. The receive panel describes the default behavior; it is not a new SDK implementation.
+- Programming: API signatures and R-Stitch route/send excerpts follow the released code and its README. The receive panel describes inherited behavior. A folded quick start links to client, Python engine, multi-node and reproduction instructions.
 - Routing-granularity diagram: illustrative assignments, explicitly labeled, not a generation trace. Session mode assigns the full conversation immediately; Query mode colors one entire response at a time; only Token mode advances individual tokens. Playback controls and progress labels follow the selected granularity, with no playback control for the immediate session assignment.
 - Scheduling: exact toy workload and simulation functions from `R2RSysFigures/src/schedule_timeline.py`, small-model latency 1 and large-model latency 3.5. Times are illustrative normalized units, not measured latency. The source scheduler's flush behavior is preserved.
 - Main benchmark: `R2RSysFigures/data/TokenRouter.csv`, forward-filled grouping fields, `agentic_single` excluded as in the original plotting script. All other measured values remain unchanged. Missing values remain null / N/A.
@@ -16,7 +16,7 @@ Primary source: the supplied `latex/main.tex`, `macro.tex`, `tex/0_abstract.tex`
 - Threshold sweep: measured rows of `R2RSysFigures/data/delayedBatching.md` only.
 - Ablation: original N=8 figure values (base 132.78, CUDA graphs 230.79, async 296.86, delayed batching 372.48, official 134.90). Effects are cumulative.
 - Model-pair, deployment and original-algorithm tables: active tables in `tex/x_appendix.tex` and `tex/5_experiment.tex`. These are separate experimental settings, not mixed into the main CSV chart.
-- Authors: supplied by the user, in the supplied order. Tianyu Fu, Yichen You and Yu Wang retain their existing personal/institutional homepage links from the R2R/TaH pages. Tengxuan Liu links to his institutional homepage and Yixin Dong to github.com/ubospica, both supplied by the user. Authors without a supplied or existing homepage stay plain text; OpenReview links are omitted. Tianyu Fu and Tengxuan Liu share the confirmed equal-contribution marker. The NeurIPS 2026 badge was supplied by the user. Affiliations, paper URL and code URL remain unspecified; citation metadata is preserved pending publication details.
+- Authors: supplied by the user, in the supplied order. Tianyu Fu, Yichen You and Yu Wang retain their existing personal/institutional homepage links from the R2R/TaH pages. Tengxuan Liu links to his institutional homepage and Yixin Dong to github.com/ubospica, both supplied by the user. Authors without a supplied or existing homepage stay plain text; OpenReview links are omitted. Tianyu Fu and Tengxuan Liu share the confirmed equal-contribution marker. Yu Wang is marked as corresponding author, as confirmed by the user. The NeurIPS 2026 badge was supplied by the user. Paper/code links and arXiv citation metadata follow the released repository README; affiliations remain unspecified.
 
 ### Source inconsistencies to resolve in the paper
 
@@ -34,7 +34,7 @@ GITHUB_PAGES=true npm run build
 GITHUB_PAGES=true npm run preview
 ```
 
-`prepare_assets.py` uses only Python's standard library. It copies the original CSV/Markdown measurements, produces `static/data/measurements.json`, reuses the supplied scheduling functions without importing their plotting dependencies, copies the supplied `latex/logo.png` unchanged to `shared/assets/tokenrouter.png`, and rebuilds the sampled road geometry. The shared PNG is used by the hub, project menus and favicon.
+`prepare_assets.py` uses only Python's standard library. It copies the original CSV/Markdown measurements, produces `static/data/measurements.json`, reuses the supplied scheduling functions without importing their plotting dependencies, and rebuilds the sampled road geometry. The shared logo is copied unchanged from the released repository’s `resource/logo.png` to `shared/assets/tokenrouter.png` and is not overwritten by this script. The shared PNG is used by the hub, project menus and favicon.
 
 The mark generalizes `equal_width_swirl_logo_v4.py` to the user’s requested five roads: constant-width roads, cubic Bézier approaches tangent to a gently modulated fivefold guide, a 74° surface arc, a 46° marking arc, and arclength-spaced dashes. The later image reference informs the rounded merge treatment. SVG strokes replace polygon unions.
 

@@ -23,14 +23,9 @@
 .tr-hero-stats strong { display:block; font-size:44px; line-height:1.15; font-weight:600; letter-spacing:-.045em; }
 .tr-hero-stats span { display:block; font-size:14px; font-weight:500; margin:8px 0 4px; }
 .tr-hero-stats small { display:block; font-size:11px; line-height:1.5; color:var(--tr-muted); }
-.tr-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:12px; }
-.tr-actions .btn.tr-status-pill { cursor:default; transform:none; }
-.tr-actions .btn-primary.tr-status-pill:hover { background:var(--apple-blue); color:#fff; }
-.tr-actions .btn-secondary.tr-status-pill:hover { background:transparent; color:var(--apple-blue); }
-.tr-author-note { margin-top:24px; font-size:14px; color:var(--tr-muted); text-align:center; }
-@media(max-width:600px) {
- .tr-actions .btn.tr-status-pill { font-size:14px; padding:12px 16px; white-space:nowrap; }
-}
+.tr-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:16px; }
+.tr-actions .tr-conference { cursor:default; }
+.tr-author-note { display:flex; justify-content:center; flex-wrap:wrap; gap:8px 24px; margin-top:24px; font-size:14px; color:var(--tr-muted); text-align:center; }
 .tr-motion-control { position:absolute; right:28px; bottom:26px; width:44px; height:44px; border:1px solid #dedee5; border-radius:50%; color:#6e6e73; background:rgba(255,255,255,.72); cursor:pointer; display:grid; place-items:center; }
 .tr-motion-control svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; }
 .tr-heading { margin-bottom:48px; }
@@ -117,6 +112,7 @@
 .tr-detail[open] summary > span { transform:rotate(45deg); }
 .tr-detail-copy { max-width:770px; padding:8px 0 28px; font-size:15px; color:var(--tr-muted); }
 .tr-detail-copy p+p { margin-top:16px; }
+.tr-quickstart pre { margin:20px 0; padding:22px; border-radius:12px; background:var(--section-gray,#f5f5f7); overflow-x:auto; font:12px/1.75 'SF Mono',Menlo,Consolas,monospace; color:#42424a; }
 .tr-table-scroll { overflow:auto; max-width:100%; padding-bottom:24px; }
 .tr-table-scroll table { border-collapse:collapse; width:100%; font-size:13px; text-align:left; }
 .tr-table-scroll th,.tr-table-scroll td { padding:14px; border-bottom:1px solid #e7e7eb; vertical-align:middle; }
@@ -213,8 +209,6 @@
  .tr-hero-stats strong { font-size:32px; }
  .tr-hero-stats span { font-size:12px; line-height:1.4; min-height:34px; }
  .tr-hero-stats small { font-size:10px; line-height:1.5; }
- .tr-actions { gap:10px; }
- .tr-actions .btn { padding:13px 19px; font-size:15px; }
  .tr-motion-control { right:20px; bottom:18px; }
  .tr-heading { margin-bottom:32px; }
  .tr-heading .section-subtitle { font-size:19px; }

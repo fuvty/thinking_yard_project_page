@@ -4,13 +4,13 @@
   <canvas id="routing-roads" aria-hidden="true"></canvas>
   <div class="tr-hero-copy">
     <h1 id="hero-title" class="hero-title"><span class="tr-gradient">TokenRouter</span></h1>
-    <p class="hero-subtitle tr-tagline">A serving engine for<br><strong>token-level routing.</strong></p>
+    <p class="hero-subtitle tr-tagline">A serving engine for<br><strong>token-level LLM routing.</strong></p>
     <div class="tr-hero-stats">
       <a href="#results"><strong>~64×</strong><span>Peak throughput gain</span><small>vs. the stronger baseline · concurrency 4</small></a>
-      <a href="#programming"><strong>5</strong><span>Routing algorithms</span><small>One shared serving engine</small></a>
+      <a href="#programming"><strong>5</strong><span>Evaluated algorithms</span><small>One shared serving engine</small></a>
       <a href="#programming"><strong>3</strong><span>Interface functions</span><small>route · send · receive</small></a>
     </div>
-    <div class="tr-actions" aria-label="Publication status"><span class="btn btn-primary tr-status-pill">Paper Coming Soon</span><span class="btn btn-secondary tr-status-pill">Code Coming Soon</span><span class="btn btn-secondary tr-status-pill">NeurIPS 2026</span></div>
+    <div class="tr-actions" aria-label="Project resources"><a class="btn btn-primary" href="https://arxiv.org/pdf/2610.12242" target="_blank" rel="noopener"><i class="fas fa-file-alt" aria-hidden="true"></i> Read Paper</a><a class="btn btn-secondary" href="https://github.com/thu-nics/TokenRouter" target="_blank" rel="noopener"><i class="fab fa-github" aria-hidden="true"></i> View Code</a><span class="btn btn-secondary tr-conference"><i class="fas fa-award" aria-hidden="true"></i> NeurIPS 2026</span></div>
   </div>
   <button class="tr-motion-control" id="road-motion" aria-pressed="false" aria-label="Pause background animation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7v10M15 7v10"/></svg></button>
 </section>
@@ -63,10 +63,22 @@
   <div class="tr-heading"><p class="section-eyebrow">Programming interface</p><h2 class="section-title">Three functions.<br>One routing policy.</h2><p class="section-subtitle">Describe when a request changes models, what travels with it, and how decoding resumes.</p></div>
   <div class="tr-api tr-surface">
     <div class="tr-api-tabs tr-segmented" role="group" aria-label="Routing interface"><button data-api="route" aria-pressed="true">route</button><button data-api="send" aria-pressed="false">send</button><button data-api="receive" aria-pressed="false">receive</button></div>
-    <div class="tr-api-body"><div><p class="tr-mini" id="api-signature">route(result)</p><h3 id="api-title">Choose the next model.</h3><p id="api-description">After a forward pass, use logits, hidden states or sampled tokens to select a destination for each request. Zero stays local; a nonzero index selects a peer.</p><p class="tr-note" id="api-note">R-Stitch example: delegate high-entropy tokens from the small model.</p></div><pre tabindex="0" aria-label="Routing interface example"><code id="api-code"></code></pre></div>
-    <p class="tr-api-caption">Interface excerpts from the paper’s R-Stitch example. Configuration and surrounding class definitions are omitted.</p>
+    <div class="tr-api-body"><div><p class="tr-mini" id="api-signature">route(batch, result)</p><h3 id="api-title">Choose the next model.</h3><p id="api-description">After each forward pass, return one model name per request. Returning the current model name continues local decoding. Existing two-model schedulers also accept Boolean decisions.</p><p class="tr-note" id="api-note">R-Stitch example: True delegates to the only peer; False keeps decoding locally.</p></div><pre tabindex="0" aria-label="Routing interface example"><code id="api-code"></code></pre></div>
+    <p class="tr-api-caption">R-Stitch excerpts from the <a href="https://github.com/thu-nics/TokenRouter" target="_blank" rel="noopener">released implementation</a>. Configuration and surrounding class definitions are omitted.</p>
   </div>
-  <details class="tr-detail"><summary>Five policies, the same interface<span aria-hidden="true">+</span></summary><div class="tr-table-scroll" tabindex="0" role="region" aria-label="Supported routing policies"><table><thead><tr><th>Policy</th><th>Models</th><th>Routing decision</th></tr></thead><tbody><tr><th>CITER</th><td>2</td><td>Low confidence routes to a peer for one token.</td></tr><tr><th>R2R</th><td>2</td><td>A learned router predicts when the models would diverge.</td></tr><tr><th>R-Stitch</th><td>2</td><td>Entropy controls switching in both directions.</td></tr><tr><th>Co-LLM</th><td>2</td><td>A learned deferral signal requests a peer token.</td></tr><tr><th>ME</th><td>2+</td><td>Models are selected token by token using ensemble weights.</td></tr></tbody></table></div></details>
+  <details class="tr-detail"><summary>Five evaluated policies, the same interface<span aria-hidden="true">+</span></summary><div class="tr-table-scroll" tabindex="0" role="region" aria-label="Evaluated routing policies"><table><thead><tr><th>Policy</th><th>Models</th><th>Routing decision</th></tr></thead><tbody><tr><th>CITER</th><td>2</td><td>Low confidence routes to a peer for one token.</td></tr><tr><th>R2R</th><td>2</td><td>A learned router predicts when the models would diverge.</td></tr><tr><th>R-Stitch</th><td>2</td><td>Entropy controls switching in both directions.</td></tr><tr><th>Co-LLM</th><td>2</td><td>A learned deferral signal requests a peer token.</td></tr><tr><th>ME</th><td>2+</td><td>Models are selected token by token using ensemble weights.</td></tr></tbody></table></div><div class="tr-detail-copy"><p>The released code also includes GlimpRouter, query-level routing and a random baseline. See the <a href="https://github.com/thu-nics/TokenRouter#supported-token-level-routing-algorithms" target="_blank" rel="noopener">supported schedulers</a>.</p></div></details>
+  <details class="tr-detail tr-quickstart"><summary>Quick start<span aria-hidden="true">+</span></summary><div class="tr-detail-copy">
+    <p>Install from source and launch an R2R server with the Qwen3 0.6B / 32B configuration.</p>
+    <pre tabindex="0" aria-label="Install TokenRouter and launch a server"><code>git clone https://github.com/thu-nics/TokenRouter.git
+cd TokenRouter
+conda create -n tokenrouter python=3.10
+conda activate tokenrouter
+pip install -e .
+python -m tokenrouter.launch_server \
+  --config_path config/r2r/Qwen3-0.6B_Qwen3-32B.yaml</code></pre>
+    <p>Once the server is running, use the <a href="https://github.com/thu-nics/TokenRouter/blob/main/examples/openai_chat_completion.py" target="_blank" rel="noopener">OpenAI client example</a> or the <a href="https://github.com/thu-nics/TokenRouter/blob/main/examples/requests_chat_completion.py" target="_blank" rel="noopener">requests example</a>. The <a href="https://github.com/thu-nics/TokenRouter/blob/main/examples/engine_generate.py" target="_blank" rel="noopener">Python engine example</a> runs directly without a separate HTTP server.</p>
+    <p>The <a href="https://github.com/thu-nics/TokenRouter#quick-start" target="_blank" rel="noopener">README</a> covers multi-node serving; the <a href="https://github.com/thu-nics/TokenRouter#reproducing-our-results" target="_blank" rel="noopener">reproduction guide</a> includes configurations, workloads and benchmark commands.</p>
+  </div></details>
 </div></section>
 
 <section id="scheduling" class="section section-gray"><div class="container">
@@ -127,7 +139,7 @@
   <a class="author-tag" href="https://github.com/ubospica" target="_blank" rel="noopener">Yixin Dong</a>
   <span class="author-tag">Yi Ge</span>
   <a class="author-tag" href="https://youyc22.com/" target="_blank" rel="noopener">Yichen You</a>
-  <a class="author-tag" href="https://nicsefc.ee.tsinghua.edu.cn/people/YuWang" target="_blank" rel="noopener">Yu Wang</a>
-</div><p id="equal-contribution" class="tr-author-note">*Equal contribution</p></div></section>
+  <a class="author-tag" href="https://nicsefc.ee.tsinghua.edu.cn/people/YuWang" target="_blank" rel="noopener" aria-describedby="corresponding-author">Yu Wang<sup>†</sup></a>
+</div><p class="tr-author-note"><span id="equal-contribution">*Equal contribution</span><span id="corresponding-author">†Corresponding author</span></p></div></section>
 <section id="bibtex" class="section"><div class="container"><p class="section-eyebrow">Citation</p><h2 class="section-title">Cite our work.</h2>{{citation}}</div></section>
 </main>

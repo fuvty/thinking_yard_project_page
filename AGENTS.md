@@ -9,8 +9,9 @@ This is the unified Thinking Yard / NICS-EFC research site. Work only in source 
 - All navigation markup, state and styling: `shared/navigation/`.
 - Footer, back-to-top and citation markup/behavior, CTA and author-pill styling: `shared/ui/`. Do not reintroduce project-specific copies.
 - Visual tokens: `shared/styles/tokens.css`; common components: `shared/styles/components.css` and `research.css`.
-- Read `docs/design-system.md` before broad visual changes.
+- Read `docs/design-system/README.md` before broad visual changes, then the relevant chapter. This repo-local guide replaces the external `alpha_design_system` prototype; shared implementation files remain the source of truth.
 - A project contains `page.json`, `head.html`, `content.html`, `citation.bib`, and `static/`. Place exactly one `{{citation}}` slot in content.html. Do not duplicate navigation, footer or embed another project registry in it. The generator appends the shared footer automatically.
+- Read Paper links open the PDF directly; use `https://arxiv.org/pdf/<paper-id>` for arXiv. Reuse the shared pill styles for resource links.
 
 ## Approved navigation
 
@@ -25,7 +26,7 @@ This is the unified Thinking Yard / NICS-EFC research site. Work only in source 
 
 ## Preservation and verification
 
-Preserve paper content, authors, figures, tables, video and project-specific interactions. In particular: C2C CSV filtering, R2R token demo/video, FrameFusion charts/video/CSV, MoA matrix interactions, TaH2 animated SVG charts/token-depth samples/model and batch selectors, and the hub's curve math.
+Preserve paper content, author order and roles, figures, tables, videos and each project's interactions: CSV filtering, model/batch selectors, token traces, matrix demos, playback and measured charts. Consult the relevant project's README for data provenance and behavior. Preserve the hub's curve math. Do not maintain a second project inventory in these instructions.
 
 Run `npm run check` and `GITHUB_PAGES=true npm run build` for changes to shared rendering, configuration, or routing. Check desktop and mobile when changing visuals. The validator checks local resources and anchors; browser testing checks runtime data and layout. No deployment is needed for routine local changes unless requested.
 

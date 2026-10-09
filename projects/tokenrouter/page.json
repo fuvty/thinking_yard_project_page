@@ -1,5 +1,5 @@
 {
-  "title": "TokenRouter · A serving engine for token-level routing",
+  "title": "TokenRouter · A serving engine for token-level LLM routing",
   "description": "TokenRouter combines request-centric programming, asynchronous model-centric execution and delayed batching to serve token-level LLM routing efficiently.",
   "theme": "research",
   "sections": [
