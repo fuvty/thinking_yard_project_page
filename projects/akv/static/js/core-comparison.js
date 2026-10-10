@@ -16,8 +16,8 @@
     return control;
   });
   const descriptions = {
-    cache: "A's cache fades while B keeps the yellow information from A. B remains complete and is marked Already cached while Context recomputes B. C's cache appears as a purple dashed outline, attends to retained B, and fades in with inherited information in sync with Context.",
-    context: "Message A and the old A and B caches fade together to dashed outlines. B's recomputed cache appears as a purple dashed outline and fills. C's pending cache then attends to the new B cache and fills in sync with Cache Engineering."
+    cache: "A is prefilled first; B then attends to A and retains its information. Message C arrives next. A's cache fades while B keeps the yellow information from A. A purple highlight emphasizes the existing B cache being reused while Context recomputes B. C's cache appears as a purple dashed outline, attends to retained B, and fades in with inherited information in sync with Context.",
+    context: "A is prefilled first; B then attends to A and retains its information. Message C arrives next. Message A fades to a gray dashed outline. The invalidated old A and B caches briefly gain pale red borders, then fade to gray dashes within faint dashed outlines. B's recomputed cache appears as a purple dashed outline and fills. C's pending cache then attends to the new B cache and fills in sync with Cache Engineering."
   };
   const scenes = [...container.querySelectorAll('[data-core-engineering]')].map(fallback => {
     const approach = fallback.dataset.coreEngineering;
@@ -40,7 +40,7 @@
   });
   if (!scenes.length) return;
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let paused = motion.matches, elapsed = paused ? 11 : 0;
+  let paused = motion.matches, elapsed = paused ? renderer.stillTime : 0;
   let visible = false, previous = null, request = null;
   let currentStage = -1;
   function draw() {
@@ -57,7 +57,9 @@
       });
       stageDescription.textContent = renderer.stages[stageIndex].description;
       for (const item of scenes) {
-        item.status.textContent = stageIndex === 1 ? (item.approach === 'cache' ? 'Already cached' : 'Re-prefilling history') : '';
+        item.status.textContent = stageIndex === 1
+          ? (item.approach === 'cache' ? 'Drop A’s cache' : 'Remove message A. Invalidate cache A,B')
+          : stageIndex === 2 ? (item.approach === 'cache' ? 'Reusing B cache' : 'Re-prefilling history') : '';
       }
     }
     container.dataset.stage = String(stageIndex);
@@ -83,13 +85,13 @@
   }
   button.addEventListener('click', () => { paused = !paused; updateControls(); schedule(); });
   stageButtons.forEach((control, index) => control.addEventListener('click', () => {
-    elapsed = renderer.stages[index].start;
+    elapsed = motion.matches ? renderer.stages[index].still : renderer.stages[index].start;
     paused = motion.matches;
     updateControls(); draw(); schedule();
   }));
   motion.addEventListener('change', () => {
     paused = motion.matches;
-    elapsed = paused ? 11 : 0;
+    elapsed = paused ? renderer.stillTime : 0;
     updateControls(); draw(); schedule();
   });
   document.addEventListener('visibilitychange', schedule);

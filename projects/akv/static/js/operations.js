@@ -7,6 +7,7 @@
   const selectors = [...document.querySelectorAll('[data-operation]')];
   const tokens = [...scene.querySelectorAll('.akv-cache-row:first-child .akv-block')];
   const entries = [...scene.querySelectorAll('.akv-live .akv-block')];
+  const droppedIndex = 1; // B leaves a gap between A and C.
   const copy = {
     append: '<strong>Append.</strong> Compute new tokens against the active cache, append their KV states, and advance the logical sequence and encoding positions.',
     drop: '<strong>Drop.</strong> Remove selected KV entries from future attention without recomputing retained states. The logical token sequence, retained positions, and next encoding position remain unchanged.',
@@ -14,10 +15,11 @@
   };
   const nextPosition = document.createElement('p');
   nextPosition.className = 'akv-operation-next';
+  nextPosition.innerHTML = 'Next position: <span>4</span>';
   caption.before(nextPosition);
   scene.classList.add('akv-operation-animated');
   const states = entries.map((entry, index) => {
-    entry.innerHTML = `<span class="akv-operation-state"><span class="akv-operation-key">K<small><span class="akv-position-old">pos ${index}</span><span class="akv-position-new">pos ${Math.max(0, index - 1)}</span></small></span><span class="akv-operation-value">V</span></span>`;
+    entry.innerHTML = `<span class="akv-operation-state"><span class="akv-operation-key">K<small><span class="akv-position-old">pos ${index}</span><span class="akv-position-new">pos ${index > droppedIndex ? index - 1 : index}</span></small></span><span class="akv-operation-value">V</span></span>`;
     return entry.querySelector('.akv-operation-state');
   });
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
@@ -32,23 +34,24 @@
     const arrival = append ? smooth(elapsed, .45, .55) : 1;
     const fill = append ? smooth(elapsed, 1.25, .9) : 1;
     const drop = operation === 'drop' ? smooth(elapsed, 1, .85) : repos ? 1 : 0;
-    const compact = repos ? smooth(elapsed, 1.1, 1.1) : 0;
-    const encoding = repos ? smooth(elapsed, 1.35, .65) : 0;
-    const gap = parseFloat(getComputedStyle(scene.querySelector('.akv-live')).columnGap) || 12;
-    const step = entries[1].getBoundingClientRect().width + gap;
+    const encoding = repos && elapsed >= 1.35 ? 1 : 0;
+    const emphasis = repos ? motion.matches ? 1 : smooth(elapsed, 1.15, .2) * (1 - smooth(elapsed, 2.85, .6)) : 0;
     tokens[3].style.opacity = arrival;
     tokens[3].style.transform = `translateY(${(1 - arrival) * 8}px)`;
     tokens[3].querySelector('small').hidden = !append;
     entries.forEach((entry, index) => {
-      const inactive = index === 0 ? drop : 0;
-      entry.style.transform = `translateX(${-step * compact * (index > 0 ? 1 : 0)}px)`;
-      entry.style.opacity = index === 0 && repos ? 1 - compact : index === 3 && append ? smooth(elapsed, 1.05, .2) : 1;
+      const inactive = index === droppedIndex ? drop : 0;
+      // Repos changes encoded positions, not the depicted memory locations.
+      entry.style.transform = 'none';
+      entry.style.opacity = index === 3 && append ? smooth(elapsed, 1.05, .2) : 1;
       entry.classList.toggle('is-dropped', inactive > .8);
       states[index].style.opacity = 1 - .85 * inactive;
       states[index].style.clipPath = index === 3 && append ? `inset(0 ${(1 - fill) * 100}% 0 0)` : 'none';
-      entry.style.setProperty('--position-change', index > 0 ? encoding : 0);
+      entry.style.setProperty('--position-change', index > droppedIndex ? encoding : 0);
+      entry.style.setProperty('--position-emphasis', index > droppedIndex ? emphasis : 0);
     });
-    nextPosition.textContent = `Next position: ${append ? (fill === 1 ? 4 : 3) : repos && compact === 1 ? 3 : 4}`;
+    nextPosition.querySelector('span').textContent = String(append ? (fill === 1 ? 4 : 3) : encoding ? 3 : 4);
+    nextPosition.style.setProperty('--position-emphasis', emphasis);
     scene.dataset.progress = String(elapsed);
   }
   function updateControl() {
