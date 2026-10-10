@@ -1,7 +1,7 @@
 /* Purple accents stay local to the core and system diagrams.
-   Evaluation keeps its original method colors and figure surfaces. */
+   All figure surfaces stay white; message and method colors keep their meaning. */
 #overview, #system {
-  --akv-figure-surface:#fbf9fd;
+  --akv-figure-surface:#fff;
   --akv-figure-well:#f2edf8;
   --akv-figure-border:#e2daec;
   --akv-figure-grid:#e9e2f0;
