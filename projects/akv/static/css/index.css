@@ -292,6 +292,8 @@ main a{text-decoration:none}main button,main select,main input{font:inherit}main
 .akv-stateless code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
 .akv-stateless-request pre code { color:inherit; font-size:inherit; }
 #interface-request-code { display:block; }
+.akv-stateless-request [data-interface-code] { border-radius:3px; }
+.akv-stateless-request [data-interface-code].is-current { background:#e6daf6; color:#5f3e86; box-shadow:0 0 0 3px #e6daf6; }
 .akv-stateless-code-note { margin:0; padding:0 20px 18px; color:#938b9b; font-size:11px; line-height:1.5; }
 .akv-stateless-server { min-width:0; padding:17px 0 0; }
 .akv-stateless-label { margin:0; }

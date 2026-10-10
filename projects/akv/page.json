@@ -4,6 +4,12 @@
   "theme": "research",
   "sections": [
     {
+      "id": "motivation",
+      "label": "Insight",
+      "group": "research",
+      "description": "Attend to less history while keeping computed states"
+    },
+    {
       "id": "overview",
       "label": "Cache engineering",
       "group": "research",

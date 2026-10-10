@@ -1,13 +1,13 @@
 /* Paired explanations and synchronized diagrams, scoped to the Core Idea. */
 #overview #method { scroll-margin-top:76px; }
-#overview .akv-comparison { display:grid; grid-template-columns:minmax(0,1fr); gap:24px; margin:32px 0 0; }
-#overview .akv-comparison-point { display:grid; grid-template-columns:minmax(260px,1fr) minmax(0,1.8fr); align-items:center; gap:28px; padding:26px 28px; border:1px solid #e7e5ed; border-radius:24px; background:#fff; }
-#overview .akv-comparison-copy { min-width:0; text-align:left; }
-#overview .akv-comparison-point h3 { margin:0 0 12px; font-size:24px; line-height:1.25; letter-spacing:-.025em; }
+#overview .akv-comparison { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; margin:28px 0 0; }
+#overview .akv-comparison-point { display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:auto auto 1fr; gap:20px; padding:24px; border:1px solid #e7e5ed; border-radius:24px; background:#fff; }
+#overview .akv-comparison-copy { display:flex; min-width:0; text-align:left; }
+#overview .akv-comparison-point h3 { margin:0; font-size:24px; line-height:1.25; letter-spacing:-.025em; }
 #overview .akv-comparison-point p { margin:0; font-size:16px; line-height:1.6; color:#1d1d1f; }
-#overview .akv-core-points { display:grid; gap:17px; list-style:none; margin:20px 0 0; padding:0; }
-#overview .akv-core-points li { display:grid; grid-template-columns:22px minmax(0,1fr); align-items:start; gap:10px; }
-#overview .akv-core-face { font-size:19px; line-height:1.4; }
+#overview .akv-core-points { display:grid; flex:1; grid-template-rows:repeat(3,minmax(0,1fr)); gap:14px; list-style:none; margin:0; padding:0; }
+#overview .akv-core-points li { display:grid; grid-template-columns:26px minmax(0,1fr); align-items:start; gap:10px; }
+#overview .akv-core-face { display:block; width:26px; height:26px; margin-top:-1px; fill:none; stroke:#655d70; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
 #overview .akv-core-points strong { display:block; margin-bottom:4px; font-size:15px; line-height:1.4; font-weight:600; color:#1d1d1f; }
 #overview .akv-core-points div > span { display:block; font-size:14px; line-height:1.55; color:#6e6e73; }
 #overview .akv-core-demo { display:flex; flex-direction:column; gap:8px; min-width:0; margin:0; }
@@ -15,6 +15,7 @@
 #overview .akv-comparison-ours .akv-core-status { background:#eee9fb; color:#6650ac; font-weight:650; }
 #overview .akv-core-status:empty { visibility:hidden; }
 #overview .akv-core-animation { display:block; width:100%; height:auto; margin:0 auto; }
+#overview .akv-core-animation [data-scene] > text { font-size:24px; }
 #overview .akv-core-information-note { margin:14px 0 0; color:#8a8393; font-size:12px; line-height:1.5; text-align:center; }
 #overview .akv-core-controls { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:16px; margin:8px 0 0; }
 #overview .akv-core-stages:not([hidden]) { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-top:24px; }
@@ -30,7 +31,8 @@
 #overview .akv-operation-definitions { padding-left:22px; margin:20px 0 8px; color:#6e6e73; font-size:16px; line-height:1.6; }
 #overview .akv-operation-definitions li + li { margin-top:12px; }
 #overview .akv-operation-definitions strong { color:#1d1d1f; }
-#overview .akv-heading { margin-bottom:38px; }
+#overview .akv-heading { margin-bottom:28px; }
+#overview .akv-heading .section-title { font-size:clamp(32px,4.5vw,48px); line-height:1.12; }
 #overview .akv-detail summary { padding:20px 0; }
 #overview .akv-operation-toolbar { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
 #overview #operation-playback { min-height:44px; padding:8px 16px; border:1px solid #dcdce3; border-radius:22px; background:#fff; color:#62626b; font:inherit; font-size:12px; cursor:pointer; }
@@ -57,8 +59,14 @@
 #overview .akv-operation-next span::before { z-index:-1; }
 #overview .akv-operation-next { margin:18px 0 0; color:#62626b; font-size:13px; text-align:right; font-variant-numeric:tabular-nums; }
 #overview .akv-operation-animated .akv-operation-caption { margin-top:20px; }
-@media(max-width:800px) {
-  #overview .akv-comparison-point { grid-template-columns:minmax(0,1fr); gap:22px; }
+@media(min-width:681px) and (max-width:900px) {
+  #overview .akv-comparison { gap:16px; }
+  #overview .akv-comparison-point { padding:20px 16px; }
+  #overview .akv-comparison-point h3 { font-size:22px; }
+}
+@media(max-width:680px) {
+  #overview .akv-comparison { grid-template-columns:minmax(0,1fr); }
+  #overview .akv-comparison-point { gap:22px; }
   #overview .akv-comparison-point p { font-size:18px; }
 }
 @media(max-width:600px) {

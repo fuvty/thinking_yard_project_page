@@ -1,18 +1,29 @@
 // Three self-contained request histories. Only prefill state is illustrated;
 // decoding, physical eviction and unrelated requests are intentionally omitted.
 globalThis.AKVInterfaceScene = (() => {
-  const duration=54;
+  const duration=34.2,playbackRate=1.8;
   const messages=[
     {role:'user',content:'Search ICLR'},
     {role:'assistant',content:'Searching'},
     {role:'tool',content:'ICLR is...'}
   ];
+  // Allocate 4 / 6 / 9 wall-clock seconds to the three requests.
+  // Keep operation motion at the same speed; shorten the empty holds.
   const requests=[
-    {start:0,end:14,still:10,label:'Append m₀',body:{model:'gpt-oss-120b',messages:messages.slice(0,1),cache:{}}},
-    {start:14,end:32,still:28,label:'Append m₁ → Drop m₀',body:{model:'gpt-oss-120b',messages:messages.slice(0,2),cache:{drop:{'1':[0]}}}},
-    {start:32,end:duration,still:50,label:'Append m₂ → Drop m₁ → Repos',body:{model:'gpt-oss-120b',messages:[...messages],cache:{drop:{'1':[0],'2':[1]},reposition:[2]}}}
+    {start:0,end:7.2,still:5,label:'Append m₀',body:{model:'gpt-oss-120b',messages:messages.slice(0,1),cache:{}}},
+    {start:7.2,end:18,still:15.5,label:'Append m₁ → Drop m₀',body:{model:'gpt-oss-120b',messages:messages.slice(0,2),cache:{drop:{'1':[0]}}}},
+    {start:18,end:duration,still:32,label:'Append m₂ → Drop m₁ → Repos',body:{model:'gpt-oss-120b',messages:[...messages],cache:{drop:{'1':[0],'2':[1]},reposition:[2]}}}
   ];
-  const appendAt=[2.5,17,35],dropAt=[22,40,null],reposAt=43.5;
+  const appendAt=[1.5,8.7,19.5],dropAt=[14,24.8,null],reposAt=28.6;
+  // Each completed Append → Drop and Drop → Repos transition gets a
+  // 2.7-clock-unit (1.5 wall-second) inspection hold.
+  // Highlight only work being performed now, not carried operation history.
+  // Drop keys are operate-after boundaries, not the IDs of dropped messages.
+  const operations=[
+    ...appendAt.map((start,id)=>({request:id,key:`append${id}`,start,end:start+2.6})),
+    ...dropAt.flatMap((start,id)=>start===null?[]:[{request:id+1,key:`drop${id}`,start,end:start+1.1}]),
+    {request:2,key:'repos',start:reposAt,end:reposAt+2}
+  ];
   const slots=[36,162,288],labels=['m₀','m₁','m₂'];
   const palette=[['#fff0dc','#d7a65e'],['#e5eedc','#91ac72'],['#e3edfa','#81a4ce']];
   const accent='#8570b6',ink='#544b5e',muted='#928899';
@@ -41,24 +52,39 @@ globalThis.AKVInterfaceScene = (() => {
       const at=appendAt[cache.id];
       return cache.id>0&&t>=at+.6&&t<at+1.8?[{from:cache.id,to:cache.id-1}]:[];
     });
-    return {time:t,request,requestOpacity,messages:chapter.body.messages.map((_,id)=>id),caches,attention};
+    const operation=operations.find(item=>item.request===request&&t>=item.start&&t<item.end)?.key??null;
+    return {time:t,request,requestOpacity,operation,messages:chapter.body.messages.map((_,id)=>id),caches,attention};
   }
-  function requestText(index) {
+  function requestParts(index) {
     const body=requests[index].body;
-    const lines=['{',`  "model": "${body.model}",`,'  "messages": ['];
-    body.messages.forEach((message,id)=>lines.push(`    {"role":"${message.role}", "content":"${message.content}"}${id<body.messages.length-1?',':''}`));
-    lines.push('  ],');
-    if(!body.cache.drop) lines.push('  "cache": {}');
+    const parts=[];
+    const add=(text,key=null)=>parts.push({text,key});
+    add(`{\n  "model": "${body.model}",\n  "messages": [\n`);
+    body.messages.forEach((message,id)=>{
+      add('    ');
+      add(`{"role":"${message.role}", "content":"${message.content}"}`,`append${id}`);
+      add(`${id<body.messages.length-1?',':''}\n`);
+    });
+    add('  ],\n');
+    if(!body.cache.drop) add('  "cache": {}\n');
     else {
-      lines.push('  "cache": {');
-      const drops=Object.entries(body.cache.drop).map(([after,ids])=>`"${after}": [${ids.join(', ')}]`).join(', ');
-      lines.push(`    "drop": {${drops}}${body.cache.reposition?',':''}`);
-      if(body.cache.reposition) lines.push(`    "reposition": [${body.cache.reposition.join(', ')}]`);
-      lines.push('  }');
+      add('  "cache": {\n    "drop": {');
+      Object.entries(body.cache.drop).forEach(([after,ids],entry)=>{
+        if(entry) add(', ');
+        add(`"${after}": [${ids.join(', ')}]`,`drop${ids[0]}`);
+      });
+      add(`}${body.cache.reposition?',':''}\n`);
+      if(body.cache.reposition) {
+        add('    ');
+        add(`"reposition": [${body.cache.reposition.join(', ')}]`,'repos');
+        add('\n');
+      }
+      add('  }\n');
     }
-    lines.push('}');
-    return lines.join('\n');
+    add('}');
+    return parts;
   }
+  const requestText=index=>requestParts(index).map(part=>part.text).join('');
   function draw(time) {
     const state=frame(time),t=state.time,parts=[];
     parts.push(text(16,22,'Full message history',12,muted),text(402,22,`Request 0${state.request+1}`,11,accent,`text-anchor="end" opacity="${fixed(state.requestOpacity)}"`));
@@ -110,7 +136,7 @@ globalThis.AKVInterfaceScene = (() => {
     if(t>=reposAt) parts.push(text(210,321,'Same m₂ · re-encoded K positions',12,accent,`${centered} opacity="${fixed(smooth(t,reposAt,.5))}"`));
     return parts.join('');
   }
-  return {duration,requests,frame,draw,requestText};
+  return {duration,playbackRate,requests,frame,draw,requestText,requestParts};
 })();
 
 (() => {
@@ -128,6 +154,7 @@ globalThis.AKVInterfaceScene = (() => {
   const motion=matchMedia('(prefers-reduced-motion: reduce)');
   let paused=motion.matches,elapsed=paused?renderer.requests.at(-1).still:0,visible=false;
   let request=null,previous=null,painted=null,lastRequest=-1;
+  let codeHighlights=[];
   const controls=renderer.requests.map((item,index)=>{
     const element=document.createElement('button');
     element.type='button';
@@ -149,9 +176,18 @@ globalThis.AKVInterfaceScene = (() => {
     const state=renderer.frame(elapsed);
     if(state.request!==lastRequest) {
       lastRequest=state.request;
-      code.textContent=renderer.requestText(state.request);
+      codeHighlights=[];
+      code.replaceChildren(...renderer.requestParts(state.request).map(part=>{
+        if(!part.key) return document.createTextNode(part.text);
+        const span=document.createElement('span');
+        span.dataset.interfaceCode=part.key;
+        span.textContent=part.text;
+        codeHighlights.push(span);
+        return span;
+      }));
       counter.textContent=`Request ${state.request+1} / 3`;
     }
+    codeHighlights.forEach(span=>span.classList.toggle('is-current',span.dataset.interfaceCode===state.operation));
     // Follow the playback clock so pausing, closing and leaving the viewport
     // also freeze the transition. Paused inspection keeps the text readable.
     code.style.opacity=counter.style.opacity=String(paused?1:state.requestOpacity);
@@ -165,6 +201,7 @@ globalThis.AKVInterfaceScene = (() => {
     example.style.opacity=String(paused?1:elapsed>renderer.duration-.8?(renderer.duration-elapsed)/.8:Math.min(1,elapsed/.6+.4));
     disclosure.dataset.interfaceRequest=String(state.request+1);
     disclosure.dataset.interfacePaused=String(paused);
+    disclosure.dataset.interfaceOperation=state.operation??'';
   }
   function updateButton() {
     button.textContent=paused?'Play':'Pause';
@@ -173,7 +210,7 @@ globalThis.AKVInterfaceScene = (() => {
   }
   function tick(now) {
     request=null;
-    if(previous!==null) elapsed=(elapsed+(now-previous)/1000)%renderer.duration;
+    if(previous!==null) elapsed=(elapsed+(now-previous)/1000*renderer.playbackRate)%renderer.duration;
     previous=now;
     if(painted===null||now-painted>=1000/30) {paint();painted=now;}
     request=requestAnimationFrame(tick);

@@ -16,10 +16,14 @@ globalThis.AKVCoreScene = (() => {
   };
   const rect = (x, y, w, h, fill, stroke = 'none', radius = 7, extra = '') =>
     `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${radius}" fill="${fill}" stroke="${stroke}" ${extra}/>`;
+  const bubble = (x, y, w, h, fill, stroke = 'none', radius = 12, extra = '') => {
+    const r = radius;
+    return `<path data-message-bubble d="M ${x+r} ${y} H ${x+w-r} Q ${x+w} ${y} ${x+w} ${y+r} V ${y+h-r} Q ${x+w} ${y+h} ${x+w-r} ${y+h} H ${x+30} L ${x+12} ${y+h+10} L ${x+16} ${y+h} H ${x+r} Q ${x} ${y+h} ${x} ${y+h-r} V ${y+r} Q ${x} ${y} ${x+r} ${y} Z" fill="${fill}" stroke="${stroke}" stroke-linejoin="round" ${extra}/>`;
+  };
   const label = (x, y, value, size, anchor = 'start') =>
     `<text x="${x}" y="${y}" font-size="${size}" text-anchor="${anchor}" font-weight="600" fill="#544b5e">${value}</text>`;
-  const inactiveOutline = (x, y, w, h, amount) => amount > 0
-    ? `<g data-inactive-outline opacity="${amount * .6}">${rect(x, y, w, h, 'none', '#bbb5c4', 7, 'stroke-dasharray="3 4"')}<text x="${x + w / 2}" y="${y + h / 2 + 4}" font-size="13" fill="#a6a0af" text-anchor="middle">—</text></g>`
+  const inactiveOutline = (x, y, w, h, amount, shape = rect) => amount > 0
+    ? `<g data-inactive-outline opacity="${amount * .6}">${shape(x, y, w, h, 'none', '#bbb5c4', undefined, 'stroke-dasharray="3 4"')}<text x="${x + w / 2}" y="${y + h / 2 + 4}" font-size="13" fill="#a6a0af" text-anchor="middle">—</text></g>`
     : '';
   function scene(kind, time) {
     const ours = kind === 'cache';
@@ -35,8 +39,8 @@ globalThis.AKVCoreScene = (() => {
       if (!opacity) continue;
       const x = positions[name];
       const [fill, edge] = colors[name];
-      parts.push(`<g data-message="${name}" opacity="${opacity}">${rect(x, 63, 174, 44, '#fff')}<g opacity="${1 - inactive}">${rect(x, 63, 174, 44, fill, edge)}${label(x + 87, 91, name, 21, 'middle')}</g>`);
-      parts.push(inactiveOutline(x, 63, 174, 44, inactive));
+      parts.push(`<g data-message="${name}" opacity="${opacity}">${bubble(x, 63, 174, 44, '#fff')}<g opacity="${1 - inactive}">${bubble(x, 63, 174, 44, fill, edge)}${label(x + 87, 91, name, 21, 'middle')}</g>`);
+      parts.push(inactiveOutline(x, 63, 174, 44, inactive, bubble));
       parts.push('</g>');
     }
     function caches(name, { history = false, inherited = false, inactive = 0, appear = null, dx = 0, dy = 0, fresh = false } = {}) {

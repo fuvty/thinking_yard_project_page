@@ -38,6 +38,7 @@ globalThis.AKVHistoryScene = (() => {
   const progress = (time,start,length=.65) => ease((time-start)/length);
   const f = n => Number(n.toFixed(3));
   const rect = (x,y,w,h,fill,stroke='none',radius=7,extra='') => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${radius}" fill="${fill}" stroke="${stroke}" ${extra}/>`;
+  const bubble = (x,y,fill,stroke) => `<path data-message-bubble d="M ${x+8} ${y} H ${x+62} Q ${x+70} ${y} ${x+70} ${y+8} V ${y+19} Q ${x+70} ${y+27} ${x+62} ${y+27} H ${x+23} L ${x+9} ${y+34} L ${x+12} ${y+27} H ${x+8} Q ${x} ${y+27} ${x} ${y+19} V ${y+8} Q ${x} ${y} ${x+8} ${y} Z" fill="${fill}" stroke="${stroke}" stroke-linejoin="round"/>`;
   const text = (x,y,value,size=14,fill=ink,extra='') => `<text x="${x}" y="${y}" font-size="${size}" fill="${fill}" ${extra}>${value}</text>`;
   const tokenX = { A:134, B:230, C:326 };
   const computing = (time,token) => time>=token.at+.05 && time<token.at+1.35;
@@ -104,7 +105,7 @@ globalThis.AKVHistoryScene = (() => {
         const appear=progress(time,token.at,.4);
         if(!appear) continue;
         const [fill,stroke]=colors[token.token];
-        parts.push(`<g data-message="${token.token}" opacity="${f(appear)}" transform="translate(0 ${f((1-appear)*5)})">${rect(x,y+43,70,27,fill,stroke)}${text(x+35,y+62,token.token,15,ink,'text-anchor="middle" font-weight="550"')}</g>`);
+        parts.push(`<g data-message="${token.token}" opacity="${f(appear)}" transform="translate(0 ${f((1-appear)*5)})">${bubble(x,y+43,fill,stroke)}${text(x+35,y+62,token.token,15,ink,'text-anchor="middle" font-weight="550"')}</g>`);
         const cacheAppear=progress(time,token.at+.15,.25);
         const fillProgress=token.reused?1:progress(time,token.at+.9,.4);
         const infoProgress=token.reused?1:progress(time,token.at+1.04,.26);

@@ -19,39 +19,78 @@
     <p class="akv-release">Paper &amp; code forthcoming</p>
   </section>
 
+  <section id="motivation" class="section akv-motivation" aria-labelledby="motivation-title">
+    <div class="container">
+      <div class="akv-heading">
+        <p class="section-eyebrow">The insight</p>
+        <h2 id="motivation-title" class="section-title">Why cache engineering?</h2>
+      </div>
+      <ol class="akv-motive-flow" role="list" aria-label="From growing history to cache engineering">
+        <li class="akv-motive-step">
+          <span class="akv-motive-emoji" aria-hidden="true">😵‍💫</span>
+          <div class="akv-motive-copy">
+            <h3>Long history needs trimming.</h3>
+            <p>Agents accumulate long histories, and not all of that history is needed.</p>
+          </div>
+        </li>
+        <li class="akv-motive-step">
+          <span class="akv-motive-emoji" aria-hidden="true">🙁</span>
+          <div class="akv-motive-copy">
+            <h3>Trim the text?</h3>
+            <p>Prefix edits invalidate later KV, requiring re-prefill.</p>
+          </div>
+        </li>
+        <li class="akv-motive-step">
+          <span class="akv-motive-emoji" aria-hidden="true">💡</span>
+          <div class="akv-motive-copy">
+            <h3>KV cache is built for reuse.</h3>
+            <p>It already stores the states we computed.</p>
+          </div>
+        </li>
+        <li class="akv-motive-step akv-motive-answer">
+          <span class="akv-motive-emoji" aria-hidden="true">🙂</span>
+          <div class="akv-motive-copy">
+            <h3>Why not trim KV cache directly?</h3>
+            <p>Drop selected KV cache. Reuse the rest.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
   <section id="overview" class="section">
     <div class="container">
       <div class="akv-heading">
         <p class="section-eyebrow">The core idea</p>
-        <h2 class="section-title"><span class="akv-title-phrase">Cache engineering</span> for LLM agents.</h2>
+        <h2 class="section-title">From Context Engineering<br>to Cache Engineering</h2>
         <p class="section-subtitle">Longer histories increase KV storage and attention costs.<br>Context engineering edits text.<br><strong>Cache engineering</strong> directly manages KV states.</p>
       </div>
       <div class="akv-comparison" id="core-comparison">
         <article class="akv-comparison-point">
-          <div class="akv-comparison-copy">
-            <h3 id="core-context-title">Context Engineering</h3>
-            <ul class="akv-core-points" role="list">
-              <li><span class="akv-core-face" aria-hidden="true">🙁</span><div><strong>Indirect cache control.</strong><span>Edit text messages, with no direct control over retained KV.</span></div></li>
-              <li><span class="akv-core-face" aria-hidden="true">🙁</span><div><strong>More computation.</strong><span>Prefix edits invalidate later KV, requiring re-prefill.</span></div></li>
-              <li><span class="akv-core-face" aria-hidden="true">🙁</span><div><strong>Lost historical information.</strong><span>Recomputing B without A loses A’s contribution to B’s original KV.</span></div></li>
-            </ul>
-          </div>
+          <h3 id="core-context-title">Context Engineering</h3>
           <figure class="akv-core-demo" aria-labelledby="core-context-title">
             <img id="core-context-animation" data-core-engineering="context" class="akv-core-animation" src="static/figures/context-engineering.svg" width="760" height="170" alt="Message A and the old A and B caches fade to dashed outlines. B must be prefilled again before C’s cache is added.">
           </figure>
-        </article>
-        <article class="akv-comparison-point akv-comparison-ours">
           <div class="akv-comparison-copy">
-            <h3 id="core-cache-title"><span class="akv-gradient">Cache Engineering</span></h3>
             <ul class="akv-core-points" role="list">
-              <li><span class="akv-core-face" aria-hidden="true">🙂</span><div><strong>Direct cache control.</strong><span>Drop selected KV without deleting the corresponding text.</span></div></li>
-              <li><span class="akv-core-face" aria-hidden="true">🙂</span><div><strong>Less computation through KV reuse.</strong><span>AKV serving reuses retained, compatible KV without re-prefill.</span></div></li>
-              <li><span class="akv-core-face" aria-hidden="true">🙂</span><div><strong>Preserved historical information.</strong><span>B’s retained KV can still carry information from A after A’s KV is dropped.</span></div></li>
+              <li><svg class="akv-core-face" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M25.9 8.2C23.8 4.8 19.9 3.3 15.7 3.7C9.1 3.3 4.1 8.2 3.8 14.9C3.1 21.7 8.1 27.8 15.2 28.1C22.2 28.8 27.7 24 28.2 17.3C28.5 13.7 27.5 10.6 25.9 8.2Z"/><path d="M10.8 12.4q-.4 1.1-.1 2.1m10-2.3q.4 1.1.1 2.2"/><path d="M10.4 22.1c2.1-4.4 7.9-5 11.1-.6"/></svg><div><strong>Indirect cache control.</strong><span>Edit text messages, with no direct control over retained KV.</span></div></li>
+              <li><svg class="akv-core-face" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M25.9 8.2C23.8 4.8 19.9 3.3 15.7 3.7C9.1 3.3 4.1 8.2 3.8 14.9C3.1 21.7 8.1 27.8 15.2 28.1C22.2 28.8 27.7 24 28.2 17.3C28.5 13.7 27.5 10.6 25.9 8.2Z"/><path d="M10.8 12.4q-.4 1.1-.1 2.1m10-2.3q.4 1.1.1 2.2"/><path d="M10.4 22.1c2.1-4.4 7.9-5 11.1-.6"/></svg><div><strong>More computation.</strong><span>Prefix edits invalidate later KV, requiring re-prefill.</span></div></li>
+              <li><svg class="akv-core-face" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M25.9 8.2C23.8 4.8 19.9 3.3 15.7 3.7C9.1 3.3 4.1 8.2 3.8 14.9C3.1 21.7 8.1 27.8 15.2 28.1C22.2 28.8 27.7 24 28.2 17.3C28.5 13.7 27.5 10.6 25.9 8.2Z"/><path d="M10.8 12.4q-.4 1.1-.1 2.1m10-2.3q.4 1.1.1 2.2"/><path d="M10.4 22.1c2.1-4.4 7.9-5 11.1-.6"/></svg><div><strong>Lost historical information.</strong><span>Recomputing B without A loses A’s contribution to B’s original KV.</span></div></li>
             </ul>
           </div>
+        </article>
+        <article class="akv-comparison-point akv-comparison-ours">
+          <h3 id="core-cache-title"><span class="akv-gradient">Cache Engineering</span></h3>
           <figure class="akv-core-demo" aria-labelledby="core-cache-title">
             <img id="core-animation" data-core-engineering="cache" class="akv-core-animation" src="static/figures/cache-engineering.svg" width="760" height="170" alt="A’s cache fades while B’s retained cache keeps the yellow information from A. Only C’s new cache entries are prefilled.">
           </figure>
+          <div class="akv-comparison-copy">
+            <ul class="akv-core-points" role="list">
+              <li><svg class="akv-core-face" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M25.9 8.2C23.8 4.8 19.9 3.3 15.7 3.7C9.1 3.3 4.1 8.2 3.8 14.9C3.1 21.7 8.1 27.8 15.2 28.1C22.2 28.8 27.7 24 28.2 17.3C28.5 13.7 27.5 10.6 25.9 8.2Z"/><path d="M10.8 12.4q-.4 1.1-.1 2.1m10-2.3q.4 1.1.1 2.2"/><path d="M9.9 18.6c2.2 5.4 8.3 5.9 12 .2"/></svg><div><strong>Direct cache control.</strong><span>Drop selected KV without deleting the corresponding text.</span></div></li>
+              <li><svg class="akv-core-face" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M25.9 8.2C23.8 4.8 19.9 3.3 15.7 3.7C9.1 3.3 4.1 8.2 3.8 14.9C3.1 21.7 8.1 27.8 15.2 28.1C22.2 28.8 27.7 24 28.2 17.3C28.5 13.7 27.5 10.6 25.9 8.2Z"/><path d="M10.8 12.4q-.4 1.1-.1 2.1m10-2.3q.4 1.1.1 2.2"/><path d="M9.9 18.6c2.2 5.4 8.3 5.9 12 .2"/></svg><div><strong>Less computation through KV reuse.</strong><span>AKV serving reuses retained, compatible KV without re-prefill.</span></div></li>
+              <li><svg class="akv-core-face" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M25.9 8.2C23.8 4.8 19.9 3.3 15.7 3.7C9.1 3.3 4.1 8.2 3.8 14.9C3.1 21.7 8.1 27.8 15.2 28.1C22.2 28.8 27.7 24 28.2 17.3C28.5 13.7 27.5 10.6 25.9 8.2Z"/><path d="M10.8 12.4q-.4 1.1-.1 2.1m10-2.3q.4 1.1.1 2.2"/><path d="M9.9 18.6c2.2 5.4 8.3 5.9 12 .2"/></svg><div><strong>Preserved historical information.</strong><span>B’s retained KV can still carry information from A after A’s KV is dropped.</span></div></li>
+            </ul>
+          </div>
         </article>
       </div>
       <p class="akv-core-information-note">Colored blocks inside the cache represent information carried from earlier messages.</p>
@@ -88,7 +127,7 @@
     <div class="container">
       <div class="akv-heading">
         <p class="section-eyebrow">The AKV serving system</p>
-        <h2 class="section-title">AKV makes <span class="akv-title-phrase">cache engineering</span> work.</h2>
+        <h2 class="section-title">AKV: A Serving System<br>that Enables Cache Engineering</h2>
         <p class="section-subtitle">With Append, Drop, and Repos, the same token prefix and retained positions can yield different cache states. AKV tracks both token and operation histories to correctly reuse and restore these states.</p>
       </div>
       <figure id="radix-tree" class="akv-history" aria-labelledby="history-title">
