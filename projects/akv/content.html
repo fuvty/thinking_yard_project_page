@@ -32,7 +32,7 @@
             <h3 id="core-context-title">Context Engineering</h3>
             <ul class="akv-core-points" role="list">
               <li><span class="akv-core-face" aria-hidden="true">🙁</span><div><strong>Indirect cache control.</strong><span>Edit text messages, with no direct control over retained KV.</span></div></li>
-              <li><span class="akv-core-face" aria-hidden="true">🙁</span><div><strong>Repeated computation.</strong><span>Prefix edits invalidate later KV, requiring re-prefill.</span></div></li>
+              <li><span class="akv-core-face" aria-hidden="true">🙁</span><div><strong>More computation.</strong><span>Prefix edits invalidate later KV, requiring re-prefill.</span></div></li>
               <li><span class="akv-core-face" aria-hidden="true">🙁</span><div><strong>Lost historical information.</strong><span>Recomputing B without A loses A’s contribution to B’s original KV.</span></div></li>
             </ul>
           </div>
@@ -45,7 +45,7 @@
             <h3 id="core-cache-title"><span class="akv-gradient">Cache Engineering</span></h3>
             <ul class="akv-core-points" role="list">
               <li><span class="akv-core-face" aria-hidden="true">🙂</span><div><strong>Direct cache control.</strong><span>Drop selected KV without deleting the corresponding text.</span></div></li>
-              <li><span class="akv-core-face" aria-hidden="true">🙂</span><div><strong>Reuse completed computation.</strong><span>AKV serving reuses retained, compatible KV without re-prefill.</span></div></li>
+              <li><span class="akv-core-face" aria-hidden="true">🙂</span><div><strong>Less computation through KV reuse.</strong><span>AKV serving reuses retained, compatible KV without re-prefill.</span></div></li>
               <li><span class="akv-core-face" aria-hidden="true">🙂</span><div><strong>Preserved historical information.</strong><span>B’s retained KV can still carry information from A after A’s KV is dropped.</span></div></li>
             </ul>
           </div>
