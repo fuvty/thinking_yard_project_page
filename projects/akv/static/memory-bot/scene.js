@@ -9,16 +9,17 @@ globalThis.AKVMemoryBotScene = (() => {
  const SQUIRCLE_N=4.0; // User-selected soft square. Lower values are rounder.
  const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
  const smooth=x=>{x=clamp(x);return x*x*(3-2*x)};
+ // Normalize a logistic S-curve; smooth its input to arrive and leave at rest.
+ const logisticFloor=1/(1+Math.exp(5));
+ const cacheEase=x=>clamp((1/(1+Math.exp(-10*(smooth(x)-.5)))-logisticFloor)/(1-2*logisticFloor));
  const mix=(a,b,u)=>a+(b-a)*u;
  const n=v=>Number(v.toFixed(3));
- const OPERATIONS=['Append','Drop','Repos','Drop','Repos','Append'];
- const BOUNDARIES=[0,3,6,9.5,12.5,16,19];
- const CYCLE_DURATION=BOUNDARIES.at(-1);
- function actionAt(time){
-  const cycle=Math.floor(time/CYCLE_DURATION),local=time-cycle*CYCLE_DURATION;
-  let segment=0;
-  while(segment<OPERATIONS.length-1&&local>=BOUNDARIES[segment+1])segment++;
-  return {segment,operation:OPERATIONS[segment],local:local-BOUNDARIES[segment],end:cycle*CYCLE_DURATION+BOUNDARIES[segment+1]};
+ const INITIAL_SLOTS=[193,256];
+ const cache=(x)=>({x,y:225,r:0});
+ function idle(slots){
+  return {operation:null,statics:slots.map(cache),occupied:slots.length,moving:null,back:false,handSide:0,handHidden:true,
+   right:{x:384,y:248,r:0},left:{x:128,y:248,r:0},reach:0,grip:0,local:5,elapsed:3,adding:false,
+   focus:0,blink:1,lean:0,gazeX:0,gazeY:0,inquis:0};
  }
  // Retain the original gestures and easing. Shorten anticipation and holds,
  // give lifts/transfers room to breathe, and bring release into withdrawal.
@@ -35,26 +36,26 @@ globalThis.AKVMemoryBotScene = (() => {
   }
   return keys.at(-1)[1];
  }
- const ease={soft:smooth,swift:x=>x<.22?x*x/.22:1-(1-x)**2/.78,out:x=>1-(1-x)**3,in:x=>x*x*x,pop:x=>1-(1-x)**3+Math.sin(x*Math.PI)*.13};
+ const ease={soft:smooth,swift:x=>x<.22?x*x/.22:1-(1-x)**2/.78};
  function at(t,keys){for(let i=1;i<keys.length;i++)if(t<=keys[i][0])return mix(keys[i-1][1],keys[i][1],(ease[keys[i][2]||'soft'])(clamp((t-keys[i-1][0])/(keys[i][0]-keys[i-1][0]))));return keys.at(-1)[1]}
  function pulse(t,start,end){return t>start&&t<end?Math.sin(Math.PI*(t-start)/(end-start))**2:0}
- function sampleRepos(segment,t){
-  const shift=63*smooth((t-1.55)/1.15);
-  const statics=(segment===2?[256,319]:[256]).map(x=>({x:x-shift,y:225,r:0}));
+ function sampleRepos(slots,t){
+  const shift=smooth((t-1.55)/1.15);
+  const statics=slots.map((x,i)=>cache(mix(x,193+63*i,shift)));
   // A brief head-led shake travels through the soft body, then settles before
   // retained states change positions. Repos never adds or removes a state.
   const shake=clamp((t-.35)/1.1),envelope=Math.sin(Math.PI*shake)**2;
-  return {operation:'Repos',repositioning:true,local:t,segment,adding:false,handSide:0,moving:null,statics,occupied:statics.length,back:false,
+  return {operation:'Repos',repositioning:true,local:t,adding:false,handSide:0,moving:null,statics,occupied:statics.length,back:false,
    right:{x:384,y:248,r:0},left:{x:128,y:248,r:0},reach:0,grip:0,
    shake,envelope,lean:6*envelope*Math.sin(shake*Math.PI*8-.5),inquis:0,
    focus:.6*pulse(t,.15,3.3),blink:1-.8*pulse(t,.65,1.3),
    gazeX:at(t,[[0,0],[.3,8],[1.55,8],[2.7,-16],[3.2,0],[5,0]]),gazeY:-16*pulse(t,.15,3.3)};
  }
- function sample(time){
-  const {segment,local:elapsed,operation}=actionAt(time);
-  if(operation==='Repos')return sampleRepos(segment,elapsed);
+ function sampleGesture(action){
+  const {operation,before,index,time:elapsed}=action;
+  if(operation==='Repos')return sampleRepos(before,elapsed);
   const t=choreographyTime(elapsed,operation);
-  const adding=operation==='Append',slot=adding?(segment===0?319:256):193,handSide=adding?1:-1;
+  const adding=operation==='Append',slot=adding?before.at(-1)+63:before[index],handSide=adding?1:-1;
   const pos=(axis)=>adding?
    at(t,axis==='x'?[[0,342],[1.05,342],[1.3,410,'swift'],[1.55,410],[1.86,slot+16,'swift'],[2.15,slot+16],[2.82,slot],[5,slot]]:[[0,292],[1.05,292],[1.3,225,'swift'],[1.55,225],[1.86,225,'swift'],[2.15,225],[2.82,225],[5,225]]):
    at(t,axis==='x'?[[0,slot],[1.28,slot],[1.53,slot-5,'swift'],[1.84,slot-5],[2.2,102,'swift'],[2.47,102],[2.8,170],[5,170]]:[[0,225],[1.28,225],[1.53,173,'swift'],[1.84,173],[2.2,236,'swift'],[2.47,236],[2.8,292],[5,292]]);
@@ -68,8 +69,8 @@ globalThis.AKVMemoryBotScene = (() => {
   const hand={x:mix(256+handSide*128,target.x,reach)+handSide*8*Math.sin(Math.PI*reach),y:mix(248,target.y,reach)-12*Math.sin(Math.PI*reach),r:mix(handSide*40,turn,reach)};
   // Drop only removes the selected state. Its gap persists until a separate
   // click starts Repos; retained cache positions never change during Drop.
-  const slots=adding?(segment===0?[193,256]:[193]):(segment===1?[256,319]:[256]);
-  const statics=slots.map(x=>({x,y:225,r:0}));
+  const slots=adding?before:before.filter((_,i)=>i!==index);
+  const statics=slots.map(cache);
   const occupied=statics.length+(adding?(t>=2.82?1:0):(t>=1.53?0:1));
   const back=adding?t<1.55:t>=2.47;
   const handHidden=reach===0||(back&&(adding?t<=1.05:t>=2.8));
@@ -78,7 +79,37 @@ globalThis.AKVMemoryBotScene = (() => {
   const lean=adding?at(t,[[0,0],[.25,-1.4],[.5,-2.7],[1.05,-2.7],[1.3,3.8,'swift'],[1.55,3.8],[1.86,-3.8,'swift'],[2.15,-3.8],[2.82,-1.5],[3.3,-1.5],[3.53,1.3,'swift'],[3.78,0],[5,0]]):at(t,[[0,0],[.3,-1.5],[.6,-3],[1.28,-3],[1.53,4.6,'swift'],[1.84,4.6],[2.2,2.5,'swift'],[2.47,2.5],[2.8,-1.8],[3.06,-1.8],[3.29,1.3,'swift'],[3.54,0],[5,0]]);
   const inquis=adding?.35*pulse(t,1.8,2.2):pulse(t,1.46,1.86);
   const blink=1-.95*Math.max(pulse(t,.34,.48),pulse(t,3.35,3.5));
-  return {operation,local:t,elapsed,segment,adding,handSide,handHidden,moving,statics,occupied,back,right:adding?hand:{x:384,y:248,r:0},left:adding?{x:128,y:248,r:0}:hand,reach,grip,focus:Math.min(1,Math.abs(gazeX)/20+Math.abs(gazeY)/20),blink,lean:lean*handSide,gazeX:adding?gazeX:-gazeX,gazeY,inquis};
+  return {operation,local:t,elapsed,adding,handSide,handHidden,moving,statics,occupied,back,right:adding?hand:{x:384,y:248,r:0},left:adding?{x:128,y:248,r:0}:hand,reach,grip,focus:Math.min(1,Math.abs(gazeX)/20+Math.abs(gazeY)/20),blink,lean:lean*handSide,gazeX:adding?gazeX:-gazeX,gazeY,inquis};
+ }
+ function sampleRefill(action){
+  const {before:slots,index}=action,t=action.time;
+  const f=sampleGesture({...action,operation:'Drop',time:Math.min(t,3)});
+  f.operation='Re-prefill';
+  const suffix=slots.slice(index+1);
+  // Editing the final token has no later KV to invalidate or recompute.
+  if(!suffix.length)return f;
+  const collapseEnd=3.28+.09*(suffix.length-1);
+  f.shock=smooth((t-(collapseEnd-.18))/.32)*(1-smooth((t-3.72)/.5));
+  f.effort=smooth((t-3.8)/.4)*(1-smooth((t-6.65)/.55));
+  f.refillTime=t;
+  if(t>=2.45){
+   f.statics=[...slots.slice(0,index).map(cache),...suffix.map((x,i)=>({
+    x:t<3.8?x:193+63*(index+i),y:225,r:0,
+    scale:t<3.8?1-cacheEase(clamp((t-2.6-i*.09)/.68)**1.3):cacheEase((t-4-i*1.15)/(suffix.length===1?2.5:1.75))
+   }))];
+   f.occupied=f.statics.filter(p=>p.scale===undefined||(t<3.8?p.scale>.01:p.scale>=.999)).length;
+  }
+  const expression=Math.max(f.shock,f.effort);
+  f.gazeX*=1-expression;
+  f.gazeY=mix(f.gazeY,-10,expression);
+  f.focus*=1-expression;
+  f.blink=mix(f.blink,1,expression);
+  f.lean+=-1.3*f.shock+.6*f.effort*Math.sin(t*13);
+  return f;
+ }
+ function sample(action=null,slots=INITIAL_SLOTS){
+  if(!action)return idle(slots);
+  return action.operation==='Re-prefill'?sampleRefill(action):sampleGesture(action);
  }
  function elastic(f){
   if(f.repositioning){
@@ -92,7 +123,8 @@ globalThis.AKVMemoryBotScene = (() => {
   const stretch=f.adding?-.055*pulse(t,.48,1.04)+.065*pulse(t,1.05,1.42)-.085*pulse(t,2.57,2.94)+spring(2.82,.048):-.075*pulse(t,.68,1.28)+.085*pulse(t,1.28,1.73)-.05*pulse(t,2.45,2.9)+spring(2.8,.035);
   const recoil=spring(3.53,.018);
   const headX=f.adding?-11*pulse(t,1.5,2.14)+spring(2.82,8):12*pulse(t,1.2,1.94)-6*pulse(t,1.94,2.5)+spring(2.8,8);
-  return {stretch:(stretch+recoil)*SOFTNESS,headX:headX*SOFTNESS*f.handSide,headY:-stretch*55*SOFTNESS,bulge:-stretch*65*SOFTNESS,flex:((f.adding?-8*pulse(t,1.5,2.14):10*pulse(t,1.2,1.94))+spring(f.adding?2.82:2.8,12))*SOFTNESS};
+  const shock=f.shock||0,effort=f.effort||0;
+  return {stretch:(stretch+recoil)*SOFTNESS+.025*shock-.035*effort,headX:headX*SOFTNESS*f.handSide+(effort?1.4*effort*Math.sin(f.refillTime*18):0),headY:-stretch*55*SOFTNESS-6*shock+4*effort,bulge:-stretch*65*SOFTNESS+3*effort,flex:((f.adding?-8*pulse(t,1.5,2.14):10*pulse(t,1.2,1.94))+spring(f.adding?2.82:2.8,12))*SOFTNESS};
  }
  function bodyPath(e){
   // Original n=4 superellipse geometry: |x/a|^4 + |y/b|^4 = 1.
@@ -113,11 +145,13 @@ globalThis.AKVMemoryBotScene = (() => {
   }
   return d+'Z';
  }
- function memory(p){return `<rect x="-21" y="-21" width="42" height="42" rx="8" fill="${INK}" stroke="${PAPER}" stroke-width="4" transform="translate(${n(p.x)} ${n(p.y)}) rotate(${n(p.r)})"/>`}
- function arm(hand,side,f,front=false,root=false){
+ function memory(p){
+  if(p.scale===0)return '';
+  return `<rect x="-21" y="-21" width="42" height="42" rx="8" fill="${INK}" stroke="${PAPER}" stroke-width="4" transform="translate(${n(p.x)} ${n(p.y)}) rotate(${n(p.r)})${p.scale===undefined?'':` scale(${n(p.scale)})`}"/>`;
+ }
+ function arm(hand,side,f,flex,front=false,root=false){
   const reach=f.reach*(side===f.handSide?1:0);if(reach===0)return '';
-  const flex=elastic(f).flex;
-  const clip=side>0?`<rect x="${n(395-140*reach)}" y="80" width="190" height="240"/>`:`<rect x="-50" y="80" width="${n(167+140*reach)}" height="240"/>`;
+  const clip=side>0?`<rect x="${n(395-140*reach)}" y="80" width="190" height="240"/>`:`<rect x="-50" y="80" width="${n(167+(Math.max(257,hand.x+17)-117)*reach)}" height="240"/>`;
   const id=`reveal${side}${root?'root':front?'palm':'arm'}`;
   const p0={x:side>0?334:178,y:304},p1={x:(hand.x+(side>0?334:178))/2+side*(12+flex*.5),y:(304+hand.y)/2+8+flex*.6},p2=hand;
   const join={x:.0484*p0.x+.3432*p1.x+.6084*p2.x,y:.0484*p0.y+.3432*p1.y+.6084*p2.y};
@@ -138,30 +172,30 @@ globalThis.AKVMemoryBotScene = (() => {
   return `${start}<path d="${d}" fill="${INK}"/><path d="M${edges[0].slice(12).join('L')}M${edges[1].slice(12).reverse().join('L')}" fill="none" stroke="${PAPER}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>`;
  }
  function eye(x,side,f){
-  const focus=f.focus;
+  const focus=f.focus,shock=f.shock||0,effort=f.effort||0;
   // Both eyes always use the same width, height and synchronized blink.
-  const w=13,h=(22.5-focus*1.5+f.inquis*2)*f.blink;
+  const w=13+3.5*shock+2*effort,h=(22.5-focus*1.5+f.inquis*2+4*shock)*f.blink*(1-.84*effort);
   const top=-h,bot=h;
   // Shared pill contour; direction comes from position and mirrored tilt, never unequal sizing.
   const d=`M${-w} 0 C${-w} ${n(top)} ${n(-w*.52)} ${n(top-3)} 0 ${n(top-3)} C${n(w*.52)} ${n(top-3)} ${w} ${n(top)} ${w} 0 C${w} ${n(bot)} ${n(w*.45)} ${n(bot)} 0 ${n(bot)} C${n(-w*.45)} ${n(bot)} ${-w} ${n(bot)} ${-w} 0Z`;
-  const angle=side*(-focus*5-f.inquis*7);
+  const angle=side*(-focus*5-f.inquis*7-18*effort);
   return `<path d="${d}" fill="${PAPER}" transform="translate(${n(256+f.gazeX+(x-256)*(1-.17*Math.abs(f.gazeX)/34))} ${n(327+f.gazeY)}) rotate(${n(angle)})"/>`;
  }
- function contents(time,gaze=null){
-  const f=sample(time);
-  if(gaze){f.gazeX=gaze.x;f.gazeY=gaze.y;f.focus=Math.min(1,Math.hypot(gaze.x,gaze.y)/34)}
+ function contents(action=null,gaze=null,slots=INITIAL_SLOTS){
+  const f=sample(action,slots);
+  if(gaze){const follow=1-Math.max(f.shock||0,f.effort||0);f.gazeX=mix(f.gazeX,gaze.x,follow);f.gazeY=mix(f.gazeY,gaze.y,follow);f.focus=mix(f.focus,Math.min(1,Math.hypot(gaze.x,gaze.y)/34),follow)}
   const e=elastic(f),head=`translate(${n(e.headX)} ${n(e.headY)})`;
   const shell=`<path d="${bodyPath(e)}" fill="${INK}"/>`;
   const windowShape=`<rect x="154" y="186" width="204" height="76" rx="25" fill="${PAPER}"/>`;
   const face=`<g transform="translate(${n(e.headX*.3)} ${n(e.headY*.18)})">${eye(202,-1,f)}${eye(310,1,f)}</g>`;
   const hand=f.handSide>0?f.right:f.left,visible=f.moving&&!f.handHidden;
-  const root=visible?arm(hand,f.handSide,f,false,true):'';
+  const root=visible?arm(hand,f.handSide,f,e.flex,false,true):'';
   // Cache visibility is independent of the hand: placed cache stays after
   // withdrawal, and selected cache stays visible before the hand reaches it.
-  const carry=(visible?arm(hand,f.handSide,f):'')+(f.moving?memory(f.moving):'')+(visible?arm(hand,f.handSide,f,true):'');
+  const carry=(visible?arm(hand,f.handSide,f,e.flex):'')+(f.moving?memory(f.moving):'')+(visible?arm(hand,f.handSide,f,e.flex,true):'');
   const layers=`<g transform="${head}">${root}</g>${f.back?`<g transform="${head}">${carry}</g>`:''}${shell}<g transform="${head}">${windowShape}${f.statics.map(memory).join('')}${f.back?'':carry}</g>${face}`;
   return `<g transform="translate(256 280) rotate(${n(f.lean)}) scale(${n(1/(1+e.stretch))} ${n(1+e.stretch)}) translate(-256 -280)">${layers}</g>`;
  }
- function svg(time=0){return `<svg xmlns="http://www.w3.org/2000/svg" width="370" height="325" viewBox="90 110 370 325" role="img" aria-label="AKV memory bot">${contents(time)}</svg>`}
- return { sample, contents, svg, actionAt };
+ function svg(action=null){return `<svg xmlns="http://www.w3.org/2000/svg" width="370" height="325" viewBox="90 110 370 325" role="img" aria-label="AKV memory bot">${contents(action)}</svg>`}
+ return { sample, contents, svg };
 })();

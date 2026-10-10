@@ -1,38 +1,11 @@
-// One click performs Append, Drop, or Repos. Queue complete actions to keep hand/tile contact
-// continuous even when the visitor clicks repeatedly.
-globalThis.AKVMemoryBotPlayback = (reduced = false) => {
-  const state = { time:0, running:false, queued:0, reduced };
-  const boundary = () => globalThis.AKVMemoryBotScene.actionAt(state.time).end;
-  function advance() {
-    if (state.reduced) { state.time = boundary(); return; }
-    if (state.running) state.queued++;
-    else state.running = true;
-  }
-  function tick(seconds) {
-    if (state.reduced || !state.running) return;
-    const end = boundary();
-    state.time = Math.min(end, state.time + seconds);
-    if (state.time === end) {
-      state.running = false;
-      if (state.queued) { state.queued--; state.running = true; }
-    }
-  }
-  function setReduced(reduced) {
-    state.reduced = reduced;
-    if (reduced && state.running) {
-      for (let remaining = state.queued + 1; remaining > 0; remaining--) state.time = boundary();
-      state.running = false; state.queued = 0;
-    }
-  }
-  return { state, advance, tick, setReduced };
-};
-
 (() => {
   if (typeof document === 'undefined') return;
   const button = document.getElementById('memory-bot-action');
   if (!button) return;
   const drawing = document.getElementById('memory-bot-drawing');
   const caption = document.getElementById('memory-bot-state');
+  const actionTriggers = [...document.querySelectorAll('[data-memory-bot-action]')];
+  const scene = globalThis.AKVMemoryBotScene;
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
   const playback = globalThis.AKVMemoryBotPlayback(motion.matches);
   const state = playback.state;
@@ -41,14 +14,18 @@ globalThis.AKVMemoryBotPlayback = (reduced = false) => {
   const eyesMoving = () => Math.hypot(gaze.x - target.x, gaze.y - target.y) > .05;
   function paint() {
     const eyePose = pointerActive || Math.hypot(gaze.x, gaze.y) > .05 ? gaze : null;
-    const key = `${state.time}:${eyePose ? `${gaze.x.toFixed(2)},${gaze.y.toFixed(2)}` : 'story'}`;
+    const key = `${state.revision}:${eyePose ? `${gaze.x.toFixed(2)},${gaze.y.toFixed(2)}` : 'story'}`;
     if (painted !== key) {
-      drawing.innerHTML = globalThis.AKVMemoryBotScene.contents(state.time, eyePose);
+      drawing.innerHTML = scene.contents(state.action, eyePose, state.slots);
       painted = key;
     }
-    const pose = globalThis.AKVMemoryBotScene.sample(state.time);
+    const pose = scene.sample(state.action, state.slots);
     const operation = state.running ? `${pose.operation} · ` : '';
     caption.textContent = `${operation}${pose.occupied} active cache${pose.occupied === 1 ? '' : 's'}`;
+    for (const trigger of actionTriggers) {
+      const active = state.running && (trigger.getAttribute('data-memory-bot-action') === 'refill' ? state.intent.kind === 'refill' : state.intent.kind !== 'refill');
+      trigger.setAttribute('data-active', String(active));
+    }
     button.setAttribute('aria-label', `Run the next cache operation${state.queued ? ` (${state.queued} queued)` : ''}`);
   }
   function schedule() {
@@ -79,6 +56,15 @@ globalThis.AKVMemoryBotPlayback = (reduced = false) => {
     if (!state.reduced) button.animate([{transform:'scale(1)'},{transform:'scale(1.025)'},{transform:'scale(1)'}], {duration:280,easing:'ease-out'});
     paint(); schedule();
   });
+  for (const trigger of actionTriggers) {
+    trigger.disabled = false;
+    trigger.addEventListener('click', () => {
+      playback.advance(trigger.getAttribute('data-memory-bot-action'));
+      const bounds = button.getBoundingClientRect();
+      if (!visible || bounds.top < 96 || bounds.bottom > window.innerHeight) button.scrollIntoView({ block:'center', behavior:state.reduced ? 'instant' : 'smooth' });
+      paint(); schedule();
+    });
+  }
   document.addEventListener('pointermove', event => {
     if (!visible || state.reduced || event.pointerType === 'touch') return;
     const bounds = button.getBoundingClientRect();
