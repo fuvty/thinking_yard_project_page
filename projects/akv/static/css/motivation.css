@@ -1,27 +1,32 @@
-/* A single reading path from the problem to cache engineering. */
-.akv-motivation { background:#fff; padding-bottom:36px; }
-.akv-motivation .akv-heading { margin-bottom:34px; }
-.akv-motive-flow { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:32px; margin:0; padding:0; list-style:none; }
-.akv-motive-step { position:relative; display:flex; flex-direction:column; align-items:flex-start; padding:24px 22px; border:1px solid #e5e2e9; border-radius:14px; background:#fff; }
-.akv-motive-step:not(:last-child)::after { content:'→'; position:absolute; right:-26px; top:50%; transform:translateY(-50%); color:#aaa1b5; font-size:22px; line-height:1; }
-.akv-motive-emoji { display:block; margin-bottom:20px; font-size:28px; line-height:1.2; }
-.akv-motive-copy h3 { margin:0 0 12px; color:#342d40; font-size:19px; font-weight:600; line-height:1.35; letter-spacing:-.025em; }
-.akv-motive-copy p { margin:0; color:#766f7f; font-size:14px; line-height:1.6; }
-.akv-motive-answer { border-color:#b9a2d3; }
-.akv-motive-answer h3 { color:#7953aa; }
+/* Shared dark act break, with the code-drawn AKV memory keeper. */
+.akv-motivation { padding-block:100px; }
+.akv-insight-intro { display:grid; grid-template-columns:1.3fr 1fr; align-items:center; gap:56px; margin-bottom:48px; }
+.akv-motivation .akv-heading { margin:0; text-align:left; }
+.akv-motivation .section-eyebrow { color:var(--apple-blue-light,#0a84ff); }
+.akv-motivation .section-title { color:#f5f5f7; }
+.akv-motivation .section-subtitle { max-width:470px; margin:24px 0 0; color:#a1a1a6; }
+.akv-insight-gradient { background:linear-gradient(135deg,#a78bfa,#c084fc); background-clip:text; -webkit-background-clip:text; color:transparent; }
+.akv-motive-flow { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:24px; margin:0; padding:0; list-style:none; }
+.akv-motive-step { position:relative; padding:24px 20px; border:1px solid rgba(255,255,255,.1); border-radius:16px; background:rgba(255,255,255,.05); }
+.akv-motive-step:not(:last-child)::after { content:'→'; position:absolute; right:-20px; top:50%; transform:translateY(-50%); color:#86868b; font-size:17px; line-height:1; }
+.akv-motive-number { display:block; margin-bottom:20px; color:#a1a1a6; font-size:12px; letter-spacing:.08em; }
+#motivation .akv-motive-copy h3 { margin:0 0 12px; color:#f5f5f7; font-size:18px; font-weight:600; line-height:1.35; letter-spacing:-.025em; }
+.akv-motive-copy p { margin:0; color:#a1a1a6; font-size:14px; line-height:1.6; }
+.akv-motive-answer { background:rgba(167,139,250,.09); }
+#motivation .akv-motive-answer h3,.akv-motive-answer .akv-motive-number { color:#c4b5fd; }
 @media (max-width:1000px) {
-  .akv-motive-flow { grid-template-columns:minmax(0,1fr); gap:25px; max-width:680px; margin-inline:auto; }
-  .akv-motive-step { flex-direction:row; align-items:center; gap:20px; padding:18px 24px; }
-  .akv-motive-step:not(:last-child)::after { content:'↓'; right:auto; top:auto; left:37px; bottom:-23px; transform:none; font-size:20px; }
-  .akv-motive-emoji { flex:0 0 34px; margin:0; text-align:center; }
-  .akv-motive-copy h3 { margin-bottom:5px; }
+  .akv-insight-intro { gap:32px; }
+  .akv-motive-flow { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .akv-motive-step:nth-child(2)::after { content:none; }
 }
 @media (max-width:600px) {
-  .akv-motivation { padding-bottom:20px; }
-  .akv-motivation .akv-heading { margin-bottom:26px; }
-  .akv-motive-step { gap:14px; padding:16px; }
-  .akv-motive-emoji { flex-basis:30px; font-size:25px; }
-  .akv-motive-step:not(:last-child)::after { left:27px; }
-  .akv-motive-copy h3 { font-size:17px; }
-  .akv-motive-copy p { font-size:13px; }
+  .akv-motivation { padding-block:72px; }
+  .akv-insight-intro { grid-template-columns:minmax(0,1fr); gap:24px; margin-bottom:32px; }
+  .akv-motivation .section-title { font-size:36px; }
+  .akv-motivation .section-subtitle { font-size:19px; margin-top:20px; }
+  .akv-motive-flow { grid-template-columns:minmax(0,1fr); gap:24px; }
+  .akv-motive-step { display:flex; gap:20px; padding:20px; }
+  .akv-motive-number { flex:0 0 22px; margin:3px 0 0; }
+  .akv-motive-step:not(:last-child)::after { content:'↓'; right:auto; top:auto; left:24px; bottom:-21px; transform:none; font-size:16px; }
+  #motivation .akv-motive-copy h3 { margin-bottom:6px; font-size:17px; }
 }

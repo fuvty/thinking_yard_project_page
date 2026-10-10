@@ -19,39 +19,50 @@
     <p class="akv-release">Paper &amp; code forthcoming</p>
   </section>
 
-  <section id="motivation" class="section akv-motivation" aria-labelledby="motivation-title">
+  <section id="motivation" class="section section-dark akv-motivation" aria-labelledby="motivation-title">
     <div class="container">
-      <div class="akv-heading">
-        <p class="section-eyebrow">The insight</p>
-        <h2 id="motivation-title" class="section-title">Why cache engineering?</h2>
+      <div class="akv-insight-intro">
+        <div class="akv-heading">
+          <p class="section-eyebrow">The insight</p>
+          <h2 id="motivation-title" class="section-title">Why<br><span class="akv-insight-gradient">cache engineering?</span></h2>
+          <p class="section-subtitle">Control the active cache without recomputing the retained history.</p>
+        </div>
+        <div class="akv-memory-bot">
+          <button id="memory-bot-action" class="akv-memory-action" type="button" aria-label="Run the next memory action" aria-describedby="memory-bot-description" disabled>
+            <img id="memory-bot-fallback" src="static/memory-bot/preview.svg" width="370" height="325" alt="" aria-hidden="true">
+            <svg id="memory-bot-scene" xmlns="http://www.w3.org/2000/svg" viewBox="90 110 370 325" aria-hidden="true" hidden><g id="memory-bot-drawing"></g></svg>
+          </button>
+          <p id="memory-bot-description" class="akv-memory-description">AKV's memory keeper appends cache, drops the first cache while retaining later positions, and repositions the retained cache in a separate action. An illustrative logo animation.</p>
+          <p class="akv-memory-caption" id="memory-bot-state">2 active caches</p>
+        </div>
       </div>
       <ol class="akv-motive-flow" role="list" aria-label="From growing history to cache engineering">
         <li class="akv-motive-step">
-          <span class="akv-motive-emoji" aria-hidden="true">😵‍💫</span>
+          <span class="akv-motive-number" aria-hidden="true">01</span>
           <div class="akv-motive-copy">
             <h3>Long history needs trimming.</h3>
             <p>Agents accumulate long histories, and not all of that history is needed.</p>
           </div>
         </li>
         <li class="akv-motive-step">
-          <span class="akv-motive-emoji" aria-hidden="true">🙁</span>
+          <span class="akv-motive-number" aria-hidden="true">02</span>
           <div class="akv-motive-copy">
             <h3>Trim the text?</h3>
             <p>Prefix edits invalidate later KV, requiring re-prefill.</p>
           </div>
         </li>
         <li class="akv-motive-step">
-          <span class="akv-motive-emoji" aria-hidden="true">💡</span>
+          <span class="akv-motive-number" aria-hidden="true">03</span>
           <div class="akv-motive-copy">
             <h3>KV cache is built for reuse.</h3>
             <p>It already stores the states we computed.</p>
           </div>
         </li>
         <li class="akv-motive-step akv-motive-answer">
-          <span class="akv-motive-emoji" aria-hidden="true">🙂</span>
+          <span class="akv-motive-number" aria-hidden="true">04</span>
           <div class="akv-motive-copy">
-            <h3>Why not trim KV cache directly?</h3>
-            <p>Drop selected KV cache. Reuse the rest.</p>
+            <h3>Let agents manage their own KV cache.</h3>
+            <p>Direct control over which KV states to keep or drop.</p>
           </div>
         </li>
       </ol>
