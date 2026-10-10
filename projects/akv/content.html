@@ -24,13 +24,17 @@
       <div class="akv-heading">
         <p class="section-eyebrow">The core idea</p>
         <h2 class="section-title"><span class="akv-title-phrase">Cache engineering</span> for LLM agents.</h2>
-        <p class="section-subtitle">As LLM agents tackle longer tasks, growing histories make KV storage and access increasingly costly. Context engineering manages this growth through message edits, controlling the cache indirectly. We introduce <strong>cache engineering</strong> to give agents direct control over which KV states remain active.</p>
+        <p class="section-subtitle">Longer histories increase KV storage and attention costs.<br>Context engineering edits text.<br><strong>Cache engineering</strong> directly manages KV states.</p>
       </div>
       <div class="akv-comparison" id="core-comparison">
         <article class="akv-comparison-point">
           <div class="akv-comparison-copy">
             <h3 id="core-context-title">Context Engineering</h3>
-            <p>Edit messages to reduce the cache. Changing an earlier prefix invalidates subsequent KV states, requiring re-prefill of the retained history.</p>
+            <ul class="akv-core-points" role="list">
+              <li><span class="akv-core-face" aria-hidden="true">🙁</span><div><strong>Indirect cache control.</strong><span>Edit text messages, with no direct control over retained KV.</span></div></li>
+              <li><span class="akv-core-face" aria-hidden="true">🙁</span><div><strong>Repeated computation.</strong><span>Prefix edits invalidate later KV, requiring re-prefill.</span></div></li>
+              <li><span class="akv-core-face" aria-hidden="true">🙁</span><div><strong>Lost historical information.</strong><span>Recomputing B without A loses A’s contribution to B’s original KV.</span></div></li>
+            </ul>
           </div>
           <figure class="akv-core-demo" aria-labelledby="core-context-title">
             <img id="core-context-animation" data-core-engineering="context" class="akv-core-animation" src="static/figures/context-engineering.svg" width="760" height="170" alt="Message A and the old A and B caches fade to dashed outlines. B must be prefilled again before C’s cache is added.">
@@ -39,7 +43,11 @@
         <article class="akv-comparison-point akv-comparison-ours">
           <div class="akv-comparison-copy">
             <h3 id="core-cache-title"><span class="akv-gradient">Cache Engineering</span></h3>
-            <p>Drop selected KV directly. Retained states can preserve information from dropped history and be reused without re-prefill.</p>
+            <ul class="akv-core-points" role="list">
+              <li><span class="akv-core-face" aria-hidden="true">🙂</span><div><strong>Direct cache control.</strong><span>Drop selected KV without deleting the corresponding text.</span></div></li>
+              <li><span class="akv-core-face" aria-hidden="true">🙂</span><div><strong>Reuse completed computation.</strong><span>AKV serving reuses retained, compatible KV without re-prefill.</span></div></li>
+              <li><span class="akv-core-face" aria-hidden="true">🙂</span><div><strong>Preserved historical information.</strong><span>B’s retained KV can still carry information from A after A’s KV is dropped.</span></div></li>
+            </ul>
           </div>
           <figure class="akv-core-demo" aria-labelledby="core-cache-title">
             <img id="core-animation" data-core-engineering="cache" class="akv-core-animation" src="static/figures/cache-engineering.svg" width="760" height="170" alt="A’s cache fades while B’s retained cache keeps the yellow information from A. Only C’s new cache entries are prefilled.">
@@ -52,12 +60,11 @@
         <p id="core-animation-stage-description" class="akv-core-stage-description" hidden></p>
         <button id="core-animation-toggle" type="button" aria-pressed="false" aria-controls="core-context-animation core-animation" hidden>Pause</button>
       </div>
-      <div id="method" class="akv-operations">
-        <p class="akv-body">To enable cache engineering, we define three cache operations: <strong>Append, Drop, and Repos</strong>. Agents combine them to control the active cache throughout execution.</p>
-      </div>
-
-        <details class="akv-detail akv-method-detail">
+        <details id="method" class="akv-detail akv-method-detail">
           <summary>Explore the three operations <span aria-hidden="true">+</span></summary>
+          <div class="akv-operations">
+            <p class="akv-body">To enable cache engineering, we define three cache operations: <strong>Append, Drop, and Repos</strong>. Agents combine them to control the active cache throughout execution.</p>
+          </div>
           <div class="akv-operation-demo">
             <div class="akv-operation-toolbar">
             <div class="akv-segmented" role="group" aria-label="Cache operation">
@@ -98,23 +105,26 @@
         <figcaption><span><b>ΔA</b> = drop A’s KV</span><span>Insets show information carried from earlier messages.</span></figcaption>
       </figure>
 
-      <div class="akv-system-designs">
-        <article class="akv-system-design">
-          <p class="akv-number">01 / REUSE</p>
-          <h3>Reuse the right states.</h3>
-          <p>The extended radix tree matches token and cache-operation histories. Compatible states remain shared across requests.</p>
-        </article>
-        <article class="akv-system-design">
-          <p class="akv-number">02 / EVICT</p>
-          <h3>Free unused KV safely.</h3>
-          <p>Dropping KV from one request does not immediately free shared storage. AKV reclaims it when no active computation or restoration needs it, while keeping cached descendants reachable.</p>
-        </article>
-        <article class="akv-system-design">
-          <p class="akv-number">03 / RESTORE</p>
-          <h3>Restore in one prefill pass.</h3>
-          <p>Missing states are reconstructed with segment-batch attention. It reproduces historical attention visibility and positions in one prefill pass.</p>
-        </article>
-      </div>
+      <details class="akv-detail akv-system-mechanisms">
+        <summary>Three mechanisms behind AKV serving <span aria-hidden="true">+</span></summary>
+        <div class="akv-system-designs">
+          <article class="akv-system-design">
+            <p class="akv-number">01 / REUSE</p>
+            <h3>Reuse the right states.</h3>
+            <p>The extended radix tree matches token and cache-operation histories. Compatible states remain shared across requests.</p>
+          </article>
+          <article class="akv-system-design">
+            <p class="akv-number">02 / EVICT</p>
+            <h3>Free unused KV safely.</h3>
+            <p>Dropping KV from one request does not immediately free shared storage. AKV reclaims it when no active computation or restoration needs it, while keeping cached descendants reachable.</p>
+          </article>
+          <article class="akv-system-design">
+            <p class="akv-number">03 / RESTORE</p>
+            <h3>Restore in one prefill pass.</h3>
+            <p>Missing states are reconstructed with segment-batch attention. It reproduces historical attention visibility and positions in one prefill pass.</p>
+          </article>
+        </div>
+      </details>
 
       <details id="stateless-interface" class="akv-detail akv-stateless">
         <summary>Stateless interface: three requests, one server <span aria-hidden="true">+</span></summary>
@@ -165,8 +175,8 @@
     <div class="container">
       <p class="section-eyebrow">Benchmark results</p><h2 class="section-title">Higher success rates.<br>Lower inference cost.</h2><p class="section-subtitle">Across three models and four agent benchmarks, AKV improves average success rate by 1.7 percentage points while reducing inference cost by 27.7% relative to Standard.</p>
       <div class="akv-baselines" aria-label="Methods compared in the benchmark and serving experiments">
-        <article><strong>Standard</strong><p>Summarize at 96K tokens.</p></article>
-        <article><strong>Text Engineering</strong><p>Summarize at 48K tokens.</p></article>
+        <article><strong>Standard</strong><p>Summarize at a higher threshold.</p></article>
+        <article><strong>Text Engineering</strong><p>Summarize at a lower threshold of 48K tokens.</p></article>
         <article><strong>AKV</strong><p>Drop older tool-response KV, keeping only the latest 12 rounds.</p></article>
       </div>
       <p class="akv-fine akv-experiment-label">Three models · Four agent benchmarks</p>
@@ -211,7 +221,9 @@
       <details class="akv-detail akv-improvement-analysis" id="benchmark-settings">
         <summary>Summarization settings <span aria-hidden="true">+</span></summary>
         <div class="akv-settings-body">
-          <p>Both baselines use a Pi-derived policy with its prompts, conversation serialization, cut-point selection, and default retention and summary-output budgets. Exact prompt token counts trigger summarization at <strong>96K for Standard</strong> and <strong>48K for Text Engineering</strong>.</p>
+          <p><strong>Standard.</strong> Summarization is triggered at 96K tokens for GPT-OSS-120B (128K context window) and MiniMax-M2.7 (200K context window), and at 192K tokens for MiroThinker-1.7-Mini (256K context window).</p>
+          <p><strong>Text Engineering.</strong> All three models use a lower summarization threshold of 48K tokens.</p>
+          <p>Both baselines use a Pi-derived policy with its prompts, conversation serialization, cut-point selection, and default retention and summary-output budgets. Summarization is triggered by exact prompt token counts.</p>
           <p>Summaries use the agent’s model and reasoning settings, replacing older dialogue while preserving system/developer instructions and selected recent messages. Empty summaries are rejected; failures follow the benchmark error protocol without retry.</p>
         </div>
       </details>

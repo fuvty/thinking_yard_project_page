@@ -5,6 +5,11 @@
 #overview .akv-comparison-copy { min-width:0; text-align:left; }
 #overview .akv-comparison-point h3 { margin:0 0 12px; font-size:24px; line-height:1.25; letter-spacing:-.025em; }
 #overview .akv-comparison-point p { margin:0; font-size:16px; line-height:1.6; color:#1d1d1f; }
+#overview .akv-core-points { display:grid; gap:17px; list-style:none; margin:20px 0 0; padding:0; }
+#overview .akv-core-points li { display:grid; grid-template-columns:22px minmax(0,1fr); align-items:start; gap:10px; }
+#overview .akv-core-face { font-size:19px; line-height:1.4; }
+#overview .akv-core-points strong { display:block; margin-bottom:4px; font-size:15px; line-height:1.4; font-weight:600; color:#1d1d1f; }
+#overview .akv-core-points div > span { display:block; font-size:14px; line-height:1.55; color:#6e6e73; }
 #overview .akv-core-demo { display:flex; flex-direction:column; gap:8px; min-width:0; margin:0; }
 #overview .akv-core-demo .akv-core-status { order:-1; align-self:flex-end; box-sizing:border-box; min-height:28px; margin:0; padding:5px 12px; border-radius:8px; background:#f2f2f5; color:#62626b; font-size:12px; font-weight:500; line-height:18px; text-align:center; }
 #overview .akv-comparison-ours .akv-core-status { background:#eee9fb; color:#6650ac; font-weight:650; }
@@ -20,7 +25,7 @@
 #overview .akv-core-stage-description[hidden] { display:none; }
 #overview .akv-core-controls button { flex-shrink:0; min-height:44px; padding:8px 14px; border:1px solid #dcdce3; border-radius:22px; background:#fff; color:#1d1d1f; font:inherit; font-size:12px; cursor:pointer; }
 #overview .akv-core-controls button:focus-visible { outline:2px solid #0071e3; outline-offset:3px; }
-#overview .akv-operations { margin-top:28px; }
+#overview .akv-method-detail .akv-operations { margin:0 0 20px; }
 #overview .akv-operations > .akv-body { max-width:none; margin-top:0; font-size:18px; line-height:1.6; color:#1d1d1f; }
 #overview .akv-operation-definitions { padding-left:22px; margin:20px 0 8px; color:#6e6e73; font-size:16px; line-height:1.6; }
 #overview .akv-operation-definitions li + li { margin-top:12px; }

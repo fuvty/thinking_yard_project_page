@@ -61,6 +61,6 @@
     "category": "context",
     "route": "03",
     "description": "Cache engineering for efficient long-horizon agents",
-    "logo": "shared/assets/akv.jpg"
+    "logo": "shared/assets/akv.png"
   }
 ]
