@@ -1,0 +1,49 @@
+{
+  "title": "AKV \u00b7 Cache Engineering for Agents",
+  "description": "AKV gives agents direct control over their KV cache, reusing retained states to reduce cost and improve long-horizon task performance.",
+  "theme": "research",
+  "sections": [
+    {
+      "id": "overview",
+      "label": "Cache engineering",
+      "group": "research",
+      "description": "Why retained states matter"
+    },
+    {
+      "id": "system",
+      "label": "Serving design",
+      "group": "research",
+      "description": "History-aware reuse, eviction, and restoration"
+    },
+    {
+      "id": "results",
+      "label": "Benchmarks",
+      "group": "evaluation",
+      "description": "Accuracy, cost, and task success under a GPU budget"
+    },
+    {
+      "id": "efficiency",
+      "label": "Serving efficiency",
+      "group": "evaluation",
+      "description": "Output throughput and request latency across concurrency levels"
+    },
+    {
+      "id": "strategies",
+      "label": "Self-improvement",
+      "group": "evaluation",
+      "description": "Agents refine their own cache policies"
+    },
+    {
+      "id": "team",
+      "label": "Team",
+      "group": "resources",
+      "description": "Authors and affiliations"
+    },
+    {
+      "id": "citation",
+      "label": "Citation",
+      "group": "resources",
+      "description": "Publication details forthcoming"
+    }
+  ]
+}

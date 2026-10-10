@@ -61,3 +61,11 @@ body:has(.sp-contents.mobile-open) .sp-back-to-top, body.global-menu-open .sp-ba
   .sp-footer-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
 }
 @media (prefers-reduced-motion: reduce) { .sp-footer-links a { transition: none; } }
+
+/* Opt-in pending resources; existing project controls keep their styling. */
+.btn[data-resource-pending] svg,.btn[data-resource-icon] svg { width:1em; height:1em; flex-shrink:0; }
+.btn[data-resource-pending]:disabled { cursor:default; opacity:.6; transform:none; }
+.btn.btn-primary[data-resource-pending]:disabled:hover { background:var(--apple-blue); color:#fff; transform:none; }
+.btn.btn-secondary[data-resource-pending]:disabled:hover { background:transparent; color:var(--apple-blue); transform:none; }
+.sp-copy[data-copy-empty] { cursor:default; opacity:.5; }
+.sp-copy[data-copy-empty]:hover { background:var(--apple-light-gray); color:var(--apple-black); }

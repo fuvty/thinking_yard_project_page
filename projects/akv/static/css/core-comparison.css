@@ -1,0 +1,73 @@
+/* Paired explanations and synchronized diagrams, scoped to the Core Idea. */
+#overview #method { scroll-margin-top:76px; }
+#overview .akv-comparison { display:grid; grid-template-columns:minmax(0,1fr); gap:24px; margin:32px 0 0; }
+#overview .akv-comparison-point { display:grid; grid-template-columns:minmax(260px,1fr) minmax(0,1.8fr); align-items:center; gap:28px; padding:26px 28px; border:1px solid #e7e5ed; border-radius:24px; background:#fff; }
+#overview .akv-comparison-copy { min-width:0; text-align:left; }
+#overview .akv-comparison-point h3 { margin:0 0 12px; font-size:24px; line-height:1.25; letter-spacing:-.025em; }
+#overview .akv-comparison-point p { margin:0; font-size:16px; line-height:1.6; color:#1d1d1f; }
+#overview .akv-core-points { display:grid; gap:17px; list-style:none; margin:20px 0 0; padding:0; }
+#overview .akv-core-points li { display:grid; grid-template-columns:22px minmax(0,1fr); align-items:start; gap:10px; }
+#overview .akv-core-face { font-size:19px; line-height:1.4; }
+#overview .akv-core-points strong { display:block; margin-bottom:4px; font-size:15px; line-height:1.4; font-weight:600; color:#1d1d1f; }
+#overview .akv-core-points div > span { display:block; font-size:14px; line-height:1.55; color:#6e6e73; }
+#overview .akv-core-demo { display:flex; flex-direction:column; gap:8px; min-width:0; margin:0; }
+#overview .akv-core-demo .akv-core-status { order:-1; align-self:flex-end; box-sizing:border-box; min-height:28px; margin:0; padding:5px 12px; border-radius:8px; background:#f2f2f5; color:#62626b; font-size:12px; font-weight:500; line-height:18px; text-align:center; }
+#overview .akv-comparison-ours .akv-core-status { background:#eee9fb; color:#6650ac; font-weight:650; }
+#overview .akv-core-status:empty { visibility:hidden; }
+#overview .akv-core-animation { display:block; width:100%; height:auto; margin:0 auto; }
+#overview .akv-core-information-note { margin:14px 0 0; color:#8a8393; font-size:12px; line-height:1.5; text-align:center; }
+#overview .akv-core-controls { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:16px; margin:8px 0 0; }
+#overview .akv-core-stages:not([hidden]) { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-top:24px; }
+#overview .akv-core-stages button { border:0; border-top:2px solid #dedee5; background:none; color:#6e6e73; min-height:48px; padding:12px 4px; font:inherit; font-size:13px; cursor:pointer; }
+#overview .akv-core-stages button[aria-current="step"] { color:#6455b5; border-color:#7966cb; font-weight:600; }
+#overview .akv-core-stages button:focus-visible { outline:2px solid #0071e3; outline-offset:3px; border-radius:3px; }
+#overview .akv-core-stage-description { display:flex; align-items:center; min-height:42px; margin:0; color:#6e6e73; font-size:14px; line-height:1.5; }
+#overview .akv-core-stage-description[hidden] { display:none; }
+#overview .akv-core-controls button { flex-shrink:0; min-height:44px; padding:8px 14px; border:1px solid #dcdce3; border-radius:22px; background:#fff; color:#1d1d1f; font:inherit; font-size:12px; cursor:pointer; }
+#overview .akv-core-controls button:focus-visible { outline:2px solid #0071e3; outline-offset:3px; }
+#overview .akv-method-detail .akv-operations { margin:0 0 20px; }
+#overview .akv-operations > .akv-body { max-width:none; margin-top:0; font-size:18px; line-height:1.6; color:#1d1d1f; }
+#overview .akv-operation-definitions { padding-left:22px; margin:20px 0 8px; color:#6e6e73; font-size:16px; line-height:1.6; }
+#overview .akv-operation-definitions li + li { margin-top:12px; }
+#overview .akv-operation-definitions strong { color:#1d1d1f; }
+#overview .akv-heading { margin-bottom:38px; }
+#overview .akv-detail summary { padding:20px 0; }
+#overview .akv-operation-toolbar { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+#overview #operation-playback { min-height:44px; padding:8px 16px; border:1px solid #dcdce3; border-radius:22px; background:#fff; color:#62626b; font:inherit; font-size:12px; cursor:pointer; }
+#overview .akv-operation-toolbar button:focus-visible { outline:2px solid #0071e3; outline-offset:3px; }
+#overview .akv-operation-animated .akv-block { transition:none; }
+#overview .akv-operation-animated .akv-live .akv-block { display:flex; height:70px; background:white; border-style:solid; overflow:hidden; }
+#overview .akv-operation-animated #drop-block { display:flex; opacity:1; }
+#overview .akv-operation-animated #drop-block::after { content:none; }
+#overview .akv-operation-animated .akv-live .akv-block.is-dropped { border-style:dashed; border-color:#b9bac2; }
+#overview .akv-operation-state { display:flex; width:100%; height:100%; }
+#overview .akv-operation-key,#overview .akv-operation-value { display:flex; flex-direction:column; align-items:center; justify-content:center; width:50%; }
+#overview .akv-operation-key { border-right:1px solid #ffffff90; }
+#overview .akv-old .akv-operation-state { background:#e8e8ed; }
+#overview .akv-thought .akv-operation-state { background:#e9e1f8; }
+#overview .akv-recent .akv-operation-state { background:#e1edfa; }
+#overview .akv-new .akv-operation-state { background:#e4f0e8; }
+#overview .akv-operation-key small { position:relative; display:block; width:36px; height:16px; font-variant-numeric:tabular-nums; }
+#overview .akv-position-old,#overview .akv-position-new { position:absolute; inset:0; text-align:center; }
+#overview .akv-position-old { opacity:calc(1 - var(--position-change,0)); }
+#overview .akv-position-new { opacity:var(--position-change,0); }
+#overview .akv-operation-key small::before,#overview .akv-operation-next span::before { content:''; position:absolute; inset:-3px -2px; border:1px solid #a18aba; border-radius:5px; background:#e9e0f4; opacity:var(--position-emphasis,0); }
+#overview .akv-position-new { color:#655282; font-weight:700; }
+#overview .akv-operation-next span { position:relative; display:inline-block; min-width:18px; text-align:center; isolation:isolate; }
+#overview .akv-operation-next span::before { z-index:-1; }
+#overview .akv-operation-next { margin:18px 0 0; color:#62626b; font-size:13px; text-align:right; font-variant-numeric:tabular-nums; }
+#overview .akv-operation-animated .akv-operation-caption { margin-top:20px; }
+@media(max-width:800px) {
+  #overview .akv-comparison-point { grid-template-columns:minmax(0,1fr); gap:22px; }
+  #overview .akv-comparison-point p { font-size:18px; }
+}
+@media(max-width:600px) {
+  #overview .akv-core-stages:not([hidden]) { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-top:20px; }
+  #overview .akv-core-stage-description { min-height:63px; }
+  #overview .akv-comparison { gap:20px; }
+  #overview .akv-comparison-point { padding:20px 16px 16px; border-radius:18px; }
+  #overview .akv-comparison-point h3 { font-size:24px; }
+  #overview .akv-comparison-point p { font-size:17px; }
+  #overview .akv-core-demo { margin-inline:-6px; }
+  #overview .akv-core-controls { gap:12px; }
+}

@@ -70,7 +70,7 @@
     let resetTimer;
     button.addEventListener('click', async () => {
       const code = document.getElementById(button.dataset.copyTarget);
-      if (!code || button.disabled) return;
+      if (!code || button.disabled || !code.textContent.trim()) return;
       window.clearTimeout(resetTimer);
       button.disabled = true;
       button.setAttribute('aria-busy', 'true');

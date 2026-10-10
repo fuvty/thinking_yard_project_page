@@ -54,5 +54,13 @@
     "route": "02",
     "description": "Mixture of attention for efficient LLMs",
     "logo": "shared/assets/moa.png"
+  },
+  {
+    "slug": "akv",
+    "name": "AKV",
+    "category": "context",
+    "route": "03",
+    "description": "Cache engineering for efficient long-horizon agents",
+    "logo": "shared/assets/akv.png"
   }
 ]

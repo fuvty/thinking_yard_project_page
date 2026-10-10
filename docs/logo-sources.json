@@ -4,5 +4,6 @@
   "r2r": "https://raw.githubusercontent.com/thu-nics/R2R/main/resource/logo.png",
   "framefusion": "https://thu-nics.github.io/FrameFusion_Project_Page/static/images/transparant_logo.png",
   "moa": "https://raw.githubusercontent.com/thu-nics/MoA/master/resource/logo.png",
-  "tah2": "User-provided ../tah2-project-page/logo.png, copied unchanged to shared/assets/tah2.png; used by navigation, hub cards and the project favicon."
+  "tah2": "User-provided ../tah2-project-page/logo.png, copied unchanged to shared/assets/tah2.png; used by navigation, hub cards and the project favicon.",
+  "akv": "User-provided ../logo.jpg updated 2026-10-10. Built-in image editor prompt: preserve the existing black robot mark and all contours; remove the white background to transparency; tighten square framing with about 6% side margins; no redesign, text, colors, or shadows. Output: shared/assets/akv.png, used by navigation, hub cards, and favicon."
 }

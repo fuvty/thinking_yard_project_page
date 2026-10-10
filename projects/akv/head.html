@@ -1,0 +1,36 @@
+<script>
+(() => {
+  // Disable native reload restoration before the first paint. Keep explicit
+  // chapter links and back/forward navigation at their intended positions.
+  const navigation = performance.getEntriesByType('navigation')[0];
+  if (navigation?.type !== 'reload' || location.hash) return;
+  const previous = history.scrollRestoration;
+  history.scrollRestoration = 'manual';
+  const reset = () => window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  reset();
+  window.addEventListener('pageshow', event => {
+    if (!event.persisted) reset();
+    window.requestAnimationFrame(() => { history.scrollRestoration = previous; });
+  }, { once: true });
+  window.addEventListener('pagehide', () => { history.scrollRestoration = previous; }, { once: true });
+})();
+</script>
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/png" href="{{base}}/shared/assets/akv.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="./static/css/index.css">
+<script defer src="./static/js/replay-data.js"></script>
+<script defer src="./static/js/replay-math.js"></script>
+<script defer src="./static/js/index.js"></script>
+<script defer src="./static/js/serving.js"></script>
+<script defer src="./static/js/hero-flow.js"></script>
+<link rel="stylesheet" href="./static/css/core-comparison.css">
+<script defer src="./static/js/core-scene.js"></script>
+<script defer src="./static/js/core-comparison.js"></script>
+
+<script defer src="./static/js/operations.js"></script>
+<link rel="stylesheet" href="./static/css/serving-history.css">
+<script defer src="./static/js/serving-history-scene.js"></script>
+<script defer src="./static/js/serving-history.js"></script>
+<script defer src="./static/js/serving-interface.js"></script>
+<link rel="stylesheet" href="./static/css/figure-theme.css">
