@@ -1,7 +1,7 @@
 /* AKV extends the shared research theme. Navigation and resource controls stay shared. */
 .authors-section .affiliations { margin-top:24px; font-size:14px; color:var(--apple-gray); line-height:1.8; }
 .akv-author-note { font-size:12px; }
-/* Match the white team section while retaining shared author-link interactions. */
+/* Keep white author pills on the gray team section with shared link interactions. */
 #team .author-tag { --apple-light-gray:#fff; }
 /* Keep the shared footer and citation surfaces white on this page. */
 .sp-footer,.sp-citation-header { --apple-off-white:#fff; }
