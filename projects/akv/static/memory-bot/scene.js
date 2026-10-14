@@ -88,8 +88,9 @@ globalThis.AKVMemoryBotScene = (() => {
   const suffix=slots.slice(index+1);
   // Editing the final token has no later KV to invalidate or recompute.
   if(!suffix.length)return f;
-  const collapseEnd=3.28+.09*(suffix.length-1);
-  f.shock=smooth((t-(collapseEnd-.18))/.32)*(1-smooth((t-3.72)/.5));
+  // Anticipate the loss, sink into it during collapse, then gather effort to rebuild.
+  f.disappointed=smooth((t-2.2)/.7)*(1-smooth((t-3.72)/.5));
+  f.melt=smooth((t-2.35)/.95)*(1-smooth((t-3.78)/.65));
   f.effort=smooth((t-3.8)/.4)*(1-smooth((t-6.65)/.55));
   f.refillTime=t;
   if(t>=2.45){
@@ -99,12 +100,12 @@ globalThis.AKVMemoryBotScene = (() => {
    }))];
    f.occupied=f.statics.filter(p=>p.scale===undefined||(t<3.8?p.scale>.01:p.scale>=.999)).length;
   }
-  const expression=Math.max(f.shock,f.effort);
+  const expression=Math.max(f.disappointed,f.effort);
   f.gazeX*=1-expression;
-  f.gazeY=mix(f.gazeY,-10,expression);
+  f.gazeY=mix(mix(f.gazeY,20,f.disappointed),-10,f.effort);
   f.focus*=1-expression;
   f.blink=mix(f.blink,1,expression);
-  f.lean+=-1.3*f.shock+.6*f.effort*Math.sin(t*13);
+  f.lean+=2.6*f.disappointed+.6*f.effort*Math.sin(t*13);
   return f;
  }
  function sample(action=null,slots=INITIAL_SLOTS){
@@ -123,10 +124,16 @@ globalThis.AKVMemoryBotScene = (() => {
   const stretch=f.adding?-.055*pulse(t,.48,1.04)+.065*pulse(t,1.05,1.42)-.085*pulse(t,2.57,2.94)+spring(2.82,.048):-.075*pulse(t,.68,1.28)+.085*pulse(t,1.28,1.73)-.05*pulse(t,2.45,2.9)+spring(2.8,.035);
   const recoil=spring(3.53,.018);
   const headX=f.adding?-11*pulse(t,1.5,2.14)+spring(2.82,8):12*pulse(t,1.2,1.94)-6*pulse(t,1.94,2.5)+spring(2.8,8);
-  const shock=f.shock||0,effort=f.effort||0;
-  return {stretch:(stretch+recoil)*SOFTNESS+.025*shock-.035*effort,headX:headX*SOFTNESS*f.handSide+(effort?1.4*effort*Math.sin(f.refillTime*18):0),headY:-stretch*55*SOFTNESS-6*shock+4*effort,bulge:-stretch*65*SOFTNESS+3*effort,flex:((f.adding?-8*pulse(t,1.5,2.14):10*pulse(t,1.2,1.94))+spring(f.adding?2.82:2.8,12))*SOFTNESS};
+  const disappointed=f.disappointed||0,effort=f.effort||0;
+  return {
+   stretch:(stretch+recoil)*SOFTNESS-.035*effort,
+   headX:headX*SOFTNESS*f.handSide+(effort?1.4*effort*Math.sin(f.refillTime*18):0),
+   headY:-stretch*55*SOFTNESS+8*disappointed+4*effort,
+   bulge:-stretch*65*SOFTNESS+3*effort,
+   flex:((f.adding?-8*pulse(t,1.5,2.14):10*pulse(t,1.2,1.94))+spring(f.adding?2.82:2.8,12))*SOFTNESS
+  };
  }
- function bodyPath(e){
+ function bodyPath(e,melt){
   // Original n=4 superellipse geometry: |x/a|^4 + |y/b|^4 = 1.
   // Curved sides remain visible at rest; local deformation lets the top lag behind the base.
   const points=[];
@@ -135,7 +142,10 @@ globalThis.AKVMemoryBotScene = (() => {
    let x=256+128*Math.sign(c)*Math.abs(c)**(2/SQUIRCLE_N),y=280+128*Math.sign(s)*Math.abs(s)**(2/SQUIRCLE_N);
    const upper=1-smooth((y-242)/135),side=Math.sin(Math.PI*(y-152)/256)**2;
    x+=e.headX*(upper-(1-upper)*.18)+Math.sign(x-256)*e.bulge*side;
-   y+=e.headY*upper;
+   // Let the lower silhouette pool outward while the shoulders sag.
+   const lower=smooth((y-255)/153);
+   x+=Math.sign(x-256)*18*melt*lower;
+   y+=e.headY*upper+7*melt*upper*(1-((x-256)/160)**2);
    points.push({x,y});
   }
   let d=`M${n(points[0].x)} ${n(points[0].y)}`;
@@ -172,20 +182,20 @@ globalThis.AKVMemoryBotScene = (() => {
   return `${start}<path d="${d}" fill="${INK}"/><path d="M${edges[0].slice(12).join('L')}M${edges[1].slice(12).reverse().join('L')}" fill="none" stroke="${PAPER}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>`;
  }
  function eye(x,side,f){
-  const focus=f.focus,shock=f.shock||0,effort=f.effort||0;
+  const focus=f.focus,disappointed=f.disappointed||0,effort=f.effort||0;
   // Both eyes always use the same width, height and synchronized blink.
-  const w=13+3.5*shock+2*effort,h=(22.5-focus*1.5+f.inquis*2+4*shock)*f.blink*(1-.84*effort);
+  const w=13+2*effort,h=(22.5-focus*1.5+f.inquis*2)*f.blink*(1-.72*disappointed)*(1-.84*effort);
   const top=-h,bot=h;
   // Shared pill contour; direction comes from position and mirrored tilt, never unequal sizing.
   const d=`M${-w} 0 C${-w} ${n(top)} ${n(-w*.52)} ${n(top-3)} 0 ${n(top-3)} C${n(w*.52)} ${n(top-3)} ${w} ${n(top)} ${w} 0 C${w} ${n(bot)} ${n(w*.45)} ${n(bot)} 0 ${n(bot)} C${n(-w*.45)} ${n(bot)} ${-w} ${n(bot)} ${-w} 0Z`;
-  const angle=side*(-focus*5-f.inquis*7-18*effort);
+  const angle=side*(-focus*5-f.inquis*7+30*disappointed-18*effort);
   return `<path d="${d}" fill="${PAPER}" transform="translate(${n(256+f.gazeX+(x-256)*(1-.17*Math.abs(f.gazeX)/34))} ${n(327+f.gazeY)}) rotate(${n(angle)})"/>`;
  }
  function contents(action=null,gaze=null,slots=INITIAL_SLOTS){
   const f=sample(action,slots);
-  if(gaze){const follow=1-Math.max(f.shock||0,f.effort||0);f.gazeX=mix(f.gazeX,gaze.x,follow);f.gazeY=mix(f.gazeY,gaze.y,follow);f.focus=mix(f.focus,Math.min(1,Math.hypot(gaze.x,gaze.y)/34),follow)}
-  const e=elastic(f),head=`translate(${n(e.headX)} ${n(e.headY)})`;
-  const shell=`<path d="${bodyPath(e)}" fill="${INK}"/>`;
+  if(gaze){const follow=1-Math.max(f.disappointed||0,f.effort||0);f.gazeX=mix(f.gazeX,gaze.x,follow);f.gazeY=mix(f.gazeY,gaze.y,follow);f.focus=mix(f.focus,Math.min(1,Math.hypot(gaze.x,gaze.y)/34),follow)}
+  const e=elastic(f),melt=f.melt||0,head=`translate(${n(e.headX)} ${n(e.headY)})`;
+  const shell=`<path d="${bodyPath(e,melt)}" fill="${INK}"/>`;
   const windowShape=`<rect x="154" y="186" width="204" height="76" rx="25" fill="${PAPER}"/>`;
   const face=`<g transform="translate(${n(e.headX*.3)} ${n(e.headY*.18)})">${eye(202,-1,f)}${eye(310,1,f)}</g>`;
   const hand=f.handSide>0?f.right:f.left,visible=f.moving&&!f.handHidden;
@@ -194,7 +204,9 @@ globalThis.AKVMemoryBotScene = (() => {
   // withdrawal, and selected cache stays visible before the hand reaches it.
   const carry=(visible?arm(hand,f.handSide,f,e.flex):'')+(f.moving?memory(f.moving):'')+(visible?arm(hand,f.handSide,f,e.flex,true):'');
   const layers=`<g transform="${head}">${root}</g>${f.back?`<g transform="${head}">${carry}</g>`:''}${shell}<g transform="${head}">${windowShape}${f.statics.map(memory).join('')}${f.back?'':carry}</g>${face}`;
-  return `<g transform="translate(256 280) rotate(${n(f.lean)}) scale(${n(1/(1+e.stretch))} ${n(1+e.stretch)}) translate(-256 -280)">${layers}</g>`;
+  // Squash around the resting base, so the bot sinks instead of floating upward.
+  const posed=melt?`<g transform="translate(256 408) scale(${n(1+.1*melt)} ${n(1-.24*melt)}) translate(-256 -408)">${layers}</g>`:layers;
+  return `<g transform="translate(256 280) rotate(${n(f.lean)}) scale(${n(1/(1+e.stretch))} ${n(1+e.stretch)}) translate(-256 -280)">${posed}</g>`;
  }
  function svg(action=null){return `<svg xmlns="http://www.w3.org/2000/svg" width="370" height="325" viewBox="90 110 370 325" role="img" aria-label="AKV memory bot">${contents(action)}</svg>`}
  return { sample, contents, svg };

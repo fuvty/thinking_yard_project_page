@@ -43,7 +43,7 @@ An optional external button with `data-memory-bot-action="refill"` queues the re
 <button type="button" data-memory-bot-action="refill" disabled>Re-prefill</button>
 ```
 
-Re-prefill prepares two or three caches, removes the selected cache, and contracts only the later cache along a logistic S-curve. Earlier KV stays intact. The bot reacts near the end of disappearance, then strains while the suffix grows back. This takes 7.5 seconds; the rare tail edit takes 3 seconds because no later KV requires recomputation. The rebuilt count equals the retained count. Card requests and bot clicks share one queue.
+Re-prefill prepares two or three caches, removes the selected cache, and contracts only the later cache along a logistic S-curve. Earlier KV stays intact. Before the suffix starts disappearing, the bot lowers its eyes and gradually melts into a wider, flattened pose anchored at its base, holds through the loss, then pulls itself upright to rebuild the suffix. This takes 7.5 seconds; the rare tail edit takes 3 seconds because no later KV requires recomputation. The rebuilt count equals the retained count. Card requests and bot clicks share one queue.
 
 This is an illustrative brand animation. Drop does not represent physical storage eviction.
 

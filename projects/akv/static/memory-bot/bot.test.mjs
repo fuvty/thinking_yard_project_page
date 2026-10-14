@@ -165,7 +165,7 @@ test('Drop leaves first, middle and tail gaps; Repos alone compacts retained cac
   }
 });
 
-test('re-prefill preserves earlier KV, contracts only later KV and rebuilds with a delayed reaction', () => {
+test('re-prefill preserves earlier KV, contracts only later KV and rebuilds after anticipatory disappointment', () => {
   for (const index of [0,1]) {
     const refill = action('Re-prefill',[193,256,319],index);
     for (let t=0;t<=7.5;t+=.1) {
@@ -173,21 +173,29 @@ test('re-prefill preserves earlier KV, contracts only later KV and rebuilds with
       if (index) { assert.equal(f.statics[0].x,193); assert.equal(f.statics[0].scale,undefined); }
       assert(f.statics.every(p=>p.scale===undefined || p.scale>=0 && p.scale<=1));
     }
+    const anticipating = at(refill,2.55);
+    assert(anticipating.disappointed>.4, 'disappointment starts before the suffix contracts');
+    assert(anticipating.melt>0 && anticipating.melt<anticipating.disappointed, 'the body follows the downcast eyes');
+    assert(anticipating.statics.slice(index).every(p=>p.scale===1));
     const shrinking = at(refill,2.95);
-    assert.equal(shrinking.shock,0);
+    assert(shrinking.disappointed>.9);
     assert(shrinking.statics.slice(index).every(p=>p.scale>0 && p.scale<1));
     const empty = at(refill,3.5);
-    assert(empty.shock>.9);
+    assert(empty.disappointed>.9);
+    assert.equal(empty.melt,1);
+    assert(empty.gazeY>8, 'the bot looks down as the cache disappears');
     assert.equal(empty.occupied,index);
     assert(empty.statics.slice(index).every(p=>p.scale===0));
     const growing = at(refill,4.8);
     assert(growing.effort>.9);
+    assert.equal(growing.melt,0);
     assert(growing.statics[index].scale>0 && growing.statics[index].scale<1);
     const settled = at(refill,7.5);
     assert.deepEqual(plain(settled.statics.map(p=>p.x)),[193,256]);
     assert.equal(settled.occupied,2);
     assert.equal(settled.effort,0);
-    assert.equal(settled.shock,0);
+    assert.equal(settled.disappointed,0);
+    assert.equal(settled.melt,0);
   }
 });
 
@@ -199,7 +207,8 @@ test('rare tail re-prefill preserves the whole prefix without unnecessary collap
     for (let t=0;t<=3;t+=.05) {
       const f=at(refill,t);
       assert.deepEqual(plain(f.statics.map(p=>p.x)),slots.slice(0,-1));
-      assert.equal(f.shock,undefined);
+      assert.equal(f.disappointed,undefined);
+      assert.equal(f.melt,undefined);
       assert.equal(f.effort,undefined);
     }
   }
