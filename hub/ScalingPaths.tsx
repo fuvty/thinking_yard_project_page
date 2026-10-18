@@ -43,7 +43,7 @@ const stages = [
     label: "Route 01",
     eyebrow: "Continue scaling up.",
     title: "Raise the ceiling.",
-    body: "Spend more parameters, data, and compute to continue along the same logarithmic frontier, where each linear capability gain demands an exponentially larger cost.",
+    body: "Spend more parameters, data, and compute to continue along the same logarithmic frontier, where each linear intelligence gain demands an exponentially larger cost.",
   },
   {
     id: "route-two",
@@ -64,7 +64,7 @@ const stages = [
 const chartDescriptions = [
   "Complete comparison: the black current state, a purple continuation, a green pointwise transformation of the black frontier, and the blue outer envelope generated from multiple black-frontier seeds.",
   "Route 1 focus: the purple path continues from the black endpoint along the same exponential-cost scaling law.",
-  "Route 2 focus: a green copy deforms away from the black frontier point by point, then rejoins its exact cost-capability endpoint.",
+  "Route 2 focus: a green copy deforms away from the black frontier point by point, then rejoins its exact cost-intelligence endpoint.",
   "Route 3 focus: every blue branch is a full scaling instance initialized from a point on the black frontier. It passes its envelope contact, reaches the same cost boundary as black, then recedes into context.",
 ];
 
@@ -696,7 +696,7 @@ export default function Home() {
     ctx.translate(plot.left - (compact ? 20 : 30), (plot.top + plot.bottom) / 2);
     ctx.rotate(-Math.PI / 2);
     ctx.textAlign = "center";
-    ctx.fillText("CAPABILITY", 0, 0);
+    ctx.fillText("INTELLIGENCE", 0, 0);
     ctx.restore();
 
     ctx.font = `600 ${compact ? 10 : 11}px ${fontFamily}`;
@@ -1071,7 +1071,7 @@ export default function Home() {
         >
           <h2 className="sr-only" id="chart-title">Three scaling routes</h2>
           <canvas ref={canvasRef} aria-hidden="true" />
-          <figcaption className="sr-only" id="chart-description">Cost on the horizontal axis; capability on the vertical axis. {chartDescriptions[activeStage]}</figcaption>
+          <figcaption className="sr-only" id="chart-description">Cost on the horizontal axis; intelligence on the vertical axis. {chartDescriptions[activeStage]}</figcaption>
         </figure>
 
         <div className="story-steps">

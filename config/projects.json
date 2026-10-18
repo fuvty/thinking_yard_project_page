@@ -20,7 +20,7 @@
     "name": "TaH",
     "category": "adaptivity",
     "route": "03",
-    "description": "Selective latent thinking for reasoning LLMs",
+    "description": "Adaptive Looped LLMs",
     "logo": "shared/assets/tah.png"
   },
   {
