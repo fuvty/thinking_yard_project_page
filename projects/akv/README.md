@@ -65,9 +65,9 @@ Replay loops automatically while visible, drawing for 12 seconds and holding the
 
 Benchmark results use TaH2-style grouped bars for all three methods, with model and Accuracy/Cost selectors. Axes start at zero; accuracy uses a fixed 0–100% scale. Exact values appear on the bars; there is no duplicate benchmark table.
 
-## Pending release details
+## Release resources
 
-Per the owner's instruction, authors and citation are intentionally unfilled. `citation.bib` is empty and its required shared citation slot is hidden until details are supplied. No fabricated author or publication information is included. Add actual links and author pills to `content.html`, populate `citation.bib`, and unhide the citation slot at release. The owner-confirmed paper URL is [the arXiv PDF](https://arxiv.org/pdf/2610.28577), linked from Read Paper. The owner-confirmed code repository is [thu-nics/AKV](https://github.com/thu-nics/AKV), linked from the View Code resource.
+The owner-confirmed paper URL is [the arXiv PDF](https://arxiv.org/pdf/2610.28577), linked from Read Paper. The owner-confirmed code repository is [thu-nics/AKV](https://github.com/thu-nics/AKV), linked from the View Code resource. `citation.bib` contains the owner-supplied BibTeX, rendered and copied by the shared citation component. Author order and roles remain as provided in `content.html`.
 
 ## Reload position
 

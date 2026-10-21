@@ -5,6 +5,8 @@
 #team .author-tag { --apple-light-gray:#fff; }
 /* Keep the shared footer and citation surfaces white on this page. */
 .sp-footer,.sp-citation-header { --apple-off-white:#fff; }
+/* AKV has no reveal observer; keep the shared citation visible. */
+#citation .sp-citation { opacity:1; transform:none; }
 /* AKV content uses white surfaces with the existing typography and chart palette. */
 .akv-comparison,.akv-evidence-grid,.akv-serving-charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px}
 .akv-comparison article{border-top:1px solid #dcdce3;padding-top:22px}
