@@ -67,7 +67,7 @@ Benchmark results use TaH2-style grouped bars for all three methods, with model 
 
 ## Pending release details
 
-Per the owner's instruction, authors, paper URL, and citation are intentionally unfilled. `citation.bib` is empty and its required shared citation slot is hidden until details are supplied. No fabricated author or publication information is included. Add actual links and author pills to `content.html`, populate `citation.bib`, and unhide the citation slot at release. The owner-confirmed code repository is [thu-nics/AKV](https://github.com/thu-nics/AKV), linked from the View Code resource.
+Per the owner's instruction, authors and citation are intentionally unfilled. `citation.bib` is empty and its required shared citation slot is hidden until details are supplied. No fabricated author or publication information is included. Add actual links and author pills to `content.html`, populate `citation.bib`, and unhide the citation slot at release. The owner-confirmed paper URL is [the arXiv PDF](https://arxiv.org/pdf/2610.28577), linked from Read Paper. The owner-confirmed code repository is [thu-nics/AKV](https://github.com/thu-nics/AKV), linked from the View Code resource.
 
 ## Reload position
 
