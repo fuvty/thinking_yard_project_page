@@ -1,0 +1,198 @@
+{
+  "page": {
+    "title": "R2R · 大小模型协同的 token 级路由",
+    "description": "R2R 通过轻量神经路由器识别会改变推理路径的关键 token，结合小模型的效率与大模型的推理能力。",
+    "sections": {
+      "problem": {
+        "label": "概览",
+        "description": "大模型推理的成本问题"
+      },
+      "insight": {
+        "label": "核心发现",
+        "description": "哪些 token 会改变推理路径"
+      },
+      "method": {
+        "label": "方法",
+        "description": "神经网络驱动的 token 路由"
+      },
+      "demo": {
+        "label": "交互演示",
+        "description": "逐步查看路由决策"
+      },
+      "results": {
+        "label": "实验结果",
+        "description": "准确率与推理成本"
+      },
+      "team": {
+        "label": "研究团队",
+        "description": "作者与机构"
+      },
+      "bibtex": {
+        "label": "引用",
+        "description": "论文引用与 BibTeX"
+      }
+    }
+  },
+  "html": {
+    "hero.subtitle": "通过 token 路由，只纠正引发推理分歧的关键 token，让小模型沿着大模型的推理路径继续生成。",
+    "hero.speed": "相较 <span class=\"i18n-nowrap\">R1-32B</span> 的加速比",
+    "hero.params": "平均激活参数量",
+    "hero.accuracy": "相较 <span class=\"i18n-nowrap\">R1-7B</span> 的准确率",
+    "resource.paper": "<i class=\"fas fa-file-alt\"></i> 阅读论文",
+    "resource.code": "<i class=\"fab fa-github\"></i> 查看代码",
+    "resource.models": "🤗 模型",
+    "problem.eyebrow": "研究背景",
+    "problem.title": "大模型能力强，推理成本也高。",
+    "problem.subtitle": "小模型生成快，但容易出错。我们希望兼顾小模型的效率与大模型的推理能力。",
+    "problem.small.title": "小模型（1.5B）",
+    "problem.small.body": "生成速度快<br>准确率有限",
+    "problem.router.title": "R2R 路由",
+    "problem.router.body": "结合大小模型优势<br>按 token 选择模型",
+    "problem.large.title": "大模型（32B）",
+    "problem.large.body": "推理准确<br>速度慢、成本高",
+    "insight.eyebrow": "核心发现",
+    "insight.title": "只有少数 token 会改变推理路径。",
+    "insight.subtitle": "我们发现，大小模型生成的 token 即使不同，也未必影响推理结果。真正使推理路径发生分歧的，只占很小一部分。",
+    "insight.identical.title": "预测一致",
+    "insight.identical.body": "绝大多数 token 的预测完全一致，可以直接采用小模型的输出。",
+    "insight.neutral.title": "无影响的差异",
+    "insight.neutral.body": "例如 “let's” 与 “let us” 这样的表达差异，不影响推理结果。",
+    "insight.divergent.title": "引发分歧的 token",
+    "insight.divergent.body": "这些关键 token 会改变后续推理路径，需要交给大模型处理。",
+    "insight.details.title": "token 如何分类",
+    "insight.details.identical": "<strong style=\"color: #30d158;\" data-emphasis=\"identical-tokens\">预测一致</strong>：在相同上下文下，大小模型预测的下一个 token 完全相同，此时可直接使用更快的小模型。",
+    "insight.details.neutral": "<strong style=\"color: #0a84ff;\" data-emphasis=\"neutral-differences\">无影响的差异</strong>：两个模型预测不同，但缩写、措辞等差异不会改变推理结果。",
+    "insight.details.divergent": "<strong style=\"color: #ff9f0a;\" data-emphasis=\"divergent-tokens\">引发分歧的 token</strong>：差异改变了当前句子的含义、逻辑或结论，使后续推理偏离原有路径。这些位置需要大模型的指导。",
+    "demo.eyebrow": "交互演示",
+    "demo.title": "R2R 如何完成一次推理。",
+    "demo.subtitle": "从小模型预测到路由判断，逐步展示大小模型如何协同生成。",
+    "demo.workflow": "R2R 推理流程",
+    "demo.step.1": "第 1 步",
+    "demo.step.2": "第 2 步",
+    "demo.step.3": "第 3 步",
+    "demo.step.4": "第 4 步",
+    "demo.step.5": "第 5 步",
+    "demo.stage.input": "输入问题",
+    "demo.stage.predict": "小模型预测",
+    "demo.stage.check": "路由器判断",
+    "demo.stage.route": "选择模型",
+    "demo.stage.output": "输出 token",
+    "demo.problem": "<span class=\"i18n-nowrap\">AIME 2024 I</span> · <span class=\"i18n-nowrap\">第 1 题</span>",
+    "demo.start": "<i class=\"fas fa-play-circle\" style=\"margin-right: 6px;\"></i> 播放推理过程",
+    "demo.generating": "小模型（R1-1.5B）正在生成 token…",
+    "demo.analyzing": "神经路由器判断当前 token",
+    "demo.features": "路由器只有 56M 参数，利用小模型的三类特征预测当前 token 是否会使推理偏离：<strong data-emphasis=\"top-logits\">前 100 个 logits</strong> 反映预测的不确定性，<strong data-emphasis=\"token-embeddings\">token 嵌入</strong>反映词频偏差，<strong data-emphasis=\"hidden-states\">隐藏状态</strong>提供语义上下文。",
+    "demo.accept": "采用小模型 token",
+    "demo.accept.reason": "预测一致，或差异不影响推理",
+    "demo.escalate": "交给大模型",
+    "demo.escalate.reason": "检测到可能引发分歧的 token",
+    "demo.generated": "R2R 路由生成的回答",
+    "demo.legend.identical": "小模型 token（预测一致）",
+    "demo.legend.neutral": "小模型 token（无影响的差异）",
+    "demo.legend.divergent": "大模型 token（纠正推理分歧）",
+    "demo.tooltip.hint": "<i class=\"fas fa-mouse-pointer\" style=\"margin-right: 6px;\"></i> <span style=\"color: #1565c0; font-weight: 500;\" data-emphasis=\"neutral-color\">蓝色</span>和<span style=\"color: #c62828; font-weight: 500;\" data-emphasis=\"divergent-color\">红色</span> token 的浮层展示续写对比与判断依据",
+    "demo.video.title": "视频演示",
+    "demo.video.caption": "左侧为 R1-32B，右侧为 R2R。红色 token 表示调用了大模型。",
+    "method.eyebrow": "方法",
+    "method.title": "用轻量路由器识别关键 token。",
+    "method.subtitle": "R2R 自动生成 token 级路由标签，用它们训练轻量神经路由器，判断哪些 token 需要交给大模型。",
+    "method.data.title": "自动生成路由训练数据",
+    "method.data.intro": "R2R 的一项核心贡献是建立<strong data-emphasis=\"automatic-token-labeling\">自动生成 token 级路由标签的流程</strong>，无需昂贵的人工标注：",
+    "method.data.steps": "<li><strong data-emphasis=\"llm-generation\">大模型生成</strong>完整回答。</li><li><strong data-emphasis=\"slm-prefill\">小模型预填充</strong>大模型的回答，找出预测不一致的位置。</li><li><strong data-emphasis=\"llm-continuation\">大模型续写</strong>这些位置的不同 token，得到候选推理路径。</li><li><strong data-emphasis=\"verifier-model\">验证模型</strong>比较不同续写，判断差异是否会改变推理结果。</li>",
+    "method.data.result": "这套流程可自动生成大规模训练数据，让路由器学习哪些 token 差异真正影响推理。",
+    "method.path.title": "沿大模型的推理路径生成",
+    "method.path.intro": "构造路由标签时，我们比较大小模型对下一个 token 的预测。一致时可直接采用小模型输出；不一致时，通过续写和验证判断差异属于哪一类：",
+    "method.path.neutral": "<strong data-emphasis=\"neutral-differences\">无影响的差异：</strong>不改变推理结果，采用小模型输出。",
+    "method.path.divergent": "<strong data-emphasis=\"divergent-tokens\">引发分歧：</strong>改变推理路径，交给大模型处理。",
+    "method.path.summary": "只纠正引发分歧的 token，小模型就能沿着大模型的推理路径继续生成，直到下一处需要纠正的位置。实际推理时，由训练好的神经路由器直接做出判断。",
+    "method.router.title": "神经路由器结构",
+    "method.router.intro": "路由器是一个只有 <strong data-emphasis=\"router-network\">56M 参数的前馈网络</strong>，接收小模型的三类特征：",
+    "method.router.logits": "<strong data-emphasis=\"top-logits\">小模型前 100 个 logits：</strong>反映预测的不确定性，较高的熵意味着更可能出现分歧。",
+    "method.router.embeddings": "<strong data-emphasis=\"token-embeddings\">token 嵌入：</strong>反映词频偏差，低频 token 更容易引发分歧。",
+    "method.router.hidden": "<strong data-emphasis=\"last-layer-hidden-states\">最后一层隐藏状态：</strong>提供当前生成步骤的语义上下文。",
+    "method.router.output": "路由器通过二分类预测当前 token 偏离大模型推理路径的概率，使推理过程能够<strong data-emphasis=\"immediate-routing\">即时决定是否调用大模型</strong>，无需等待续写验证。",
+    "method.indicators.title": "哪些特征能预示推理分歧",
+    "method.entropy.title": "小模型预测的熵",
+    "method.entropy.body": "引发分歧的 token 对应的小模型输出熵，平均约为其余 token 的 3.8 倍，说明预测更不确定。",
+    "method.frequency.title": "token 频率",
+    "method.frequency.body": "小模型对低频 token 的训练相对不足，因此这些 token 更容易引发推理分歧。",
+    "results.eyebrow": "实验结果",
+    "results.title": "以更低成本获得更强推理能力。",
+    "results.subtitle": "在 AIME、GPQA 和 LiveCodeBench 上，R2R 改善了 test-time scaling 的准确率与计算成本权衡。",
+    "results.baseline": "R1-7B（基线）",
+    "results.ours": "R2R（我们的方法）",
+    "results.accuracy": "平均准确率",
+    "results.params.7_0B": "<strong data-emphasis=\"parameter-count\">7.0B</strong> 参数",
+    "results.params.14B": "<strong data-emphasis=\"parameter-count\">14B</strong> 参数",
+    "results.params.32B": "<strong data-emphasis=\"parameter-count\">32B</strong> 参数",
+    "results.params.average": "平均 <strong data-emphasis=\"parameter-count\">5.6B</strong> 参数",
+    "results.cost.154K": "<strong data-emphasis=\"inference-cost\">154K</strong> 成本*",
+    "results.cost.234K": "<strong data-emphasis=\"inference-cost\">234K</strong> 成本*",
+    "results.cost.103K": "<strong data-emphasis=\"inference-cost\">103K</strong> 成本*",
+    "results.cost.537K": "<strong data-emphasis=\"inference-cost\">537K</strong> 成本*",
+    "results.cost.definition": "*成本 = 输出 token 数 × 激活参数量（以十亿为单位），越低越好。",
+    "results.figure.caption": "在 AIME、GPQA 和 LiveCodeBench 三项基准上，R2R 均改善了准确率与计算成本的帕累托前沿。",
+    "results.table.title": "各项基准的详细结果",
+    "results.table.method": "方法",
+    "results.table.params": "平均参数量",
+    "results.behavior.title": "路由行为分析",
+    "results.behavior.body": "R2R 学会了有选择地调用大模型：直接作答时调用较少，在每段思考的开头与结尾更频繁地调用，因为这些位置往往决定后续推理方向。",
+    "team.eyebrow": "研究团队",
+    "team.title": "作者",
+    "team.affiliations": "<sup>1</sup>清华大学 &nbsp;&nbsp; <sup>2</sup>无问芯穹 &nbsp;&nbsp; <sup>3</sup>上海交通大学<br><span style=\"font-size: 12px;\">*共同第一作者</span>",
+    "citation.eyebrow": "引用",
+    "citation.title": "引用我们的工作。",
+    "citation.subtitle": "如果 R2R 对您的研究有所帮助，欢迎引用我们的论文。"
+  },
+  "attributes": {
+    "figure.0": {
+      "alt": "R2R 方法概览"
+    },
+    "figure.1": {
+      "alt": "路由标签自动生成流程"
+    },
+    "figure.2": {
+      "alt": "不同类别 token 的小模型输出熵分布"
+    },
+    "figure.3": {
+      "alt": "token 出现频率与推理分歧的关系"
+    },
+    "figure.4": {
+      "alt": "AIME、GPQA 和 LiveCodeBench 上的准确率与成本帕累托前沿"
+    },
+    "figure.5": {
+      "alt": "R2R 在不同推理阶段的路由行为"
+    },
+    "demo.playBtn": {
+      "aria-label": "播放推理流程",
+      "title": "播放推理流程"
+    },
+    "demo.pauseBtn": {
+      "aria-label": "暂停推理流程",
+      "title": "暂停推理流程"
+    },
+    "demo.resetBtn": {
+      "aria-label": "重置推理流程",
+      "title": "重置推理流程"
+    }
+  },
+  "runtime": {
+    "SLM Continuation": "小模型续写",
+    "LLM Continuation": "大模型续写",
+    "Verifier Analysis": "验证分析",
+    "Neutral Difference": "无影响的差异",
+    "Divergent Token": "引发分歧的 token",
+    "The difference between 'us' and 'me' is stylistic and doesn't affect the mathematical reasoning. Both lead to the same problem setup.": "“us” 与 “me” 的区别只在措辞，不影响数学推理，两种续写都在建立相同的问题条件。",
+    "The divergence from 'the problem' to 'equations' is significant. Setting up explicit equations is crucial for solving this problem correctly, while 'the problem' is vague and may lead to incomplete formulation.": "“the problem” 与 “equations” 的区别会影响推理。明确列出方程是正确求解的关键，而笼统地描述问题可能导致建模不完整。",
+    "The LLM correctly uses 'takes' to express the time calculation, while 'gives' from SLM is less precise. This ensures the time formula 9/s is correctly derived.": "大模型用 “takes” 明确表达所需时间，并给出 9/s 小时；小模型用 “gives” 的续写不够具体。",
+    "Both 'plus' and 'including' convey the same mathematical meaning that t minutes is part of the total time. The difference is purely stylistic.": "在这一示例中，两种续写都把咖啡店停留的 t 分钟计入总时长，因此这一措辞差异被归为不影响推理。",
+    "The SLM's 'the coffee shop stop' is vague, while the LLM correctly specifies 't minutes'. This precision is essential for setting up the correct equation with the variable t.": "小模型只提到 “the coffee shop stop”，大模型则明确写出 “t minutes”。明确时间变量 t 有助于列出正确的方程。",
+    "SLM Continuation:": "小模型续写：",
+    "LLM Continuation:": "大模型续写：",
+    "Verifier Model:": "验证模型：",
+    "Neutral": "无影响的差异",
+    "Divergent": "引发分歧",
+    "No data": "暂无数据",
+    "Could not load token data. Please check your network connection or try again later.": "token 数据加载失败，请检查网络连接或稍后重试。"
+  }
+}

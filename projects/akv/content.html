@@ -1,20 +1,21 @@
-<a class="akv-skip" href="#main">Skip to content</a>
+<a class="akv-skip" href="#main" data-i18n="hero.skip-to-content">Skip to content</a>
 <main id="main">
   <section class="hero akv-hero">
     <canvas id="akv-hero-canvas" aria-hidden="true"></canvas>
     <div class="akv-hero-wash" aria-hidden="true"></div>
-    <button id="akv-hero-advance" class="akv-sr-only" type="button">Advance cache animation</button>
-    <h1 class="hero-title"><span class="akv-gradient">AKV</span></h1>
-    <p class="hero-subtitle akv-hero-tagline">A serving system that enables <strong>cache engineering</strong>.</p>
+    <button id="akv-hero-advance" class="akv-sr-only" type="button" data-i18n="hero.advance-cache-animation">Advance cache animation</button>
+    <h1 class="hero-title"><span class="akv-gradient" data-emphasis="project-name">AKV</span></h1>
+    <!-- Emphasize cache engineering in both languages; the system enables this capability. -->
+    <p class="hero-subtitle akv-hero-tagline" data-i18n="hero.a-serving-system-that-enables-cache">A serving system that enables <strong class="i18n-nowrap" data-emphasis="cache-engineering">cache engineering</strong>.</p>
     <div class="akv-metrics">
-      <a href="#results"><strong>−27.7<span>%</span></strong><span>Average inference cost</span><small>Across 3 models and 4 benchmarks</small></a>
-      <a href="#results"><strong>+1.7<span>pts</span></strong><span>Average benchmark score</span><small>Compared with Standard</small></a>
-      <a href="#efficiency"><strong>2.67<span>×</span></strong><span>Peak output throughput gain</span><small>GPT-OSS-120B · SWE-bench</small></a>
+      <a href="#results" data-i18n="hero.27-7-average-inference-cost-across"><strong data-emphasis="inference-cost-reduction">−27.7<span>%</span></strong><span>Average inference cost</span><small>Across 3 models and 4 benchmarks</small></a>
+      <a href="#results" data-i18n="hero.1-7-pts-average-benchmark-score"><strong data-emphasis="benchmark-score-gain">+1.7<span>pts</span></strong><span>Average benchmark score</span><small>Compared with Standard</small></a>
+      <a href="#efficiency" data-i18n="hero.2-67-peak-output-throughput-gain"><strong data-emphasis="output-throughput-gain">2.67<span>×</span></strong><span>Peak output throughput gain</span><small>GPT-OSS-120B · SWE-bench</small></a>
     </div>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="https://arxiv.org/pdf/2610.28577" target="_blank" rel="noopener"><i class="fas fa-file-alt" aria-hidden="true"></i> Read Paper</a>
-      <a class="btn btn-secondary" href="https://github.com/thu-nics/AKV" target="_blank" rel="noopener" data-resource-icon><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-14-2 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> View Code</a>
-      <a class="btn btn-secondary" href="#citation" data-resource-icon><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7a4 4 0 0 0-4 4v6h6v-6H6a1 1 0 0 1 1-1zm10 0a4 4 0 0 0-4 4v6h6v-6h-3a1 1 0 0 1 1-1z" fill="currentColor"/></svg> Citation</a>
+      <a class="btn btn-primary" href="https://arxiv.org/pdf/2610.28577" target="_blank" rel="noopener" data-i18n="hero.read-paper"><i class="fas fa-file-alt" aria-hidden="true"></i> Read Paper</a>
+      <a class="btn btn-secondary" href="https://github.com/thu-nics/AKV" target="_blank" rel="noopener" data-resource-icon data-i18n="hero.view-code"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-14-2 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> View Code</a>
+      <a class="btn btn-secondary" href="#citation" data-resource-icon data-i18n="hero.citation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7a4 4 0 0 0-4 4v6h6v-6H6a1 1 0 0 1 1-1zm10 0a4 4 0 0 0-4 4v6h6v-6h-3a1 1 0 0 1 1-1z" fill="currentColor"/></svg> Citation</a>
     </div>
   </section>
 
@@ -22,53 +23,53 @@
     <div class="container">
       <div class="akv-insight-intro">
         <div class="akv-heading">
-          <p class="section-eyebrow">The insight</p>
-          <h2 id="motivation-title" class="section-title">Why<br><span class="akv-insight-gradient">cache engineering?</span></h2>
-          <p class="section-subtitle">Control the active cache without recomputing the retained history.</p>
+          <p class="section-eyebrow" data-i18n="motivation.the-insight">The insight</p>
+          <h2 id="motivation-title" class="section-title" data-i18n="motivation.why-cache-engineering">Why<br><span class="akv-insight-gradient" data-emphasis="cache-engineering">cache engineering?</span></h2>
+          <p class="section-subtitle" data-i18n="motivation.control-the-active-cache-without-recomputing">Control the active cache without recomputing the retained history.</p>
         </div>
         <div class="akv-memory-bot">
-          <button id="memory-bot-action" class="akv-memory-action" type="button" aria-label="Run the next memory action" aria-describedby="memory-bot-description" disabled>
+          <button id="memory-bot-action" class="akv-memory-action" type="button" aria-label="Run the next memory action" aria-describedby="memory-bot-description" disabled data-i18n-attrs="motivation.memory-bot-action">
             <img id="memory-bot-fallback" src="static/memory-bot/preview.svg" width="370" height="325" alt="" aria-hidden="true">
             <svg id="memory-bot-scene" xmlns="http://www.w3.org/2000/svg" viewBox="90 110 370 325" aria-hidden="true" hidden><g id="memory-bot-drawing"></g></svg>
           </button>
-          <p id="memory-bot-description" class="akv-memory-description">AKV's memory keeper appends cache, drops selected cache while retaining other positions, and repositions the retained cache in a separate action. An illustrative logo animation.</p>
-          <p class="akv-memory-caption" id="memory-bot-state">2 active caches</p>
+          <p id="memory-bot-description" class="akv-memory-description" data-i18n="motivation.akv-s-memory-keeper-appends-cache">AKV's memory keeper appends cache, drops selected cache while retaining other positions, and repositions the retained cache in a separate action. An illustrative logo animation.</p>
+          <p class="akv-memory-caption" id="memory-bot-state" data-i18n="motivation.2-active-caches">2 active caches</p>
         </div>
       </div>
       <div class="akv-motive-groups">
         <div class="akv-motive-group" role="group" aria-labelledby="akv-context-label">
-          <p class="akv-motive-label" id="akv-context-label">Context engineering</p>
+          <p class="akv-motive-label" id="akv-context-label" data-i18n="motivation.context-engineering">Context engineering</p>
           <ol class="akv-motive-flow" role="list">
             <li class="akv-motive-step">
               <div class="akv-motive-copy">
-                <h3>Long history needs trimming.</h3>
-                <p>Agents accumulate long histories, and not all of that history is needed.</p>
+                <h3 data-i18n="motivation.long-history-needs-trimming">Long history needs trimming.</h3>
+                <p data-i18n="motivation.agents-accumulate-long-histories-and-not">Agents accumulate long histories, and not all of that history is needed.</p>
               </div>
             </li>
             <li class="akv-motive-step">
               <div class="akv-motive-copy">
-                <h3>Edit the prefix.<br>Re-prefill the rest.</h3>
-                <p>Editing the text prefix invalidates later KV. The remaining context must be prefilled again.</p>
+                <h3 data-i18n="motivation.edit-the-prefix-re-prefill-the">Edit the prefix.<br>Re-prefill the rest.</h3>
+                <p data-i18n="motivation.editing-the-text-prefix-invalidates-later">Editing the text prefix invalidates later KV. The remaining context must be prefilled again.</p>
               </div>
-              <button class="akv-motive-trigger" type="button" data-memory-bot-action="refill" aria-label="Show re-prefill after trimming the text" aria-controls="memory-bot-scene" disabled></button>
+              <button class="akv-motive-trigger" type="button" data-memory-bot-action="refill" aria-label="Show re-prefill after trimming the text" aria-controls="memory-bot-scene" disabled data-i18n-attrs="motivation.show-re-prefill-after-trimming-the"></button>
             </li>
           </ol>
         </div>
         <div class="akv-motive-group" role="group" aria-labelledby="akv-cache-label">
-          <p class="akv-motive-label" id="akv-cache-label">Cache engineering</p>
+          <p class="akv-motive-label" id="akv-cache-label" data-i18n="motivation.cache-engineering">Cache engineering</p>
           <ol class="akv-motive-flow" role="list">
             <li class="akv-motive-step">
               <div class="akv-motive-copy">
-                <h3>KV cache is built for reuse.</h3>
-                <p>It already stores the states we computed.</p>
+                <h3 data-i18n="motivation.kv-cache-is-built-for-reuse">KV cache is built for reuse.</h3>
+                <p data-i18n="motivation.it-already-stores-the-states-we">It already stores the states we computed.</p>
               </div>
             </li>
             <li class="akv-motive-step akv-motive-answer">
               <div class="akv-motive-copy">
-                <h3>Let agents manage their own KV cache.</h3>
-                <p>Direct control over which KV states to keep or drop.</p>
+                <h3 data-i18n="motivation.let-agents-manage-their-own-kv">Let agents manage their own KV cache.</h3>
+                <p data-i18n="motivation.direct-control-over-which-kv-states">Direct control over which KV states to keep or drop.</p>
               </div>
-              <button class="akv-motive-trigger" type="button" data-memory-bot-action="manage" aria-label="Show direct cache management" aria-controls="memory-bot-scene" disabled></button>
+              <button class="akv-motive-trigger" type="button" data-memory-bot-action="manage" aria-label="Show direct cache management" aria-controls="memory-bot-scene" disabled data-i18n-attrs="motivation.show-direct-cache-management"></button>
             </li>
           </ol>
         </div>
@@ -79,62 +80,62 @@
   <section id="overview" class="section">
     <div class="container">
       <div class="akv-heading">
-        <p class="section-eyebrow">The core idea</p>
-        <h2 class="section-title">From Context Engineering<br>to Cache Engineering</h2>
-        <p class="section-subtitle">Longer histories increase KV storage and attention costs.<br>Context engineering edits text.<br><strong>Cache engineering</strong> directly manages KV states.</p>
+        <p class="section-eyebrow" data-i18n="overview.the-core-idea">The core idea</p>
+        <h2 class="section-title" data-i18n="overview.from-context-engineering-to-cache-engineering">From Context Engineering<br>to Cache Engineering</h2>
+        <p class="section-subtitle" data-i18n="overview.longer-histories-increase-kv-storage-and">Longer histories increase KV storage and attention costs.<br>Context engineering edits text.<br><strong data-emphasis="cache-engineering">Cache engineering</strong> directly manages KV states.</p>
       </div>
       <div class="akv-comparison" id="core-comparison">
         <article class="akv-comparison-point">
-          <h3 id="core-context-title">Context Engineering</h3>
+          <h3 id="core-context-title" data-i18n="overview.context-engineering">Context Engineering</h3>
           <figure class="akv-core-demo" aria-labelledby="core-context-title">
-            <img id="core-context-animation" data-core-engineering="context" class="akv-core-animation" src="static/figures/context-engineering.svg" width="760" height="170" alt="Message A and the old A and B caches fade to dashed outlines. B must be prefilled again before C’s cache is added.">
+            <img id="core-context-animation" data-core-engineering="context" class="akv-core-animation" src="static/figures/context-engineering.svg" width="760" height="170" alt="Message A and the old A and B caches fade to dashed outlines. B must be prefilled again before C’s cache is added." data-i18n-attrs="overview.core-context-animation">
           </figure>
           <div class="akv-comparison-copy">
             <ul class="akv-core-points" role="list">
-              <li><svg class="akv-core-face" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><!-- Shared n=4 superellipse, matching the memory bot. --><defs><path id="akv-core-face-outline" d="M28.5 16C28.5 17.84 28.46 20.232 28.379 21.521C28.298 22.81 28.178 23.1 28.015 23.733C27.851 24.365 27.649 24.854 27.398 25.317C27.148 25.78 26.858 26.164 26.511 26.511C26.164 26.858 25.78 27.148 25.317 27.398C24.854 27.649 24.365 27.851 23.733 28.015C23.1 28.178 22.81 28.298 21.521 28.379C20.232 28.46 17.84 28.5 16 28.5C14.16 28.5 11.768 28.46 10.479 28.379C9.19 28.298 8.9 28.178 8.267 28.015C7.635 27.851 7.146 27.649 6.683 27.398C6.22 27.148 5.836 26.858 5.489 26.511C5.142 26.164 4.852 25.78 4.602 25.317C4.351 24.854 4.149 24.365 3.985 23.733C3.822 23.1 3.702 22.81 3.621 21.521C3.54 20.232 3.5 17.84 3.5 16C3.5 14.16 3.54 11.768 3.621 10.479C3.702 9.19 3.822 8.9 3.985 8.267C4.149 7.635 4.351 7.146 4.602 6.683C4.852 6.22 5.142 5.836 5.489 5.489C5.836 5.142 6.22 4.852 6.683 4.602C7.146 4.351 7.635 4.149 8.267 3.985C8.9 3.822 9.19 3.702 10.479 3.621C11.768 3.54 14.16 3.5 16 3.5C17.84 3.5 20.232 3.54 21.521 3.621C22.81 3.702 23.1 3.822 23.733 3.985C24.365 4.149 24.854 4.351 25.317 4.602C25.78 4.852 26.164 5.142 26.511 5.489C26.858 5.836 27.148 6.22 27.398 6.683C27.649 7.146 27.851 7.635 28.015 8.267C28.178 8.9 28.298 9.19 28.379 10.479C28.46 11.768 28.5 14.16 28.5 16Z"/></defs><use href="#akv-core-face-outline"/><path d="M10.8 12.4q-.4 1.1-.1 2.1m10-2.3q.4 1.1.1 2.2"/><path d="M10.4 22.1c2.1-4.4 7.9-5 11.1-.6"/></svg><div><strong>Indirect cache control.</strong><span>Edit text messages, with no direct control over retained KV.</span></div></li>
-              <li><svg class="akv-core-face" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><use href="#akv-core-face-outline"/><path d="M10.8 12.4q-.4 1.1-.1 2.1m10-2.3q.4 1.1.1 2.2"/><path d="M10.4 22.1c2.1-4.4 7.9-5 11.1-.6"/></svg><div><strong>More computation.</strong><span>Prefix edits invalidate later KV, requiring re-prefill.</span></div></li>
-              <li><svg class="akv-core-face" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><use href="#akv-core-face-outline"/><path d="M10.8 12.4q-.4 1.1-.1 2.1m10-2.3q.4 1.1.1 2.2"/><path d="M10.4 22.1c2.1-4.4 7.9-5 11.1-.6"/></svg><div><strong>Lost historical information.</strong><span>Recomputing B without A loses A’s contribution to B’s original KV.</span></div></li>
+              <li><svg class="akv-core-face" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><!-- Shared n=4 superellipse, matching the memory bot. --><defs><path id="akv-core-face-outline" d="M28.5 16C28.5 17.84 28.46 20.232 28.379 21.521C28.298 22.81 28.178 23.1 28.015 23.733C27.851 24.365 27.649 24.854 27.398 25.317C27.148 25.78 26.858 26.164 26.511 26.511C26.164 26.858 25.78 27.148 25.317 27.398C24.854 27.649 24.365 27.851 23.733 28.015C23.1 28.178 22.81 28.298 21.521 28.379C20.232 28.46 17.84 28.5 16 28.5C14.16 28.5 11.768 28.46 10.479 28.379C9.19 28.298 8.9 28.178 8.267 28.015C7.635 27.851 7.146 27.649 6.683 27.398C6.22 27.148 5.836 26.858 5.489 26.511C5.142 26.164 4.852 25.78 4.602 25.317C4.351 24.854 4.149 24.365 3.985 23.733C3.822 23.1 3.702 22.81 3.621 21.521C3.54 20.232 3.5 17.84 3.5 16C3.5 14.16 3.54 11.768 3.621 10.479C3.702 9.19 3.822 8.9 3.985 8.267C4.149 7.635 4.351 7.146 4.602 6.683C4.852 6.22 5.142 5.836 5.489 5.489C5.836 5.142 6.22 4.852 6.683 4.602C7.146 4.351 7.635 4.149 8.267 3.985C8.9 3.822 9.19 3.702 10.479 3.621C11.768 3.54 14.16 3.5 16 3.5C17.84 3.5 20.232 3.54 21.521 3.621C22.81 3.702 23.1 3.822 23.733 3.985C24.365 4.149 24.854 4.351 25.317 4.602C25.78 4.852 26.164 5.142 26.511 5.489C26.858 5.836 27.148 6.22 27.398 6.683C27.649 7.146 27.851 7.635 28.015 8.267C28.178 8.9 28.298 9.19 28.379 10.479C28.46 11.768 28.5 14.16 28.5 16Z"/></defs><use href="#akv-core-face-outline"/><path d="M10.8 12.4q-.4 1.1-.1 2.1m10-2.3q.4 1.1.1 2.2"/><path d="M10.4 22.1c2.1-4.4 7.9-5 11.1-.6"/></svg><div><strong data-i18n="overview.indirect-cache-control" data-emphasis="indirect-cache-control">Indirect cache control.</strong><span data-i18n="overview.edit-text-messages-with-no-direct">Edit text messages, with no direct control over retained KV.</span></div></li>
+              <li><svg class="akv-core-face" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><use href="#akv-core-face-outline"/><path d="M10.8 12.4q-.4 1.1-.1 2.1m10-2.3q.4 1.1.1 2.2"/><path d="M10.4 22.1c2.1-4.4 7.9-5 11.1-.6"/></svg><div><strong data-i18n="overview.more-computation" data-emphasis="more-computation">More computation.</strong><span data-i18n="overview.prefix-edits-invalidate-later-kv-requiring">Prefix edits invalidate later KV, requiring re-prefill.</span></div></li>
+              <li><svg class="akv-core-face" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><use href="#akv-core-face-outline"/><path d="M10.8 12.4q-.4 1.1-.1 2.1m10-2.3q.4 1.1.1 2.2"/><path d="M10.4 22.1c2.1-4.4 7.9-5 11.1-.6"/></svg><div><strong data-i18n="overview.lost-historical-information" data-emphasis="lost-historical-information">Lost historical information.</strong><span data-i18n="overview.recomputing-b-without-a-loses-a">Recomputing B without A loses A’s contribution to B’s original KV.</span></div></li>
             </ul>
           </div>
         </article>
         <article class="akv-comparison-point akv-comparison-ours">
-          <h3 id="core-cache-title"><span class="akv-gradient">Cache Engineering</span></h3>
+          <h3 id="core-cache-title" data-i18n="overview.cache-engineering"><span class="akv-gradient" data-emphasis="cache-engineering">Cache Engineering</span></h3>
           <figure class="akv-core-demo" aria-labelledby="core-cache-title">
-            <img id="core-animation" data-core-engineering="cache" class="akv-core-animation" src="static/figures/cache-engineering.svg" width="760" height="170" alt="A’s cache fades while B’s retained cache keeps the yellow information from A. Only C’s new cache entries are prefilled.">
+            <img id="core-animation" data-core-engineering="cache" class="akv-core-animation" src="static/figures/cache-engineering.svg" width="760" height="170" alt="A’s cache fades while B’s retained cache keeps the yellow information from A. Only C’s new cache entries are prefilled." data-i18n-attrs="overview.core-animation">
           </figure>
           <div class="akv-comparison-copy">
             <ul class="akv-core-points" role="list">
-              <li><svg class="akv-core-face" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><use href="#akv-core-face-outline"/><path d="M10.8 12.4q-.4 1.1-.1 2.1m10-2.3q.4 1.1.1 2.2"/><path d="M9.9 18.6c2.2 5.4 8.3 5.9 12 .2"/></svg><div><strong>Direct cache control.</strong><span>Drop selected KV without deleting the corresponding text.</span></div></li>
-              <li><svg class="akv-core-face" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><use href="#akv-core-face-outline"/><path d="M10.8 12.4q-.4 1.1-.1 2.1m10-2.3q.4 1.1.1 2.2"/><path d="M9.9 18.6c2.2 5.4 8.3 5.9 12 .2"/></svg><div><strong>Less computation through KV reuse.</strong><span>AKV serving reuses retained, compatible KV without re-prefill.</span></div></li>
-              <li><svg class="akv-core-face" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><use href="#akv-core-face-outline"/><path d="M10.8 12.4q-.4 1.1-.1 2.1m10-2.3q.4 1.1.1 2.2"/><path d="M9.9 18.6c2.2 5.4 8.3 5.9 12 .2"/></svg><div><strong>Preserved historical information.</strong><span>B’s retained KV can still carry information from A after A’s KV is dropped.</span></div></li>
+              <li><svg class="akv-core-face" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><use href="#akv-core-face-outline"/><path d="M10.8 12.4q-.4 1.1-.1 2.1m10-2.3q.4 1.1.1 2.2"/><path d="M9.9 18.6c2.2 5.4 8.3 5.9 12 .2"/></svg><div><strong data-i18n="overview.direct-cache-control" data-emphasis="direct-cache-control">Direct cache control.</strong><span data-i18n="overview.drop-selected-kv-without-deleting-the">Drop selected KV without deleting the corresponding text.</span></div></li>
+              <li><svg class="akv-core-face" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><use href="#akv-core-face-outline"/><path d="M10.8 12.4q-.4 1.1-.1 2.1m10-2.3q.4 1.1.1 2.2"/><path d="M9.9 18.6c2.2 5.4 8.3 5.9 12 .2"/></svg><div><strong data-i18n="overview.less-computation-through-kv-reuse" data-emphasis="less-computation-through-kv-reuse">Less computation through KV reuse.</strong><span data-i18n="overview.akv-serving-reuses-retained-compatible-kv">AKV serving reuses retained, compatible KV without re-prefill.</span></div></li>
+              <li><svg class="akv-core-face" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><use href="#akv-core-face-outline"/><path d="M10.8 12.4q-.4 1.1-.1 2.1m10-2.3q.4 1.1.1 2.2"/><path d="M9.9 18.6c2.2 5.4 8.3 5.9 12 .2"/></svg><div><strong data-i18n="overview.preserved-historical-information" data-emphasis="preserved-historical-information">Preserved historical information.</strong><span data-i18n="overview.b-s-retained-kv-can-still">B’s retained KV can still carry information from A after A’s KV is dropped.</span></div></li>
             </ul>
           </div>
         </article>
       </div>
-      <p class="akv-core-information-note">Colored blocks inside the cache represent information carried from earlier messages.</p>
-      <div id="core-animation-stages" class="akv-core-stages" role="group" aria-label="Animation stages" hidden></div>
+      <p class="akv-core-information-note" data-i18n="overview.colored-blocks-inside-the-cache-represent">Colored blocks inside the cache represent information carried from earlier messages.</p>
+      <div id="core-animation-stages" class="akv-core-stages" role="group" aria-label="Animation stages" hidden data-i18n-attrs="overview.core-animation-stages"></div>
       <div class="akv-core-controls">
         <p id="core-animation-stage-description" class="akv-core-stage-description" hidden></p>
-        <button id="core-animation-toggle" type="button" aria-pressed="false" aria-controls="core-context-animation core-animation" hidden>Pause</button>
+        <button id="core-animation-toggle" type="button" aria-pressed="false" aria-controls="core-context-animation core-animation" hidden data-i18n="overview.pause">Pause</button>
       </div>
         <details id="method" class="akv-detail akv-method-detail">
-          <summary>Explore the three operations <span aria-hidden="true">+</span></summary>
+          <summary data-i18n="overview.explore-the-three-operations">Explore the three operations <span aria-hidden="true">+</span></summary>
           <div class="akv-operations">
-            <p class="akv-body">To enable cache engineering, we define three cache operations: <strong>Append, Drop, and Repos</strong>. Agents combine them to control the active cache throughout execution.</p>
+            <p class="akv-body" data-i18n="overview.to-enable-cache-engineering-we-define">To enable cache engineering, we define three cache operations: <strong data-emphasis="cache-operations">Append, Drop, and Repos</strong>. Agents combine them to control the active cache throughout execution.</p>
           </div>
           <div class="akv-operation-demo">
             <div class="akv-operation-toolbar">
-            <div class="akv-segmented" role="group" aria-label="Cache operation">
-              <button type="button" data-operation="append" aria-pressed="true" aria-controls="operation-scene operation-caption">1. Append</button>
-              <button type="button" data-operation="drop" aria-pressed="false" aria-controls="operation-scene operation-caption">2. Drop</button>
-              <button type="button" data-operation="repos" aria-pressed="false" aria-controls="operation-scene operation-caption">3. Repos</button>
+            <div class="akv-segmented" role="group" aria-label="Cache operation" data-i18n-attrs="overview.cache-operation">
+              <button type="button" data-operation="append" aria-pressed="true" aria-controls="operation-scene operation-caption" data-i18n="overview.1-append">1. Append</button>
+              <button type="button" data-operation="drop" aria-pressed="false" aria-controls="operation-scene operation-caption" data-i18n="overview.2-drop">2. Drop</button>
+              <button type="button" data-operation="repos" aria-pressed="false" aria-controls="operation-scene operation-caption" data-i18n="overview.3-repos">3. Repos</button>
             </div>
-            <button id="operation-playback" type="button" aria-controls="operation-scene" hidden>Pause</button>
+            <button id="operation-playback" type="button" aria-controls="operation-scene" hidden data-i18n="overview.pause-2">Pause</button>
             </div>
             <div class="akv-cache-scene" id="operation-scene" data-stage="append">
-              <div class="akv-cache-row"><span class="akv-row-label">Logical tokens</span><div class="akv-blocks"><span class="akv-block akv-old">A</span><span class="akv-block akv-thought">B</span><span class="akv-block akv-recent">C</span><span class="akv-block akv-new">D<small>New token</small></span></div></div>
-              <div class="akv-cache-row"><span class="akv-row-label">Active KV cache</span><div class="akv-blocks akv-live"><span class="akv-block akv-old">K / V <small>pos 0</small></span><span class="akv-block akv-thought" id="drop-block">K / V <small data-position="1">pos 1</small></span><span class="akv-block akv-recent">K / V <small data-position="2">pos 2</small></span><span class="akv-block akv-new">K / V <small data-position="3">pos 3</small></span></div></div>
-              <p class="akv-operation-caption" id="operation-caption" aria-live="polite"><strong>Append.</strong> Compute new tokens against the active cache, append their KV states, and advance the logical sequence and encoding positions.</p>
+              <div class="akv-cache-row"><span class="akv-row-label" data-i18n="overview.logical-tokens">Logical tokens</span><div class="akv-blocks"><span class="akv-block akv-old">A</span><span class="akv-block akv-thought">B</span><span class="akv-block akv-recent">C</span><span class="akv-block akv-new" data-i18n="overview.d-new-token">D<small>New token</small></span></div></div>
+              <div class="akv-cache-row"><span class="akv-row-label" data-i18n="overview.active-kv-cache">Active KV cache</span><div class="akv-blocks akv-live"><span class="akv-block akv-old" data-i18n="overview.k-v-pos-0">K / V <small>pos 0</small></span><span class="akv-block akv-thought" id="drop-block">K / V <small data-position="1" data-i18n="overview.pos-1">pos 1</small></span><span class="akv-block akv-recent">K / V <small data-position="2" data-i18n="overview.pos-2">pos 2</small></span><span class="akv-block akv-new">K / V <small data-position="3" data-i18n="overview.pos-3">pos 3</small></span></div></div>
+              <p class="akv-operation-caption" id="operation-caption" aria-live="polite" data-i18n="overview.append-compute-new-tokens-against-the"><strong data-emphasis="append-operation">Append.</strong> Compute new tokens against the active cache, append their KV states, and advance the logical sequence and encoding positions.</p>
             </div>
           </div>
         </details>
@@ -144,57 +145,57 @@
   <section id="system" class="section">
     <div class="container">
       <div class="akv-heading">
-        <p class="section-eyebrow">The AKV serving system</p>
-        <h2 class="section-title">AKV: A Serving System<br>that Enables Cache Engineering</h2>
-        <p class="section-subtitle">With Append, Drop, and Repos, the same token prefix and retained positions can yield different cache states. AKV tracks both token and operation histories to correctly reuse and restore these states.</p>
+        <p class="section-eyebrow" data-i18n="system.the-akv-serving-system">The AKV serving system</p>
+        <h2 class="section-title" data-i18n="system.akv-a-serving-system-that-enables">AKV: A Serving System<br>that Enables Cache Engineering</h2>
+        <p class="section-subtitle" data-i18n="system.with-append-drop-and-repos-the">With Append, Drop, and Repos, the same token prefix and retained positions can yield different cache states. AKV tracks both token and operation histories to correctly reuse and restore these states.</p>
       </div>
       <figure id="radix-tree" class="akv-history" aria-labelledby="history-title">
         <div class="akv-history-header">
-          <div><p class="akv-number">WHY CACHE HISTORY MATTERS</p><h3 id="history-title">The same tokens.<br> Different KV states.</h3></div>
-          <div class="akv-history-playback" hidden><button type="button" id="history-replay" aria-label="Replay cache-history animation">↺ <span>Replay</span></button><button type="button" id="history-toggle" aria-pressed="false">Pause</button></div>
+          <div><p class="akv-number" data-i18n="system.why-cache-history-matters">WHY CACHE HISTORY MATTERS</p><h3 id="history-title" data-i18n="system.the-same-tokens-different-kv-states">The same tokens.<br> Different KV states.</h3></div>
+          <div class="akv-history-playback" hidden><button type="button" id="history-replay" aria-label="Replay cache-history animation" data-i18n-attrs="system.history-replay" data-i18n="system.replay">↺ <span>Replay</span></button><button type="button" id="history-toggle" aria-pressed="false" data-i18n="system.pause">Pause</button></div>
         </div>
         <div id="history-animation" class="akv-history-animation" hidden>
-          <div class="akv-history-panel"><h4>Three operation histories</h4><svg id="history-trajectories" viewBox="0 0 440 450" role="img" aria-labelledby="history-trajectories-title history-trajectories-description"><title id="history-trajectories-title">Messages and active KV along three histories</title><desc id="history-trajectories-description">A dashed, empty KV block represents a message being computed. It points to earlier KV available for attention, then fills and gains inset colors representing historical information. In history 1, B attends to A, and C attends to A and B before A is dropped. History 2 reuses A and B, drops A, then computes C attending only to B. History 3 starts from B alone; C attends to this different B. All retain B and C. Dropping KV leaves messages unchanged.</desc><g data-history-scene></g></svg></div>
-          <div class="akv-history-panel akv-history-tree"><h4>One extended radix tree</h4><svg id="history-tree" viewBox="0 0 420 450" role="img" aria-labelledby="history-tree-title history-tree-description"><title id="history-tree-title">A radix tree grows from the root</title><desc id="history-tree-description">The first path is Root, A, B, C, drop A. The second shares A and B, then branches to drop A followed by a different C. The third branches from Root to its own B and C. Drop markers record when an operation happened; they do not remove earlier tree nodes.</desc><g data-history-scene></g></svg></div>
+          <div class="akv-history-panel"><h4 data-i18n="system.three-operation-histories">Three operation histories</h4><svg id="history-trajectories" viewBox="0 0 440 450" role="img" aria-labelledby="history-trajectories-title history-trajectories-description"><title id="history-trajectories-title" data-i18n="system.messages-and-active-kv-along-three">Messages and active KV along three histories</title><desc id="history-trajectories-description" data-i18n="system.a-dashed-empty-kv-block-represents">A dashed, empty KV block represents a message being computed. It points to earlier KV available for attention, then fills and gains inset colors representing historical information. In history 1, B attends to A, and C attends to A and B before A is dropped. History 2 reuses A and B, drops A, then computes C attending only to B. History 3 starts from B alone; C attends to this different B. All retain B and C. Dropping KV leaves messages unchanged.</desc><g data-history-scene></g></svg></div>
+          <div class="akv-history-panel akv-history-tree"><h4 data-i18n="system.one-extended-radix-tree">One extended radix tree</h4><svg id="history-tree" viewBox="0 0 420 450" role="img" aria-labelledby="history-tree-title history-tree-description"><title id="history-tree-title" data-i18n="system.a-radix-tree-grows-from-the">A radix tree grows from the root</title><desc id="history-tree-description" data-i18n="system.the-first-path-is-root-a">The first path is Root, A, B, C, drop A. The second shares A and B, then branches to drop A followed by a different C. The third branches from Root to its own B and C. Drop markers record when an operation happened; they do not remove earlier tree nodes.</desc><g data-history-scene></g></svg></div>
         </div>
-        <div class="akv-history-fallback"><img src="static/figures/trajectory.svg" alt="Three histories retain B and C but produce different KV states. The extended radix tree shares A and B for the first two histories, branches at their different drop times, and stores the third history from the root." loading="lazy"></div>
-        <div class="akv-history-stages" role="group" aria-label="Cache-history animation stages" hidden><button type="button" data-history-stage="0" aria-controls="history-animation"><span>01</span> C, then drop A</button><button type="button" data-history-stage="1" aria-controls="history-animation"><span>02</span> Drop A, then C</button><button type="button" data-history-stage="2" aria-controls="history-animation"><span>03</span> Start from B</button><button type="button" data-history-stage="3" aria-controls="history-animation">Compare states</button></div>
-        <figcaption><span><b>ΔA</b> = drop A’s KV</span><span>Insets show information carried from earlier messages.</span></figcaption>
+        <div class="akv-history-fallback"><img src="static/figures/trajectory.svg" alt="Three histories retain B and C but produce different KV states. The extended radix tree shares A and B for the first two histories, branches at their different drop times, and stores the third history from the root." loading="lazy" data-i18n-attrs="system.three-histories-retain-b-and-c"></div>
+        <div class="akv-history-stages" role="group" aria-label="Cache-history animation stages" hidden data-i18n-attrs="system.cache-history-animation-stages"><button type="button" data-history-stage="0" aria-controls="history-animation" data-i18n="system.01-c-then-drop-a"><span>01</span> C, then drop A</button><button type="button" data-history-stage="1" aria-controls="history-animation" data-i18n="system.02-drop-a-then-c"><span>02</span> Drop A, then C</button><button type="button" data-history-stage="2" aria-controls="history-animation" data-i18n="system.03-start-from-b"><span>03</span> Start from B</button><button type="button" data-history-stage="3" aria-controls="history-animation" data-i18n="system.compare-states">Compare states</button></div>
+        <figcaption data-i18n="system.a-drop-a-s-kv-insets"><span><b>ΔA</b> = drop A’s KV</span><span>Insets show information carried from earlier messages.</span></figcaption>
       </figure>
 
       <details class="akv-detail akv-system-mechanisms">
-        <summary>Three mechanisms behind AKV serving <span aria-hidden="true">+</span></summary>
+        <summary data-i18n="system.three-mechanisms-behind-akv-serving">Three mechanisms behind AKV serving <span aria-hidden="true">+</span></summary>
         <div class="akv-system-designs">
           <article class="akv-system-design">
-            <p class="akv-number">01 / REUSE</p>
-            <h3>Reuse the right states.</h3>
-            <p>The extended radix tree matches token and cache-operation histories. Compatible states remain shared across requests.</p>
+            <p class="akv-number" data-i18n="system.01-reuse">01 / REUSE</p>
+            <h3 data-i18n="system.reuse-the-right-states">Reuse the right states.</h3>
+            <p data-i18n="system.the-extended-radix-tree-matches-token">The extended radix tree matches token and cache-operation histories. Compatible states remain shared across requests.</p>
           </article>
           <article class="akv-system-design">
-            <p class="akv-number">02 / EVICT</p>
-            <h3>Free unused KV safely.</h3>
-            <p>Dropping KV from one request does not immediately free shared storage. AKV reclaims it when no active computation or restoration needs it, while keeping cached descendants reachable.</p>
+            <p class="akv-number" data-i18n="system.02-evict">02 / EVICT</p>
+            <h3 data-i18n="system.free-unused-kv-safely">Free unused KV safely.</h3>
+            <p data-i18n="system.dropping-kv-from-one-request-does">Dropping KV from one request does not immediately free shared storage. AKV reclaims it when no active computation or restoration needs it, while keeping cached descendants reachable.</p>
           </article>
           <article class="akv-system-design">
-            <p class="akv-number">03 / RESTORE</p>
-            <h3>Restore in one prefill pass.</h3>
-            <p>Missing states are reconstructed with segment-batch attention. It reproduces historical attention visibility and positions in one prefill pass.</p>
+            <p class="akv-number" data-i18n="system.03-restore">03 / RESTORE</p>
+            <h3 data-i18n="system.restore-in-one-prefill-pass">Restore in one prefill pass.</h3>
+            <p data-i18n="system.missing-states-are-reconstructed-with-segment">Missing states are reconstructed with segment-batch attention. It reproduces historical attention visibility and positions in one prefill pass.</p>
           </article>
         </div>
       </details>
 
       <details id="stateless-interface" class="akv-detail akv-stateless">
-        <summary>Stateless interface: three requests, one server <span aria-hidden="true">+</span></summary>
+        <summary data-i18n="system.stateless-interface-three-requests-one-server">Stateless interface: three requests, one server <span aria-hidden="true">+</span></summary>
         <div class="akv-stateless-body">
           <div class="akv-interface-demo-heading">
-            <p class="akv-stateless-intro">Every request carries its full message and operation histories. The server reuses compatible KV states when available and restores missing states.</p>
-            <div class="akv-interface-controls" hidden><button id="interface-replay" type="button" aria-label="Replay all three requests">↺</button><button id="interface-toggle" type="button" aria-pressed="false">Pause</button></div>
+            <p class="akv-stateless-intro" data-i18n="system.every-request-carries-its-full-message">Every request carries its full message and operation histories. The server reuses compatible KV states when available and restores missing states.</p>
+            <div class="akv-interface-controls" hidden><button id="interface-replay" type="button" aria-label="Replay all three requests" data-i18n-attrs="system.interface-replay">↺</button><button id="interface-toggle" type="button" aria-pressed="false" data-i18n="system.pause-2">Pause</button></div>
           </div>
-          <div class="akv-interface-stages" role="group" aria-label="Stateless requests" hidden></div>
+          <div class="akv-interface-stages" role="group" aria-label="Stateless requests" hidden data-i18n-attrs="system.stateless-requests"></div>
           <div class="akv-stateless-example">
             <div class="akv-stateless-request">
-              <div class="akv-stateless-request-heading"><span>CLIENT · SELF-CONTAINED REQUEST</span><small id="interface-request-count">Request 3 / 3</small></div>
-              <pre tabindex="0" role="region" aria-label="Complete AKV request JSON"><code id="interface-request-code">{
+              <div class="akv-stateless-request-heading"><span data-i18n="system.client-self-contained-request">CLIENT · SELF-CONTAINED REQUEST</span><small id="interface-request-count" data-i18n="system.request-3-3">Request 3 / 3</small></div>
+              <pre tabindex="0" role="region" aria-label="Complete AKV request JSON" data-i18n-attrs="system.complete-akv-request-json"><code id="interface-request-code">{
   "model": "gpt-oss-120b",
   "messages": [
     {"role":"user", "content":"Search ICLR"},
@@ -206,20 +207,20 @@
     "reposition": [2]
   }
 }</code></pre>
-              <p class="akv-stateless-code-note">Each request includes earlier messages and operations. Message fields are abbreviated.</p>
+              <p class="akv-stateless-code-note" data-i18n="system.each-request-includes-earlier-messages-and">Each request includes earlier messages and operations. Message fields are abbreviated.</p>
             </div>
             <div class="akv-stateless-server">
-              <p class="akv-stateless-label">SERVER · RETAINED COMPUTATION</p>
-              <h3>New request. Reuse the work.</h3>
+              <p class="akv-stateless-label" data-i18n="system.server-retained-computation">SERVER · RETAINED COMPUTATION</p>
+              <h3 data-i18n="system.new-request-reuse-the-work">New request. Reuse the work.</h3>
               <div class="akv-interface-animation" hidden>
-                <svg id="interface-scene" viewBox="0 0 420 340" role="img" aria-labelledby="interface-scene-title interface-scene-description"><title id="interface-scene-title">Three stateless requests share compatible server cache</title><desc id="interface-scene-description">Request 1 appends only message 0, with no other operations. Request 2 carries the full history, reuses message 0 to append message 1, then drops message 0's KV. Request 3 carries all three messages and the earlier drop, reuses message 1 to append message 2, then drops message 1's KV and repositions the retained keys. Message 2's KV stays under message 2; only its key-position encoding changes, while V and inherited information remain unchanged. Four token positions per message are illustrative. Decoding and physical eviction are omitted.</desc><g data-interface-scene></g></svg>
+                <svg id="interface-scene" viewBox="0 0 420 340" role="img" aria-labelledby="interface-scene-title interface-scene-description"><title id="interface-scene-title" data-i18n="system.three-stateless-requests-share-compatible-server">Three stateless requests share compatible server cache</title><desc id="interface-scene-description" data-i18n="system.request-1-appends-only-message-0">Request 1 appends only message 0, with no other operations. Request 2 carries the full history, reuses message 0 to append message 1, then drops message 0's KV. Request 3 carries all three messages and the earlier drop, reuses message 1 to append message 2, then drops message 1's KV and repositions the retained keys. Message 2's KV stays under message 2; only its key-position encoding changes, while V and inherited information remain unchanged. Four token positions per message are illustrative. Decoding and physical eviction are omitted.</desc><g data-interface-scene></g></svg>
               </div>
               <ol class="akv-stateless-steps" data-interface-fallback>
-                <li><strong>Request 1 · Append m₀</strong><p>Send message 0 with no other cache operations.</p></li>
-                <li><strong>Request 2 · Append m₁ → Drop m₀</strong><p>Send messages 0–1. Reuse message 0’s KV to compute message 1, then drop message 0’s KV.</p></li>
-                <li><strong>Request 3 · Append m₂ → Drop m₁ → Repos</strong><p>Send messages 0–2 and carry forward the earlier drop. Reuse message 1’s KV to compute message 2, drop message 1’s KV, then reposition the retained keys.</p></li>
+                <li><strong data-i18n="system.request-1-append-m" data-emphasis="request-1-append-m">Request 1 · Append m₀</strong><p data-i18n="system.send-message-0-with-no-other">Send message 0 with no other cache operations.</p></li>
+                <li><strong data-i18n="system.request-2-append-m-drop-m" data-emphasis="request-2-append-m-drop-m">Request 2 · Append m₁ → Drop m₀</strong><p data-i18n="system.send-messages-0-1-reuse-message">Send messages 0–1. Reuse message 0’s KV to compute message 1, then drop message 0’s KV.</p></li>
+                <li><strong data-i18n="system.request-3-append-m-drop-m" data-emphasis="request-3-append-m-drop-m">Request 3 · Append m₂ → Drop m₁ → Repos</strong><p data-i18n="system.send-messages-0-2-and-carry">Send messages 0–2 and carry forward the earlier drop. Reuse message 1’s KV to compute message 2, drop message 1’s KV, then reposition the retained keys.</p></li>
               </ol>
-              <p class="akv-stateless-retained">Prefill states only; decoding omitted. Token positions are schematic. Drop changes active KV, not message history.</p>
+              <p class="akv-stateless-retained" data-i18n="system.prefill-states-only-decoding-omitted-token">Prefill states only; decoding omitted. Token positions are schematic. Drop changes active KV, not message history.</p>
             </div>
           </div>
         </div>
@@ -230,134 +231,134 @@
 
   <section id="results" class="section">
     <div class="container">
-      <p class="section-eyebrow">Benchmark results</p><h2 class="section-title">Higher success rates.<br>Lower inference cost.</h2><p class="section-subtitle">Across three models and four agent benchmarks, AKV improves average success rate by 1.7 percentage points while reducing inference cost by 27.7% relative to Standard.</p>
-      <div class="akv-baselines" aria-label="Methods compared in the benchmark and serving experiments">
-        <article><strong>Standard</strong><p>Summarize at a higher threshold.</p></article>
-        <article><strong>Text Engineering</strong><p>Summarize at a lower threshold of 48K tokens.</p></article>
-        <article><strong>AKV</strong><p>Drop older tool-response KV, keeping only the latest 12 rounds.</p></article>
+      <p class="section-eyebrow" data-i18n="results.benchmark-results">Benchmark results</p><h2 class="section-title" data-i18n="results.higher-success-rates-lower-inference-cost">Higher success rates.<br>Lower inference cost.</h2><p class="section-subtitle" data-i18n="results.across-three-models-and-four-agent">Across three models and four agent benchmarks, AKV improves average success rate by 1.7 percentage points while reducing inference cost by 27.7% relative to Standard.</p>
+      <div class="akv-baselines" aria-label="Methods compared in the benchmark and serving experiments" data-i18n-attrs="results.methods-compared-in-the-benchmark-and">
+        <article><strong data-emphasis="standard-baseline">Standard</strong><p data-i18n="results.summarize-at-a-higher-threshold">Summarize at a higher threshold.</p></article>
+        <article><strong data-emphasis="text-engineering-baseline">Text Engineering</strong><p data-i18n="results.summarize-at-a-lower-threshold-of">Summarize at a lower threshold of 48K tokens.</p></article>
+        <article><strong data-emphasis="project-name">AKV</strong><p data-i18n="results.drop-older-tool-response-kv-keeping">Drop older tool-response KV, keeping only the latest 12 rounds.</p></article>
       </div>
-      <p class="akv-fine akv-experiment-label">Three models · Four agent benchmarks</p>
-      <div class="akv-results-toolbar"><div class="akv-segmented" role="group" aria-label="Benchmark model"><button data-model="gpt" aria-pressed="true">GPT-OSS-120B</button><button data-model="minimax" aria-pressed="false">MiniMax-M2.7</button><button data-model="miro" aria-pressed="false">MiroThinker-1.7-Mini</button></div><div class="akv-segmented akv-metric-picker" role="group" aria-label="Benchmark metric"><button data-metric="score" aria-pressed="true">Accuracy</button><button data-metric="cost" aria-pressed="false">Cost</button></div></div>
+      <p class="akv-fine akv-experiment-label" data-i18n="results.three-models-four-agent-benchmarks">Three models · Four agent benchmarks</p>
+      <div class="akv-results-toolbar"><div class="akv-segmented" role="group" aria-label="Benchmark model" data-i18n-attrs="results.benchmark-model"><button data-model="gpt" aria-pressed="true">GPT-OSS-120B</button><button data-model="minimax" aria-pressed="false">MiniMax-M2.7</button><button data-model="miro" aria-pressed="false">MiroThinker-1.7-Mini</button></div><div class="akv-segmented akv-metric-picker" role="group" aria-label="Benchmark metric" data-i18n-attrs="results.benchmark-metric"><button data-metric="score" aria-pressed="true" data-i18n="results.accuracy">Accuracy</button><button data-metric="cost" aria-pressed="false" data-i18n="results.cost">Cost</button></div></div>
       <figure class="akv-benchmark-figure">
-        <div class="akv-benchmark-top"><span id="benchmark-chart-label">Accuracy (%) · Higher is better</span><div class="akv-bar-legend"><span><i class="akv-bar-standard"></i>Standard</span><span><i class="akv-bar-text"></i>Text Engineering</span><span><i class="akv-bar-ours"></i>AKV</span></div></div>
-        <div class="akv-benchmark-scroll" tabindex="0" role="region" aria-label="Scrollable benchmark bar chart"><svg id="benchmark-chart" viewBox="0 0 1060 370" role="img" aria-labelledby="benchmark-chart-title benchmark-chart-desc"><title id="benchmark-chart-title">Accuracy across agent benchmarks</title><desc id="benchmark-chart-desc">Grouped bars compare Standard, Text Engineering and AKV on four benchmarks and their average.</desc></svg></div>
-        <figcaption id="benchmark-caption">Accuracy is measured as task pass rate.</figcaption>
+        <div class="akv-benchmark-top"><span id="benchmark-chart-label" data-i18n="results.accuracy-higher-is-better">Accuracy (%) · Higher is better</span><div class="akv-bar-legend"><span><i class="akv-bar-standard"></i>Standard</span><span><i class="akv-bar-text"></i>Text Engineering</span><span><i class="akv-bar-ours"></i>AKV</span></div></div>
+        <div class="akv-benchmark-scroll" tabindex="0" role="region" aria-label="Scrollable benchmark bar chart" data-i18n-attrs="results.scrollable-benchmark-bar-chart"><svg id="benchmark-chart" viewBox="0 0 1060 370" role="img" aria-labelledby="benchmark-chart-title benchmark-chart-desc"><title id="benchmark-chart-title" data-i18n="results.accuracy-across-agent-benchmarks">Accuracy across agent benchmarks</title><desc id="benchmark-chart-desc" data-i18n="results.grouped-bars-compare-standard-text-engineering">Grouped bars compare Standard, Text Engineering and AKV on four benchmarks and their average.</desc></svg></div>
+        <figcaption id="benchmark-caption" data-i18n="results.accuracy-is-measured-as-task-pass">Accuracy is measured as task pass rate.</figcaption>
       </figure>
       <div class="akv-average" id="benchmark-average" aria-live="polite"></div>
-      <p class="akv-fine akv-results-note">Costs are API-equivalent estimates from active input and generated output lengths. They use Groq's GPT-OSS-120B rates, MiniMax's MiniMax-M2.7 rates, and the official Qwen3-30B-A3B rates for MiroThinker-1.7-Mini. Repositioned tokens count as cache hits.</p>
-      <noscript><p>Average accuracy / cost (cents per task), Standard → AKV: GPT-OSS-120B 51.0 / 11.2 → 53.1 / 7.3; MiniMax-M2.7 52.4 / 5.0 → 53.7 / 4.4; MiroThinker-1.7-Mini 44.1 / 20.4 → 45.8 / 14.8.</p></noscript>
+      <p class="akv-fine akv-results-note" data-i18n="results.costs-are-api-equivalent-estimates-from">Costs are API-equivalent estimates from active input and generated output lengths. They use Groq's GPT-OSS-120B rates, MiniMax's MiniMax-M2.7 rates, and the official Qwen3-30B-A3B rates for MiroThinker-1.7-Mini. Repositioned tokens count as cache hits.</p>
+      <noscript data-i18n="results.benchmark-fallback"><p>Average accuracy / cost (cents per task), Standard → AKV: GPT-OSS-120B 51.0 / 11.2 → 53.1 / 7.3; MiniMax-M2.7 52.4 / 5.0 → 53.7 / 4.4; MiroThinker-1.7-Mini 44.1 / 20.4 → 45.8 / 14.8.</p></noscript>
       <div id="benchmark-improvements" class="akv-benchmark-details">
       <details class="akv-detail akv-improvement-analysis" id="benchmark-accuracy">
-        <summary>Accuracy analysis <span aria-hidden="true">+</span></summary>
+        <summary data-i18n="results.accuracy-analysis">Accuracy analysis <span aria-hidden="true">+</span></summary>
         <div class="akv-analysis-row">
           <div>
-            <h3>Preserving information on longer trajectories.</h3>
-            <p>On GPT-OSS-120B and BrowseComp-Plus, all three methods have similar accuracy below 48K logical tokens. As trajectories grow longer, baseline accuracy falls faster than AKV’s. We attribute this gap to information lost during summarization.</p>
-            <p>Cache engineering preserves retained KV states, which can still carry information from dropped history.</p>
+            <h3 data-i18n="results.preserving-information-on-longer-trajectories">Preserving information on longer trajectories.</h3>
+            <p data-i18n="results.on-gpt-oss-120b-and-browsecomp">On GPT-OSS-120B and BrowseComp-Plus, all three methods have similar accuracy below 48K logical tokens. As trajectories grow longer, baseline accuracy falls faster than AKV’s. We attribute this gap to information lost during summarization.</p>
+            <p data-i18n="results.cache-engineering-preserves-retained-kv-states">Cache engineering preserves retained KV states, which can still carry information from dropped history.</p>
           </div>
           <figure class="akv-analysis-figure">
-            <img src="static/figures/accuracy-by-length.svg" alt="BrowseComp-Plus accuracy by logical sequence length, in Standard / Text Engineering / AKV order: below 48K, 88% / 88% / 88%; 48–96K, 65% / 54% / 70%; 96K and above, 24% / 32% / 37%." loading="lazy">
-            <figcaption>GPT-OSS-120B · BrowseComp-Plus. Accuracy grouped by logical sequence length.</figcaption>
+            <img src="static/figures/accuracy-by-length.svg" alt="BrowseComp-Plus accuracy by logical sequence length, in Standard / Text Engineering / AKV order: below 48K, 88% / 88% / 88%; 48–96K, 65% / 54% / 70%; 96K and above, 24% / 32% / 37%." loading="lazy" data-i18n-attrs="results.browsecomp-plus-accuracy-by-logical-sequence">
+            <figcaption data-i18n="results.gpt-oss-120b-browsecomp-plus-accuracy">GPT-OSS-120B · BrowseComp-Plus. Accuracy grouped by logical sequence length.</figcaption>
           </figure>
         </div>
       </details>
       <details class="akv-detail akv-improvement-analysis" id="benchmark-cost">
-        <summary>Cost analysis <span aria-hidden="true">+</span></summary>
+        <summary data-i18n="results.cost-analysis">Cost analysis <span aria-hidden="true">+</span></summary>
         <div class="akv-analysis-row">
           <div>
-            <h3>Lower costs from reads and re-prefill.</h3>
-            <p><strong>Fewer cache reads.</strong> Dropping older tool-response KV reduces the history accessed by later requests, lowering cache-read costs by about 19% relative to Standard.</p>
-            <p><strong>Less re-prefill.</strong> Reusing retained KV avoids recomputation after summarization rewrites the prefix, lowering input costs by about 57% relative to Text Engineering.</p>
+            <h3 data-i18n="results.lower-costs-from-reads-and-re">Lower costs from reads and re-prefill.</h3>
+            <p data-i18n="results.fewer-cache-reads-dropping-older-tool"><strong data-emphasis="fewer-cache-reads">Fewer cache reads.</strong> Dropping older tool-response KV reduces the history accessed by later requests, lowering cache-read costs by about 19% relative to Standard.</p>
+            <p data-i18n="results.less-re-prefill-reusing-retained-kv"><strong data-emphasis="less-re-prefill">Less re-prefill.</strong> Reusing retained KV avoids recomputation after summarization rewrites the prefix, lowering input costs by about 57% relative to Text Engineering.</p>
           </div>
           <figure class="akv-analysis-figure">
-            <img src="static/figures/cost-breakdown.svg" alt="BrowseComp-Plus cost breakdown in USD per task. Cache-read cost falls from 0.112 for Standard to 0.091 for AKV. Input cost falls from 0.030 for Text Engineering to 0.013 for AKV. Output and Repos costs are shown separately." loading="lazy">
-            <figcaption>BrowseComp-Plus cost breakdown. Values are USD per task; the reductions above refer to individual cost components.</figcaption>
+            <img src="static/figures/cost-breakdown.svg" alt="BrowseComp-Plus cost breakdown in USD per task. Cache-read cost falls from 0.112 for Standard to 0.091 for AKV. Input cost falls from 0.030 for Text Engineering to 0.013 for AKV. Output and Repos costs are shown separately." loading="lazy" data-i18n-attrs="results.browsecomp-plus-cost-breakdown-in-usd">
+            <figcaption data-i18n="results.browsecomp-plus-cost-breakdown-values-are">BrowseComp-Plus cost breakdown. Values are USD per task; the reductions above refer to individual cost components.</figcaption>
           </figure>
         </div>
       </details>
       <details class="akv-detail akv-improvement-analysis" id="benchmark-settings">
-        <summary>Summarization settings <span aria-hidden="true">+</span></summary>
+        <summary data-i18n="results.summarization-settings">Summarization settings <span aria-hidden="true">+</span></summary>
         <div class="akv-settings-body">
-          <p><strong>Standard.</strong> Summarization is triggered at 96K tokens for GPT-OSS-120B (128K context window) and MiniMax-M2.7 (200K context window), and at 192K tokens for MiroThinker-1.7-Mini (256K context window).</p>
-          <p><strong>Text Engineering.</strong> All three models use a lower summarization threshold of 48K tokens.</p>
-          <p>Both baselines use a Pi-derived policy with its prompts, conversation serialization, cut-point selection, and default retention and summary-output budgets. Summarization is triggered by exact prompt token counts.</p>
-          <p>Summaries use the agent’s model and reasoning settings, replacing older dialogue while preserving system/developer instructions and selected recent messages. Empty summaries are rejected; failures follow the benchmark error protocol without retry.</p>
+          <p data-i18n="results.standard-summarization-is-triggered-at-96k"><strong data-emphasis="standard-baseline">Standard.</strong> Summarization is triggered at 96K tokens for GPT-OSS-120B (128K context window) and MiniMax-M2.7 (200K context window), and at 192K tokens for MiroThinker-1.7-Mini (256K context window).</p>
+          <p data-i18n="results.text-engineering-all-three-models-use"><strong data-emphasis="text-engineering-baseline">Text Engineering.</strong> All three models use a lower summarization threshold of 48K tokens.</p>
+          <p data-i18n="results.both-baselines-use-a-pi-derived">Both baselines use a Pi-derived policy with its prompts, conversation serialization, cut-point selection, and default retention and summary-output budgets. Summarization is triggered by exact prompt token counts.</p>
+          <p data-i18n="results.summaries-use-the-agent-s-model">Summaries use the agent’s model and reasoning settings, replacing older dialogue while preserving system/developer instructions and selected recent messages. Empty summaries are rejected; failures follow the benchmark error protocol without retry.</p>
         </div>
       </details>
       </div>
       <div class="akv-budget-heading">
-        <h3>More solved tasks.<br>Less GPU time.</h3>
-        <p class="section-subtitle">These gains also translate into better task outcomes under a GPU budget. In a separate 100-task SWE-bench Verified experiment, AKV reaches a higher final success rate with fewer GPU hours.</p>
+        <h3 data-i18n="results.more-solved-tasks-less-gpu-time">More solved tasks.<br>Less GPU time.</h3>
+        <p class="section-subtitle" data-i18n="results.these-gains-also-translate-into-better">These gains also translate into better task outcomes under a GPU budget. In a separate 100-task SWE-bench Verified experiment, AKV reaches a higher final success rate with fewer GPU hours.</p>
       </div>
       <figure class="akv-replay" id="replay-figure">
-        <div class="akv-replay-top"><div><strong>Task success under a GPU budget</strong><span>GPT-OSS-120B · 100 SWE-bench Verified tasks · 8 A800 GPUs</span></div><div class="akv-replay-tools"><button type="button" id="replay-toggle" aria-label="Pause animation" aria-pressed="false">Pause</button></div></div>
+        <div class="akv-replay-top"><div><strong data-i18n="results.task-success-under-a-gpu-budget" data-emphasis="task-success-under-a-gpu-budget">Task success under a GPU budget</strong><span data-i18n="results.gpt-oss-120b-100-swe-bench">GPT-OSS-120B · 100 SWE-bench Verified tasks · 8 A800 GPUs</span></div><div class="akv-replay-tools"><button type="button" id="replay-toggle" aria-label="Pause animation" aria-pressed="false" data-i18n-attrs="results.replay-toggle" data-i18n="results.pause">Pause</button></div></div>
         <div class="akv-legend"><span><i class="akv-key standard"></i>Standard <small>C=12</small></span><span><i class="akv-key text"></i>Text Engineering <small>C=14</small></span><span><i class="akv-key ours"></i>AKV <small>C=14</small></span></div>
-        <div class="akv-chart-wrap"><svg id="replay-chart" viewBox="0 0 900 420" role="img" aria-labelledby="replay-title replay-description"><title id="replay-title">Cumulative success rate versus GPU hours</title><desc id="replay-description">Automatically looping cumulative success-rate curves from observed task completions. The curves show the mean of three runs. Pause the animation to inspect a point in time.</desc></svg></div>
+        <div class="akv-chart-wrap"><svg id="replay-chart" viewBox="0 0 900 420" role="img" aria-labelledby="replay-title replay-description"><title id="replay-title" data-i18n="results.cumulative-success-rate-versus-gpu-hours">Cumulative success rate versus GPU hours</title><desc id="replay-description" data-i18n="results.automatically-looping-cumulative-success-rate-curves">Automatically looping cumulative success-rate curves from observed task completions. The curves show the mean of three runs. Pause the animation to inspect a point in time.</desc></svg></div>
         <div class="akv-replay-status"><span id="replay-time">0.0 GPU h</span></div>
         <div class="akv-replay-readout" id="replay-readout"></div>
-        <figcaption id="replay-caption">Successes accumulated out of 100 tasks. Mean of three runs; shading shows the min–max range. C denotes concurrency.</figcaption>
+        <figcaption id="replay-caption" data-i18n="results.successes-accumulated-out-of-100-tasks">Successes accumulated out of 100 tasks. Mean of three runs; shading shows the min–max range. C denotes concurrency.</figcaption>
         <details class="akv-setting-note" id="replay-concurrency">
-          <summary>Why Standard uses C=12</summary>
-          <p>C=12 gives Standard its highest input and output throughput in the separate concurrency sweep below. At C=14 and C=16, KV cache pressure increases re-prefill and degrades serving performance. Using C=12 avoids those degraded settings for Standard; Text Engineering and AKV use C=14. This task-success comparison therefore uses different concurrency settings.</p>
+          <summary data-i18n="results.why-standard-uses-c-12">Why Standard uses C=12</summary>
+          <p data-i18n="results.c-12-gives-standard-its-highest">C=12 gives Standard its highest input and output throughput in the separate concurrency sweep below. At C=14 and C=16, KV cache pressure increases re-prefill and degrades serving performance. Using C=12 avoids those degraded settings for Standard; Text Engineering and AKV use C=14. This task-success comparison therefore uses different concurrency settings.</p>
         </details>
-        <noscript><img src="static/figures/swe_gpu_hours_cumulative_pass_rate.svg" alt="Figure 9(a): AKV reaches approximately 47% cumulative pass rate, Standard 40.7%, and Text Engineering 32.3%."><p>Enable JavaScript to play the animation.</p></noscript>
+        <noscript data-i18n="results.replay-fallback"><img src="static/figures/swe_gpu_hours_cumulative_pass_rate.svg" alt="Figure 9(a): AKV reaches approximately 47% cumulative pass rate, Standard 40.7%, and Text Engineering 32.3%."><p>Enable JavaScript to play the animation.</p></noscript>
       </figure>
     </div>
   </section>
 
   <section id="efficiency" class="section">
     <div class="container">
-      <div class="akv-heading"><p class="section-eyebrow">Serving efficiency</p><h2 class="section-title">Higher throughput.<br>Lower latency.</h2><p class="section-subtitle">Across all tested concurrency levels, AKV delivers higher input and output throughput, with lower P95 TTFT and request latency than both baselines on long-context agent workloads.</p></div>
+      <div class="akv-heading"><p class="section-eyebrow" data-i18n="efficiency.serving-efficiency">Serving efficiency</p><h2 class="section-title" data-i18n="efficiency.higher-throughput-lower-latency">Higher throughput.<br>Lower latency.</h2><p class="section-subtitle" data-i18n="efficiency.across-all-tested-concurrency-levels-akv">Across all tested concurrency levels, AKV delivers higher input and output throughput, with lower P95 TTFT and request latency than both baselines on long-context agent workloads.</p></div>
       <div class="akv-serving-panel">
-        <p class="akv-serving-setup">GPT-OSS-120B · 80 long-context SWE-bench tasks · 8 A800 GPUs</p>
+        <p class="akv-serving-setup" data-i18n="efficiency.gpt-oss-120b-80-long-context">GPT-OSS-120B · 80 long-context SWE-bench tasks · 8 A800 GPUs</p>
         <div class="akv-legend"><span><i class="akv-key standard"></i>Standard</span><span><i class="akv-key text"></i>Text Engineering</span><span><i class="akv-key ours"></i>AKV</span></div>
         <div class="akv-serving-charts">
-          <figure><h3>Input throughput</h3><p>Tokens / second · Higher is better</p><svg id="serving-input-throughput" viewBox="0 0 480 290" role="img" aria-labelledby="serving-input-throughput-title serving-input-throughput-desc"><title id="serving-input-throughput-title">Input throughput by concurrency</title><desc id="serving-input-throughput-desc">Table 2 measurements at concurrency 8, 10, 12, 14 and 16.</desc></svg></figure>
-          <figure><h3>Output throughput</h3><p>Tokens / second · Higher is better</p><svg id="serving-throughput" viewBox="0 0 480 290" role="img" aria-labelledby="serving-throughput-title serving-throughput-desc"><title id="serving-throughput-title">Output throughput by concurrency</title><desc id="serving-throughput-desc">Table 2 measurements at concurrency 8, 10, 12, 14 and 16.</desc></svg></figure>
-          <figure><h3>P95 time to first token</h3><p>Seconds · Lower is better</p><svg id="serving-ttft" viewBox="0 0 480 290" role="img" aria-labelledby="serving-ttft-title serving-ttft-desc"><title id="serving-ttft-title">P95 time to first token by concurrency</title><desc id="serving-ttft-desc">Table 2 measurements at concurrency 8, 10, 12, 14 and 16.</desc></svg></figure>
-          <figure><h3>P95 request latency</h3><p>Seconds · Lower is better</p><svg id="serving-latency" viewBox="0 0 480 290" role="img" aria-labelledby="serving-latency-title serving-latency-desc"><title id="serving-latency-title">P95 request latency by concurrency</title><desc id="serving-latency-desc">Table 2 measurements at concurrency 8, 10, 12, 14 and 16.</desc></svg></figure>
+          <figure><h3 data-i18n="efficiency.input-throughput">Input throughput</h3><p data-i18n="efficiency.tokens-second-higher-is-better">Tokens / second · Higher is better</p><svg id="serving-input-throughput" viewBox="0 0 480 290" role="img" aria-labelledby="serving-input-throughput-title serving-input-throughput-desc"><title id="serving-input-throughput-title" data-i18n="efficiency.input-throughput-by-concurrency">Input throughput by concurrency</title><desc id="serving-input-throughput-desc" data-i18n="efficiency.table-2-measurements-at-concurrency-8">Table 2 measurements at concurrency 8, 10, 12, 14 and 16.</desc></svg></figure>
+          <figure><h3 data-i18n="efficiency.output-throughput">Output throughput</h3><p data-i18n="efficiency.tokens-second-higher-is-better-2">Tokens / second · Higher is better</p><svg id="serving-throughput" viewBox="0 0 480 290" role="img" aria-labelledby="serving-throughput-title serving-throughput-desc"><title id="serving-throughput-title" data-i18n="efficiency.output-throughput-by-concurrency">Output throughput by concurrency</title><desc id="serving-throughput-desc" data-i18n="efficiency.table-2-measurements-at-concurrency-8-2">Table 2 measurements at concurrency 8, 10, 12, 14 and 16.</desc></svg></figure>
+          <figure><h3 data-i18n="efficiency.p95-time-to-first-token">P95 time to first token</h3><p data-i18n="efficiency.seconds-lower-is-better">Seconds · Lower is better</p><svg id="serving-ttft" viewBox="0 0 480 290" role="img" aria-labelledby="serving-ttft-title serving-ttft-desc"><title id="serving-ttft-title" data-i18n="efficiency.p95-time-to-first-token-by">P95 time to first token by concurrency</title><desc id="serving-ttft-desc" data-i18n="efficiency.table-2-measurements-at-concurrency-8-3">Table 2 measurements at concurrency 8, 10, 12, 14 and 16.</desc></svg></figure>
+          <figure><h3 data-i18n="efficiency.p95-request-latency">P95 request latency</h3><p data-i18n="efficiency.seconds-lower-is-better-2">Seconds · Lower is better</p><svg id="serving-latency" viewBox="0 0 480 290" role="img" aria-labelledby="serving-latency-title serving-latency-desc"><title id="serving-latency-title" data-i18n="efficiency.p95-request-latency-by-concurrency">P95 request latency by concurrency</title><desc id="serving-latency-desc" data-i18n="efficiency.table-2-measurements-at-concurrency-8-4">Table 2 measurements at concurrency 8, 10, 12, 14 and 16.</desc></svg></figure>
         </div>
-        <details class="akv-detail"><summary>Full results and measurement details <span aria-hidden="true">+</span></summary>
-          <div class="akv-table-wrap" tabindex="0" role="region" aria-label="Scrollable serving performance table"><table id="serving-table"></table></div>
+        <details class="akv-detail"><summary data-i18n="efficiency.full-results-and-measurement-details">Full results and measurement details <span aria-hidden="true">+</span></summary>
+          <div class="akv-table-wrap" tabindex="0" role="region" aria-label="Scrollable serving performance table" data-i18n-attrs="efficiency.scrollable-serving-performance-table"><table id="serving-table"></table></div>
           <div class="akv-protocol">
-            <p><strong>Hardware.</strong> Eight A800-80GB GPUs serve GPT-OSS-120B in BF16: four for prefill and four for decode, each with tensor parallelism 4. Both baselines use SGLang; AKV extends it with cache-operation support.</p>
-            <p><strong>Workload.</strong> All methods use the same 80 tasks and ordering, selected by peak context length. Each method replays its own policy trajectories, so turn counts and output lengths can differ. Tool responses are replayed, with prescribed output lengths at temperature 0.</p>
-            <p><strong>Measurement windows.</strong> AKV runs at C=14 and C=16 are measured through the first 30 task completions, including all requests within the window. High-concurrency Standard runs use a one-hour window. Replacement tasks maintain concurrency; unfinished requests may remain at cutoff.</p>
-            <p><strong>Metrics.</strong> TTFT measures time to first token; TPOT measures time per output token. Lower TPOT alone does not imply higher overall throughput.</p>
+            <p data-i18n="efficiency.hardware-eight-a800-80gb-gpus-serve"><strong data-emphasis="hardware">Hardware.</strong> Eight A800-80GB GPUs serve GPT-OSS-120B in BF16: four for prefill and four for decode, each with tensor parallelism 4. Both baselines use SGLang; AKV extends it with cache-operation support.</p>
+            <p data-i18n="efficiency.workload-all-methods-use-the-same"><strong data-emphasis="workload">Workload.</strong> All methods use the same 80 tasks and ordering, selected by peak context length. Each method replays its own policy trajectories, so turn counts and output lengths can differ. Tool responses are replayed, with prescribed output lengths at temperature 0.</p>
+            <p data-i18n="efficiency.measurement-windows-akv-runs-at-c"><strong data-emphasis="measurement-windows">Measurement windows.</strong> AKV runs at C=14 and C=16 are measured through the first 30 task completions, including all requests within the window. High-concurrency Standard runs use a one-hour window. Replacement tasks maintain concurrency; unfinished requests may remain at cutoff.</p>
+            <p data-i18n="efficiency.metrics-ttft-measures-time-to-first"><strong data-emphasis="metrics">Metrics.</strong> TTFT measures time to first token; TPOT measures time per output token. Lower TPOT alone does not imply higher overall throughput.</p>
           </div>
         </details>
-        <noscript><p>At C=8 / 10 / 12 / 14 / 16, input throughput (tokens/s): Standard 25200 / 30108 / 33832 / 12767 / 10866; Text Engineering 17313 / 18533 / 19945 / 19992 / 19595; AKV 39227 / 46002 / 48923 / 51837 / 50817. P95 TTFT (s): Standard 8.42 / 9.76 / 9.99 / 88.29 / 223.57; Text Engineering 22.99 / 34.07 / 37.98 / 47.36 / 52.71; AKV 5.99 / 7.36 / 8.17 / 8.62 / 13.02.</p><p>At C=8 / 10 / 12 / 14 / 16, output throughput (tokens/s): Standard 217 / 254 / 313 / 146 / 138; Text Engineering 228 / 246 / 264 / 267 / 267; AKV 245 / 295 / 339 / 369 / 369. P95 latency (s): Standard 43.57 / 45.03 / 43.16 / 108.86 / 229.90; Text Engineering 43.57 / 50.27 / 52.82 / 60.67 / 69.96; AKV 25.93 / 27.11 / 27.18 / 28.49 / 30.63.</p></noscript>
+        <noscript data-i18n="efficiency.serving-fallback"><p>At C=8 / 10 / 12 / 14 / 16, input throughput (tokens/s): Standard 25200 / 30108 / 33832 / 12767 / 10866; Text Engineering 17313 / 18533 / 19945 / 19992 / 19595; AKV 39227 / 46002 / 48923 / 51837 / 50817. P95 TTFT (s): Standard 8.42 / 9.76 / 9.99 / 88.29 / 223.57; Text Engineering 22.99 / 34.07 / 37.98 / 47.36 / 52.71; AKV 5.99 / 7.36 / 8.17 / 8.62 / 13.02.</p><p>At C=8 / 10 / 12 / 14 / 16, output throughput (tokens/s): Standard 217 / 254 / 313 / 146 / 138; Text Engineering 228 / 246 / 264 / 267 / 267; AKV 245 / 295 / 339 / 369 / 369. P95 latency (s): Standard 43.57 / 45.03 / 43.16 / 108.86 / 229.90; Text Engineering 43.57 / 50.27 / 52.82 / 60.67 / 69.96; AKV 25.93 / 27.11 / 27.18 / 28.49 / 30.63.</p></noscript>
       </div>
-      <div class="akv-serving-stats"><div><strong class="akv-gradient">4.68×</strong><span>Input throughput</span></div><div><strong class="akv-gradient">2.67×</strong><span>Output throughput</span></div><div><strong class="akv-gradient">17.17×</strong><span>P95 TTFT speedup</span></div><div><strong class="akv-gradient">7.51×</strong><span>P95 request latency speedup</span></div></div><p class="akv-serving-note">Versus Standard at concurrency 16, in the separate 80-task workload replay.</p>
+      <div class="akv-serving-stats"><div><strong class="akv-gradient" data-emphasis="input-throughput-gain">4.68×</strong><span data-i18n="efficiency.input-throughput-2">Input throughput</span></div><div><strong class="akv-gradient" data-emphasis="output-throughput-gain">2.67×</strong><span data-i18n="efficiency.output-throughput-2">Output throughput</span></div><div><strong class="akv-gradient" data-emphasis="ttft-speedup">17.17×</strong><span data-i18n="efficiency.p95-ttft-speedup">P95 TTFT speedup</span></div><div><strong class="akv-gradient" data-emphasis="request-latency-speedup">7.51×</strong><span data-i18n="efficiency.p95-request-latency-speedup">P95 request latency speedup</span></div></div><p class="akv-serving-note" data-i18n="efficiency.versus-standard-at-concurrency-16-in">Versus Standard at concurrency 16, in the separate 80-task workload replay.</p>
       <details class="akv-detail akv-improvement-analysis" id="serving-improvements">
-        <summary>Source of improvements <span aria-hidden="true">+</span></summary>
+        <summary data-i18n="efficiency.source-of-improvements">Source of improvements <span aria-hidden="true">+</span></summary>
         <div class="akv-analysis-row">
           <div>
-            <h3>Less time spent on full attention.</h3>
-            <p>At the same batch size, GPT-OSS-120B’s full-attention time drops from <strong>7.082 to 2.849 ms</strong> per decode step. This accounts for nearly all of the measured step-time reduction, from 26.186 to 21.990 ms.</p>
-            <p>After a Drop, decoding attends only to the retained active context. Each step loads less KV data from GPU memory and performs less attention computation over historical tokens.</p>
+            <h3 data-i18n="efficiency.less-time-spent-on-full-attention">Less time spent on full attention.</h3>
+            <p data-i18n="efficiency.at-the-same-batch-size-gpt">At the same batch size, GPT-OSS-120B’s full-attention time drops from <strong data-emphasis="full-attention-time">7.082 to 2.849 ms</strong> per decode step. This accounts for nearly all of the measured step-time reduction, from 26.186 to 21.990 ms.</p>
+            <p data-i18n="efficiency.after-a-drop-decoding-attends-only">After a Drop, decoding attends only to the retained active context. Each step loads less KV data from GPU memory and performs less attention computation over historical tokens.</p>
           </div>
           <figure class="akv-analysis-figure">
-            <img src="static/figures/decode-breakdown.svg" alt="GPT-OSS-120B decode-step breakdown at the same batch size. Standard takes 26.186 ms and AKV 21.990 ms. Full attention falls from 7.082 to 2.849 ms, while MoE time stays near 16.8 ms and other components change little." loading="lazy">
-            <figcaption>GPT-OSS-120B · Same-batch-size decode profiling, separate from the concurrency sweep above.</figcaption>
+            <img src="static/figures/decode-breakdown.svg" alt="GPT-OSS-120B decode-step breakdown at the same batch size. Standard takes 26.186 ms and AKV 21.990 ms. Full attention falls from 7.082 to 2.849 ms, while MoE time stays near 16.8 ms and other components change little." loading="lazy" data-i18n-attrs="efficiency.gpt-oss-120b-decode-step-breakdown">
+            <figcaption data-i18n="efficiency.gpt-oss-120b-same-batch-size">GPT-OSS-120B · Same-batch-size decode profiling, separate from the concurrency sweep above.</figcaption>
           </figure>
         </div>
         <div class="akv-analysis-note">
-          <h3>Why the gap grows at high concurrency.</h3>
-          <p>At the tested concurrency levels above 12 (C=14 and C=16), KV cache pressure makes Standard spend more time on re-prefill, leaving fewer requests decoding concurrently. Its TPOT can decrease even as request latency rises and throughput falls. The four charts above capture the overall serving benefit.</p>
+          <h3 data-i18n="efficiency.why-the-gap-grows-at-high">Why the gap grows at high concurrency.</h3>
+          <p data-i18n="efficiency.at-the-tested-concurrency-levels-above">At the tested concurrency levels above 12 (C=14 and C=16), KV cache pressure makes Standard spend more time on re-prefill, leaving fewer requests decoding concurrently. Its TPOT can decrease even as request latency rises and throughput falls. The four charts above capture the overall serving benefit.</p>
         </div>
       </details>
     </div>
   </section>
 
   <section id="strategies" class="section">
-    <div class="container akv-strategy-grid"><div><p class="section-eyebrow">Recursive self-improvement</p><h2 class="section-title">Agents can self-improve.</h2><p class="section-subtitle">Rolling drop is a starting point. AKV’s cache interface also lets agents search, evaluate, and refine their own cache policies.</p><div class="akv-strategy"><p>On BrowseComp-Plus, MiniMax-M2.7 reduces cost by <strong>17.8% relative to Standard</strong> at iteration 6 while meeting Standard’s accuracy baseline.</p></div></div><figure class="akv-figure akv-rsi"><div class="akv-figure-label"><span>LOWER COST AT BASELINE ACCURACY</span></div><img src="static/figures/minimax_self_evolution.svg" alt="MiniMax-M2.7 policy search. Best policies reduce per-task cost by 15.6% at iteration 3 and 17.8% at iteration 6 relative to Standard while meeting baseline accuracy." width="520" height="336" loading="lazy"><figcaption>Human expert design: rolling drop (K=12).</figcaption></figure></div>
+    <div class="container akv-strategy-grid"><div><p class="section-eyebrow" data-i18n="strategies.recursive-self-improvement">Recursive self-improvement</p><h2 class="section-title" data-i18n="strategies.agents-can-self-improve">Agents can self-improve.</h2><p class="section-subtitle" data-i18n="strategies.rolling-drop-is-a-starting-point">Rolling drop is a starting point. AKV’s cache interface also lets agents search, evaluate, and refine their own cache policies.</p><div class="akv-strategy"><p data-i18n="strategies.on-browsecomp-plus-minimax-m2-7">On BrowseComp-Plus, MiniMax-M2.7 reduces cost by <strong data-emphasis="rsi-cost-reduction">17.8% relative to Standard</strong> at iteration 6 while meeting Standard’s accuracy baseline.</p></div></div><figure class="akv-figure akv-rsi"><div class="akv-figure-label"><span data-i18n="strategies.lower-cost-at-baseline-accuracy">LOWER COST AT BASELINE ACCURACY</span></div><img src="static/figures/minimax_self_evolution.svg" alt="MiniMax-M2.7 policy search. Best policies reduce per-task cost by 15.6% at iteration 3 and 17.8% at iteration 6 relative to Standard while meeting baseline accuracy." width="520" height="336" loading="lazy" data-i18n-attrs="strategies.minimax-m2-7-policy-search-best"><figcaption data-i18n="strategies.human-expert-design-rolling-drop-k">Human expert design: rolling drop (K=12).</figcaption></figure></div>
   </section>
 
   <section id="team" class="section section-gray authors-section">
     <div class="container">
-      <p class="section-eyebrow">Team</p>
-      <h2 class="section-title">Meet the researchers.</h2>
+      <p class="section-eyebrow" data-i18n="team.team">Team</p>
+      <h2 class="section-title" data-i18n="team.meet-the-researchers">Meet the researchers.</h2>
       <div class="authors-list">
         <a class="author-tag" href="https://nicsefc.ee.tsinghua.edu.cn/people/TianyuFu" target="_blank" rel="noopener" aria-describedby="equal-contribution">Tianyu Fu<sup>1*</sup></a>
         <span class="author-tag" aria-describedby="equal-contribution">Ruoxi Wang<sup>1*</sup></span>
@@ -370,18 +371,18 @@
         <a class="author-tag" href="https://nicsefc.ee.tsinghua.edu.cn/people/YuWang" target="_blank" rel="noopener" aria-describedby="corresponding-author">Yu Wang<sup>1†</sup></a>
       </div>
       <div class="affiliations">
-        <sup>1</sup>Tsinghua University &nbsp;&nbsp;
-        <sup>2</sup>The Chinese University of Hong Kong<br>
-        <span id="equal-contribution" class="akv-author-note">*Equal contribution</span> &nbsp;&nbsp;
-        <span id="corresponding-author" class="akv-author-note">†Corresponding author</span>
+        <span data-i18n="team.affiliation-tsinghua"><sup>1</sup>Tsinghua University</span> &nbsp;&nbsp;
+        <span data-i18n="team.affiliation-cuhk"><sup>2</sup>The Chinese University of Hong Kong</span><br>
+        <span id="equal-contribution" class="akv-author-note" data-i18n="team.equal-contribution">*Equal contribution</span> &nbsp;&nbsp;
+        <span id="corresponding-author" class="akv-author-note" data-i18n="team.corresponding-author">†Corresponding author</span>
       </div>
     </div>
   </section>
   <section id="citation" class="section citation-section">
     <div class="container">
-      <p class="section-eyebrow">Citation</p>
-      <h2 class="section-title">Cite our work.</h2>
-      <p class="section-subtitle">If you find AKV useful for your research, please consider citing our paper.</p>
+      <p class="section-eyebrow" data-i18n="citation.citation">Citation</p>
+      <h2 class="section-title" data-i18n="citation.cite-our-work">Cite our work.</h2>
+      <p class="section-subtitle" data-i18n="citation.if-you-find-akv-useful-for">If you find AKV useful for your research, please consider citing our paper.</p>
       {{citation}}
     </div>
   </section>

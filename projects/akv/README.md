@@ -85,3 +85,13 @@ GITHUB_PAGES=true npm run preview
 ```
 
 The registry automatically includes AKV in the hub and shared navigation. No deployment or push is needed for local review.
+
+## Chinese edition
+
+The English template remains `content.html`. Its `data-i18n` and `data-i18n-attrs` markers map to `locales/zh.json`; this file also supplies section metadata and runtime messages. The shared language module generates `/zh/projects/akv/`, handles the language prompt and footer switch, and preserves section anchors. See `docs/localization.md` for the common contract.
+
+Translate complete prose blocks and user-facing controls. Keep model, benchmark and baseline method names (Standard / Text Engineering / AKV), API operation names (Append / Drop / Repos), author names, actual request JSON, and paper figures unchanged. Chinese captions explain the original figures. Diagram captions, playback state, chart axes, tables, accessibility labels, and no-JavaScript fallbacks are localized. Numerical arrays, animation timing, geometry and state transitions are shared without locale-dependent branches.
+
+The renderer files use `SiteI18n.t` with an English fallback so their Node/VM tests and portable demos still work. When changing dynamic copy, update the corresponding complete English key in `runtime`; retain placeholders such as `{number}`. Do not translate IDs, operation codes or JSON fields. Preserve the experimental qualifications, especially the different concurrency settings in the 100-task comparison, separate serving workloads, and RSI's cost reduction relative to Standard.
+
+Semantic emphasis is part of the translation contract: `cache engineering` and “缓存工程” remain the hero emphasis, while numeric highlights retain their experiment and comparison baseline. Matching `data-emphasis` markers cover partial emphasis in translated blocks; emphasis on whole labels and untranslated figures stays in the shared template. Short concepts and numerical units may use the shared `.i18n-nowrap`; complete sentences remain fluid. The three operation selectors use concise Chinese labels, while their explanations retain Append / Drop / Repos.

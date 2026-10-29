@@ -1,4 +1,5 @@
 (() => {
+  const translate = globalThis.SiteI18n?.t || ((text, values = {}) => text.replace(/\{(\w+)\}/g, (match, key) => values[key] ?? match));
   const container = document.getElementById('core-comparison');
   const button = document.getElementById('core-animation-toggle');
   const renderer = window.AKVCoreScene;
@@ -11,13 +12,13 @@
     control.textContent = stage.label;
     control.dataset.coreStage = String(index);
     control.setAttribute('aria-controls', 'core-context-animation core-animation');
-    control.setAttribute('aria-label', `Play from ${stage.label}`);
+    control.setAttribute('aria-label', translate('Play from {stage}', {stage: stage.label}));
     stageBar.append(control);
     return control;
   });
   const descriptions = {
-    cache: "A is prefilled first; B then attends to A and retains its information. Message C arrives next. A's cache fades while B keeps the yellow information from A. A purple highlight emphasizes the existing B cache being reused while Context recomputes B. C's cache appears as a purple dashed outline, attends to retained B, and fades in with inherited information in sync with Context.",
-    context: "A is prefilled first; B then attends to A and retains its information. Message C arrives next. Message A fades to a gray dashed outline. The invalidated old A and B caches briefly gain pale red borders, then fade to gray dashes within faint dashed outlines. B's recomputed cache appears as a purple dashed outline and fills. C's pending cache then attends to the new B cache and fills in sync with Cache Engineering."
+    cache: translate("A is prefilled first; B then attends to A and retains its information. Message C arrives next. A's cache fades while B keeps the yellow information from A. A purple highlight emphasizes the existing B cache being reused while Context recomputes B. C's cache appears as a purple dashed outline, attends to retained B, and fades in with inherited information in sync with Context."),
+    context: translate("A is prefilled first; B then attends to A and retains its information. Message C arrives next. Message A fades to a gray dashed outline. The invalidated old A and B caches briefly gain pale red borders, then fade to gray dashes within faint dashed outlines. B's recomputed cache appears as a purple dashed outline and fills. C's pending cache then attends to the new B cache and fills in sync with Cache Engineering.")
   };
   const scenes = [...container.querySelectorAll('[data-core-engineering]')].map(fallback => {
     const approach = fallback.dataset.coreEngineering;
@@ -30,7 +31,7 @@
     svg.setAttribute('aria-labelledby', `${svg.id}-title ${svg.id}-description`);
     svg.setAttribute('font-family', '-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif');
     svg.dataset.approach = approach;
-    svg.innerHTML = `<title id="${svg.id}-title">${approach === 'cache' ? 'Cache' : 'Context'} Engineering</title><desc id="${svg.id}-description">${descriptions[approach]} Inset blocks carry historical information. Timing is schematic.</desc><g data-scene></g>`;
+    svg.innerHTML = `<title id="${svg.id}-title">${translate(approach === 'cache' ? 'Cache Engineering' : 'Context Engineering')}</title><desc id="${svg.id}-description">${descriptions[approach]} ${translate('Inset blocks carry historical information. Timing is schematic.')}</desc><g data-scene></g>`;
     const status = document.createElement('figcaption');
     status.className = 'akv-core-status';
     status.setAttribute('aria-hidden', 'true');
@@ -58,8 +59,8 @@
       stageDescription.textContent = renderer.stages[stageIndex].description;
       for (const item of scenes) {
         item.status.textContent = stageIndex === 1
-          ? (item.approach === 'cache' ? 'Drop A’s cache' : 'Remove message A. Invalidate cache A,B')
-          : stageIndex === 2 ? (item.approach === 'cache' ? 'Reusing B cache' : 'Re-prefilling history') : '';
+          ? (item.approach === 'cache' ? translate('Drop A’s cache') : translate('Remove message A. Invalidate cache A,B'))
+          : stageIndex === 2 ? (item.approach === 'cache' ? translate('Reusing B cache') : translate('Re-prefilling history')) : '';
       }
     }
     container.dataset.stage = String(stageIndex);
@@ -67,7 +68,7 @@
   function updateControls() {
     scenes.forEach(({svg}) => { svg.dataset.paused = String(paused); });
     // Match the concise playback labels used by the other AKV demos.
-    button.textContent = paused ? 'Play' : 'Pause';
+    button.textContent = paused ? translate('Play') : translate('Pause');
     button.setAttribute('aria-pressed', String(paused));
   }
   function tick(now) {

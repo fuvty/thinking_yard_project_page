@@ -1,3 +1,5 @@
+const r2rTokenText = globalThis.SiteI18n?.t || ((text, values = {}) => text.replace(/\{(\w+)\}/g, (match, key) => values[key] ?? match));
+
 // Token Visualization Script
 document.addEventListener('DOMContentLoaded', async function() {
   const tokenContainer = document.getElementById('token-content');
@@ -5,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   try {
     // Fetch token data
-    const response = await fetch('./static/js/tokens.json');
+    const response = await fetch(globalThis.SiteI18n?.asset('./static/js/tokens.json') || './static/js/tokens.json');
     if (!response.ok) {
       throw new Error(`Failed to load token data: ${response.status} ${response.statusText}`);
     }
@@ -17,14 +19,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     console.error('Error loading token data:', error);
 
     // Display error message in the token content area
-    tokenContainer.innerHTML = `
-      <div style="color: #dc3545; padding: 1rem; background-color: #feecf0; border-radius: 6px;">
-        <strong>Error loading token visualization:</strong><br>
-        ${error.message || 'Could not load token data. Please check your network connection or try again later.'}
-        <br><br>
-        <small>Tip: Make sure you're viewing this page through a web server, not as a local file.</small>
-      </div>
-    `;
+    const errorMessage = document.createElement('p');
+    errorMessage.style.cssText = 'color: #dc3545; padding: 1rem; background-color: #feecf0; border-radius: 6px;';
+    errorMessage.textContent = r2rTokenText('Could not load token data. Please check your network connection or try again later.');
+    tokenContainer.replaceChildren(errorMessage);
   }
 });
 
@@ -72,12 +70,12 @@ function createPopoverElement(token) {
 
     const smallDivergeTitle = document.createElement('div');
     smallDivergeTitle.className = 'popover-title';
-    smallDivergeTitle.textContent = 'SLM Continuation:';
+    smallDivergeTitle.textContent = r2rTokenText('SLM Continuation:');
     smallDivergeSection.appendChild(smallDivergeTitle);
 
     const smallDivergeContent = document.createElement('div');
     smallDivergeContent.className = 'popover-content';
-    const smallDivergeText = token.small_diverge_text || 'No data';
+    const smallDivergeText = token.small_diverge_text || r2rTokenText('No data');
     const slmRegex = /^(.*?)<<(.*?)>>(.*?)$/s;
     const slmMatch = smallDivergeText.match(slmRegex);
 
@@ -104,12 +102,12 @@ function createPopoverElement(token) {
 
     const refDivergeTitle = document.createElement('div');
     refDivergeTitle.className = 'popover-title';
-    refDivergeTitle.textContent = 'LLM Continuation:';
+    refDivergeTitle.textContent = r2rTokenText('LLM Continuation:');
     refDivergeSection.appendChild(refDivergeTitle);
 
     const refDivergeContent = document.createElement('div');
     refDivergeContent.className = 'popover-content';
-    const refDivergeText = token.reference_diverge_text || 'No data';
+    const refDivergeText = token.reference_diverge_text || r2rTokenText('No data');
     const llmRegex = /^(.*?)<<(.*?)>>(.*?)$/s;
     const llmMatch = refDivergeText.match(llmRegex);
 
@@ -136,7 +134,7 @@ function createPopoverElement(token) {
 
     const judgeTitle = document.createElement('div');
     judgeTitle.className = 'popover-title';
-    judgeTitle.textContent = 'Verifier Model:';
+    judgeTitle.textContent = r2rTokenText('Verifier Model:');
     judgeSection.appendChild(judgeTitle);
 
     const judgeContent = document.createElement('div');
@@ -178,10 +176,10 @@ function createModelTag(token) {
   tag.className = 'model-tag';
 
   if (token.usage_type === 1) {
-    tag.textContent = 'Neutral';
+    tag.textContent = r2rTokenText('Neutral');
     tag.classList.add('small-model-tag');
   } else if (token.usage_type === 2) {
-    tag.textContent = 'Divergent';
+    tag.textContent = r2rTokenText('Divergent');
     tag.classList.add('large-model-tag');
   } else {
     return null;

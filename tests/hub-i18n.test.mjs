@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { getCopy, localize, homePath } from '../hub/i18n.mjs';
+import { getCopy, localize, homePath, projectPath } from '../hub/i18n.mjs';
 import projects from '../config/projects.json' with {type:'json'};
 import categories from '../config/categories.json' with {type:'json'};
 import site from '../config/site.json' with {type:'json'};
@@ -30,16 +30,16 @@ test('new registry entries work without translation and partial translations ret
     assert(translated.description.trim());
   }
 });
-test('Chinese home navigation and footer preserve base paths and English research routes', () => {
+test('Chinese home navigation and footer preserve base paths and preserve the Chinese site context for every project', () => {
   const copy = getCopy('zh');
   for (const base of ['', '/thinking_yard_project_page']) {
     const homeHref = homePath('zh', base);
-    const html = renderNavigation({projects:projects.map(p=>localize(p,'zh')), categories:categories.map(c=>localize(c,'zh')),
+    const html = renderNavigation({projects:projects.map(p=>({...localize(p,'zh'),href:projectPath(p,'zh',base)})), categories:categories.map(c=>localize(c,'zh')),
       sections:site.hubSections.map(s=>localize(s,'zh')), base, homeHref, labels:copy.navigation, groupLabels:copy.groupLabels});
     assert(html.includes(`href="${base}/zh/" class="sp-home"`));
     assert(!html.includes('data-home-language'));
-    for (const project of projects) assert(html.includes(`href="${base}/projects/${project.slug}/"`));
-    assert(!html.includes('/zh/projects/'));
+    for (const project of projects) assert(html.includes(`href="${projectPath(project,'zh',base)}"`));
+    assert(html.includes(`${base}/zh/projects/tah2/`));
     assert(html.includes(copy.navigation.contents));
     const footer = renderFooter({base,homeHref,labels:copy.footer,
       languageSwitch:{locale:'zh',englishHref:homePath('en',base),chineseHref:homePath('zh',base)}});
@@ -51,7 +51,7 @@ test('Chinese home navigation and footer preserve base paths and English researc
     assert(renderBackToTop(copy.backToTop).includes(`aria-label="${copy.backToTop}"`));
   }
 });
-test('research pages retain English navigation and have no language switch', () => {
+test('default navigation and footer renderers keep their English defaults', () => {
   const html = renderNavigation({projects,categories,base:'/site',current:'tah'});
   assert(!html.includes('data-home-language'));
   assert(!renderFooter().includes('data-home-language'));

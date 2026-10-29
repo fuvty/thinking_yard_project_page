@@ -16,3 +16,12 @@ export function readLanguagePreference(storage) {
 export function saveLanguagePreference(storage, locale) {
   try { storage().setItem(languagePreferenceKey, locale); } catch { /* Links still work without storage. */ }
 }
+
+// A fallback is explained once per project in this tab's browsing session.
+const fallbackKey = slug => `thinking-yard-language-fallback:${slug}`;
+export function hasSeenFallback(storage, slug) {
+  try { return storage().getItem(fallbackKey(slug)) === 'seen'; } catch { return false; }
+}
+export function rememberFallback(storage, slug) {
+  try { storage().setItem(fallbackKey(slug), 'seen'); } catch { /* The notice still dismisses in this page. */ }
+}

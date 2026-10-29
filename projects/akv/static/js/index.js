@@ -1,8 +1,9 @@
 (() => {
+  const translate = globalThis.SiteI18n?.t || ((text, values = {}) => text.replace(/\{(\w+)\}/g, (match, key) => values[key] ?? match));
 const { valueAt, aggregateRuns, stepCoordinates, stepPath } = window.AKVMath;
 
 // Benchmark table values are from tex/4_experiment.tex, including its rounded averages.
-const benchmarks = ['BrowseComp-Plus', 'GAIA-Text', 'SWE-Verified', 'xbench-DS', 'Average'];
+const benchmarks = ['BrowseComp-Plus', 'GAIA-Text', 'SWE-Verified', 'xbench-DS', translate('Average')];
 const models = {
   gpt: { name: 'GPT-OSS-120B', rows: [
     [57.5,13.1,68.0,5.4,40.0,20.0,38.5,6.2,51.0,11.2],
@@ -47,15 +48,15 @@ function renderBenchmarkChart() {
       const value = row[i*2 + (isCost ? 1 : 0)];
       const highlight = j === 2 && value === best;
       const bx = center - (barWidth*3+gap*2)/2 + j*(barWidth+gap);
-      markup += `<rect class="akv-benchmark-bar" x="${bx}" y="${y(value)}" width="${barWidth}" height="${bottom-y(value)}" rx="3" fill="${colors[j]}" style="--bar-delay:${i*55+j*35}ms"><title>${name} · ${benchmark} · ${labels[j]}: ${value.toFixed(1)}${isCost ? ' cents per task' : '%'}</title></rect><text x="${bx+barWidth/2}" y="${y(value)-9}" text-anchor="middle" font-size="12" font-weight="${highlight?700:400}" fill="${highlight?colors[j]:'#62626e'}">${value.toFixed(1)}</text>`;
+      markup += `<rect class="akv-benchmark-bar" x="${bx}" y="${y(value)}" width="${barWidth}" height="${bottom-y(value)}" rx="3" fill="${colors[j]}" style="--bar-delay:${i*55+j*35}ms"><title>${name} · ${benchmark} · ${labels[j]}: ${value.toFixed(1)}${isCost ? translate(' cents per task') : '%'}</title></rect><text x="${bx+barWidth/2}" y="${y(value)-9}" text-anchor="middle" font-size="12" font-weight="${highlight?700:400}" fill="${highlight?colors[j]:'#62626e'}">${value.toFixed(1)}</text>`;
     });
     markup += `<text x="${center}" y="${bottom+28}" text-anchor="middle" font-size="13" font-weight="${i===4?600:400}" fill="#51515a">${benchmark}</text>`;
   });
   svg.insertAdjacentHTML('beforeend', `<g>${markup}</g>`);
-  document.getElementById('benchmark-chart-title').textContent = `${name}: ${isCost?'cost':'accuracy'} across agent benchmarks`;
-  document.getElementById('benchmark-chart-desc').textContent = benchmarks.map((benchmark,i)=>`${benchmark}: ${rows.map((row,j)=>`${labels[j]} ${row[i*2+(isCost?1:0)].toFixed(1)}${isCost?' cents':'%'}`).join(', ')}`).join('. ');
-  document.getElementById('benchmark-chart-label').textContent = isCost ? 'Cost (cents / task) · Lower is better' : 'Accuracy (%) · Higher is better';
-  document.getElementById('benchmark-caption').textContent = isCost ? 'API-equivalent cost per task.' : 'Accuracy is measured as task pass rate.';
+  document.getElementById('benchmark-chart-title').textContent = translate('{model}: {metric} across agent benchmarks', {model:name, metric:translate(isCost ? 'cost' : 'accuracy')});
+  document.getElementById('benchmark-chart-desc').textContent = benchmarks.map((benchmark,i)=>`${benchmark}: ${rows.map((row,j)=>`${labels[j]} ${row[i*2+(isCost?1:0)].toFixed(1)}${isCost?translate(' cents'):'%'}`).join(', ')}`).join('. ');
+  document.getElementById('benchmark-chart-label').textContent = isCost ? translate('Cost (cents / task) · Lower is better') : translate('Accuracy (%) · Higher is better');
+  document.getElementById('benchmark-caption').textContent = isCost ? translate('API-equivalent cost per task.') : translate('Accuracy is measured as task pass rate.');
   document.querySelectorAll('[data-metric]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.metric===selectedMetric)));
 }
 function renderBenchmarks(key) {
@@ -63,7 +64,7 @@ function renderBenchmarks(key) {
   const { rows } = models[key];
   document.querySelectorAll('[data-model]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.model === key)));
   renderBenchmarkChart();
-  document.getElementById('benchmark-average').innerHTML = `<span>Average accuracy <strong><span class="akv-average-standard">${rows[0][8].toFixed(1)}%</span> <span class="akv-average-arrow">→</span> <span class="akv-average-ours">${rows[2][8].toFixed(1)}%</span></strong></span><span>Average cost <strong><span class="akv-average-standard">${rows[0][9].toFixed(1)}</span> <span class="akv-average-arrow">→</span> <span class="akv-average-ours">${rows[2][9].toFixed(1)}</span> <small>cents / task</small></strong></span><span class="akv-average-key"><span class="akv-average-standard">Standard</span><span class="akv-average-arrow">→</span><span class="akv-average-ours">AKV</span></span>`;
+  document.getElementById('benchmark-average').innerHTML = `<span>${translate('Average accuracy')} <strong><span class="akv-average-standard">${rows[0][8].toFixed(1)}%</span> <span class="akv-average-arrow">→</span> <span class="akv-average-ours">${rows[2][8].toFixed(1)}%</span></strong></span><span>${translate('Average cost')} <strong><span class="akv-average-standard">${rows[0][9].toFixed(1)}</span> <span class="akv-average-arrow">→</span> <span class="akv-average-ours">${rows[2][9].toFixed(1)}</span> <small>${translate('cents / task')}</small></strong></span><span class="akv-average-key"><span class="akv-average-standard">Standard</span><span class="akv-average-arrow">→</span><span class="akv-average-ours">AKV</span></span>`;
 
 }
 document.querySelectorAll('[data-model]').forEach(button => button.addEventListener('click', () => renderBenchmarks(button.dataset.model)));
@@ -101,7 +102,7 @@ function buildChart() {
   clip.append(element('rect',{id:'replay-clip-rect',x:chartLeft-2,y:chartTop-12,width:chartRight-chartLeft+8,height:chartBottom-chartTop+20}));
   defs.append(clip); chart.append(defs);
   const fontSize = narrow.matches ? 20 : 13;
-  chart.append(element('text',{x:chartLeft,y:17,fill:'#77777f','font-size':fontSize},'Cumulative success rate (%)'));
+  chart.append(element('text',{x:chartLeft,y:17,fill:'#77777f','font-size':fontSize},translate('Cumulative success rate (%)')));
   for(let value=0;value<=50;value+=10){
     chart.append(element('line',{x1:chartLeft,x2:chartRight,y1:y(value),y2:y(value),stroke:'#e8e8ee','stroke-width':1}));
     chart.append(element('text',{x:chartLeft-12,y:y(value)+5,'text-anchor':'end',fill:'#77777f','font-size':fontSize},String(value)));
@@ -109,7 +110,7 @@ function buildChart() {
   for(let value=0;value<=maxTime;value+=narrow.matches?10:5){
     chart.append(element('text',{x:x(value),y:chartBottom+26,'text-anchor':'middle',fill:'#77777f','font-size':fontSize},String(value)));
   }
-  chart.append(element('text',{x:(chartLeft+chartRight)/2,y:height-5,'text-anchor':'middle',fill:'#77777f','font-size':fontSize},'GPU hours'));
+  chart.append(element('text',{x:(chartLeft+chartRight)/2,y:height-5,'text-anchor':'middle',fill:'#77777f','font-size':fontSize},translate('GPU hours')));
   chart.append(element('line',{x1:chartLeft,x2:chartRight,y1:chartBottom,y2:chartBottom,stroke:'#bebec8'}));
   curves = data.series.map(s=>({ ...s, points:aggregateRuns(s.runs) }));
   const plots = element('g',{'clip-path':'url(#replay-clip)'});
@@ -145,8 +146,8 @@ function renderTime(next) {
 function stop() { cancelAnimationFrame(frame); frame = null; previousFrame = null; }
 function updateControls() {
   toggle.disabled = reducedMotion.matches;
-  toggle.textContent = reducedMotion.matches ? 'Static' : paused ? 'Play' : 'Pause';
-  toggle.setAttribute('aria-label',reducedMotion.matches ? 'Animation disabled for reduced motion' : `${paused?'Play':'Pause'} animation`);
+  toggle.textContent = reducedMotion.matches ? translate('Static') : paused ? translate('Play') : translate('Pause');
+  toggle.setAttribute('aria-label',reducedMotion.matches ? translate('Animation disabled for reduced motion') : translate('{action} animation', {action:translate(paused ? 'Play' : 'Pause')}));
   toggle.setAttribute('aria-pressed',String(paused));
 }
 function tick(now) {

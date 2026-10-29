@@ -1,4 +1,5 @@
 (() => {
+  const translate = globalThis.SiteI18n?.t || ((text, values = {}) => text.replace(/\{(\w+)\}/g, (match, key) => values[key] ?? match));
   if (typeof document === 'undefined') return;
   const button = document.getElementById('memory-bot-action');
   if (!button) return;
@@ -20,13 +21,13 @@
       painted = key;
     }
     const pose = scene.sample(state.action, state.slots);
-    const operation = state.running ? `${pose.operation} · ` : '';
-    caption.textContent = `${operation}${pose.occupied} active cache${pose.occupied === 1 ? '' : 's'}`;
+    const operation = state.running ? `${translate(pose.operation)} · ` : '';
+    caption.textContent = operation + translate(pose.occupied === 1 ? '{count} active cache' : '{count} active caches', {count:pose.occupied});
     for (const trigger of actionTriggers) {
       const active = state.running && (trigger.getAttribute('data-memory-bot-action') === 'refill' ? state.intent.kind === 'refill' : state.intent.kind !== 'refill');
       trigger.setAttribute('data-active', String(active));
     }
-    button.setAttribute('aria-label', `Run the next cache operation${state.queued ? ` (${state.queued} queued)` : ''}`);
+    button.setAttribute('aria-label', translate(state.queued ? 'Run the next cache operation ({count} queued)' : 'Run the next cache operation', {count:state.queued}));
   }
   function schedule() {
     if (frame === null && visible && !document.hidden && !state.reduced && (state.running || eyesMoving())) frame = requestAnimationFrame(tick);

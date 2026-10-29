@@ -1,0 +1,27 @@
+{
+  "navigation": {
+    "home": "Home",
+    "allProjects": "All projects",
+    "contents": "On this page",
+    "teamNavigation": "Team navigation",
+    "homeLabel": "Scaling Paths home",
+    "categories": "Project categories",
+    "dismiss": "Dismiss projects menu",
+    "pageNavigation": "Page navigation"
+  },
+  "footer": {
+    "research": "Research projects",
+    "home": "Home",
+    "allProjects": "All projects",
+    "label": "Footer"
+  },
+  "backToTop": "Back to top",
+  "groupLabels": {
+    "routes": "Scaling routes",
+    "projects": "Projects",
+    "research": "Research",
+    "evaluation": "Evaluation",
+    "resources": "Resources"
+  },
+  "messages": {}
+}

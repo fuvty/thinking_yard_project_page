@@ -1,6 +1,7 @@
 // Three self-contained request histories. Only prefill state is illustrated;
 // decoding, physical eviction and unrelated requests are intentionally omitted.
 globalThis.AKVInterfaceScene = (() => {
+  const translate = globalThis.SiteI18n?.t || ((text, values = {}) => text.replace(/\{(\w+)\}/g, (match, key) => values[key] ?? match));
   const duration=34.2,playbackRate=1.8;
   const messages=[
     {role:'user',content:'Search ICLR'},
@@ -87,14 +88,14 @@ globalThis.AKVInterfaceScene = (() => {
   const requestText=index=>requestParts(index).map(part=>part.text).join('');
   function draw(time) {
     const state=frame(time),t=state.time,parts=[];
-    parts.push(text(16,22,'Full message history',12,muted),text(402,22,`Request 0${state.request+1}`,11,accent,`text-anchor="end" opacity="${fixed(state.requestOpacity)}"`));
+    parts.push(text(16,22,translate('Full message history'),12,muted),text(402,22,translate('Request {number}', {number: `0${state.request+1}`}),11,accent,`text-anchor="end" opacity="${fixed(state.requestOpacity)}"`));
     labels.forEach((label,id)=>{
       const x=slots[id],present=state.messages.includes(id),[fill,edge]=palette[id];
       const arrival=present?smooth(t,requests[id].start+.3,1):0;
       if(arrival<1) parts.push(`<g opacity="${fixed(.32*(1-arrival))}">`,rect(x,43,96,32,'none','#bcb4c5','stroke-dasharray="4 4"'),text(x+48,65,'…',16,muted,centered),'</g>');
       if(present) parts.push(`<g data-interface-message="${id}" opacity="${fixed(arrival)}">`,rect(x,43,96,32,fill,edge),text(x+48,65,label,16,ink,`${centered} font-weight="600"`),text(x+48,93,messages[id].role,11,muted,centered),'</g>');
     });
-    parts.push(text(16,124,'Active KV · this request',12,muted),text(16,252,'K positions',11,muted));
+    parts.push(text(16,124,translate('Active KV · this request'),12,muted),text(16,252,translate('K positions'),11,muted));
     state.caches.forEach(cache=>{
       const {id,x}=cache,at=appendAt[id],y=145;
       const appear=smooth(t,at+.2,.4),fill=smooth(t,at+1.8,.8),inherited=smooth(t,at+2,.6);
@@ -114,9 +115,9 @@ globalThis.AKVInterfaceScene = (() => {
       parts.push('</g>');
       if(dropped>0) parts.push(`<g opacity="${fixed(dropped*.6)}">`,rect(x,y,96,66,'none','#bcb4c5','stroke-dasharray="4 4"'),text(x+48,y+38,'—',16,muted,centered),'</g>');
       parts.push('</g>');
-      if(dropped>.5) parts.push(text(x+48,231,'Dropped',11,muted,centered));
-      else if(reposition>0) parts.push(text(x+48,231,'V unchanged',11,accent,centered));
-      else if(cache.reused&&cache.ready) parts.push(text(x+48,231,'Reused',11,accent,centered));
+      if(dropped>.5) parts.push(text(x+48,231,translate('Dropped'),11,muted,centered));
+      else if(reposition>0) parts.push(text(x+48,231,translate('V unchanged'),11,accent,centered));
+      else if(cache.reused&&cache.ready) parts.push(text(x+48,231,translate('Reused'),11,accent,centered));
       if(fill>0&&kept>0) {
         parts.push(`<g data-interface-positions="${id}" opacity="${fixed(fill*kept)}">`);
         for(let i=0;i<4;i++) {
@@ -133,13 +134,14 @@ globalThis.AKVInterfaceScene = (() => {
       const opacity=smooth(t,at+.6,.25)*(1-smooth(t,at+1.5,.3));
       parts.push(`<g data-interface-attention="${from}-${to}" opacity="${fixed(opacity)}"><path d="M ${sx} 143 C ${sx} 107, ${tx} 107, ${tx} 143" fill="none" stroke="${accent}" stroke-width="1.7"/><circle cx="${sx}" cy="143" r="2" fill="${accent}"/><path d="M ${tx-3} 137 L ${tx} 144 L ${tx+3} 137" fill="none" stroke="${accent}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></g>`);
     });
-    if(t>=reposAt) parts.push(text(210,321,'Same m₂ · re-encoded K positions',12,accent,`${centered} opacity="${fixed(smooth(t,reposAt,.5))}"`));
+    if(t>=reposAt) parts.push(text(210,321,translate('Same m₂ · re-encoded K positions'),12,accent,`${centered} opacity="${fixed(smooth(t,reposAt,.5))}"`));
     return parts.join('');
   }
   return {duration,playbackRate,requests,frame,draw,requestText,requestParts};
 })();
 
 (() => {
+  const translate = globalThis.SiteI18n?.t || ((text, values = {}) => text.replace(/\{(\w+)\}/g, (match, key) => values[key] ?? match));
   if(typeof document==='undefined') return;
   const disclosure=document.getElementById('stateless-interface');
   if(!disclosure) return;
@@ -159,9 +161,9 @@ globalThis.AKVInterfaceScene = (() => {
     const element=document.createElement('button');
     element.type='button';
     const number=document.createElement('span'),label=document.createElement('span');
-    number.textContent=`Request 0${index+1}`;label.textContent=item.label;
+    number.textContent=translate('Request {number}', {number: `0${index+1}`});label.textContent=item.label;
     element.append(number,label);
-    element.setAttribute('aria-label',`Request ${index+1}: ${item.label}`);
+    element.setAttribute('aria-label',translate('Request {number}: {label}', {number: index+1, label: item.label}));
     element.setAttribute('aria-controls','interface-request-code interface-scene');
     element.addEventListener('click',()=>{
       // While paused, the request tabs are stable inspection views.
@@ -185,7 +187,7 @@ globalThis.AKVInterfaceScene = (() => {
         codeHighlights.push(span);
         return span;
       }));
-      counter.textContent=`Request ${state.request+1} / 3`;
+      counter.textContent=translate('Request {number} / 3', {number: state.request+1});
     }
     codeHighlights.forEach(span=>span.classList.toggle('is-current',span.dataset.interfaceCode===state.operation));
     // Follow the playback clock so pausing, closing and leaving the viewport
@@ -204,9 +206,9 @@ globalThis.AKVInterfaceScene = (() => {
     disclosure.dataset.interfaceOperation=state.operation??'';
   }
   function updateButton() {
-    button.textContent=paused?'Play':'Pause';
+    button.textContent=paused?translate('Play'):translate('Pause');
     button.setAttribute('aria-pressed',String(paused));
-    button.setAttribute('aria-label',`${paused?'Play':'Pause'} request sequence`);
+    button.setAttribute('aria-label',translate('{action} request sequence', {action: translate(paused ? 'Play' : 'Pause')}));
   }
   function tick(now) {
     request=null;

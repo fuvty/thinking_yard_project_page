@@ -5,6 +5,7 @@ import '../../shared/styles/tokens.css';
 import '../../hub/styles.css';
 import '../../shared/navigation/styles.css';
 import '../../shared/ui/styles.css';
+import '../../shared/language/styles.css';
 
 type Props = {children: React.ReactNode; params: Promise<{lang?: string[]}>};
 export async function generateMetadata({params}: Props): Promise<Metadata> {

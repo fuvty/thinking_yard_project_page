@@ -264,12 +264,16 @@
 
 /* Insight Cards */
 
+.insight-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
+}
+
 .insight-card {
   min-width: 0;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
-  padding: 32px;
+  padding: 28px;
   transition: all 0.3s ease;
 }
 
@@ -278,6 +282,7 @@
   font-weight: 700;
   letter-spacing: -0.02em;
   margin-bottom: 8px;
+  hyphens: auto;
 }
 
 .insight-label {
@@ -860,6 +865,12 @@
 }
 
 /* Collapsed global navigation */
+
+@media (max-width: 380px) {
+  .insight-card {
+    padding-inline: 16px;
+  }
+}
 
 /* Keep project tiles consistent with the team hub. */
 

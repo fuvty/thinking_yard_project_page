@@ -19,33 +19,33 @@
   <h1 class="hero-title">
     <span>Roads to Rome</span>
   </h1>
-  <p class="hero-subtitle">Efficiently Navigating Divergent Reasoning Paths with Small-Large Model Token Routing. Let small models follow large models' reasoning paths by correcting only the divergent tokens.
+  <p class="hero-subtitle" data-i18n="hero.subtitle">Efficiently Navigating Divergent Reasoning Paths with Small-Large Model Token Routing. Let small models follow large models' reasoning paths by correcting only the divergent tokens.
   </p>
 
   <div class="hero-stats">
     <div class="stat-item">
       <div class="stat-value">2.8×</div>
-      <div class="stat-label">Speedup vs R1-32B</div>
+      <div class="stat-label" data-i18n="hero.speed">Speedup vs R1-32B</div>
     </div>
     <div class="stat-item">
       <div class="stat-value">5.6B</div>
-      <div class="stat-label">Avg. Activated Params</div>
+      <div class="stat-label" data-i18n="hero.params">Avg. Activated Params</div>
     </div>
     <div class="stat-item">
       <div class="stat-value">1.6×</div>
-      <div class="stat-label">Accuracy vs R1-7B</div>
+      <div class="stat-label" data-i18n="hero.accuracy">Accuracy vs R1-7B</div>
     </div>
   </div>
 
   <div class="hero-cta">
     <div class="hero-actions">
-      <a href="https://arxiv.org/pdf/2505.21600" class="btn btn-primary">
+      <a href="https://arxiv.org/pdf/2505.21600" class="btn btn-primary" data-i18n="resource.paper">
         <i class="fas fa-file-alt"></i> Read Paper
       </a>
-      <a href="https://github.com/thu-nics/R2R" class="btn btn-secondary">
+      <a href="https://github.com/thu-nics/R2R" class="btn btn-secondary" data-i18n="resource.code">
         <i class="fab fa-github"></i> View Code
       </a>
-      <a href="https://huggingface.co/nics-efc/R2R_router_collections" class="btn btn-secondary">
+      <a href="https://huggingface.co/nics-efc/R2R_router_collections" class="btn btn-secondary" data-i18n="resource.models">
         🤗 Models
       </a>
       <span class="hero-badge">
@@ -535,9 +535,9 @@
 <section class="section section-gray" id="problem">
   <div class="container">
     <div class="reveal">
-      <p class="section-eyebrow">The Challenge</p>
-      <h2 class="section-title">LLMs are powerful but expensive.</h2>
-      <p class="section-subtitle">
+      <p class="section-eyebrow" data-i18n="problem.eyebrow">The Challenge</p>
+      <h2 class="section-title" data-i18n="problem.title">LLMs are powerful but expensive.</h2>
+      <p class="section-subtitle" data-i18n="problem.subtitle">
         Small models are fast but make mistakes. What if we could get the best of both worlds?
       </p>
     </div>
@@ -545,20 +545,20 @@
     <div class="problem-diagram reveal">
       <div class="problem-box">
         <div class="problem-box-icon">🚀</div>
-        <h4>Small Models (1.5B)</h4>
-        <p>Fast generation<br>Limited accuracy</p>
+        <h4 data-i18n="problem.small.title">Small Models (1.5B)</h4>
+        <p data-i18n="problem.small.body">Fast generation<br>Limited accuracy</p>
       </div>
       <div class="arrow-icon">←</div>
       <div class="problem-box" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff;">
         <div class="problem-box-icon">⚡</div>
-        <h4>R2R Routing</h4>
-        <p style="color: #fff;">Best of both worlds<br>Smart token routing</p>
+        <h4 data-i18n="problem.router.title">R2R Routing</h4>
+        <p style="color: #fff;" data-i18n="problem.router.body">Best of both worlds<br>Smart token routing</p>
       </div>
       <div class="arrow-icon">→</div>
       <div class="problem-box">
         <div class="problem-box-icon">🧠</div>
-        <h4>Large Models (32B)</h4>
-        <p>Accurate reasoning<br>Slow & expensive</p>
+        <h4 data-i18n="problem.large.title">Large Models (32B)</h4>
+        <p data-i18n="problem.large.body">Accurate reasoning<br>Slow & expensive</p>
       </div>
     </div>
   </div>
@@ -568,9 +568,9 @@
 <section class="section section-dark" id="insight">
   <div class="container">
     <div class="reveal">
-      <p class="section-eyebrow" style="color: #0a84ff;">The Discovery</p>
-      <h2 class="section-title">Not all tokens are equal.</h2>
-      <p class="section-subtitle">
+      <p class="section-eyebrow" style="color: #0a84ff;" data-i18n="insight.eyebrow">The Discovery</p>
+      <h2 class="section-title" data-i18n="insight.title">Not all tokens are equal.</h2>
+      <p class="section-subtitle" data-i18n="insight.subtitle">
         We discovered that only a small fraction of tokens actually diverge reasoning paths between large and small models.
       </p>
     </div>
@@ -578,22 +578,22 @@
     <div class="insight-grid reveal">
       <div class="insight-card">
         <div class="insight-percentage green">89%</div>
-        <div class="insight-label">Identical Tokens</div>
-        <div class="insight-desc">
+        <div class="insight-label" data-i18n="insight.identical.title">Identical Tokens</div>
+        <div class="insight-desc" data-i18n="insight.identical.body">
           The vast majority of tokens are predicted identically by both models. No routing needed.
         </div>
       </div>
       <div class="insight-card">
         <div class="insight-percentage blue">6%</div>
-        <div class="insight-label">Neutral Differences</div>
-        <div class="insight-desc">
+        <div class="insight-label" data-i18n="insight.neutral.title">Neutral Differences</div>
+        <div class="insight-desc" data-i18n="insight.neutral.body">
           Minor variations like "let's" vs "let us" that don't affect reasoning outcomes.
         </div>
       </div>
       <div class="insight-card">
         <div class="insight-percentage orange">5%</div>
-        <div class="insight-label">Divergent Tokens</div>
-        <div class="insight-desc">
+        <div class="insight-label" data-i18n="insight.divergent.title">Divergent Tokens</div>
+        <div class="insight-desc" data-i18n="insight.divergent.body">
           Critical tokens that change the reasoning path. These are the only ones we route to the LLM.
         </div>
       </div>
@@ -603,7 +603,7 @@
     <div class="reveal" style="margin-top: 48px;">
       <div class="expandable-section" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
         <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title" style="color: #fff;">Learn more about token classification</span>
+          <span class="expandable-title" style="color: #fff;" data-i18n="insight.details.title">Learn more about token classification</span>
           <div class="expandable-icon" style="background: rgba(255,255,255,0.1);">
             <i class="fas fa-plus" style="color: #fff; font-size: 12px;"></i>
           </div>
@@ -611,14 +611,14 @@
         <div class="expandable-content">
           <div class="expandable-content-inner">
             <div class="expandable-inner" style="color: rgba(255,255,255,0.8);">
-              <p style="margin-bottom: 16px;">
-                <strong style="color: #30d158;">Identical tokens</strong> occur when both the small and large language model predict the exact same next token given the same context. Since they agree, we can safely use the faster small model.
+              <p style="margin-bottom: 16px;" data-i18n="insight.details.identical">
+                <strong style="color: #30d158;" data-emphasis="identical-tokens">Identical tokens</strong> occur when both the small and large language model predict the exact same next token given the same context. Since they agree, we can safely use the faster small model.
               </p>
-              <p style="margin-bottom: 16px;">
-                <strong style="color: #0a84ff;">Neutral differences</strong> are cases where models predict different tokens, but these differences don't affect the reasoning outcome—like abbreviations or stylistic choices.
+              <p style="margin-bottom: 16px;" data-i18n="insight.details.neutral">
+                <strong style="color: #0a84ff;" data-emphasis="neutral-differences">Neutral differences</strong> are cases where models predict different tokens, but these differences don't affect the reasoning outcome—like abbreviations or stylistic choices.
               </p>
-              <p>
-                <strong style="color: #ff9f0a;">Divergent tokens</strong> genuinely alter the meaning, logic, or conclusion of the current sentence, thus diverging the subsequent reasoning path. These are the critical tokens where we need the large model's guidance.
+              <p data-i18n="insight.details.divergent">
+                <strong style="color: #ff9f0a;" data-emphasis="divergent-tokens">Divergent tokens</strong> genuinely alter the meaning, logic, or conclusion of the current sentence, thus diverging the subsequent reasoning path. These are the critical tokens where we need the large model's guidance.
               </p>
             </div>
           </div>
@@ -632,24 +632,24 @@
 <section class="section" id="demo">
   <div class="container-wide">
     <div class="reveal">
-      <p class="section-eyebrow">Interactive Demo</p>
-      <h2 class="section-title">Watch R2R in action.</h2>
-      <p class="section-subtitle">
+      <p class="section-eyebrow" data-i18n="demo.eyebrow">Interactive Demo</p>
+      <h2 class="section-title" data-i18n="demo.title">Watch R2R in action.</h2>
+      <p class="section-subtitle" data-i18n="demo.subtitle">
         See how R2R intelligently routes tokens between models in real-time.
       </p>
     </div>
 
     <div class="workflow-container reveal">
       <div class="workflow-header">
-        <div class="workflow-title">R2R Inference Workflow</div>
+        <div class="workflow-title" data-i18n="demo.workflow">R2R Inference Workflow</div>
         <div class="workflow-controls">
-          <button class="workflow-btn" id="playBtn" onclick="startWorkflow()">
+          <button class="workflow-btn" id="playBtn" onclick="startWorkflow()" aria-label="Play workflow" title="Play workflow" data-i18n-attrs="demo.playBtn">
             <i class="fas fa-play"></i>
           </button>
-          <button class="workflow-btn" id="pauseBtn" onclick="pauseWorkflow()" disabled>
+          <button class="workflow-btn" id="pauseBtn" onclick="pauseWorkflow()" disabled aria-label="Pause workflow" title="Pause workflow" data-i18n-attrs="demo.pauseBtn">
             <i class="fas fa-pause"></i>
           </button>
-          <button class="workflow-btn" id="resetBtn" onclick="resetWorkflow()">
+          <button class="workflow-btn" id="resetBtn" onclick="resetWorkflow()" aria-label="Reset workflow" title="Reset workflow" data-i18n-attrs="demo.resetBtn">
             <i class="fas fa-redo"></i>
           </button>
         </div>
@@ -657,35 +657,35 @@
 
       <div class="workflow-stages">
         <div class="workflow-stage active" data-stage="0">
-          <div class="workflow-stage-number">Step 1</div>
-          <div class="workflow-stage-name">Input Query</div>
+          <div class="workflow-stage-number" data-i18n="demo.step.1">Step 1</div>
+          <div class="workflow-stage-name" data-i18n="demo.stage.input">Input Query</div>
         </div>
         <div class="workflow-stage" data-stage="1">
-          <div class="workflow-stage-number">Step 2</div>
-          <div class="workflow-stage-name">SLM Predicts</div>
+          <div class="workflow-stage-number" data-i18n="demo.step.2">Step 2</div>
+          <div class="workflow-stage-name" data-i18n="demo.stage.predict">SLM Predicts</div>
         </div>
         <div class="workflow-stage" data-stage="2">
-          <div class="workflow-stage-number">Step 3</div>
-          <div class="workflow-stage-name">Router Checks</div>
+          <div class="workflow-stage-number" data-i18n="demo.step.3">Step 3</div>
+          <div class="workflow-stage-name" data-i18n="demo.stage.check">Router Checks</div>
         </div>
         <div class="workflow-stage" data-stage="3">
-          <div class="workflow-stage-number">Step 4</div>
-          <div class="workflow-stage-name">Route Decision</div>
+          <div class="workflow-stage-number" data-i18n="demo.step.4">Step 4</div>
+          <div class="workflow-stage-name" data-i18n="demo.stage.route">Route Decision</div>
         </div>
         <div class="workflow-stage" data-stage="4">
-          <div class="workflow-stage-number">Step 5</div>
-          <div class="workflow-stage-name">Output Token</div>
+          <div class="workflow-stage-number" data-i18n="demo.step.5">Step 5</div>
+          <div class="workflow-stage-name" data-i18n="demo.stage.output">Output Token</div>
         </div>
       </div>
 
       <div class="workflow-visualization" id="workflowViz">
         <div class="workflow-step-content active" data-step="0">
           <div style="text-align: center; padding: 40px 0;">
-            <div style="font-size: 18px; font-weight: 500; margin-bottom: 16px;">AIME 2024 Problem I-1</div>
-            <div style="background: #fff; padding: 24px; border-radius: 12px; max-width: 700px; margin: 0 auto; font-size: 15px; line-height: 1.6; text-align: left;">
+            <div style="font-size: 18px; font-weight: 500; margin-bottom: 16px;" data-i18n="demo.problem">AIME 2024 Problem I-1</div>
+            <div class="workflow-problem" lang="en">
               Every morning Aya goes for a 9-kilometer-long walk and stops at a coffee shop afterwards. When she walks at a constant speed of <em>s</em> kilometers per hour, the entire walk takes exactly 4 hours, including <em>t</em> minutes spent at the coffee shop. When she walks at a constant speed of <em>s + 2</em> kilometers per hour, the entire walk takes exactly 2 hours and 24 minutes, including <em>t</em> minutes spent at the coffee shop. Suppose Aya walks at <em>s + ½</em> kilometers per hour. Find the number of minutes the entire walk takes, including the <em>t</em> minutes spent at the coffee shop.
             </div>
-            <div style="margin-top: 24px; color: var(--apple-gray); font-size: 14px;">
+            <div style="margin-top: 24px; color: var(--apple-gray); font-size: 14px;" data-i18n="demo.start">
               <i class="fas fa-play-circle" style="margin-right: 6px;"></i>
               Click the play button above to see R2R process this problem
             </div>
@@ -694,7 +694,7 @@
 
         <div class="workflow-step-content" data-step="1">
           <div style="text-align: center; padding: 20px 0;">
-            <div style="font-size: 16px; font-weight: 500; margin-bottom: 20px;">Small Model (R1-1.5B) generates tokens...</div>
+            <div style="font-size: 16px; font-weight: 500; margin-bottom: 20px;" data-i18n="demo.generating">Small Model (R1-1.5B) generates tokens...</div>
             <div class="token-stream" id="tokenStream" style="justify-content: center;">
               <!-- Tokens will be inserted here by JavaScript -->
             </div>
@@ -704,31 +704,31 @@
         <div class="workflow-step-content" data-step="2">
           <div style="text-align: center; padding: 40px 0;">
             <div style="font-size: 48px; margin-bottom: 16px;">🔍</div>
-            <div style="font-size: 18px; font-weight: 500; margin-bottom: 12px;">Neural Router Analyzing Token</div>
-            <div style="font-size: 14px; color: var(--apple-gray); max-width: 500px; margin: 0 auto; line-height: 1.6;">
-              The 56M-parameter neural router examines three features from the SLM: <strong>top-100 logits</strong> (prediction uncertainty), <strong>token embeddings</strong> (frequency bias), and <strong>hidden states</strong> (semantic context) to predict if this token would diverge the reasoning path.
+            <div style="font-size: 18px; font-weight: 500; margin-bottom: 12px;" data-i18n="demo.analyzing">Neural Router Analyzing Token</div>
+            <div style="font-size: 14px; color: var(--apple-gray); max-width: 500px; margin: 0 auto; line-height: 1.6;" data-i18n="demo.features">
+              The 56M-parameter neural router examines three features from the SLM: <strong data-emphasis="top-logits">top-100 logits</strong> (prediction uncertainty), <strong data-emphasis="token-embeddings">token embeddings</strong> (frequency bias), and <strong data-emphasis="hidden-states">hidden states</strong> (semantic context) to predict if this token would diverge the reasoning path.
             </div>
           </div>
         </div>
 
         <div class="workflow-step-content" data-step="3">
-          <div style="display: flex; justify-content: center; gap: 40px; padding: 40px 0; flex-wrap: wrap;">
-            <div style="text-align: center; padding: 24px; background: #e8f5e9; border-radius: 16px; min-width: 200px;">
+          <div class="workflow-decisions">
+            <div class="workflow-decision" style="background: #e8f5e9;">
               <div style="font-size: 32px; margin-bottom: 12px;">✓</div>
-              <div style="font-size: 16px; font-weight: 600; color: #2e7d32;">Accept SLM Token</div>
-              <div style="font-size: 13px; color: #558b2f; margin-top: 8px;">Identical or neutral</div>
+              <div style="font-size: 16px; font-weight: 600; color: #2e7d32;" data-i18n="demo.accept">Accept SLM Token</div>
+              <div style="font-size: 13px; color: #558b2f; margin-top: 8px;" data-i18n="demo.accept.reason">Identical or neutral</div>
             </div>
-            <div style="text-align: center; padding: 24px; background: #fce4ec; border-radius: 16px; min-width: 200px;" id="routeDecision">
+            <div class="workflow-decision" style="background: #fce4ec;" id="routeDecision">
               <div style="font-size: 32px; margin-bottom: 12px;">⚡</div>
-              <div style="font-size: 16px; font-weight: 600; color: #c62828;">Route to LLM</div>
-              <div style="font-size: 13px; color: #c62828; margin-top: 8px;">Divergent token detected</div>
+              <div style="font-size: 16px; font-weight: 600; color: #c62828;" data-i18n="demo.escalate">Route to LLM</div>
+              <div style="font-size: 13px; color: #c62828; margin-top: 8px;" data-i18n="demo.escalate.reason">Divergent token detected</div>
             </div>
           </div>
         </div>
 
         <div class="workflow-step-content" data-step="4">
           <div style="text-align: center; padding: 20px 0;">
-            <div style="font-size: 16px; font-weight: 500; margin-bottom: 20px;">Generated Response with R2R Routing</div>
+            <div style="font-size: 16px; font-weight: 500; margin-bottom: 20px;" data-i18n="demo.generated">Generated Response with R2R Routing</div>
             <div class="token-stream" id="finalStream" style="justify-content: center;">
               <!-- Final tokens will be shown here -->
             </div>
@@ -739,20 +739,20 @@
       <div class="workflow-legend">
         <div class="legend-item">
           <div class="legend-dot slm"></div>
-          <span>SLM Token (Identical)</span>
+          <span data-i18n="demo.legend.identical">SLM Token (Identical)</span>
         </div>
         <div class="legend-item">
           <div class="legend-dot neutral"></div>
-          <span>SLM Token (Neutral)</span>
+          <span data-i18n="demo.legend.neutral">SLM Token (Neutral)</span>
         </div>
         <div class="legend-item">
           <div class="legend-dot llm"></div>
-          <span>LLM Token (Divergent)</span>
+          <span data-i18n="demo.legend.divergent">LLM Token (Divergent)</span>
         </div>
       </div>
-      <p style="text-align: center; margin-top: 16px; font-size: 13px; color: var(--apple-gray);">
+      <p style="text-align: center; margin-top: 16px; font-size: 13px; color: var(--apple-gray);" data-i18n="demo.tooltip.hint">
         <i class="fas fa-mouse-pointer" style="margin-right: 6px;"></i>
-        Hover over <span style="color: #1565c0; font-weight: 500;">blue</span> or <span style="color: #c62828; font-weight: 500;">red</span> tokens to see why the router made that decision
+        Hover over <span style="color: #1565c0; font-weight: 500;" data-emphasis="neutral-color">blue</span> or <span style="color: #c62828; font-weight: 500;" data-emphasis="divergent-color">red</span> tokens to see why the router made that decision
       </p>
     </div>
 
@@ -760,7 +760,7 @@
     <div class="reveal" style="margin-top: 48px;">
       <div class="expandable-section">
         <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title">Watch Video Demo</span>
+          <span class="expandable-title" data-i18n="demo.video.title">Watch Video Demo</span>
           <div class="expandable-icon">
             <i class="fas fa-plus" style="font-size: 12px;"></i>
           </div>
@@ -771,7 +771,7 @@
               <div class="demo-video" style="margin: 0;">
                 <video src="./static/videos/R2R_demo.mp4" loop muted playsinline controls></video>
               </div>
-              <p style="text-align: center; color: var(--apple-gray); font-size: 14px; margin-top: 16px;">
+              <p style="text-align: center; color: var(--apple-gray); font-size: 14px; margin-top: 16px;" data-i18n="demo.video.caption">
                 Side-by-side comparison: R1-32B (left) vs R2R (right). Red tokens are routed to LLM.
               </p>
             </div>
@@ -786,22 +786,22 @@
 <section class="section section-gray" id="method">
   <div class="container">
     <div class="reveal">
-      <p class="section-eyebrow">How It Works</p>
-      <h2 class="section-title">Intelligent token routing.</h2>
-      <p class="section-subtitle">
+      <p class="section-eyebrow" data-i18n="method.eyebrow">How It Works</p>
+      <h2 class="section-title" data-i18n="method.title">Intelligent token routing.</h2>
+      <p class="section-subtitle" data-i18n="method.subtitle">
         R2R uses a lightweight neural router trained on automatically generated token-level labels to decide which tokens need the large model's attention.
       </p>
     </div>
 
     <div class="method-visual reveal">
-      <img src="./static/images/main_method.png" alt="R2R Method Overview">
+      <img src="./static/images/main_method.png" alt="R2R Method Overview" data-i18n-attrs="figure.0">
     </div>
 
     <!-- Expandable Method Details -->
     <div class="reveal">
       <div class="expandable-section">
         <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title">Automatic Data Generation Pipeline</span>
+          <span class="expandable-title" data-i18n="method.data.title">Automatic Data Generation Pipeline</span>
           <div class="expandable-icon">
             <i class="fas fa-plus" style="font-size: 12px;"></i>
           </div>
@@ -809,19 +809,19 @@
         <div class="expandable-content">
           <div class="expandable-content-inner">
             <div class="expandable-inner">
-              <p style="margin-bottom: 16px;">
-                A key contribution of R2R is an <strong>automatic pipeline for generating token-level routing labels</strong> without expensive human annotation:
+              <p style="margin-bottom: 16px;" data-i18n="method.data.intro">
+                A key contribution of R2R is an <strong data-emphasis="automatic-token-labeling">automatic pipeline for generating token-level routing labels</strong> without expensive human annotation:
               </p>
-              <ol style="margin-left: 24px; margin-bottom: 16px; color: var(--apple-gray); line-height: 1.8;">
-                <li><strong>LLM generates</strong> a complete response to the problem</li>
-                <li><strong>SLM prefills</strong> the LLM's response to identify tokens where predictions differ</li>
-                <li><strong>LLM continues</strong> from each differing token to produce alternative continuations</li>
-                <li><strong>Verifier model</strong> compares continuations to label differences as neutral or divergent</li>
+              <ol style="margin-left: 24px; margin-bottom: 16px; color: var(--apple-gray); line-height: 1.8;" data-i18n="method.data.steps">
+                <li><strong data-emphasis="llm-generation">LLM generates</strong> a complete response to the problem</li>
+                <li><strong data-emphasis="slm-prefill">SLM prefills</strong> the LLM's response to identify tokens where predictions differ</li>
+                <li><strong data-emphasis="llm-continuation">LLM continues</strong> from each differing token to produce alternative continuations</li>
+                <li><strong data-emphasis="verifier-model">Verifier model</strong> compares continuations to label differences as neutral or divergent</li>
               </ol>
-              <p style="margin-bottom: 16px;">
+              <p style="margin-bottom: 16px;" data-i18n="method.data.result">
                 This pipeline produces large-scale training data automatically, enabling the router to learn which token differences actually matter for reasoning.
               </p>
-              <img src="./static/images/data_gen_overview.png" alt="Data Generation Pipeline" style="width: 100%; border-radius: 12px; margin-top: 16px;">
+              <img src="./static/images/data_gen_overview.png" alt="Data Generation Pipeline" style="width: 100%; border-radius: 12px; margin-top: 16px;" data-i18n-attrs="figure.1">
             </div>
           </div>
         </div>
@@ -829,7 +829,7 @@
 
       <div class="expandable-section">
         <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title">Path-Following Routing Strategy</span>
+          <span class="expandable-title" data-i18n="method.path.title">Path-Following Routing Strategy</span>
           <div class="expandable-icon">
             <i class="fas fa-plus" style="font-size: 12px;"></i>
           </div>
@@ -837,15 +837,15 @@
         <div class="expandable-content">
           <div class="expandable-content-inner">
             <div class="expandable-inner">
-              <p style="margin-bottom: 16px;">
-                At each generation step, R2R compares the next-token predictions from both the SLM and LLM. If predictions are identical, the efficient SLM token is used. When they differ, a continuation-and-verification mechanism determines whether the difference is:
+              <p style="margin-bottom: 16px;" data-i18n="method.path.intro">
+                When generating routing labels, we compare the next-token predictions of the SLM and LLM. Identical predictions can use the SLM output. For differing predictions, continuation and verification determine whether the difference is:
               </p>
               <ul style="margin-left: 24px; margin-bottom: 16px; color: var(--apple-gray);">
-                <li><strong>Neutral:</strong> Doesn't affect reasoning outcomes (use SLM)</li>
-                <li><strong>Divergent:</strong> Alters the reasoning path (route to LLM)</li>
+                <li data-i18n="method.path.neutral"><strong data-emphasis="neutral-differences">Neutral:</strong> Doesn't affect reasoning outcomes (use SLM)</li>
+                <li data-i18n="method.path.divergent"><strong data-emphasis="divergent-tokens">Divergent:</strong> Alters the reasoning path (route to LLM)</li>
               </ul>
-              <p>
-                The core insight is that the SLM can follow the LLM's reasoning path if we correct only the divergent tokens—the SLM then continues from the corrected token without further intervention until the next divergent token.
+              <p data-i18n="method.path.summary">
+                Correcting only divergent tokens lets the SLM follow the LLM's reasoning path, continuing from each correction until the next divergent token. During inference, the trained neural router makes these decisions directly.
               </p>
             </div>
           </div>
@@ -854,7 +854,7 @@
 
       <div class="expandable-section">
         <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title">Neural Router Architecture</span>
+          <span class="expandable-title" data-i18n="method.router.title">Neural Router Architecture</span>
           <div class="expandable-icon">
             <i class="fas fa-plus" style="font-size: 12px;"></i>
           </div>
@@ -862,16 +862,16 @@
         <div class="expandable-content">
           <div class="expandable-content-inner">
             <div class="expandable-inner">
-              <p style="margin-bottom: 16px;">
-                The router is a lightweight <strong>56M-parameter feed-forward network</strong> that takes three inputs from the SLM:
+              <p style="margin-bottom: 16px;" data-i18n="method.router.intro">
+                The router is a lightweight <strong data-emphasis="router-network">56M-parameter feed-forward network</strong> that takes three inputs from the SLM:
               </p>
               <ul style="margin-left: 24px; color: var(--apple-gray);">
-                <li><strong>Top-100 SLM logits:</strong> Captures prediction uncertainty (higher entropy indicates potential divergence)</li>
-                <li><strong>Token embeddings:</strong> Encodes token frequency biases (rare tokens are more likely to diverge)</li>
-                <li><strong>Last-layer hidden states:</strong> Provides semantic context for the current generation step</li>
+                <li data-i18n="method.router.logits"><strong data-emphasis="top-logits">Top-100 SLM logits:</strong> Captures prediction uncertainty (higher entropy indicates potential divergence)</li>
+                <li data-i18n="method.router.embeddings"><strong data-emphasis="token-embeddings">Token embeddings:</strong> Encodes token frequency biases (rare tokens are more likely to diverge)</li>
+                <li data-i18n="method.router.hidden"><strong data-emphasis="last-layer-hidden-states">Last-layer hidden states:</strong> Provides semantic context for the current generation step</li>
               </ul>
-              <p style="margin-top: 16px;">
-                The router outputs a binary classification probability indicating whether the current token diverges from the LLM's reasoning path. This enables <strong>immediate routing decisions</strong> during inference without waiting for continuation verification.
+              <p style="margin-top: 16px;" data-i18n="method.router.output">
+                The router outputs a binary classification probability indicating whether the current token diverges from the LLM's reasoning path. This enables <strong data-emphasis="immediate-routing">immediate routing decisions</strong> during inference without waiting for continuation verification.
               </p>
             </div>
           </div>
@@ -880,7 +880,7 @@
 
       <div class="expandable-section">
         <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title">Predictive Indicators of Divergence</span>
+          <span class="expandable-title" data-i18n="method.indicators.title">Predictive Indicators of Divergence</span>
           <div class="expandable-icon">
             <i class="fas fa-plus" style="font-size: 12px;"></i>
           </div>
@@ -888,16 +888,16 @@
         <div class="expandable-content">
           <div class="expandable-content-inner">
             <div class="expandable-inner">
-              <div class="observations-grid" style="grid-template-columns: repeat(2, 1fr); gap: 24px;">
+              <div class="observations-grid routing-observations">
                 <div>
-                  <img src="./static/images/entropy_distribution.png" alt="Entropy Distribution" style="width: 100%; border-radius: 12px; margin-bottom: 12px;">
-                  <h4 style="font-size: 16px; margin-bottom: 8px;">SLM Entropy</h4>
-                  <p style="font-size: 14px; color: var(--apple-gray);">Divergent tokens show 3.8× higher entropy in SLM output logits, indicating prediction uncertainty.</p>
+                  <img src="./static/images/entropy_distribution.png" alt="Entropy Distribution" style="width: 100%; border-radius: 12px; margin-bottom: 12px;" data-i18n-attrs="figure.2">
+                  <h4 style="font-size: 16px; margin-bottom: 8px;" data-i18n="method.entropy.title">SLM Entropy</h4>
+                  <p style="font-size: 14px; color: var(--apple-gray);" data-i18n="method.entropy.body">Average SLM output entropy is 3.8× as high for divergent tokens as for non-divergent tokens, indicating greater prediction uncertainty.</p>
                 </div>
                 <div>
-                  <img src="./static/images/token_divergence_frequency.png" alt="Token Frequency" style="width: 100%; border-radius: 12px; margin-bottom: 12px;">
-                  <h4 style="font-size: 16px; margin-bottom: 8px;">Token Frequency</h4>
-                  <p style="font-size: 14px; color: var(--apple-gray);">Low-frequency tokens are more likely to be divergent due to limited SLM training on rare tokens.</p>
+                  <img src="./static/images/token_divergence_frequency.png" alt="Token Frequency" style="width: 100%; border-radius: 12px; margin-bottom: 12px;" data-i18n-attrs="figure.3">
+                  <h4 style="font-size: 16px; margin-bottom: 8px;" data-i18n="method.frequency.title">Token Frequency</h4>
+                  <p style="font-size: 14px; color: var(--apple-gray);" data-i18n="method.frequency.body">Low-frequency tokens are more likely to be divergent due to limited SLM training on rare tokens.</p>
                 </div>
               </div>
             </div>
@@ -912,62 +912,62 @@
 <section class="section" id="results">
   <div class="container">
     <div class="reveal">
-      <p class="section-eyebrow">Performance</p>
-      <h2 class="section-title">State-of-the-art efficiency.</h2>
-      <p class="section-subtitle">
+      <p class="section-eyebrow" data-i18n="results.eyebrow">Performance</p>
+      <h2 class="section-title" data-i18n="results.title">State-of-the-art efficiency.</h2>
+      <p class="section-subtitle" data-i18n="results.subtitle">
         R2R advances the Pareto frontier of test-time scaling efficiency across AIME, GPQA, and LiveCodeBench.
       </p>
     </div>
 
     <div class="results-comparison reveal">
       <div class="result-card">
-        <div class="result-method">R1-7B (Baseline)</div>
+        <div class="result-method" data-i18n="results.baseline">R1-7B (Baseline)</div>
         <div class="result-value">28%</div>
-        <div class="result-label">Average Accuracy</div>
+        <div class="result-label" data-i18n="results.accuracy">Average Accuracy</div>
         <div class="result-metrics">
-          <div class="result-metric"><strong>7.0B</strong> params</div>
-          <div class="result-metric"><strong>154K</strong> cost*</div>
+          <div class="result-metric" data-i18n="results.params.7_0B"><strong data-emphasis="parameter-count">7.0B</strong> params</div>
+          <div class="result-metric" data-i18n="results.cost.154K"><strong data-emphasis="inference-cost">154K</strong> cost*</div>
         </div>
       </div>
 
       <div class="result-card">
         <div class="result-method">R1-14B</div>
         <div class="result-value">43%</div>
-        <div class="result-label">Average Accuracy</div>
+        <div class="result-label" data-i18n="results.accuracy">Average Accuracy</div>
         <div class="result-metrics">
-          <div class="result-metric"><strong>14B</strong> params</div>
-          <div class="result-metric"><strong>234K</strong> cost*</div>
+          <div class="result-metric" data-i18n="results.params.14B"><strong data-emphasis="parameter-count">14B</strong> params</div>
+          <div class="result-metric" data-i18n="results.cost.234K"><strong data-emphasis="inference-cost">234K</strong> cost*</div>
         </div>
       </div>
 
       <div class="result-card highlight">
-        <div class="result-method">R2R (Ours)</div>
+        <div class="result-method" data-i18n="results.ours">R2R (Ours)</div>
         <div class="result-value">46%</div>
-        <div class="result-label">Average Accuracy</div>
+        <div class="result-label" data-i18n="results.accuracy">Average Accuracy</div>
         <div class="result-metrics">
-          <div class="result-metric"><strong>5.6B</strong> avg params</div>
-          <div class="result-metric"><strong>103K</strong> cost*</div>
+          <div class="result-metric" data-i18n="results.params.average"><strong data-emphasis="parameter-count">5.6B</strong> avg params</div>
+          <div class="result-metric" data-i18n="results.cost.103K"><strong data-emphasis="inference-cost">103K</strong> cost*</div>
         </div>
       </div>
 
       <div class="result-card">
         <div class="result-method">R1-32B (LLM)</div>
         <div class="result-value">50%</div>
-        <div class="result-label">Average Accuracy</div>
+        <div class="result-label" data-i18n="results.accuracy">Average Accuracy</div>
         <div class="result-metrics">
-          <div class="result-metric"><strong>32B</strong> params</div>
-          <div class="result-metric"><strong>537K</strong> cost*</div>
+          <div class="result-metric" data-i18n="results.params.32B"><strong data-emphasis="parameter-count">32B</strong> params</div>
+          <div class="result-metric" data-i18n="results.cost.537K"><strong data-emphasis="inference-cost">537K</strong> cost*</div>
         </div>
       </div>
     </div>
 
-    <p style="text-align: center; color: var(--apple-gray); font-size: 12px; margin-top: 16px;">
+    <p style="text-align: center; color: var(--apple-gray); font-size: 12px; margin-top: 16px;" data-i18n="results.cost.definition">
       *Cost = output tokens × activated parameters (in billions). Lower is better.
     </p>
 
     <div class="chart-container reveal">
-      <img src="./static/images/all_pareto_subplots_params.png" alt="Pareto Frontier Chart">
-      <p style="margin-top: 16px; color: var(--apple-gray); font-size: 14px;">
+      <img src="./static/images/all_pareto_subplots_params.png" alt="Pareto Frontier Chart" data-i18n-attrs="figure.4">
+      <p style="margin-top: 16px; color: var(--apple-gray); font-size: 14px;" data-i18n="results.figure.caption">
         R2R consistently advances the Pareto frontier across AIME, GPQA, and LiveCodeBench benchmarks.
       </p>
     </div>
@@ -976,7 +976,7 @@
     <div class="reveal">
       <div class="expandable-section">
         <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title">Detailed Benchmark Results</span>
+          <span class="expandable-title" data-i18n="results.table.title">Detailed Benchmark Results</span>
           <div class="expandable-icon">
             <i class="fas fa-plus" style="font-size: 12px;"></i>
           </div>
@@ -988,11 +988,11 @@
                 <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
                   <thead>
                     <tr style="border-bottom: 2px solid var(--apple-light-gray);">
-                      <th style="text-align: left; padding: 12px 16px;">Method</th>
+                      <th style="text-align: left; padding: 12px 16px;" data-i18n="results.table.method">Method</th>
                       <th style="text-align: center; padding: 12px 16px;">AIME</th>
                       <th style="text-align: center; padding: 12px 16px;">LiveCodeBench</th>
                       <th style="text-align: center; padding: 12px 16px;">GPQA</th>
-                      <th style="text-align: center; padding: 12px 16px;">Avg. Params</th>
+                      <th style="text-align: center; padding: 12px 16px;" data-i18n="results.table.params">Avg. Params</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1018,7 +1018,7 @@
                     <td style="text-align: center; padding: 12px 16px;">14.0B</td>
                   </tr>
                   <tr style="border-bottom: 1px solid var(--apple-light-gray); background: linear-gradient(90deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 100%);">
-                    <td style="padding: 12px 16px; font-weight: 600;">R2R (Ours)</td>
+                    <td style="padding: 12px 16px; font-weight: 600;" data-i18n="results.ours">R2R (Ours)</td>
                     <td style="text-align: center; padding: 12px 16px; font-weight: 600;">55%</td>
                     <td style="text-align: center; padding: 12px 16px; font-weight: 600;">39%</td>
                     <td style="text-align: center; padding: 12px 16px; font-weight: 600;">44%</td>
@@ -1041,7 +1041,7 @@
 
       <div class="expandable-section">
         <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title">Routing Behavior Analysis</span>
+          <span class="expandable-title" data-i18n="results.behavior.title">Routing Behavior Analysis</span>
           <div class="expandable-icon">
             <i class="fas fa-plus" style="font-size: 12px;"></i>
           </div>
@@ -1049,8 +1049,8 @@
         <div class="expandable-content">
           <div class="expandable-content-inner">
             <div class="expandable-inner">
-              <img src="./static/images/routing_observation.png" alt="Routing Behavior" style="width: 100%; max-width: 600px; border-radius: 12px; margin-bottom: 16px;">
-              <p style="color: var(--apple-gray); font-size: 14px;">
+              <img src="./static/images/routing_observation.png" alt="Routing Behavior" style="width: 100%; max-width: 600px; border-radius: 12px; margin-bottom: 16px;" data-i18n-attrs="figure.5">
+              <p style="color: var(--apple-gray); font-size: 14px;" data-i18n="results.behavior.body">
                 R2R naturally learns efficient routing patterns: fewer LLM calls during straightforward reply phases,
                 and more at the beginning and end of each thought where reasoning direction is determined.
               </p>
@@ -1066,8 +1066,8 @@
 <section class="section section-gray authors-section" id="team">
   <div class="container">
     <div class="reveal">
-      <p class="section-eyebrow">Team</p>
-      <h2 class="section-title">Meet the researchers.</h2>
+      <p class="section-eyebrow" data-i18n="team.eyebrow">Team</p>
+      <h2 class="section-title" data-i18n="team.title">Meet the researchers.</h2>
     </div>
 
     <div class="authors-list reveal">
@@ -1094,7 +1094,7 @@
       </a>
     </div>
 
-    <div class="affiliations reveal">
+    <div class="affiliations reveal" data-i18n="team.affiliations">
       <sup>1</sup>Tsinghua University &nbsp;&nbsp;
       <sup>2</sup>Infinigence AI &nbsp;&nbsp;
       <sup>3</sup>Shanghai Jiao Tong University<br>
@@ -1107,9 +1107,9 @@
 <section class="section" id="bibtex">
   <div class="container">
     <div class="reveal">
-      <p class="section-eyebrow">Citation</p>
-      <h2 class="section-title">Cite our work.</h2>
-      <p class="section-subtitle">
+      <p class="section-eyebrow" data-i18n="citation.eyebrow">Citation</p>
+      <h2 class="section-title" data-i18n="citation.title">Cite our work.</h2>
+      <p class="section-subtitle" data-i18n="citation.subtitle">
         If you find R2R useful for your research, please consider citing our paper.
       </p>
     </div>
@@ -1154,6 +1154,8 @@ function reveal() {
 
 window.addEventListener('scroll', reveal);
 window.addEventListener('load', reveal);
+
+const r2rText = globalThis.SiteI18n?.t || ((text, values = {}) => text.replace(/\{(\w+)\}/g, (match, key) => values[key] ?? match));
 
 // Interactive Workflow Animation
 let workflowInterval;
@@ -1240,7 +1242,7 @@ function createTokenElement(token) {
       const slmSection = document.createElement('div');
       slmSection.className = 'tooltip-section';
       slmSection.innerHTML = `
-        <div class="tooltip-label">SLM Continuation</div>
+        <div class="tooltip-label">${r2rText('SLM Continuation')}</div>
         <div class="tooltip-content">${formatContinuation(token.slmContinuation, 'slm')}</div>
       `;
       tooltip.appendChild(slmSection);
@@ -1251,7 +1253,7 @@ function createTokenElement(token) {
       const llmSection = document.createElement('div');
       llmSection.className = 'tooltip-section';
       llmSection.innerHTML = `
-        <div class="tooltip-label">LLM Continuation</div>
+        <div class="tooltip-label">${r2rText('LLM Continuation')}</div>
         <div class="tooltip-content">${formatContinuation(token.llmContinuation, 'llm')}</div>
       `;
       tooltip.appendChild(llmSection);
@@ -1262,10 +1264,10 @@ function createTokenElement(token) {
       const reasonSection = document.createElement('div');
       reasonSection.className = 'tooltip-section';
       reasonSection.innerHTML = `
-        <div class="tooltip-label">Verifier Analysis</div>
-        <div class="tooltip-content">${token.reason}</div>
+        <div class="tooltip-label">${r2rText('Verifier Analysis')}</div>
+        <div class="tooltip-content">${r2rText(token.reason)}</div>
         <span class="tooltip-tag ${token.type === 'neutral' ? 'neutral' : 'divergent'}">
-          ${token.type === 'neutral' ? 'Neutral Difference' : 'Divergent Token'}
+          ${r2rText(token.type === 'neutral' ? 'Neutral Difference' : 'Divergent Token')}
         </span>
       `;
       tooltip.appendChild(reasonSection);

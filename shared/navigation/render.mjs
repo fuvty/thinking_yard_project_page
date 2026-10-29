@@ -5,7 +5,7 @@ const house = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
 const grid = '<svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="2.5" y="2.5" width="5.5" height="5.5" rx="1.2"/><rect x="12" y="2.5" width="5.5" height="5.5" rx="1.2"/><rect x="2.5" y="12" width="5.5" height="5.5" rx="1.2"/><rect x="12" y="12" width="5.5" height="5.5" rx="1.2"/></svg>';
 /**
  * One renderer for the React hub and every static research page.
- * @param {{projects: Array<{slug:string,name:string,category:string,logo:string}>, categories:Array<{id:string,label:string}>, current?:string, name?:string, sections?:Array<{id:string,label:string,group?:string,description?:string}>, base?:string, homeHref?:string, labels?:Record<string,string>, groupLabels?:Record<string,string>}} options
+ * @param {{projects: Array<{slug:string,name:string,category:string,logo:string,href?:string}>, categories:Array<{id:string,label:string}>, current?:string, name?:string, sections?:Array<{id:string,label:string,group?:string,description?:string}>, base?:string, homeHref?:string, labels?:Record<string,string>, groupLabels?:Record<string,string>}} options
  */
 export function renderNavigation({projects, categories, current = 'home', name = 'Scaling Paths', sections = [], base = '', homeHref = sitePath('', base), labels = {}, groupLabels = {}}) {
   const e = escape;
@@ -25,7 +25,7 @@ export function renderNavigation({projects, categories, current = 'home', name =
     <button type="button" class="sp-backdrop" id="globalMenuBackdrop" aria-label="${e(text.dismiss)}" tabindex="-1" hidden></button>
     <div class="sp-projects" id="globalProjectMenu" hidden>${categories.map(c=>`<section class="sp-group" aria-labelledby="global-category-${e(c.id)}">
       <h2 id="global-category-${e(c.id)}">${e(c.label)}</h2>
-      ${projects.filter(p=>p.category===c.id).map(p=>`<a href="${e(sitePath(`projects/${p.slug}/`,base))}"${p.slug===current?' class="active" aria-current="page"':''}><span class="sp-icon"><img src="${e(sitePath(p.logo,base))}" width="36" height="36" alt=""></span><span class="sp-description"><strong>${e(p.name)}</strong><small>${e(p.description)}</small></span></a>`).join('')}
+      ${projects.filter(p=>p.category===c.id).map(p=>`<a href="${e(p.href || sitePath(`projects/${p.slug}/`,base))}"${p.slug===current?' class="active" aria-current="page"':''}><span class="sp-icon"><img src="${e(sitePath(p.logo,base))}" width="36" height="36" alt=""></span><span class="sp-description"><strong>${e(p.name)}</strong><small>${e(p.description)}</small></span></a>`).join('')}
     </section>`).join('')}</div>
   </nav>
   <nav class="sp-local" id="navLocal" aria-label="${e(text.pageNavigation)}" inert>

@@ -1,14 +1,15 @@
 // Shared vector scene for the live animation and its generated static fallback.
 // All timings are schematic. Fading means unavailable, not physically evicted.
 globalThis.AKVCoreScene = (() => {
+  const translate = globalThis.SiteI18n?.t || ((text, values = {}) => text.replace(/\{(\w+)\}/g, (match, key) => values[key] ?? match));
   const colors = { A: ['#fff0dc', '#d7a65e'], B: ['#e5eedc', '#91ac72'], C: ['#e3edfa', '#81a4ce'] };
   const accent = '#8570b6';
   const positions = { A: 126, B: 329, C: 532 };
   const stages = [
-    { start: 0, still: 5.2, label: 'Build history', description: 'Prefill A, then B with information from A. Message C arrives next.' },
-    { start: 5.6, still: 8.6, label: 'Reduce history', description: 'Reduce history before processing C.' },
-    { start: 9.5, still: 11.55, label: 'Recompute / reuse', description: 'Context engineering recomputes retained history. Cache engineering reuses its existing states.' },
-    { start: 12.55, still: 16.15, label: 'Prefill', description: 'Both prefill the new message using their active cache.' }
+    { start: 0, still: 5.2, label: translate('Build history'), description: translate('Prefill A, then B with information from A. Message C arrives next.') },
+    { start: 5.6, still: 8.6, label: translate('Reduce history'), description: translate('Reduce history before processing C.') },
+    { start: 9.5, still: 11.55, label: translate('Recompute / reuse'), description: translate('Context engineering recomputes retained history. Cache engineering reuses its existing states.') },
+    { start: 12.55, still: 16.15, label: translate('Prefill'), description: translate('Both prefill the new message using their active cache.') }
   ];
   const smooth = (t, start, duration) => {
     const v = Math.max(0, Math.min(1, (t - start) / duration));
@@ -32,7 +33,7 @@ globalThis.AKVCoreScene = (() => {
     const invalidationStart = stages[1].start + .55;
     const invalidationPulse = smooth(reductionTime, invalidationStart, .18)
       * (1 - smooth(reductionTime, invalidationStart + .4, .55));
-    const parts = [label(24, 34, ours ? 'Cache Engineering' : 'Context Engineering', 21), label(24, 92, 'Message', 17), label(24, 180, 'Cache', 17)];
+    const parts = [label(24, 34, ours ? translate('Cache Engineering') : translate('Context Engineering'), 21), label(24, 92, translate('Message'), 17), label(24, 180, translate('Cache'), 17)];
     for (const name of ['A', 'B', 'C']) {
       const opacity = smooth(time, {A:0, B:2, C:4.2}[name], .55);
       const inactive = name === 'A' && !ours ? smooth(reductionTime, stages[1].start, .8) : 0;

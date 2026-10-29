@@ -31,7 +31,7 @@ export async function validate(directory='public') {
       let target=resolve(root,'.'+pathname);
       if(pathname.endsWith('/'))target=resolve(target,'index.html');
       // public is generated before Next builds the hub.
-      if(directory==='public'&&target===resolve(root,'index.html'))continue;
+      if(directory==='public'&&['index.html','zh/index.html'].some(path=>target===resolve(root,path)))continue;
       if(!await exists(target))errors.push(`${relative(root,file)}: missing file ${ref}`);
       else if(extname(target)==='.css')stylesheets.add(target);
       if(moduleRefs.has(ref))modules.add(target);

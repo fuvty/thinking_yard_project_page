@@ -10,7 +10,10 @@
       "zh": {
         "description": "面向推理大模型的 token 级路由"
       }
-    }
+    },
+    "locales": [
+      "zh"
+    ]
   },
   {
     "slug": "tokenrouter",
@@ -62,7 +65,10 @@
       "zh": {
         "description": "让大模型通过 KV cache 交换信息"
       }
-    }
+    },
+    "locales": [
+      "zh"
+    ]
   },
   {
     "slug": "framefusion",
@@ -101,6 +107,9 @@
       "zh": {
         "description": "让执行长程任务的智能体自行管理 KV cache"
       }
-    }
+    },
+    "locales": [
+      "zh"
+    ]
   }
 ]

@@ -9,31 +9,31 @@
   <canvas id="heroGlCanvas" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
   <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse 70% 65% at 50% 50%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.78) 45%, rgba(255,255,255,0.35) 75%, rgba(255,255,255,0) 100%);z-index:1;pointer-events:none;"></div>
   <h1 class="hero-title" style="position:relative;z-index:2;"><span>Cache-to-Cache</span></h1>
-  <p class="hero-subtitle" style="position:relative;z-index:2;">Direct semantic communication between LLMs through KV cache projection and fusion — faster and more accurate than text-based communication.</p>
+  <p class="hero-subtitle" style="position:relative;z-index:2;" data-i18n="hero.subtitle">Direct semantic communication between LLMs through <span class="i18n-nowrap">KV cache</span> projection and fusion, with higher accuracy and lower latency than text-based communication.</p>
 
   <div class="hero-stats" style="position:relative;z-index:2;">
     <div class="stat-item">
       <div class="stat-value">+10.5%</div>
-      <div class="stat-label">Accuracy vs Individual</div>
+      <div class="stat-label" data-i18n="hero.accuracyIndividual">Accuracy vs Individual</div>
     </div>
     <div class="stat-item">
       <div class="stat-value">+5.0%</div>
-      <div class="stat-label">Accuracy vs Text-to-Text</div>
+      <div class="stat-label" data-i18n="hero.accuracyText">Accuracy vs Text-to-Text</div>
     </div>
     <div class="stat-item">
       <div class="stat-value">2.5×</div>
-      <div class="stat-label">Speedup</div>
+      <div class="stat-label" data-i18n="hero.speedup">Speedup</div>
     </div>
   </div>
 
   <div class="hero-cta" style="position:relative;z-index:2;">
-    <a href="https://arxiv.org/pdf/2510.03215" class="btn btn-primary">
+    <a href="https://arxiv.org/pdf/2510.03215" class="btn btn-primary" data-i18n="hero.paper">
       <i class="fas fa-file-alt"></i> Read Paper
     </a>
-    <a href="https://github.com/thu-nics/C2C" class="btn btn-secondary">
+    <a href="https://github.com/thu-nics/C2C" class="btn btn-secondary" data-i18n="hero.code">
       <i class="fab fa-github"></i> View Code
     </a>
-    <a href="https://huggingface.co/nics-efc/C2C_Fuser" class="btn btn-secondary">
+    <a href="https://huggingface.co/nics-efc/C2C_Fuser" class="btn btn-secondary" data-i18n="hero.models">
       🤗 Models
     </a>
     <span class="hero-badge">
@@ -47,13 +47,13 @@
 <section class="section" id="overview">
   <div class="container">
     <div class="reveal">
-      <p class="section-eyebrow">Overview</p>
-      <h2 class="section-title">LLMs communicating <span class="text-highlight-gradient">beyond text</span></h2>
+      <p class="section-eyebrow" data-i18n="overview.eyebrow">Overview</p>
+      <h2 class="section-title" data-i18n="overview.title">LLMs communicating <span class="text-highlight-gradient" data-emphasis="beyond-text">beyond text</span></h2>
     </div>
 
     <div class="overview-grid reveal">
       <div class="overview-content">
-        <p class="overview-lead">
+        <p class="overview-lead" data-i18n="overview.lead">
           Multi-LLM systems combine diverse models to leverage their complementary strengths. But current text-based communication creates bottlenecks.
         </p>
         <div class="overview-points">
@@ -61,22 +61,22 @@
             <div class="overview-point-icon problem">
               <i class="fas fa-times"></i>
             </div>
-            <div class="overview-point-text">
-              <strong>Text-to-Text (T2T)</strong> loses rich semantic information and requires slow token-by-token generation
+            <div class="overview-point-text" data-i18n="overview.textCommunication">
+              <strong data-emphasis="text-communication">Text-to-Text (T2T)</strong> loses rich semantic information and requires slow token-by-token generation
             </div>
           </div>
           <div class="overview-point">
             <div class="overview-point-icon solution">
               <i class="fas fa-check"></i>
             </div>
-            <div class="overview-point-text">
-              <strong>Cache-to-Cache (C2C)</strong> projects and fuses KV caches directly — preserving semantics with 2.5× average speedup
+            <div class="overview-point-text" data-i18n="overview.cacheCommunication">
+              <strong data-emphasis="cache-communication">Cache-to-Cache (C2C)</strong> projects and fuses KV caches directly, preserving semantics with 2.5× average speedup
             </div>
           </div>
         </div>
       </div>
       <div class="overview-figure">
-        <img src="./static/images/scheme.png" alt="C2C Overview">
+        <img src="./static/images/scheme.png" alt="C2C Overview" data-i18n-attrs="figure.overview">
       </div>
     </div>
   </div>
@@ -86,9 +86,9 @@
 <section class="section" id="motivation">
   <div class="container">
     <div class="reveal">
-      <p class="section-eyebrow">Motivation</p>
-      <h2 class="section-title">Why communicate beyond text?</h2>
-      <p class="section-subtitle">Text-based communication between LLMs has fundamental limitations</p>
+      <p class="section-eyebrow" data-i18n="motivation.eyebrow">Motivation</p>
+      <h2 class="section-title" data-i18n="motivation.title">Why communicate beyond text?</h2>
+      <p class="section-subtitle" data-i18n="motivation.subtitle">Text-based communication between LLMs has fundamental limitations</p>
     </div>
 
     <div class="motivation-grid reveal">
@@ -96,30 +96,30 @@
         <div class="motivation-icon">
           <i class="fas fa-compress-arrows-alt"></i>
         </div>
-        <h4>Information Bottleneck</h4>
-        <p>High-dimensional semantic representations are compressed into linear text sequences</p>
+        <h4 data-i18n="motivation.bottleneckTitle">Information Bottleneck</h4>
+        <p data-i18n="motivation.bottleneck">High-dimensional semantic representations are compressed into linear text sequences</p>
       </div>
       <div class="motivation-card">
         <div class="motivation-icon">
           <i class="fas fa-question-circle"></i>
         </div>
-        <h4>Ambiguity</h4>
-        <p>Natural language is inherently vague and can be misinterpreted by the receiver</p>
+        <h4 data-i18n="motivation.ambiguityTitle">Ambiguity</h4>
+        <p data-i18n="motivation.ambiguity">Natural language is inherently vague and can be misinterpreted by the receiver</p>
       </div>
       <div class="motivation-card">
         <div class="motivation-icon">
           <i class="fas fa-hourglass-half"></i>
         </div>
-        <h4>Latency</h4>
-        <p>Slow token-by-token generation is required for every communication exchange</p>
+        <h4 data-i18n="motivation.latencyTitle">Latency</h4>
+        <p data-i18n="motivation.latency">Slow token-by-token generation is required for every communication exchange</p>
       </div>
     </div>
 
     <div class="reveal" style="margin-top: 48px;">
       <div class="example-comparison">
-        <img src="./static/images/idea.png" alt="T2T vs C2C Example">
-        <p class="example-caption">
-          <strong>Example:</strong> Text-to-Text communication loses structural semantics through ambiguous descriptions. Cache-to-Cache transfers precise semantic understanding directly.
+        <img src="./static/images/idea.png" alt="T2T vs C2C Example" data-i18n-attrs="figure.example">
+        <p class="example-caption" data-i18n="motivation.caption">
+          <strong data-emphasis="example-label">Example:</strong> Text-to-Text communication loses structural semantics through ambiguous descriptions. Cache-to-Cache transfers precise semantic understanding directly.
         </p>
       </div>
     </div>
@@ -130,33 +130,33 @@
 <section class="section section-dark" id="method">
   <div class="container">
     <div class="reveal">
-      <p class="section-eyebrow" style="color: #0a84ff;">The Discovery</p>
-      <h2 class="section-title">KV cache carries semantic meaning.</h2>
-      <p class="section-subtitle">
+      <p class="section-eyebrow" style="color: #0a84ff;" data-i18n="insight.eyebrow">The Discovery</p>
+      <h2 class="section-title" data-i18n="insight.title"><span class="i18n-nowrap">KV cache</span> carries semantic meaning.</h2>
+      <p class="section-subtitle" data-i18n="insight.subtitle">
         Oracle experiments reveal three key findings that motivate Cache-to-Cache communication.
       </p>
     </div>
 
     <div class="insight-grid reveal">
       <div class="insight-card">
-        <div class="insight-percentage green">Beneficial</div>
-        <div class="insight-label">Cache Enrichment Works</div>
-        <div class="insight-desc">
+        <div class="insight-percentage green" data-i18n="insight.enrichmentTag">Beneficial</div>
+        <div class="insight-label" data-i18n="insight.enrichmentTitle">Cache Enrichment Works</div>
+        <div class="insight-desc" data-i18n="insight.enrichment">
           Enriching KV cache semantics achieves near few-shot performance (62.3% vs 63.4%) without extending sequence length.
         </div>
       </div>
       <div class="insight-card">
-        <div class="insight-percentage blue">Convertible</div>
-        <div class="insight-label">Cache Transfers Across Models</div>
-        <div class="insight-desc">
+        <div class="insight-percentage blue" data-i18n="insight.transferTag">Convertible</div>
+        <div class="insight-label" data-i18n="insight.transferTitle">Cache Transfers Across Models</div>
+        <div class="insight-desc" data-i18n="insight.transfer">
           KV cache from one model can be projected into another model's representation space via simple transformation.
         </div>
       </div>
       <div class="insight-card">
-        <div class="insight-percentage orange">Complementary</div>
-        <div class="insight-label">Models Have Distinct Strengths</div>
-        <div class="insight-desc">
-          Different LLMs encode distinct semantic understandings — their correct-answer sets show limited overlap despite similar accuracy.
+        <div class="insight-percentage orange" data-i18n="insight.complementTag">Complementary</div>
+        <div class="insight-label" data-i18n="insight.complementTitle">Models Have Distinct Strengths</div>
+        <div class="insight-desc" data-i18n="insight.complement">
+          Different LLMs encode distinct semantic understandings. Their correct-answer sets show limited overlap despite similar accuracy.
         </div>
       </div>
     </div>
@@ -165,7 +165,7 @@
     <div class="reveal" style="margin-top: 48px;">
       <div class="expandable-section" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
         <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title" style="color: #fff;">Learn more about our oracle experiments</span>
+          <span class="expandable-title" style="color: #fff;" data-i18n="oracle.expand">Learn more about our oracle experiments</span>
           <div class="expandable-icon" style="background: rgba(255,255,255,0.1);">
             <i class="fas fa-plus" style="color: #fff; font-size: 12px;"></i>
           </div>
@@ -175,28 +175,28 @@
             <div class="expandable-inner" style="color: rgba(255,255,255,0.8);">
               <div class="oracle-details">
                 <div class="oracle-detail-item">
-                  <h4 style="color: #30d158; margin-bottom: 12px;">Oracle 1: Cache Enrichment</h4>
-                  <p style="margin-bottom: 12px;">
-                    <strong>Question:</strong> Can enriched KV cache improve response quality without increasing cache size?
+                  <h4 style="color: #30d158; margin-bottom: 12px;" data-i18n="oracle.enrichmentTitle">Oracle 1: Cache Enrichment</h4>
+                  <p style="margin-bottom: 12px;" data-i18n="oracle.enrichmentQuestion">
+                    <strong data-emphasis="question-label">Question:</strong> Can enriched KV cache improve response quality without increasing cache size?
                   </p>
-                  <p style="margin-bottom: 8px;">Few-shot prompting improves accuracy — but is it from attending to more tokens, or from enriching how the question is embedded in KV cache? We test this by prefilling on exemplars E⊕X, then discarding E and keeping only the question-aligned cache slice.</p>
+                  <p style="margin-bottom: 8px;" data-i18n="oracle.enrichmentMethod">Does few-shot prompting improve accuracy by attending to more tokens, or by enriching how the question is embedded in KV cache? We test this by prefilling on exemplars E⊕X, then discarding E and keeping only the question-aligned cache slice.</p>
                   <ul style="margin-left: 20px; margin-bottom: 12px;">
-                    <li><strong>Direct:</strong> 58.42% accuracy (cache length |X|)</li>
-                    <li><strong>Few-shot:</strong> 63.39% accuracy (cache length |E| + |X|)</li>
-                    <li><strong>Oracle:</strong> 62.34% accuracy (cache length |X| only)</li>
+                    <li data-i18n="oracle.direct"><strong data-emphasis="direct-baseline">Direct:</strong> 58.42% accuracy (cache length |X|)</li>
+                    <li data-i18n="oracle.fewShot"><strong data-emphasis="few-shot-baseline">Few-shot:</strong> 63.39% accuracy (cache length |E| + |X|)</li>
+                    <li data-i18n="oracle.enriched"><strong data-emphasis="enriched-cache">Oracle:</strong> 62.34% accuracy (cache length |X| only)</li>
                   </ul>
-                  <p><strong>Finding:</strong> The gain comes from richer question embeddings, not from attending to extra tokens. KV cache can carry enriched semantics.</p>
+                  <p data-i18n="oracle.enrichmentFinding"><strong data-emphasis="finding-label">Finding:</strong> The gain comes from richer question embeddings, not from attending to extra tokens. KV cache can carry enriched semantics.</p>
                 </div>
                 <div class="oracle-detail-item" style="margin-top: 24px;">
-                  <h4 style="color: #0a84ff; margin-bottom: 12px;">Oracle 2: Cache Transformation</h4>
-                  <p style="margin-bottom: 12px;">
-                    <strong>Question:</strong> Can one model's KV cache be utilized by another model?
+                  <h4 style="color: #0a84ff; margin-bottom: 12px;" data-i18n="oracle.projectionTitle">Oracle 2: Cache Transformation</h4>
+                  <p style="margin-bottom: 12px;" data-i18n="oracle.projectionQuestion">
+                    <strong data-emphasis="question-label">Question:</strong> Can one model's KV cache be utilized by another model?
                   </p>
-                  <p style="margin-bottom: 12px;">
+                  <p style="margin-bottom: 12px;" data-i18n="oracle.projectionMethod">
                     We trained a 3-layer MLP to map KV cache from Qwen3-4B (source) to Qwen3-0.6B (target). T-SNE visualization shows the transformed cache moves into the target model's representation space.
                   </p>
-                  <img src="./static/images/proj_oracle.png" alt="t-SNE visualization of cache transformation" style="max-width: 100%; border-radius: 8px; margin: 16px 0;">
-                  <p><strong>Finding:</strong> The transformed cache occupies a subset of the target's space — different models encode distinct semantic understandings. This suggests fusing specialized contextual understanding from different models could harness their complementary strengths.</p>
+                  <img src="./static/images/proj_oracle.png" alt="t-SNE visualization of cache transformation" style="max-width: 100%; border-radius: 8px; margin: 16px 0;" data-i18n-attrs="figure.projection">
+                  <p data-i18n="oracle.projectionFinding"><strong data-emphasis="finding-label">Finding:</strong> The transformed cache occupies a subset of the target's space, reflecting distinct semantic understandings across models. This suggests fusing specialized contextual understanding from different models could harness their complementary strengths.</p>
                 </div>
               </div>
             </div>
@@ -211,14 +211,14 @@
 <section class="section" id="architecture">
   <div class="container">
     <div class="reveal">
-      <p class="section-eyebrow">Architecture</p>
-      <h2 class="section-title">Cache-to-Cache Fuser</h2>
+      <p class="section-eyebrow" data-i18n="architecture.eyebrow">Architecture</p>
+      <h2 class="section-title" data-i18n="architecture.title">Cache-to-Cache Fuser</h2>
     </div>
 
     <div class="reveal" style="text-align: center;">
-      <img src="./static/images/model_arch.png" alt="C2C Architecture" class="method-figure">
-      <p class="figure-caption">
-        <strong>C2C Fuser:</strong> Projects and fuses KV caches from Sharer into Receiver through (1) Projection, (2) Dynamic Weighting, and (3) Learnable Gating modules.
+      <img src="./static/images/model_arch.png" alt="C2C Architecture" class="method-figure" data-i18n-attrs="figure.architecture">
+      <p class="figure-caption" data-i18n="architecture.caption">
+        <strong data-emphasis="c2c-fuser">C2C Fuser:</strong> Projects and fuses KV caches from Sharer into Receiver through (1) Projection, (2) Dynamic Weighting, and (3) Learnable Gating modules.
       </p>
     </div>
 
@@ -227,27 +227,27 @@
         <div class="arch-feature-icon">
           <i class="fas fa-project-diagram"></i>
         </div>
-        <h4>Projection Module</h4>
-        <p>Concatenates and processes KV caches from both models through projection and feature fusion layers</p>
+        <h4 data-i18n="architecture.projectionTitle">Projection Module</h4>
+        <p data-i18n="architecture.projection">Concatenates and processes KV caches from both models through projection and feature fusion layers</p>
       </div>
       <div class="arch-feature">
         <div class="arch-feature-icon">
           <i class="fas fa-sliders-h"></i>
         </div>
-        <h4>Dynamic Weighting</h4>
-        <p>Input-aware head modulation layer for adaptive information flow between models</p>
+        <h4 data-i18n="architecture.weightingTitle">Dynamic Weighting</h4>
+        <p data-i18n="architecture.weighting">Input-aware head modulation layer for adaptive information flow between models</p>
       </div>
       <div class="arch-feature">
         <div class="arch-feature-icon">
           <i class="fas fa-toggle-on"></i>
         </div>
-        <h4>Learnable Gating</h4>
-        <p>Per-layer trainable gates that select which layers benefit from cache fusion</p>
+        <h4 data-i18n="architecture.gatingTitle">Learnable Gating</h4>
+        <p data-i18n="architecture.gating">Per-layer trainable gates that select which layers benefit from cache fusion</p>
       </div>
     </div>
 
     <div class="training-note">
-      <p><strong>Training:</strong> Freeze both models, train only C2C module with next-token prediction loss</p>
+      <p data-i18n="architecture.training"><strong data-emphasis="training-label">Training:</strong> Freeze both models, train only C2C module with next-token prediction loss</p>
     </div>
   </div>
 </section>
@@ -256,19 +256,19 @@
 <section class="section" id="results">
   <div class="container">
     <div class="results-header reveal">
-      <p class="section-eyebrow">Experiments</p>
-      <h2 class="section-title">Benchmark Results</h2>
-      <p class="section-subtitle">Evaluate C2C performance across different model combinations</p>
+      <p class="section-eyebrow" data-i18n="results.eyebrow">Experiments</p>
+      <h2 class="section-title" data-i18n="results.title">Benchmark Results</h2>
+      <p class="section-subtitle" data-i18n="results.subtitle">Evaluate C2C performance across different model combinations</p>
     </div>
 
     <div class="results-controls reveal">
       <div class="model-selector">
         <div class="model-selector-item">
-          <label class="model-selector-label">
+          <label for="sharerSelect" class="model-selector-label" data-i18n="results.sharerLabel">
             <i class="fas fa-share-alt"></i> Sharer
           </label>
           <select id="sharerSelect" class="model-select" onchange="updatePerformanceTable()">
-            <option value="all">All Sharers</option>
+            <option value="all" data-i18n="results.allSharers">All Sharers</option>
             <option value="Qwen2.5-0.5B">Qwen2.5-0.5B</option>
             <option value="Llama3.2-1B">Llama3.2-1B</option>
             <option value="Qwen3-4B-Base">Qwen3-4B-Base</option>
@@ -278,11 +278,11 @@
           <i class="fas fa-arrow-right"></i>
         </div>
         <div class="model-selector-item">
-          <label class="model-selector-label">
+          <label for="receiverSelect" class="model-selector-label" data-i18n="results.receiverLabel">
             <i class="fas fa-inbox"></i> Receiver
           </label>
           <select id="receiverSelect" class="model-select" onchange="updatePerformanceTable()">
-            <option value="all">All Receivers</option>
+            <option value="all" data-i18n="results.allReceivers">All Receivers</option>
             <option value="Qwen3-0.6B" selected>Qwen3-0.6B</option>
           </select>
         </div>
@@ -293,15 +293,15 @@
       <div class="summary-stat-grid">
         <div class="summary-stat-item">
           <div class="summary-stat-value" id="summaryImprovement">—</div>
-          <div class="summary-stat-label">C2C vs Receiver</div>
+          <div class="summary-stat-label" data-i18n="results.vsReceiver">C2C vs Receiver</div>
         </div>
         <div class="summary-stat-item">
           <div class="summary-stat-value" id="summaryVsT2T">—</div>
-          <div class="summary-stat-label">C2C vs Text-to-Text</div>
+          <div class="summary-stat-label" data-i18n="results.vsText">C2C vs Text-to-Text</div>
         </div>
         <div class="summary-stat-item">
           <div class="summary-stat-value" id="summarySpeedup">—</div>
-          <div class="summary-stat-label">Speedup vs T2T</div>
+          <div class="summary-stat-label" data-i18n="results.speedup">Speedup vs T2T</div>
         </div>
       </div>
     </div>
@@ -309,7 +309,7 @@
     <div class="reveal" style="margin-top: 24px;">
       <div class="expandable-section">
         <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title">View Detailed Results</span>
+          <span class="expandable-title" data-i18n="results.expand">View Detailed Results</span>
           <div class="expandable-icon">
             <i class="fas fa-plus" style="font-size: 12px;"></i>
           </div>
@@ -317,21 +317,21 @@
         <div class="expandable-content">
           <div class="expandable-content-inner">
             <div class="expandable-inner">
-              <div class="results-count" id="resultsCount">
+              <div class="results-count" id="resultsCount" data-i18n="results.loading">
                 <i class="fas fa-chart-bar"></i> Loading results...
               </div>
               <div class="table-scroll">
                 <table class="results-table">
                   <thead>
                     <tr>
-                      <th>Receiver</th>
-                      <th>Sharer</th>
-                      <th>Benchmark</th>
-                      <th>Receiver Only</th>
-                      <th>Sharer Only</th>
-                      <th>Routing</th>
-                      <th>Text-to-Text</th>
-                      <th class="c2c-col">Cache-to-Cache</th>
+                      <th data-i18n="results.receiver">Receiver</th>
+                      <th data-i18n="results.sharer">Sharer</th>
+                      <th data-i18n="results.benchmark">Benchmark</th>
+                      <th data-i18n="results.receiverOnly">Receiver Only</th>
+                      <th data-i18n="results.sharerOnly">Sharer Only</th>
+                      <th data-i18n="results.routing">Routing</th>
+                      <th data-i18n="results.textCommunication">Text-to-Text</th>
+                      <th class="c2c-col" data-i18n="results.cacheCommunication">Cache-to-Cache</th>
                     </tr>
                   </thead>
                   <tbody id="performanceTableBody">
@@ -351,8 +351,8 @@
 <section class="section" id="contributions">
   <div class="container">
     <div class="results-header reveal">
-      <p class="section-eyebrow">Summary</p>
-      <h2 class="section-title">Key Contributions</h2>
+      <p class="section-eyebrow" data-i18n="summary.eyebrow">Summary</p>
+      <h2 class="section-title" data-i18n="summary.title">Key Contributions</h2>
     </div>
 
     <div class="contributions-grid reveal">
@@ -360,22 +360,22 @@
         <div class="contribution-icon">
           <i class="fas fa-lightbulb"></i>
         </div>
-        <h4>Novel Paradigm</h4>
-        <p>First direct semantic communication between LLMs beyond text-based interfaces</p>
+        <h4 data-i18n="summary.paradigmTitle">Novel Paradigm</h4>
+        <p data-i18n="summary.paradigm">First direct semantic communication between LLMs beyond text-based interfaces</p>
       </div>
       <div class="contribution-card">
         <div class="contribution-icon">
           <i class="fas fa-bolt"></i>
         </div>
-        <h4>Effective & Efficient</h4>
-        <p>6.4-14.2% higher accuracy; 3.1-5.4% better than text communication; 2.5× faster</p>
+        <h4 data-i18n="summary.performanceTitle">Effective & Efficient</h4>
+        <p data-i18n="summary.performance">6.4-14.2% higher accuracy; 3.1-5.4% better than text communication; 2.5× faster</p>
       </div>
       <div class="contribution-card">
         <div class="contribution-icon">
           <i class="fas fa-expand-arrows-alt"></i>
         </div>
-        <h4>Flexible & General</h4>
-        <p>Works across model families, sizes, and specializations</p>
+        <h4 data-i18n="summary.generalTitle">Flexible & General</h4>
+        <p data-i18n="summary.general">Works across model families, sizes, and specializations</p>
       </div>
     </div>
   </div>
@@ -385,8 +385,8 @@
 <section class="section section-gray authors-section" id="team">
   <div class="container">
     <div class="reveal">
-      <p class="section-eyebrow">Team</p>
-      <h2 class="section-title">Meet the researchers.</h2>
+      <p class="section-eyebrow" data-i18n="team.eyebrow">Team</p>
+      <h2 class="section-title" data-i18n="team.title">Meet the researchers.</h2>
     </div>
 
     <div class="authors-list reveal">
@@ -409,7 +409,7 @@
       </a>
     </div>
 
-    <div class="affiliations reveal">
+    <div class="affiliations reveal" data-i18n="team.affiliations">
       <sup>1</sup>Tsinghua University &nbsp;&nbsp;
       <sup>2</sup>Infinigence AI &nbsp;&nbsp;
       <sup>3</sup>The Chinese University of Hong Kong<br>
@@ -424,9 +424,9 @@
 <section class="section" id="bibtex">
   <div class="container">
     <div class="reveal">
-      <p class="section-eyebrow">Citation</p>
-      <h2 class="section-title">Cite our work.</h2>
-      <p class="section-subtitle">
+      <p class="section-eyebrow" data-i18n="citation.eyebrow">Citation</p>
+      <h2 class="section-title" data-i18n="citation.title">Cite our work.</h2>
+      <p class="section-subtitle" data-i18n="citation.subtitle">
         If you find C2C useful for your research, please consider citing our paper.
       </p>
     </div>

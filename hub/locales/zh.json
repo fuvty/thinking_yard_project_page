@@ -75,26 +75,5 @@
     "02": "路径 02",
     "03": "路径 03"
   },
-  "navigation": {
-    "home": "首页",
-    "allProjects": "全部项目",
-    "contents": "页面目录",
-    "teamNavigation": "团队导航",
-    "homeLabel": "Scaling Paths 首页",
-    "categories": "项目分类",
-    "dismiss": "关闭项目菜单",
-    "pageNavigation": "页面导航"
-  },
-  "groupLabels": {
-    "routes": "三条路径",
-    "projects": "研究项目"
-  },
-  "footer": {
-    "research": "研究项目",
-    "home": "首页",
-    "allProjects": "全部项目",
-    "label": "页脚导航"
-  },
-  "backToTop": "回到顶部",
   "contactTitle": "联系我们"
 }

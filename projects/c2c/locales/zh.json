@@ -1,0 +1,151 @@
+{
+  "page": {
+    "title": "Cache-to-Cache · 大语言模型间的直接语义通信",
+    "description": "C2C 通过 KV cache 投影与融合，让大语言模型直接交流语义，提高多模型协作的准确率与推理效率。",
+    "sections": {
+      "overview": {
+        "label": "概览",
+        "description": "超越文本的模型通信"
+      },
+      "motivation": {
+        "label": "研究动机",
+        "description": "文本通信的局限"
+      },
+      "method": {
+        "label": "关键发现",
+        "description": "KV cache 中的语义信息"
+      },
+      "architecture": {
+        "label": "方法设计",
+        "description": "缓存投影与融合"
+      },
+      "results": {
+        "label": "实验结果",
+        "description": "准确率与推理速度"
+      },
+      "contributions": {
+        "label": "研究总结",
+        "description": "主要研究贡献"
+      },
+      "team": {
+        "label": "研究团队",
+        "description": "作者与所属机构"
+      },
+      "bibtex": {
+        "label": "引用",
+        "description": "论文信息与 BibTeX"
+      }
+    }
+  },
+  "html": {
+    "hero.subtitle": "通过 <span class=\"i18n-nowrap\">KV cache</span> 投影与融合，让大语言模型直接交流语义，比文本通信更快、更准确。",
+    "hero.accuracyIndividual": "相较单模型的准确率提升",
+    "hero.accuracyText": "相较文本通信的准确率提升",
+    "hero.speedup": "加速比",
+    "hero.paper": "<i class=\"fas fa-file-alt\"></i> 阅读论文",
+    "hero.code": "<i class=\"fab fa-github\"></i> 查看代码",
+    "hero.models": "🤗 模型权重",
+    "overview.eyebrow": "概览",
+    "overview.title": "让模型交流<span class=\"text-highlight-gradient\" data-emphasis=\"beyond-text\">超越文本</span>",
+    "overview.lead": "多模型协作可以发挥各自的优势，但以文本为媒介的交流限制了协作的效果与效率。",
+    "overview.textCommunication": "<strong data-emphasis=\"text-communication\">文本通信（T2T）</strong>会丢失丰富的语义信息，还需要逐个生成 token，带来额外延迟。",
+    "overview.cacheCommunication": "<strong data-emphasis=\"cache-communication\">Cache-to-Cache（C2C）</strong>直接投影并融合 KV cache，在保留语义信息的同时，实现平均 2.5× 加速。",
+    "motivation.eyebrow": "研究动机",
+    "motivation.title": "为什么不只用文本交流？",
+    "motivation.subtitle": "模型之间的文本通信存在三方面局限。",
+    "motivation.bottleneckTitle": "信息瓶颈",
+    "motivation.bottleneck": "高维语义表示被压缩为线性的文本序列，信息难以完整保留。",
+    "motivation.ambiguityTitle": "语义歧义",
+    "motivation.ambiguity": "自然语言存在歧义，接收模型可能误解发送模型的意思。",
+    "motivation.latencyTitle": "通信延迟",
+    "motivation.latency": "每轮交流都要逐个生成 token，通信过程缓慢。",
+    "motivation.caption": "<strong data-emphasis=\"example-label\">示例：</strong>文本描述中的歧义会损失结构信息；C2C 直接传递模型内部的语义表示，减少这类信息损失。",
+    "insight.eyebrow": "关键发现",
+    "insight.title": "<span class=\"i18n-nowrap\">KV cache</span> 承载着语义信息。",
+    "insight.subtitle": "通过理想化实验，我们得到三个关键发现，为 C2C 通信提供了依据。",
+    "insight.enrichmentTag": "可增强",
+    "insight.enrichmentTitle": "丰富缓存语义能够提升性能",
+    "insight.enrichment": "无需增加序列长度，丰富 KV cache 的语义即可接近少样本提示的效果，准确率分别为 <span class=\"i18n-nowrap\">62.3%</span> 和 <span class=\"i18n-nowrap\">63.4%</span>。",
+    "insight.transferTag": "可转换",
+    "insight.transferTitle": "缓存可以在模型间转换",
+    "insight.transfer": "通过简单的变换，一个模型的 KV cache 可以投影到另一个模型的表示空间。",
+    "insight.complementTag": "可互补",
+    "insight.complementTitle": "不同模型各有所长",
+    "insight.complement": "不同模型对语义的理解存在差异。即使整体准确率相近，它们答对的题目也只有有限的重合。",
+    "oracle.expand": "查看理想化实验的细节",
+    "oracle.enrichmentTitle": "实验一：增强缓存语义",
+    "oracle.enrichmentQuestion": "<strong data-emphasis=\"question-label\">问题：</strong>不增加缓存长度，仅丰富 KV cache 的语义，能否提升回答质量？",
+    "oracle.enrichmentMethod": "少样本提示带来的提升，究竟来自额外的 token，还是问题在 KV cache 中更丰富的表示？我们先对示例与问题 E⊕X 进行预填充，再丢弃示例 E 对应的缓存，只保留问题 X 对应的部分。",
+    "oracle.direct": "<strong data-emphasis=\"direct-baseline\">直接回答：</strong>准确率 <span class=\"i18n-nowrap\">58.42%</span>，缓存长度为 |X|",
+    "oracle.fewShot": "<strong data-emphasis=\"few-shot-baseline\">少样本提示：</strong>准确率 <span class=\"i18n-nowrap\">63.39%</span>，缓存长度为 |E| + |X|",
+    "oracle.enriched": "<strong data-emphasis=\"enriched-cache\">增强缓存：</strong>准确率 <span class=\"i18n-nowrap\">62.34%</span>，缓存长度仍为 |X|",
+    "oracle.enrichmentFinding": "<strong data-emphasis=\"finding-label\">发现：</strong>只保留问题对应的缓存，仍能保留大部分收益。这说明 KV cache 中更丰富的问题表示本身就能改善回答，而不必始终关注额外的示例 token。",
+    "oracle.projectionTitle": "实验二：跨模型转换缓存",
+    "oracle.projectionQuestion": "<strong data-emphasis=\"question-label\">问题：</strong>一个模型的 KV cache 能否被另一个模型使用？",
+    "oracle.projectionMethod": "我们训练了一个三层 MLP，将 Qwen3-4B 的 KV cache 映射到 Qwen3-0.6B 的表示空间。t-SNE 可视化显示，转换后的缓存进入了目标模型的表示空间。",
+    "oracle.projectionFinding": "<strong data-emphasis=\"finding-label\">发现：</strong>转换后的缓存只占据目标表示空间的一部分，反映出模型之间不同的语义理解。融合这些对上下文的不同理解，有望发挥模型间的互补优势。",
+    "architecture.eyebrow": "方法设计",
+    "architecture.title": "Cache-to-Cache 融合模块",
+    "architecture.caption": "<strong data-emphasis=\"c2c-fuser\">C2C Fuser：</strong>通过投影、动态加权和可学习门控三个模块，将共享模型（Sharer）的 KV cache 转换并融合到接收模型（Receiver）中。",
+    "architecture.projectionTitle": "投影模块",
+    "architecture.projection": "拼接两个模型的 KV cache，通过投影层和特征融合层完成表示转换与融合。",
+    "architecture.weightingTitle": "动态加权",
+    "architecture.weighting": "根据输入动态调整注意力头的权重，自适应地控制模型间的信息传递。",
+    "architecture.gatingTitle": "可学习门控",
+    "architecture.gating": "为每层学习门控参数，选择哪些层需要融合缓存。",
+    "architecture.training": "<strong data-emphasis=\"training-label\">训练：</strong>冻结两个模型，仅通过下一 token 预测损失训练 C2C 模块。",
+    "results.eyebrow": "实验评估",
+    "results.title": "基准测试结果",
+    "results.subtitle": "比较 C2C 在不同模型组合下的准确率与推理速度。",
+    "results.sharerLabel": "<i class=\"fas fa-share-alt\"></i> 共享模型",
+    "results.receiverLabel": "<i class=\"fas fa-inbox\"></i> 接收模型",
+    "results.allSharers": "全部共享模型",
+    "results.allReceivers": "全部接收模型",
+    "results.vsReceiver": "相较接收模型的准确率提升",
+    "results.vsText": "相较文本通信的准确率提升",
+    "results.speedup": "相较文本通信的加速比",
+    "results.expand": "查看详细结果",
+    "results.loading": "<i class=\"fas fa-chart-bar\"></i> 正在加载结果…",
+    "results.receiver": "接收模型",
+    "results.sharer": "共享模型",
+    "results.benchmark": "基准测试",
+    "results.receiverOnly": "仅接收模型",
+    "results.sharerOnly": "仅共享模型",
+    "results.routing": "模型路由",
+    "results.textCommunication": "文本通信",
+    "results.cacheCommunication": "Cache-to-Cache",
+    "summary.eyebrow": "研究总结",
+    "summary.title": "主要贡献",
+    "summary.paradigmTitle": "直接交流语义",
+    "summary.paradigm": "首次实现不依赖文本接口的大语言模型直接语义通信。",
+    "summary.performanceTitle": "更准确，也更高效",
+    "summary.performance": "准确率较单模型提高 <span class=\"i18n-nowrap\">6.4–14.2%</span>，较文本通信提高 <span class=\"i18n-nowrap\">3.1–5.4%</span>，同时实现 2.5× 加速。",
+    "summary.generalTitle": "适配多种模型",
+    "summary.general": "适用于不同模型家族、参数规模和专业领域。",
+    "team.eyebrow": "研究团队",
+    "team.title": "团队成员",
+    "team.affiliations": "<sup>1</sup>清华大学 &nbsp;&nbsp; <sup>2</sup>无问芯穹 &nbsp;&nbsp; <sup>3</sup>香港中文大学<br> <sup>4</sup>上海人工智能实验室 &nbsp;&nbsp; <sup>5</sup>上海交通大学<br> <span style=\"font-size: 12px;\">*同等贡献 &nbsp;&nbsp; †通讯作者</span>",
+    "citation.eyebrow": "引用",
+    "citation.title": "引用本研究",
+    "citation.subtitle": "如果 C2C 对您的研究有所帮助，欢迎引用我们的论文。"
+  },
+  "attributes": {
+    "figure.overview": {
+      "alt": "文本通信与 C2C 的流程对比"
+    },
+    "figure.example": {
+      "alt": "文本描述中的语义歧义与 C2C 直接传递语义的示例"
+    },
+    "figure.projection": {
+      "alt": "KV cache 跨模型转换的 t-SNE 可视化"
+    },
+    "figure.architecture": {
+      "alt": "C2C Fuser 的投影、动态加权与门控结构"
+    }
+  },
+  "runtime": {
+    "Showing <strong>{count}</strong> results": "共 <strong>{count}</strong> 条结果",
+    "No data available for this combination": "暂无该模型组合的数据",
+    "N/A": "暂无数据"
+  }
+}

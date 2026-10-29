@@ -672,3 +672,148 @@
 /* Collapsed global navigation */
 
 /* Keep project tiles consistent with the team hub. */
+
+/* Keep scientific copy readable without nesting narrow columns on phones. */
+.workflow-title,
+.workflow-stage-name,
+.workflow-step-content [data-i18n="demo.problem"],
+.workflow-step-content [data-i18n="demo.analyzing"],
+.workflow-step-content [data-i18n="demo.generating"],
+.workflow-step-content [data-i18n="demo.generated"] {
+  text-wrap: balance;
+}
+
+.workflow-problem {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 24px;
+  border-radius: 12px;
+  background: #fff;
+  font-size: 15px;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.workflow-decisions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+  padding: 40px 0;
+}
+
+.workflow-decision {
+  min-width: 200px;
+  padding: 24px;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.routing-observations {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 768px) {
+  .workflow-container {
+    margin: 40px 0;
+    padding: 24px;
+  }
+
+  .workflow-visualization {
+    padding: 24px;
+  }
+
+  .workflow-stages {
+    margin-bottom: 24px;
+    scrollbar-width: thin;
+  }
+
+  .workflow-stage {
+    flex: 1 0 104px;
+    min-width: 104px;
+    padding: 12px 8px;
+  }
+
+  .workflow-decisions {
+    gap: 16px;
+  }
+
+  .workflow-decision {
+    flex: 1 1 200px;
+    min-width: 0;
+  }
+
+  .routing-observations {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .workflow-container {
+    padding: 20px 0;
+    border-radius: 20px;
+  }
+
+  .workflow-header,
+  .workflow-stages,
+  .workflow-legend,
+  .workflow-container > p {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+
+  .workflow-header {
+    margin-bottom: 24px;
+  }
+
+  .workflow-title {
+    flex-basis: 100%;
+  }
+
+  .workflow-visualization {
+    padding: 20px 16px;
+    border-radius: 0;
+  }
+
+  .workflow-problem {
+    padding: 0;
+    background: transparent;
+  }
+
+  .workflow-decision {
+    padding: 20px 16px;
+  }
+
+  .workflow-legend {
+    justify-content: flex-start;
+    gap: 12px;
+  }
+
+  .legend-dot {
+    flex-shrink: 0;
+  }
+
+  /* Explain the hovered token in a panel below its stream, without viewport overflow. */
+  .token-stream {
+    position: relative;
+  }
+
+  .token-stream .token {
+    position: static;
+    transform: none;
+  }
+
+  .token-tooltip {
+    left: 0;
+    width: 100%;
+    transform: translateY(4px);
+  }
+
+  .token:hover .token-tooltip {
+    transform: translateY(0);
+  }
+
+  .token-tooltip::before {
+    display: none;
+  }
+}

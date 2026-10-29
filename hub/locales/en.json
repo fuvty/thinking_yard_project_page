@@ -75,26 +75,5 @@
     "02": "Route 02",
     "03": "Route 03"
   },
-  "navigation": {
-    "home": "Home",
-    "allProjects": "All projects",
-    "contents": "On this page",
-    "teamNavigation": "Team navigation",
-    "homeLabel": "Scaling Paths home",
-    "categories": "Project categories",
-    "dismiss": "Dismiss projects menu",
-    "pageNavigation": "Page navigation"
-  },
-  "groupLabels": {
-    "routes": "Scaling routes",
-    "projects": "Projects"
-  },
-  "footer": {
-    "research": "Research projects",
-    "home": "Home",
-    "allProjects": "All projects",
-    "label": "Footer"
-  },
-  "backToTop": "Back to top",
   "contactTitle": "Contact us"
 }

@@ -15,6 +15,7 @@
   --max-width-wide: 1200px;
   --section-padding: 100px 0;
   --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  --font-sans-zh: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
   --font-mono: "SF Mono", Monaco, "Courier New", monospace;
   --nav-label-size: 13px;
   --nav-label-weight: 500;

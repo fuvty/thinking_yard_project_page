@@ -24,15 +24,17 @@ $(document).ready(function() {
     // Total number of frames (0-63 based on the files)
     const totalFrames = 63;
 
+    const asset = path => globalThis.SiteI18n?.asset(path) || path;
+
     function updateImage(value) {
       const frameNumber = Math.round((totalFrames * value) / 100);
       wrapper.innerHTML = `
         <div class="columns is-centered">
           <div class="column">
-            <img src="./static/images/tom_jerry/frame_${frameNumber}.png" class="interpolation-image">
+            <img src="${asset(`./static/images/tom_jerry/frame_${frameNumber}.png`)}" class="interpolation-image">
           </div>
           <div class="column">
-            <img src="./static/images/tom_jerry_prune/frame_${frameNumber}.png" class="interpolation-image">
+            <img src="${asset(`./static/images/tom_jerry_prune/frame_${frameNumber}.png`)}" class="interpolation-image">
           </div>
         </div>
       `;

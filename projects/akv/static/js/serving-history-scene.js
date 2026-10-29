@@ -1,29 +1,30 @@
 // Schematic, synchronized histories. A drop changes active KV, not logical
 // messages or the tree's historical path. It does not imply physical eviction.
 globalThis.AKVHistoryScene = (() => {
+  const translate = globalThis.SiteI18n?.t || ((text, values = {}) => text.replace(/\{(\w+)\}/g, (match, key) => values[key] ?? match));
   const duration = 28;
   const stages = [
-    { start:0, end:7.6, still:6.9, label:'C, then drop A' },
-    { start:7.6, end:15, still:14.3, label:'Drop A, then C' },
-    { start:15, end:20.5, still:19.7, label:'Start from B' },
-    { start:20.5, end:28, still:23, label:'Compare states' }
+    { start:0, end:7.6, still:6.9, label:translate('C, then drop A') },
+    { start:7.6, end:15, still:14.3, label:translate('Drop A, then C') },
+    { start:15, end:20.5, still:19.7, label:translate('Start from B') },
+    { start:20.5, end:28, still:23, label:translate('Compare states') }
   ];
   const colors = { A:['#fff0dc','#d7a65e'], B:['#e5eedc','#91ac72'], C:['#e3edfa','#81a4ce'] };
   const ink = '#34313b', muted = '#8a8393', accent = '#8570b6';
   // IDs denote identical computed states, not just identical token labels.
   const histories = [
-    { title:'C, then drop A', start:0, drop:5.2, tokens:[
+    { title:translate('C, then drop A'), start:0, drop:5.2, tokens:[
       { token:'A', at:.9, state:'a', attends:[] }, { token:'B', at:2.3, state:'b-with-a', attends:['A'] }, { token:'C', at:3.7, state:'c-with-ab', attends:['A','B'] }
     ] },
-    { title:'Drop A, then C', start:7.6, drop:10.9, tokens:[
+    { title:translate('Drop A, then C'), start:7.6, drop:10.9, tokens:[
       { token:'A', at:8.2, state:'a', attends:[], reused:true }, { token:'B', at:9.5, state:'b-with-a', attends:[], reused:true }, { token:'C', at:12.3, state:'c-with-b-a', attends:['B'] }
     ] },
-    { title:'Start from B', start:15, drop:null, tokens:[
+    { title:translate('Start from B'), start:15, drop:null, tokens:[
       { token:'B', at:15.7, state:'b-alone', attends:[] }, { token:'C', at:17.2, state:'c-with-b', attends:['B'] }
     ] }
   ];
   const nodes = [
-    { id:'root', label:'Root', x:208, y:28, at:-2 },
+    { id:'root', label:translate('Root'), x:208, y:28, at:-2 },
     { id:'a', parent:'root', label:'A', x:138, y:124, at:.9 },
     { id:'b-with-a', parent:'a', label:'B', x:138, y:220, at:2.3 },
     { id:'c-with-ab', parent:'b-with-a', label:'C', x:66, y:316, at:3.7 },
@@ -98,7 +99,7 @@ globalThis.AKVHistoryScene = (() => {
       parts.push(`<circle cx="26" cy="${y+22}" r="10" fill="${active?'#8672b4':'#eee9f4'}"/>`);
       parts.push(text(26,y+26,index+1,11,active?'white':'#86789d','text-anchor="middle" font-weight="600"'));
       parts.push(text(44,y+27,history.title,14,active?'#655282':'#716a7a','font-weight="550"'));
-      parts.push(text(18,y+63,'Messages',12,muted),text(18,y+127,'Active KV',12,muted));
+      parts.push(text(18,y+63,translate('Messages'),12,muted),text(18,y+127,translate('Active KV'),12,muted));
       parts.push('</g>');
       for(const token of history.tokens) {
         const x=tokenX[token.token];
@@ -117,7 +118,7 @@ globalThis.AKVHistoryScene = (() => {
         const opacity=progress(time,token.at+.05,.18)*(1-progress(time,token.at+1.12,.23));
         const sx=tokenX[token.token]+35;
         parts.push(`<g data-computing="${token.token}" opacity="${f(opacity)}">`);
-        parts.push(text(420,y+27,token.reused?'Reuse':`Compute ${token.token}`,11,accent,'text-anchor="end" font-weight="500"'));
+        parts.push(text(420,y+27,token.reused?translate('Reuse'):translate('Compute {token}', {token: token.token}),11,accent,'text-anchor="end" font-weight="500"'));
         if(attending(time,token)) for(const target of token.attends) {
           const tx=tokenX[target]+35;
           const arch=y+(token.attends.length>1&&target==='B'?82:73);
@@ -168,7 +169,7 @@ globalThis.AKVHistoryScene = (() => {
       const highlight=reuseAt===null?0:progress(time,reuseAt+.4,.25)*(1-progress(time,reuseAt+1,.45));
       parts.push(`<g data-node="${node.id}" opacity="${f(appear)}" transform="translate(0 ${f((1-appear)*4)})">`);
       if(node.id==='root') {
-        parts.push(rect(node.x-29,node.y-15,58,30,'#f5f2f8','#dcd5e5',15),text(node.x,node.y+5,'Root',13,'#756783','text-anchor="middle" font-weight="550"'));
+        parts.push(rect(node.x-29,node.y-15,58,30,'#f5f2f8','#dcd5e5',15),text(node.x,node.y+5,translate('Root'),13,'#756783','text-anchor="middle" font-weight="550"'));
       } else if(node.label==='ΔA') {
         parts.push(`<circle data-drop-marker cx="${node.x}" cy="${node.y}" r="22" fill="#fff" stroke="#bd9255" stroke-width="1.4" stroke-dasharray="4 4"/>`,text(node.x,node.y+5,'ΔA',14,'#97713e','text-anchor="middle" font-weight="550"'));
       } else {

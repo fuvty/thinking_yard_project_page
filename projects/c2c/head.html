@@ -22,6 +22,8 @@
 
   <script>
     let performanceData = [];
+    const c2cText = globalThis.SiteI18n?.t || ((text, values = {}) =>
+      text.replace(/\{(\w+)\}/g, (match, key) => values[key] ?? match));
 
     document.addEventListener('DOMContentLoaded', function() {
       // Load CSV data
@@ -84,7 +86,7 @@
 
       // Update count
       document.getElementById('resultsCount').innerHTML = `
-        <i class="fas fa-chart-bar"></i> Showing <strong>${filteredData.length}</strong> results
+        <i class="fas fa-chart-bar"></i> ${c2cText('Showing <strong>{count}</strong> results', {count: filteredData.length})}
       `;
 
       filteredData.forEach(row => {
@@ -101,7 +103,7 @@
 
         function formatCell(accValue, timeValue, isC2C = false) {
           if (!accValue || accValue === 'N/A') {
-            return '<span style="color: #ccc;">N/A</span>';
+            return `<span style="color: #ccc;">${c2cText('N/A')}</span>`;
           }
           const numValue = parseFloat(accValue);
           const isBest = numValue === maxValue && maxValue > 0;
@@ -125,7 +127,7 @@
 
       if (filteredData.length === 0) {
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td colspan="8" style="color: #999; padding: 40px;">No data available for this combination</td>`;
+        tr.innerHTML = `<td colspan="8" style="color: #999; padding: 40px;">${c2cText('No data available for this combination')}</td>`;
         tbody.appendChild(tr);
       }
 

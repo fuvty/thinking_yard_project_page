@@ -1,0 +1,35 @@
+{
+  "navigation": {
+    "home": "首页",
+    "allProjects": "全部项目",
+    "contents": "页面目录",
+    "teamNavigation": "团队导航",
+    "homeLabel": "Scaling Paths 首页",
+    "categories": "项目分类",
+    "dismiss": "关闭项目菜单",
+    "pageNavigation": "页面导航"
+  },
+  "footer": {
+    "research": "研究项目",
+    "home": "首页",
+    "allProjects": "全部项目",
+    "label": "页脚导航"
+  },
+  "backToTop": "回到顶部",
+  "groupLabels": {
+    "routes": "三条路径",
+    "projects": "研究项目",
+    "research": "研究内容",
+    "evaluation": "实验评估",
+    "resources": "相关资源"
+  },
+  "messages": {
+    "Copy BibTeX": "复制 BibTeX",
+    "Copied": "已复制",
+    "Try again": "重试",
+    "Citation forthcoming": "引用信息即将发布",
+    "BibTeX copied to clipboard.": "已复制 BibTeX。",
+    "Copy failed. Select the citation text to copy it manually.": "复制失败，请选中引用手动复制。",
+    "BibTeX citation": "BibTeX 引用"
+  }
+}

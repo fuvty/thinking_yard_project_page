@@ -13,7 +13,7 @@ import {
 } from "./curve-math";
 import type { Point } from "./curve-math";
 
-import { getCopy, localize } from "./i18n.mjs";
+import { getCopy, localize, projectPath } from "./i18n.mjs";
 import type { Locale } from "./i18n.mjs";
 import { selectStoryChapter } from "./story-chapters.mjs";
 
@@ -24,7 +24,6 @@ const base = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const projectCards = registry.map(project => ({
   ...project,
   route: project.route as "02" | "03",
-  url: `${base}/projects/${project.slug}/`,
   logo: `${base}/${project.logo}`,
 }));
 const routeClasses = {
@@ -812,7 +811,7 @@ export default function Home({ locale = "en" }: { locale?: Locale }) {
         !!projectsSection && projectsSection.getBoundingClientRect().top < window.innerHeight);
       const chapters = stepRefs.current.map(element => element?.querySelector('.story-copy')?.getBoundingClientRect());
       if (chapters.some(rect => !rect)) return;
-      const languageOffset = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--home-language-offset')) || 0;
+      const languageOffset = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--site-language-offset')) || 0;
       const readingTop = window.innerWidth < 980
         ? (canvasRef.current?.parentElement?.getBoundingClientRect().bottom ?? window.innerHeight / 2) + 20
         : languageOffset + 76;
@@ -1084,7 +1083,7 @@ export default function Home({ locale = "en" }: { locale?: Locale }) {
                 {(index === 2 || index === 3) && (
                   <div className="project-pills" aria-label={index === 2 ? copy.routeTwoProjects : copy.routeThreeProjects}>
                     {projectCards.filter(project => project.route === (index === 2 ? "02" : "03")).map(project => (
-                      <ProjectLink key={project.slug} name={project.name} url={project.url} />
+                      <ProjectLink key={project.slug} name={project.name} url={projectPath(project, locale, base)} />
                     ))}
                   </div>
                 )}
@@ -1108,7 +1107,7 @@ export default function Home({ locale = "en" }: { locale?: Locale }) {
                 <a
                   className="project-card"
                   data-reveal
-                  href={project.url}
+                  href={projectPath(project, locale, base)}
                   key={project.name}
                   rel="noreferrer"
                   target="_blank"

@@ -1,21 +1,15 @@
 import en from './locales/en.json' with { type: 'json' };
 import zh from './locales/zh.json' with { type: 'json' };
 
+import {getUI} from '../shared/language/locale.mjs';
+
 /** @typedef {'en' | 'zh'} Locale */
+const sharedCopy = locale => {
+  const {messages, ...ui} = getUI(locale);
+  return ui;
+};
+const copy = {en: {...en, ...sharedCopy('en')}, zh: {...zh, ...sharedCopy('zh')}};
 /** @param {Locale} locale */
-export const getCopy = locale => locale === 'zh' ? zh : en;
+export const getCopy = locale => copy[locale];
 
-/**
- * English remains the source and fallback. Project identity, assets and routes
- * stay in the registry; only presentation text is localized.
- * @template T
- * @param {T & {translations?: {zh?: Partial<T>}}} item
- * @param {Locale} locale
- * @returns {T}
- */
-export function localize(item, locale) {
-  return locale === 'zh' ? {...item, ...item.translations?.zh} : item;
-}
-
-/** @param {Locale} locale @param {string} [base] */
-export const homePath = (locale, base = '') => `${base}/${locale === 'zh' ? 'zh/' : ''}`;
+export {localize, homePath, projectPath} from '../shared/language/locale.mjs';

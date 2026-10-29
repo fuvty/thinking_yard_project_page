@@ -7,5 +7,9 @@ export default {
   images: { unoptimized: true },
   env: { NEXT_PUBLIC_BASE_PATH: basePath() },
   turbopack: { root: process.cwd() },
-  ...(development ? { async rewrites() { return [{ source: '/projects/:slug/', destination: '/projects/:slug/index.html' }]; } } : {}),
+  ...(development ? { async rewrites() { return [
+    {source:'/projects/:slug/',destination:'/projects/:slug/index.html'},
+    {source:'/zh/projects/:slug/',destination:'/zh/projects/:slug/index.html'},
+    {source:'/projects/:slug/zh/',destination:'/projects/:slug/zh/index.html'},
+  ]; } } : {}),
 };

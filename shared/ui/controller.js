@@ -1,5 +1,6 @@
 // Shared controls for static research pages and the React hub.
 (() => {
+  const t = globalThis.SiteI18n?.t || (text => text);
   const topButton = document.getElementById('scrollTop');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let restoreTopFocus = false;
@@ -81,18 +82,18 @@
           catch { fallbackCopy(code.textContent); }
         } else fallbackCopy(code.textContent);
         button.dataset.state = 'success';
-        label.textContent = 'Copied';
-        status.textContent = 'BibTeX copied to clipboard.';
+        label.textContent = t('Copied');
+        status.textContent = t('BibTeX copied to clipboard.');
       } catch {
         button.dataset.state = 'error';
-        label.textContent = 'Try again';
-        status.textContent = 'Copy failed. Select the citation text to copy it manually.';
+        label.textContent = t('Try again');
+        status.textContent = t('Copy failed. Select the citation text to copy it manually.');
       } finally {
         button.disabled = false;
         button.setAttribute('aria-busy', 'false');
         resetTimer = window.setTimeout(() => {
           delete button.dataset.state;
-          label.textContent = 'Copy BibTeX';
+          label.textContent = t('Copy BibTeX');
           status.textContent = '';
         }, 2400);
       }

@@ -77,3 +77,6 @@ body:has(.sp-contents.mobile-open) .sp-back-to-top, body.global-menu-open .sp-ba
 .btn.btn-secondary[data-resource-pending]:disabled:hover { background:transparent; color:var(--apple-blue); transform:none; }
 .sp-copy[data-copy-empty] { cursor:default; opacity:.5; }
 .sp-copy[data-copy-empty]:hover { background:var(--apple-light-gray); color:var(--apple-black); }
+
+.sp-footer-languages .sp-language-unavailable { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: #86868b; cursor: default; }
+.sp-language-unavailable small { font-size: 11px; }

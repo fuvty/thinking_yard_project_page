@@ -1,4 +1,5 @@
 (() => {
+  const translate = globalThis.SiteI18n?.t || ((text, values = {}) => text.replace(/\{(\w+)\}/g, (match, key) => values[key] ?? match));
   const figure=document.getElementById('radix-tree');
   const renderer=window.AKVHistoryScene;
   if(!figure || !renderer) return;
@@ -30,9 +31,9 @@
     figure.dataset.historyPaused=String(paused);
   }
   function controls() {
-    toggle.textContent=paused?'Play':'Pause';
+    toggle.textContent=paused?translate('Play'):translate('Pause');
     toggle.setAttribute('aria-pressed',String(paused));
-    toggle.setAttribute('aria-label',`${paused?'Play':'Pause'} cache-history animation`);
+    toggle.setAttribute('aria-label',translate('{action} cache-history animation', {action: translate(paused ? 'Play' : 'Pause')}));
   }
   function tick(now) {
     request=null;

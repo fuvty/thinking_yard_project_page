@@ -1,4 +1,5 @@
 (() => {
+  const translate = globalThis.SiteI18n?.t || ((text, values = {}) => text.replace(/\{(\w+)\}/g, (match, key) => values[key] ?? match));
   // Table 2 of main.pdf. Each row: request mean/P95, TTFT mean/P95,
   // TPOT mean/P95, input throughput, output throughput. Seconds, ms/token, tokens/s.
   const concurrency = [8, 10, 12, 14, 16];
@@ -34,7 +35,7 @@
       markup += `<line x1="48" x2="400" y1="${y(v)}" y2="${y(v)}" stroke="#e8e8ee"/><text x="38" y="${y(v)+5}" text-anchor="end" fill="#77777f" font-size="15">${tickLabel(v)}</text>`;
     }
     concurrency.forEach((c,i) => { markup += `<text x="${x(i)}" y="259" text-anchor="middle" fill="#77777f" font-size="15">${c}</text>`; });
-    markup += '<text x="224" y="284" text-anchor="middle" fill="#77777f" font-size="15">Concurrency</text>';
+    markup += `<text x="224" y="284" text-anchor="middle" fill="#77777f" font-size="15">${translate('Concurrency')}</text>`;
     series.forEach(s => {
       markup += `<polyline points="${s.rows.map((r,i)=>`${x(i)},${y(r[column])}`).join(' ')}" fill="none" stroke="${s.color}" stroke-width="3" stroke-dasharray="${s.dash}" stroke-linecap="round"/>`;
       s.rows.forEach((r,i)=> { markup += `<circle cx="${x(i)}" cy="${y(r[column])}" r="4" fill="${s.color}" stroke="#fff" stroke-width="1.5"><title>${s.name}, C=${concurrency[i]}: ${r[column]} ${unit}</title></circle>`; });
@@ -43,13 +44,13 @@
       markup += `<text x="410" y="${y(end)+5}" fill="${s.color}" font-size="14" font-weight="600">${endLabel}</text>`;
     });
     svg.insertAdjacentHTML('beforeend', `<g>${markup}</g>`);
-    document.getElementById(`${id}-desc`).textContent = concurrency.map((c,i)=>`Concurrency ${c}: ${series.map(s=>`${s.name} ${s.rows[i][column]} ${unit}`).join(', ')}`).join('. ');
+    document.getElementById(`${id}-desc`).textContent = concurrency.map((c,i)=>translate('Concurrency {number}: {values}', {number:c, values:series.map(s=>`${s.name} ${s.rows[i][column]} ${unit}`).join(', ')})).join('. ');
   }
-  chart('serving-input-throughput', 6, 60000, 10000, 'tokens/s');
-  chart('serving-throughput', 7, 400, 100, 'tokens/s');
-  chart('serving-ttft', 3, 250, 50, 'seconds');
-  chart('serving-latency', 1, 250, 50, 'seconds');
-  document.getElementById('serving-table').innerHTML = '<caption>Serving performance across concurrency levels</caption><thead><tr><th scope="col" rowspan="2">Concurrency</th><th scope="col" rowspan="2">Method</th><th scope="colgroup" colspan="2">Request latency (s)</th><th scope="colgroup" colspan="2">TTFT (s)</th><th scope="colgroup" colspan="2">TPOT (ms/token)</th><th scope="colgroup" colspan="2">Throughput (tokens/s)</th></tr><tr><th scope="col">Mean</th><th scope="col">P95</th><th scope="col">Mean</th><th scope="col">P95</th><th scope="col">Mean</th><th scope="col">P95</th><th scope="col">Input</th><th scope="col">Output</th></tr></thead><tbody>' + concurrency.map((c,i)=>series.map((s,j)=>`<tr${j===2?' class="akv-ours"':''}><th scope="row">${c}</th><th scope="row">${s.name}</th>${s.rows[i].map((v,k)=>{
+  chart('serving-input-throughput', 6, 60000, 10000, translate('tokens/s'));
+  chart('serving-throughput', 7, 400, 100, translate('tokens/s'));
+  chart('serving-ttft', 3, 250, 50, translate('seconds'));
+  chart('serving-latency', 1, 250, 50, translate('seconds'));
+  document.getElementById('serving-table').innerHTML = `<caption>${translate('Serving performance across concurrency levels')}</caption><thead><tr><th scope="col" rowspan="2">${translate('Concurrency')}</th><th scope="col" rowspan="2">${translate('Method')}</th><th scope="colgroup" colspan="2">${translate('Request latency (s)')}</th><th scope="colgroup" colspan="2">TTFT (s)</th><th scope="colgroup" colspan="2">TPOT (ms/token)</th><th scope="colgroup" colspan="2">${translate('Throughput (tokens/s)')}</th></tr><tr><th scope="col">${translate('Mean')}</th><th scope="col">P95</th><th scope="col">${translate('Mean')}</th><th scope="col">P95</th><th scope="col">${translate('Mean')}</th><th scope="col">P95</th><th scope="col">${translate('Input')}</th><th scope="col">${translate('Output')}</th></tr></thead><tbody>` + concurrency.map((c,i)=>series.map((s,j)=>`<tr${j===2?' class="akv-ours"':''}><th scope="row">${c}</th><th scope="row">${s.name}</th>${s.rows[i].map((v,k)=>{
     const best = k<6 ? Math.min(...series.map(m=>m.rows[i][k])) : Math.max(...series.map(m=>m.rows[i][k]));
     const text = k<6 ? v.toFixed(2) : v.toLocaleString('en-US');
     return `<td>${v===best?`<strong>${text}</strong>`:text}</td>`;

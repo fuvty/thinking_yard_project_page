@@ -1,3 +1,4 @@
+const frameFusionAsset = path => globalThis.SiteI18n?.asset(path) || path;
 window.HELP_IMPROVE_VIDEOJS = false;
 
 function revealOnScroll() {
@@ -655,10 +656,10 @@ $(document).ready(function() {
       wrapper.innerHTML = `
         <div class="columns is-centered">
           <div class="column">
-            <img src="./static/images/tom_jerry/frame_${frameNumber}.png" class="interpolation-image">
+            <img src="${frameFusionAsset(`./static/images/tom_jerry/frame_${frameNumber}.png`)}" class="interpolation-image">
           </div>
           <div class="column">
-            <img src="./static/images/tom_jerry_prune/frame_${frameNumber}.png" class="interpolation-image">
+            <img src="${frameFusionAsset(`./static/images/tom_jerry_prune/frame_${frameNumber}.png`)}" class="interpolation-image">
           </div>
         </div>
       `;
@@ -720,7 +721,7 @@ function initializePerformanceTable() {
 }
 
 function loadCSVData() {
-    fetch('./static/data/performance_results.csv')
+    fetch(frameFusionAsset('./static/data/performance_results.csv'))
         .then(response => {
             if (!response.ok) throw new Error('Network response was not ok');
             return response.text();

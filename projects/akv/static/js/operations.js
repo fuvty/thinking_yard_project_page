@@ -1,4 +1,5 @@
 (() => {
+  const translate = globalThis.SiteI18n?.t || ((text, values = {}) => text.replace(/\{(\w+)\}/g, (match, key) => values[key] ?? match));
   const scene = document.getElementById('operation-scene');
   const playback = document.getElementById('operation-playback');
   if (!scene || !playback) return;
@@ -9,17 +10,17 @@
   const entries = [...scene.querySelectorAll('.akv-live .akv-block')];
   const droppedIndex = 1; // B leaves a gap between A and C.
   const copy = {
-    append: '<strong>Append.</strong> Compute new tokens against the active cache, append their KV states, and advance the logical sequence and encoding positions.',
-    drop: '<strong>Drop.</strong> Remove selected KV entries from future attention without recomputing retained states. The logical token sequence, retained positions, and next encoding position remain unchanged.',
-    repos: '<strong>Repos.</strong> Re-encode retained keys at consecutive positions starting from zero, in logical token order, and continue new tokens after them. Values and previously computed hidden states remain unchanged.'
+    append: translate('<strong data-emphasis="append-operation">Append.</strong> Compute new tokens against the active cache, append their KV states, and advance the logical sequence and encoding positions.'),
+    drop: translate('<strong data-emphasis="drop-operation">Drop.</strong> Remove selected KV entries from future attention without recomputing retained states. The logical token sequence, retained positions, and next encoding position remain unchanged.'),
+    repos: translate('<strong data-emphasis="repos-operation">Repos.</strong> Re-encode retained keys at consecutive positions starting from zero, in logical token order, and continue new tokens after them. Values and previously computed hidden states remain unchanged.')
   };
   const nextPosition = document.createElement('p');
   nextPosition.className = 'akv-operation-next';
-  nextPosition.innerHTML = 'Next position: <span>4</span>';
+  nextPosition.innerHTML = translate('Next position: <span>4</span>');
   caption.before(nextPosition);
   scene.classList.add('akv-operation-animated');
   const states = entries.map((entry, index) => {
-    entry.innerHTML = `<span class="akv-operation-state"><span class="akv-operation-key">K<small><span class="akv-position-old">pos ${index}</span><span class="akv-position-new">pos ${index > droppedIndex ? index - 1 : index}</span></small></span><span class="akv-operation-value">V</span></span>`;
+    entry.innerHTML = `<span class="akv-operation-state"><span class="akv-operation-key">K<small><span class="akv-position-old">${translate('pos {position}', {position: index})}</span><span class="akv-position-new">${translate('pos {position}', {position: index > droppedIndex ? index - 1 : index})}</span></small></span><span class="akv-operation-value">V</span></span>`;
     return entry.querySelector('.akv-operation-state');
   });
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
@@ -55,8 +56,8 @@
     scene.dataset.progress = String(elapsed);
   }
   function updateControl() {
-    playback.textContent = paused ? 'Play' : 'Pause';
-    playback.setAttribute('aria-label', `${paused ? 'Play' : 'Pause'} ${operation} animation`);
+    playback.textContent = paused ? translate('Play') : translate('Pause');
+    playback.setAttribute('aria-label', translate('{action} {operation} animation', {action: translate(paused ? 'Play' : 'Pause'), operation}));
     playback.setAttribute('aria-pressed', String(!paused));
   }
   function tick(now) {
