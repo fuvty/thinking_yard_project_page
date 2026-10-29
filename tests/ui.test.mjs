@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 const script=await readFile(new URL('../shared/ui/controller.js',import.meta.url),'utf8');
-function ui({clipboard='success',fallback=true,reduced=false,snap='none'}={}) {
+function ui({clipboard='success',fallback=true,reduced=false,snap='none',freeScroll=false}={}) {
  const timers=new Map(),frames=new Map(),written=[];let timerId=0,frameId=0,document;
  class Element {
   constructor(){this.events={};this.attrs={};this.dataset={};this.style={};this.textContent='';const classes=new Set();this.classList={toggle:(n,on)=>on?classes.add(n):classes.delete(n),contains:n=>classes.has(n)};}
@@ -15,7 +15,7 @@ function ui({clipboard='success',fallback=true,reduced=false,snap='none'}={}) {
  }
  const top=new Element(),copy=new Element(),label=new Element(),status=new Element(),home=new Element(),code=new Element();code.textContent='@article{example, title={A & B}}';copy.dataset.copyTarget='bibtexCode';
  copy.querySelector=()=>label;copy.closest=()=>({querySelector:()=>status});
- document={documentElement:{style:{scrollSnapType:'',scrollBehavior:''}},activeElement:copy,body:{appendChild:f=>{document.field=f;}},querySelector:()=>home,querySelectorAll:()=>[copy],getElementById:id=>id==='scrollTop'?top:code,createElement:()=>new Element(),execCommand:()=>fallback};
+ document={documentElement:{style:{scrollSnapType:'',scrollBehavior:''},classList:{contains:name=>freeScroll && name==='home-free-scroll'}},activeElement:copy,body:{appendChild:f=>{document.field=f;}},querySelector:()=>home,querySelectorAll:()=>[copy],getElementById:id=>id==='scrollTop'?top:code,createElement:()=>new Element(),execCommand:()=>fallback};
  const window=new Element();window.location={hash:'#bibtex',pathname:'/projects/c2c/',search:'?test=1'};window.history={replaceState:(_state,_title,url)=>{window.replacedURL=url;}};window.getComputedStyle=()=>({scrollSnapType:snap});window.requestAnimationFrame=fn=>{frames.set(++frameId,fn);return frameId;};window.cancelAnimationFrame=id=>frames.delete(id);window.scrollY=600;window.matchMedia=()=>({matches:reduced});window.scrollTo=options=>{window.scrollOptions=options;};window.setTimeout=fn=>{timers.set(++timerId,fn);return timerId;};window.clearTimeout=id=>timers.delete(id);
  const navigator={clipboard:{writeText:async text=>{written.push(text);if(clipboard==='failure')throw Error('Denied');}}};if(clipboard==='missing')delete navigator.clipboard;
  vm.runInNewContext(script,{window,document,navigator});
@@ -50,4 +50,11 @@ test('mandatory story snapping is temporarily suspended and restored on return t
  const n=ui({snap:'y mandatory'});n.top.emit('click',{detail:0});
  assert.equal(n.window.scrollOptions.behavior,'instant');assert.equal(n.document.documentElement.style.scrollSnapType,'none');
  n.flushFrames();assert.equal(n.document.documentElement.style.scrollSnapType,'');assert.equal(n.document.documentElement.style.scrollBehavior,'');
+});
+
+test('back to top also bypasses story snapping when starting in the free-scrolling project list',()=>{
+ const n=ui({freeScroll:true});n.top.emit('click',{detail:0});
+ assert.equal(n.window.scrollOptions.behavior,'instant');
+ assert.equal(n.document.documentElement.style.scrollSnapType,'none');
+ n.flushFrames();assert.equal(n.document.documentElement.style.scrollSnapType,'');
 });

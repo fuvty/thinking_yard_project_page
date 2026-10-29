@@ -47,7 +47,7 @@ body:has(.sp-contents.mobile-open) .sp-back-to-top, body.global-menu-open .sp-ba
 }
 
 /* Shared page ending, generated for every project and the hub. */
-.sp-footer { display: block; position: relative; margin: 0; padding: 36px 24px max(36px,env(safe-area-inset-bottom)); border-top: 1px solid rgba(0,0,0,.06); background: var(--apple-off-white); color: var(--apple-black); font: 400 13px/1.5 var(--font-sans); letter-spacing: -.01em; text-align: left; scroll-snap-align: end; scroll-snap-stop: always; }
+.sp-footer { display: block; position: relative; margin: 0; padding: 36px 24px max(36px,env(safe-area-inset-bottom)); border-top: 1px solid rgba(0,0,0,.06); background: var(--apple-off-white); color: var(--apple-black); font: 400 13px/1.5 var(--font-sans); letter-spacing: -.01em; text-align: left; }
 .sp-footer, .sp-footer * { box-sizing: border-box; }
 .sp-footer-inner { width: 100%; max-width: 980px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 24px; padding-right: 56px; }
 .sp-footer-identity strong { display: block; color: var(--apple-black); font: 600 14px/1.5 var(--font-sans); }

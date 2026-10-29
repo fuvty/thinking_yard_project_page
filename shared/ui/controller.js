@@ -20,7 +20,7 @@
     cancelSnapReset();
     restoreTopFocus = event.detail === 0;
     const root = document.documentElement;
-    if (window.getComputedStyle(root).scrollSnapType !== 'none') {
+    if (window.getComputedStyle(root).scrollSnapType !== 'none' || root.classList.contains('home-free-scroll')) {
       // The hub has mandatory story snapping: preserve its reliable exact return
       // instead of letting an in-flight anchor animation snap to a later chapter.
       const previousSnap = root.style.scrollSnapType;

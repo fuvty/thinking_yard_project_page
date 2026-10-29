@@ -320,6 +320,9 @@ a {
   color: var(--muted);
 }
 
+/* Snapping belongs to the scaling story, not the project list or footer. */
+html.home-free-scroll { scroll-snap-type: none; }
+
 /* Projects section */
 .projects-section {
   align-items: center;
@@ -328,8 +331,6 @@ a {
   min-height: 100vh;
   min-height: 100svh;
   padding: 120px clamp(24px, 5vw, 72px);
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
 }
 
 .projects-inner {
@@ -471,8 +472,6 @@ a {
   .projects-section {
     min-height: auto;
     padding: 88px 28px;
-    scroll-snap-align: none;
-    scroll-snap-stop: normal;
   }
 }
 

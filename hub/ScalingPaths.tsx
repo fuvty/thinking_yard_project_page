@@ -734,6 +734,7 @@ export default function Home({ locale = "en" }: { locale?: Locale }) {
     stageRef.current = -1;
     lineAnimationRef.current = 0;
     const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const projectsSection = document.getElementById("projects");
 
     const animateStage = (nextStage: number, nextFocus: number[]) => {
       if (lineAnimationRef.current) cancelAnimationFrame(lineAnimationRef.current);
@@ -806,6 +807,9 @@ export default function Home({ locale = "en" }: { locale?: Locale }) {
 
     const update = (forceDraw = false) => {
       frameRef.current = 0;
+      // Once project cards enter view, leave the rest of the page freely scrollable.
+      document.documentElement.classList.toggle("home-free-scroll",
+        !!projectsSection && projectsSection.getBoundingClientRect().top < window.innerHeight);
       const chapters = stepRefs.current.map(element => element?.querySelector('.story-copy')?.getBoundingClientRect());
       if (chapters.some(rect => !rect)) return;
       const languageOffset = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--home-language-offset')) || 0;
@@ -857,6 +861,7 @@ export default function Home({ locale = "en" }: { locale?: Locale }) {
     motionPreference.addEventListener("change", onMotionChange);
     document.addEventListener("visibilitychange", onVisibilityChange);
     return () => {
+      document.documentElement.classList.remove("home-free-scroll");
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
       motionPreference.removeEventListener("change", onMotionChange);
