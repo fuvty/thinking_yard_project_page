@@ -4,7 +4,7 @@ This is the repository that contains source code for the Cache-to-Cache: Direct 
 
 ## Overview
 
-Cache-to-Cache (C2C) is a novel paradigm for direct semantic communication between Large Language Models through KV-Cache projection, achieving better performance and efficiency compared to traditional text-based communication.
+Cache-to-Cache (C2C) is a novel paradigm for direct semantic communication between Large Language Models through KV cache projection, achieving better performance and efficiency compared to traditional text-based communication.
 
 ## Project Structure
 

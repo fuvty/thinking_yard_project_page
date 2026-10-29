@@ -14,13 +14,14 @@ export function renderCitation(bibtex) {
   </div>`;
 }
 
-/** @param {{base?:string, name?:string, team?:string, homeHref?:string, labels?:{research:string,home:string,allProjects:string,label:string}, languageSwitch?:{locale:string,englishHref:string,chineseHref:string}}} [options] */
-export function renderFooter({base = '', name = 'Scaling Paths', team = 'NICS-EFC', homeHref = `${base}/`, labels = {research:'Research projects', home:'Home', allProjects:'All projects', label:'Footer'}, languageSwitch} = {}) {
+/** @param {{base?:string, name?:string, team?:string, homeHref?:string, labels?:{research:string,home:string,allProjects:string,label:string}, contact?:{label:string,email:string}, languageSwitch?:{locale:string,englishHref:string,chineseHref:string}}} [options] */
+export function renderFooter({base = '', name = 'Scaling Paths', team = 'NICS-EFC', homeHref = `${base}/`, labels = {research:'Research projects', home:'Home', allProjects:'All projects', label:'Footer'}, languageSwitch, contact} = {}) {
   const languages = languageSwitch ? `<span class="sp-footer-languages" role="group" aria-label="中文 / English">
     <a href="${escape(languageSwitch.chineseHref)}" data-home-language="zh" lang="zh-CN" hreflang="zh-CN"${languageSwitch.locale === 'zh' ? ' aria-current="page"' : ''}>中文</a><span aria-hidden="true">/</span><a href="${escape(languageSwitch.englishHref)}" data-home-language="en" lang="en" hreflang="en"${languageSwitch.locale === 'en' ? ' aria-current="page"' : ''}>English</a>
   </span>` : '';
+  const contactLine = contact ? `<p class="sp-footer-contact" id="contact"><span>${escape(contact.label)}</span><a href="mailto:${escape(contact.email)}">${escape(contact.email)}</a></p>` : '';
   return `<footer class="sp-footer"><div class="sp-footer-inner">
-    <div class="sp-footer-identity"><strong>${escape(team)}</strong><p>${escape(name)} · ${escape(labels.research)}</p></div>
+    <div class="sp-footer-identity"><strong>${escape(team)}</strong><p>${escape(name)} · ${escape(labels.research)}</p>${contactLine}</div>
     <nav class="sp-footer-links" aria-label="${escape(labels.label)}"><a href="${escape(homeHref)}">${escape(labels.home)}</a><a href="${escape(homeHref)}#projects">${escape(labels.allProjects)}</a>${languages}</nav>
   </div></footer>`;
 }

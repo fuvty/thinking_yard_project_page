@@ -298,7 +298,7 @@
         <figcaption id="replay-caption">Successes accumulated out of 100 tasks. Mean of three runs; shading shows the min–max range. C denotes concurrency.</figcaption>
         <details class="akv-setting-note" id="replay-concurrency">
           <summary>Why Standard uses C=12</summary>
-          <p>C=12 gives Standard its highest input and output throughput in the separate concurrency sweep below. At C=14 and C=16, KV-cache pressure increases re-prefill and degrades serving performance. Using C=12 avoids those degraded settings for Standard; Text Engineering and AKV use C=14. This task-success comparison therefore uses different concurrency settings.</p>
+          <p>C=12 gives Standard its highest input and output throughput in the separate concurrency sweep below. At C=14 and C=16, KV cache pressure increases re-prefill and degrades serving performance. Using C=12 avoids those degraded settings for Standard; Text Engineering and AKV use C=14. This task-success comparison therefore uses different concurrency settings.</p>
         </details>
         <noscript><img src="static/figures/swe_gpu_hours_cumulative_pass_rate.svg" alt="Figure 9(a): AKV reaches approximately 47% cumulative pass rate, Standard 40.7%, and Text Engineering 32.3%."><p>Enable JavaScript to play the animation.</p></noscript>
       </figure>
@@ -344,7 +344,7 @@
         </div>
         <div class="akv-analysis-note">
           <h3>Why the gap grows at high concurrency.</h3>
-          <p>At the tested concurrency levels above 12 (C=14 and C=16), KV-cache pressure makes Standard spend more time on re-prefill, leaving fewer requests decoding concurrently. Its TPOT can decrease even as request latency rises and throughput falls. The four charts above capture the overall serving benefit.</p>
+          <p>At the tested concurrency levels above 12 (C=14 and C=16), KV cache pressure makes Standard spend more time on re-prefill, leaving fewer requests decoding concurrently. Its TPOT can decrease even as request latency rises and throughput falls. The four charts above capture the overall serving benefit.</p>
         </div>
       </details>
     </div>

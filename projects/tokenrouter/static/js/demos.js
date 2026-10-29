@@ -51,7 +51,7 @@ const stages=[
   {start:.16,label:'Route',title:'Route request A to a peer.',copy:'The routing policy selects the large model for A. Requests B and C stay on the small model.'},
   {start:.27,label:'Send',title:'Send tokens. Keep the cache.',copy:'A token suffix and routing state cross to the peer. A’s KV slot stays on the small model, marked pending.'},
   {start:.38,label:'Peer decoding',title:'Both models make progress.',copy:'The large model handles A while the small model keeps decoding B and C. There is no global decoding barrier.'},
-  {start:.68,label:'Return',title:'Return the peer’s tokens.',copy:'The generated token suffix returns to A’s entry subserver. Neither model transfers its KV-cache tensors.'},
+  {start:.68,label:'Return',title:'Return the peer’s tokens.',copy:'The generated token suffix returns to A’s entry subserver. Neither model transfers its KV cache tensors.'},
   {start:.81,label:'Resume',title:'Resume from preserved state.',copy:'A appends the returned tokens and rejoins the local batch using its existing serving state and KV slot.'}
 ];
 

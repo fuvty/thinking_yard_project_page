@@ -85,7 +85,7 @@
         <span class="observation-label">Observation 01</span>
         <h3>Different heads have different spans.</h3>
         <p>
-          At a fixed input length, some heads concentrate in a narrow band near the diagonal, while others spread across the entire input. A uniform window truncates the global heads and breaks long-range retrieval, yet still overspends compute and KV-Cache on the local ones. Matching each head to its own span raises content retrieval accuracy from 25% to 98%.
+          At a fixed input length, some heads concentrate in a narrow band near the diagonal, while others spread across the entire input. A uniform window truncates the global heads and breaks long-range retrieval, yet still overspends compute and KV cache on the local ones. Matching each head to its own span raises content retrieval accuracy from 25% to 98%.
         </p>
       </div>
       <figure class="observation-figure">
@@ -303,7 +303,7 @@
         <div class="expandable-content-inner">
           <div class="expandable-inner">
             <p>
-              The throughput gains come from static KV-cache size, reduced attention computation, increased batch capacity, and a CUDA kernel for heterogeneous attention.
+              The throughput gains come from static KV cache size, reduced attention computation, increased batch capacity, and a CUDA kernel for heterogeneous attention.
             </p>
             <figure class="figure-panel">
               <img src="./static/images/throughput.png" alt="MoA decode throughput comparison">
@@ -342,7 +342,7 @@
       <p class="section-eyebrow">Demo</p>
       <h2 class="section-title">A plug-and-play compression pipeline for long-context inference.</h2>
       <p class="section-subtitle">
-        The implementation exposes MoA as a practical attention backend for long-context decoding under controlled KV-cache density.
+        The implementation exposes MoA as a practical attention backend for long-context decoding under controlled KV cache density.
       </p>
     </div>
 
@@ -358,7 +358,7 @@
         </div>
         <div class="demo-point">
           <span>03</span>
-          <p>Serve with a static, sparse, heterogeneous KV-cache plan.</p>
+          <p>Serve with a static, sparse, heterogeneous KV cache plan.</p>
         </div>
       </div>
       <div class="video-frame">

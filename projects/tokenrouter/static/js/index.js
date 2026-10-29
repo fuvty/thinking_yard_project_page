@@ -22,7 +22,7 @@ const api={
     probs = result.logits_output.next_token_logits.softmax(dim=-1)
     entropy = -(probs * probs.log()).sum(-1) / math.log(probs.shape[-1])
     return (entropy > self.threshold).cpu()`},
- send:{signature:'send(req, destination)',title:'Address the handoff.',description:'Build a PeerReq for the destination scheduler with the request state and token IDs. The default send includes the prompt and all generated tokens.',note:'R-Stitch rolls back the just-sampled token so the peer can regenerate it. KV-cache tensors stay local.',code:`def send(self, req, destination=None):
+ send:{signature:'send(req, destination)',title:'Address the handoff.',description:'Build a PeerReq for the destination scheduler with the request state and token IDs. The default send includes the prompt and all generated tokens.',note:'R-Stitch rolls back the just-sampled token so the peer can regenerate it. KV cache tensors stay local.',code:`def send(self, req, destination=None):
     destination = destination or self.peer_name
     req.model_tokens[self.server_args.server_name][1] -= 1
     current_token_ids = req.origin_input_ids + req.output_ids[:-1]

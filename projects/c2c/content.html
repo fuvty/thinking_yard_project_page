@@ -9,7 +9,7 @@
   <canvas id="heroGlCanvas" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
   <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse 70% 65% at 50% 50%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.78) 45%, rgba(255,255,255,0.35) 75%, rgba(255,255,255,0) 100%);z-index:1;pointer-events:none;"></div>
   <h1 class="hero-title" style="position:relative;z-index:2;"><span>Cache-to-Cache</span></h1>
-  <p class="hero-subtitle" style="position:relative;z-index:2;">Direct semantic communication between LLMs through KV-Cache projection and fusion — faster and more accurate than text-based communication.</p>
+  <p class="hero-subtitle" style="position:relative;z-index:2;">Direct semantic communication between LLMs through KV cache projection and fusion — faster and more accurate than text-based communication.</p>
 
   <div class="hero-stats" style="position:relative;z-index:2;">
     <div class="stat-item">
@@ -70,7 +70,7 @@
               <i class="fas fa-check"></i>
             </div>
             <div class="overview-point-text">
-              <strong>Cache-to-Cache (C2C)</strong> projects and fuses KV-Caches directly — preserving semantics with 2.5× average speedup
+              <strong>Cache-to-Cache (C2C)</strong> projects and fuses KV caches directly — preserving semantics with 2.5× average speedup
             </div>
           </div>
         </div>
@@ -131,7 +131,7 @@
   <div class="container">
     <div class="reveal">
       <p class="section-eyebrow" style="color: #0a84ff;">The Discovery</p>
-      <h2 class="section-title">KV-Cache carries semantic meaning.</h2>
+      <h2 class="section-title">KV cache carries semantic meaning.</h2>
       <p class="section-subtitle">
         Oracle experiments reveal three key findings that motivate Cache-to-Cache communication.
       </p>
@@ -142,14 +142,14 @@
         <div class="insight-percentage green">Beneficial</div>
         <div class="insight-label">Cache Enrichment Works</div>
         <div class="insight-desc">
-          Enriching KV-Cache semantics achieves near few-shot performance (62.3% vs 63.4%) without extending sequence length.
+          Enriching KV cache semantics achieves near few-shot performance (62.3% vs 63.4%) without extending sequence length.
         </div>
       </div>
       <div class="insight-card">
         <div class="insight-percentage blue">Convertible</div>
         <div class="insight-label">Cache Transfers Across Models</div>
         <div class="insight-desc">
-          KV-Cache from one model can be projected into another model's representation space via simple transformation.
+          KV cache from one model can be projected into another model's representation space via simple transformation.
         </div>
       </div>
       <div class="insight-card">
@@ -177,23 +177,23 @@
                 <div class="oracle-detail-item">
                   <h4 style="color: #30d158; margin-bottom: 12px;">Oracle 1: Cache Enrichment</h4>
                   <p style="margin-bottom: 12px;">
-                    <strong>Question:</strong> Can enriched KV-Cache improve response quality without increasing cache size?
+                    <strong>Question:</strong> Can enriched KV cache improve response quality without increasing cache size?
                   </p>
-                  <p style="margin-bottom: 8px;">Few-shot prompting improves accuracy — but is it from attending to more tokens, or from enriching how the question is embedded in KV-Cache? We test this by prefilling on exemplars E⊕X, then discarding E and keeping only the question-aligned cache slice.</p>
+                  <p style="margin-bottom: 8px;">Few-shot prompting improves accuracy — but is it from attending to more tokens, or from enriching how the question is embedded in KV cache? We test this by prefilling on exemplars E⊕X, then discarding E and keeping only the question-aligned cache slice.</p>
                   <ul style="margin-left: 20px; margin-bottom: 12px;">
                     <li><strong>Direct:</strong> 58.42% accuracy (cache length |X|)</li>
                     <li><strong>Few-shot:</strong> 63.39% accuracy (cache length |E| + |X|)</li>
                     <li><strong>Oracle:</strong> 62.34% accuracy (cache length |X| only)</li>
                   </ul>
-                  <p><strong>Finding:</strong> The gain comes from richer question embeddings, not from attending to extra tokens. KV-Cache can carry enriched semantics.</p>
+                  <p><strong>Finding:</strong> The gain comes from richer question embeddings, not from attending to extra tokens. KV cache can carry enriched semantics.</p>
                 </div>
                 <div class="oracle-detail-item" style="margin-top: 24px;">
                   <h4 style="color: #0a84ff; margin-bottom: 12px;">Oracle 2: Cache Transformation</h4>
                   <p style="margin-bottom: 12px;">
-                    <strong>Question:</strong> Can one model's KV-Cache be utilized by another model?
+                    <strong>Question:</strong> Can one model's KV cache be utilized by another model?
                   </p>
                   <p style="margin-bottom: 12px;">
-                    We trained a 3-layer MLP to map KV-Cache from Qwen3-4B (source) to Qwen3-0.6B (target). T-SNE visualization shows the transformed cache moves into the target model's representation space.
+                    We trained a 3-layer MLP to map KV cache from Qwen3-4B (source) to Qwen3-0.6B (target). T-SNE visualization shows the transformed cache moves into the target model's representation space.
                   </p>
                   <img src="./static/images/proj_oracle.png" alt="t-SNE visualization of cache transformation" style="max-width: 100%; border-radius: 8px; margin: 16px 0;">
                   <p><strong>Finding:</strong> The transformed cache occupies a subset of the target's space — different models encode distinct semantic understandings. This suggests fusing specialized contextual understanding from different models could harness their complementary strengths.</p>
@@ -218,7 +218,7 @@
     <div class="reveal" style="text-align: center;">
       <img src="./static/images/model_arch.png" alt="C2C Architecture" class="method-figure">
       <p class="figure-caption">
-        <strong>C2C Fuser:</strong> Projects and fuses KV-Caches from Sharer into Receiver through (1) Projection, (2) Dynamic Weighting, and (3) Learnable Gating modules.
+        <strong>C2C Fuser:</strong> Projects and fuses KV caches from Sharer into Receiver through (1) Projection, (2) Dynamic Weighting, and (3) Learnable Gating modules.
       </p>
     </div>
 
@@ -228,7 +228,7 @@
           <i class="fas fa-project-diagram"></i>
         </div>
         <h4>Projection Module</h4>
-        <p>Concatenates and processes KV-Caches from both models through projection and feature fusion layers</p>
+        <p>Concatenates and processes KV caches from both models through projection and feature fusion layers</p>
       </div>
       <div class="arch-feature">
         <div class="arch-feature-icon">

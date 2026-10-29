@@ -56,11 +56,11 @@
     "name": "C2C",
     "category": "context",
     "route": "03",
-    "description": "Communicate through KV-Cache between LLMs",
+    "description": "Communicate through KV cache between LLMs",
     "logo": "shared/assets/c2c.png",
     "translations": {
       "zh": {
-        "description": "让大模型通过 KV-Cache 交换信息"
+        "description": "让大模型通过 KV cache 交换信息"
       }
     }
   },
@@ -95,11 +95,11 @@
     "name": "AKV",
     "category": "context",
     "route": "03",
-    "description": "Cache engineering for efficient long-horizon agents",
+    "description": "Let long-horizon agents manage their own KV cache",
     "logo": "shared/assets/akv.png",
     "translations": {
       "zh": {
-        "description": "为执行长程任务的智能体设计高效缓存"
+        "description": "让执行长程任务的智能体自行管理 KV cache"
       }
     }
   }

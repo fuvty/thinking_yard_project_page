@@ -32,7 +32,7 @@ export default async function Page({params}: {params: Promise<{lang?: string[]}>
       base, homeHref, labels: copy.navigation, groupLabels: copy.groupLabels,
     })}} />
     <ScalingPaths locale={locale} />
-      <div dangerouslySetInnerHTML={{__html: renderFooter({base, name:site.name, team:site.team, homeHref, labels:copy.footer, languageSwitch})}} />
+      <div dangerouslySetInnerHTML={{__html: renderFooter({base, name:site.name, team:site.team, homeHref, labels:copy.footer, languageSwitch, contact:{label:copy.contactTitle, email:site.contactEmail}})}} />
     </LanguagePreference>
     <div dangerouslySetInnerHTML={{__html: renderBackToTop(copy.backToTop)}} />
     <Script src={`${base}/shared/navigation/controller.js`} strategy="afterInteractive" />

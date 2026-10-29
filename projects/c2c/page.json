@@ -18,7 +18,7 @@
       "id": "method",
       "label": "Key insight",
       "group": "research",
-      "description": "Semantics in the KV-Cache"
+      "description": "Semantics in the KV cache"
     },
     {
       "id": "architecture",
