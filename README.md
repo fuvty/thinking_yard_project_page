@@ -53,7 +53,7 @@ npm run new:project -- my-project "My Project" context
 
 内容修改遵循[内容与中英文写作规范](docs/design-system/content.md)：提炼讨论中的意图，保留必要逻辑，两种语言各自自然成文，不机械压缩或逐句翻译。
 
-主页静态导出英文 `/` 与中文 `/zh/`；AKV、C2C、R2R 的中文版本位于 `/zh/projects/<slug>/`。中英文共用页面结构、资源与交互逻辑，页脚始终提供「中文 / English」链接。
+主页静态导出英文 `/` 与中文 `/zh/`；除暂缓翻译的 FrameFusion 外，所有项目的中文版本均位于 `/zh/projects/<slug>/`。中英文共用页面结构、资源与交互逻辑，页脚始终提供「中文 / English」链接。
 
 默认入口保持英文，不自动跳转。首页与已提供中文的项目共用 `shared/language/`：浏览器偏好中文且未作选择时，在导航上方提示切换；访客选择后沿用 `thinking-yard-home-language` 本地存储键，后续页面不重复提示。禁用本地存储或 JavaScript 时，页脚链接仍可使用。切换保留章节 hash，中文站点的项目链接始终保留 `/zh/`；尚无译文时展示英文正文，并在首次访问时提示，滚动后收起。页脚中文项标为暂未提供。
 

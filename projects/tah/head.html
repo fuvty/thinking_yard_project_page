@@ -49,8 +49,7 @@
     function switchModelSize(size) {
       // Update active tab
       const tabs = document.querySelectorAll('.model-tab');
-      tabs.forEach(tab => tab.classList.remove('active'));
-      event.target.classList.add('active');
+      tabs.forEach(tab => tab.classList.toggle('active', tab.textContent.trim() === size));
 
       // Hide all results, show selected
       const allResults = document.querySelectorAll('.model-results');
@@ -59,13 +58,13 @@
 
       // Update summary stats based on model size
       const stats = {
-        '0.6B': { gain: '+5.3%', avg: '35.2%' },
-        '1.7B': { gain: '+6.2%', avg: '53.7%' },
-        '4B': { gain: '+2.2%', avg: '66.8%' }
+        '0.6B': { gain: '5.3', avg: '35.2%' },
+        '1.7B': { gain: '6.2', avg: '53.7%' },
+        '4B': { gain: '2.2', avg: '66.8%' }
       };
 
       const selected = stats[size];
-      document.getElementById('summaryGain').textContent = selected.gain;
+      document.getElementById('summaryGain').textContent = globalThis.SiteI18n.t('+{gain} pp', {gain: selected.gain});
       document.getElementById('summaryAvg').textContent = selected.avg;
     }
 

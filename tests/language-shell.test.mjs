@@ -74,6 +74,13 @@ test('generated Chinese shells retain shared assets, English content language an
     if(hasChinese(p)){
       assert(html.includes('class="site-project-content" lang="zh-CN"'));
       assert(!html.includes('data-notice-kind="fallback"'));
+      assert(!html.includes('noindex,follow'));
+      assert(html.includes(`<link rel="canonical" href="${siteURL()}zh/projects/${p.slug}/">`));
+      assert(html.includes(`href="${base}/projects/${p.slug}/" data-home-language="en"`));
+      assert(html.includes(`href="${base}/zh/projects/${p.slug}/" data-home-language="zh"`));
+      const english=await readFile(`public/projects/${p.slug}/index.html`,'utf8');
+      assert(english.includes(`hreflang="zh-CN" href="${siteURL()}zh/projects/${p.slug}/"`));
+      assert(english.includes(`href="${base}/zh/projects/${p.slug}/" hreflang="zh-CN" data-home-language="zh"`));
       assert(sitemap.includes(`${siteURL()}zh/projects/${p.slug}/`));
     }else{
       assert(html.includes('class="site-project-content" lang="en"'));

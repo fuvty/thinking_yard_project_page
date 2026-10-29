@@ -26,7 +26,10 @@
       "zh": {
         "description": "支持 token 级大模型路由的推理服务引擎"
       }
-    }
+    },
+    "locales": [
+      "zh"
+    ]
   },
   {
     "slug": "tah",
@@ -39,7 +42,10 @@
       "zh": {
         "description": "自适应循环大语言模型"
       }
-    }
+    },
+    "locales": [
+      "zh"
+    ]
   },
   {
     "slug": "tah2",
@@ -52,7 +58,10 @@
       "zh": {
         "description": "让循环大模型更有效地利用测试时计算"
       }
-    }
+    },
+    "locales": [
+      "zh"
+    ]
   },
   {
     "slug": "c2c",
@@ -94,7 +103,10 @@
       "zh": {
         "description": "通过混合注意力提高大模型推理效率"
       }
-    }
+    },
+    "locales": [
+      "zh"
+    ]
   },
   {
     "slug": "akv",

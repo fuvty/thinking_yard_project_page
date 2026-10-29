@@ -1,3 +1,4 @@
+import {t} from './i18n.js';
 import {createPlayback} from './playback.js';
 import {travelEase} from './model.js';
 const $=id=>document.getElementById(id);
@@ -8,14 +9,14 @@ export function initGranularity() {
   let mode='token',tokens=[],rows=[],previous=-1;
   const controls=$('granularity-demo').querySelector('.tr-playback');
   function build() {
-    $('routing-example').innerHTML=patterns.map((row,r)=>`<div class="tr-token-row"><span>Turn ${r+1}</span><div class="tr-tokens">${row.map((v,i)=>{
+    $('routing-example').innerHTML=patterns.map((row,r)=>`<div class="tr-token-row"><span>${t('Turn {turn}',{turn:r+1})}</span><div class="tr-tokens">${row.map((v,i)=>{
       const large=mode==='session'?false:mode==='query'?r===1:!!v;
-      return `<span class="tr-token ${large?'is-large':''}" title="Turn ${r+1}, token ${i+1}: ${large?'large':'small'} model">${i+1}</span>`;
+      return `<span class="tr-token ${large?'is-large':''}" title="${t('Turn {turn}, token {token}: {model}',{turn:r+1,token:i+1,model:t(large?'large model':'small model')})}">${i+1}</span>`;
     }).join('')}</div></div>`).join('');
     tokens=[...$('routing-example').querySelectorAll('.tr-token')];
     rows=[...$('routing-example').querySelectorAll('.tr-token-row')];previous=-1;
-    $('granularity-caption').textContent=captions[mode];
-    $('routing-example').setAttribute('aria-label',`${mode}-level routing. ${captions[mode]}`);
+    $('granularity-caption').textContent=t(captions[mode]);
+    $('routing-example').setAttribute('aria-label',t('{mode}. {caption}',{mode:t({session:'Session-level routing',query:'Query-level routing',token:'Token-level routing'}[mode]),caption:t(captions[mode])}));
   }
   function render(progress) {
     const total=mode==='token'?36:mode==='query'?3:1;
@@ -28,11 +29,11 @@ export function initGranularity() {
     });
     rows.forEach((row,index)=>row.classList.toggle('is-query-active',mode==='query'&&index===count));
     const current=tokens[mode==='query'?Math.min(2,count)*12:mode==='session'?0:Math.min(35,count)];
-    const label=mode==='session'?'Entire session assigned':mode==='query'
-      ?count===3?'3 queries assigned':`Turn ${count+1} · Entire response`
-      :count===36?'36 tokens generated':`Turn ${Math.floor(count/12)+1} · Token ${count%12+1}`;
+    const label=mode==='session'?t('Entire session assigned'):mode==='query'
+      ?count===3?t('3 queries assigned'):t('Turn {turn} · Entire response',{turn:count+1})
+      :count===36?t('36 tokens generated'):t('Turn {turn} · Token {token}',{turn:Math.floor(count/12)+1,token:count%12+1});
     $('routing-progress-label').textContent=label;
-    $('routing-progress').setAttribute('aria-valuetext',`${label}, ${current.classList.contains('is-large')?'large':'small'} model`);
+    $('routing-progress').setAttribute('aria-valuetext',t('{progress}, {model}',{progress:label,model:t(current.classList.contains('is-large')?'large model':'small model')}));
   }
   build();
   const playback=createPlayback($('granularity-demo'),{duration:12000,render,label:'routing illustration',range:$('routing-progress')});
@@ -63,13 +64,13 @@ export function initHandoff() {
     const pending=phase>=2&&phase<=4;
     if(phase!==previous) {
       previous=phase;
-      $('handoff-title').textContent=stage.title;$('handoff-description').textContent=stage.copy;
-      $('handoff-progress-label').textContent=stage.label;
-      $('handoff-progress').setAttribute('aria-valuetext',`${stage.label}. ${stage.copy}`);
+      $('handoff-title').textContent=t(stage.title);$('handoff-description').textContent=t(stage.copy);
+      $('handoff-progress-label').textContent=t(stage.label);
+      $('handoff-progress').setAttribute('aria-valuetext',t('{stage}. {description}',{stage:t(stage.label),description:t(stage.copy)}));
       document.querySelectorAll('[data-engine-phase]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.enginePhase)===phase)));
       $('small-batch').innerHTML=(pending?['B','C']:['A','B','C']).map(id=>`<b>${id}</b>`).join('');
-      $('large-batch').innerHTML=phase===3?'<b>A</b>':'<span class="tr-idle">Idle</span>';
-      $('small-cache-state').textContent=`Request A · ${pending?'pending, retained':'running'}`;
+      $('large-batch').innerHTML=phase===3?'<b>A</b>':`<span class="tr-idle">${t('Idle')}</span>`;
+      $('small-cache-state').textContent=t(pending?'Request A · pending, retained':'Request A · running');
       small.classList.toggle('has-pending',pending);large.classList.toggle('is-decoding',phase===3);
       document.querySelector('[data-stage="small-runner"]').classList.toggle('is-running',phase!==1);
       document.querySelector('[data-stage="small-router"]').classList.toggle('is-running',phase===1);
@@ -78,10 +79,10 @@ export function initHandoff() {
     }
     // Small-model steps continue throughout the asynchronous peer request.
     const smallStep=Math.floor(progress*18)+1;
-    if(smallStep!==previousStep){previousStep=smallStep;$('small-step').textContent=`Step ${smallStep}`;}
+    if(smallStep!==previousStep){previousStep=smallStep;$('small-step').textContent=t('Step {step}',{step:smallStep});}
     small.style.setProperty('--step-progress',`${(progress*18%1)*100}%`);
     large.style.setProperty('--step-progress',`${Math.max(0,Math.min(1,(progress-.38)/.30))*100}%`);
-    $('large-step').textContent=phase===3?'Step 1':'—';
+    $('large-step').textContent=phase===3?t('Step {step}',{step:1}):'—';
     packet.setAttribute('opacity',phase===2||phase===4?'1':'0');
     if(phase===2||phase===4) {
       const start=stage.start,end=stages[phase+1].start,t=travelEase((progress-start)/(end-start));

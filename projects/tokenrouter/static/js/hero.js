@@ -174,7 +174,7 @@ export function initRoads() {
     cancelAnimationFrame(frame);frame=0;last=0;
     if(paused||!visible||document.hidden)feedback=[];
     control.setAttribute('aria-pressed',String(paused));
-    control.setAttribute('aria-label',paused?'Play background animation':'Pause background animation');
+    control.setAttribute('aria-label',(globalThis.SiteI18n?.t ?? (text=>text))(paused?'Play background animation':'Pause background animation'));
     control.querySelector('path').setAttribute('d',paused?'m9 6 9 6-9 6Z':'M9 7v10M15 7v10');
     if(visible&&!document.hidden&&!paused)frame=requestAnimationFrame(tick);
   }

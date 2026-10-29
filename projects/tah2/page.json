@@ -25,7 +25,7 @@
       "id": "demo",
       "label": "Demo",
       "group": "research",
-      "description": "Live token-level iteration trace"
+      "description": "Recorded token-level iteration trace"
     },
     {
       "id": "results",

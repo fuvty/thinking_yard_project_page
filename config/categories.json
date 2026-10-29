@@ -3,12 +3,12 @@
     "id": "adaptivity",
     "label": "Adaptivity Scaling",
     "shortLabel": "Adaptivity",
-    "description": "Allocate reasoning effort dynamically, where and when it is useful.",
+    "description": "Explore greater model capability at the same compute budget through increased adaptivity.",
     "translations": {
       "zh": {
-        "label": "自适应扩展",
-        "shortLabel": "自适应扩展",
-        "description": "根据推理需要动态分配算力。"
+        "label": "适应性扩展",
+        "shortLabel": "适应性扩展",
+        "description": "提升适应性，探索同等计算预算下更强的模型能力。"
       }
     }
   },

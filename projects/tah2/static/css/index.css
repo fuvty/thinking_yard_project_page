@@ -35,7 +35,7 @@ img,svg{max-width:100%}
 .teaser-controls button[aria-pressed="true"]{background:var(--black);border-color:var(--black);color:#fff}
 .teaser-controls button:disabled{cursor:default;opacity:.5}
 .teaser-grid,.scaling-grid{cursor:pointer}
-.teaser[data-paused="true"] .teaser-status::after,.results-figure[data-paused="true"] #scaling-status::after{content:" · paused";color:var(--orange)}
+.teaser[data-paused="true"] .teaser-status::after,.results-figure[data-paused="true"] #scaling-status::after{content:var(--paused-label," · paused");color:var(--orange)}
 .teaser-grid{display:grid;grid-template-columns:1fr 1fr}
 .teaser-panel{margin:0;padding:20px 18px 0;min-width:0}
 .teaser-panel+figure{border-left:1px solid var(--line)}

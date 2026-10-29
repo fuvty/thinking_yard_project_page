@@ -1,4 +1,5 @@
 (function () {
+  const {t} = window.SiteI18n;
   function revealOnScroll() {
     const reveals = document.querySelectorAll(".reveal");
     reveals.forEach((element) => {
@@ -371,7 +372,7 @@
         if (!el) continue;
         const span = head.alpha + head.beta * nF;
         const pct = Math.min(1, span / nF);
-        el.textContent = `${Math.round(pct * 100)}% of input`;
+        el.textContent = t('{percent}% of input', { percent: Math.round(pct * 100) });
       }
     }
 

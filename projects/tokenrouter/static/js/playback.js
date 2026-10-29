@@ -1,3 +1,4 @@
+import {t} from './i18n.js';
 // Shared lifecycle for explanatory animations: once on entry, pause off-screen,
 // explicit replay/scrubbing, and static snapshots when reduced motion is enabled.
 export function createPlayback(element,{duration=10000,render,label,range=null}) {
@@ -7,8 +8,8 @@ export function createPlayback(element,{duration=10000,render,label,range=null})
   function draw() {render(progress);rendered=true;if(range)range.value=String(Math.round(progress*1000));}
   function update() {
     const active=playing&&visible&&!document.hidden&&!motion.matches;
-    button.textContent=motion.matches?(progress>=1?'Restart':'Show result'):(playing&&progress<1?'Pause':progress>=1?'Replay':'Play');
-    button.setAttribute('aria-label',`${button.textContent} ${label}`);
+    button.textContent=t(motion.matches?(progress>=1?'Restart':'Show result'):(playing&&progress<1?'Pause':progress>=1?'Replay':'Play'));
+    button.setAttribute('aria-label',t('{action} {illustration}',{action:button.textContent,illustration:t(label)}));
     button.setAttribute('aria-pressed',String(playing&&progress<1&&!motion.matches));
     cancelAnimationFrame(frame);frame=0;last=0;
     if(active)frame=requestAnimationFrame(tick);

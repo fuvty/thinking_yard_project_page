@@ -1,0 +1,160 @@
+{
+  "page": {
+    "title": "MoA · 异构注意力窗口，让长上下文推理更高效",
+    "description": "MoA 为不同注意力头搜索弹性滑动窗口，无需重新训练模型，在减少 KV cache 与计算开销的同时保留长上下文能力。",
+    "sections": {
+      "overview": {
+        "label": "概览",
+        "description": "因头而异的注意力窗口"
+      },
+      "observations": {
+        "label": "关键发现",
+        "description": "注意力头的范围与长度差异"
+      },
+      "method": {
+        "label": "方法设计",
+        "description": "弹性窗口规则的搜索与优化"
+      },
+      "calibration": {
+        "label": "校准数据",
+        "description": "评估注意力对长上下文的影响"
+      },
+      "results": {
+        "label": "实验结果",
+        "description": "准确率、吞吐量与显存效率"
+      },
+      "demo": {
+        "label": "演示",
+        "description": "从校准到部署"
+      },
+      "authors": {
+        "label": "研究团队",
+        "description": "作者与所属机构"
+      },
+      "bibtex": {
+        "label": "引用",
+        "description": "论文信息与 BibTeX"
+      }
+    }
+  },
+  "html": {
+    "hero.subtitle": "<span class=\"i18n-phrase\">注意力窗口因头而异，</span><span class=\"i18n-phrase\">让长上下文推理更高效。</span>",
+    "hero.context": "有效上下文长度 / 平均注意力跨度",
+    "hero.fa2": "相较 FlashAttention2 的解码吞吐量",
+    "hero.vllm": "相较 vLLM 的解码吞吐量",
+    "hero.paper": "<i class=\"fas fa-file-lines\"></i> 阅读论文",
+    "hero.code": "<i class=\"fab fa-github\"></i> 查看代码",
+    "overview.eyebrow": "概览",
+    "overview.title": "<span class=\"i18n-phrase\">缩短注意力跨度，</span><span class=\"i18n-phrase\">保留长上下文。</span>",
+    "overview.lead": "不同注意力头需要的上下文范围并不相同。MoA 为每个头设计随输入长度变化的窗口：关注局部的头节省计算，关注全局的头保留足够的上下文。",
+    "overview.uniform": "<strong data-emphasis=\"uniform-budget\">统一窗口难以合理分配预算。</strong>有些头只需局部信息，有些头则依赖更广的上下文来完成检索与理解。",
+    "overview.elastic": "<strong data-emphasis=\"per-head-rules\">MoA 为每个头搜索弹性窗口规则。</strong>在给定注意力密度下，各个头的窗口长度分别随输入长度调整。",
+    "overview.trainingFree": "<strong data-emphasis=\"training-free\">无需重新训练模型。</strong>先通过校准数据评估注意力的影响，再优化各个头的窗口配置。",
+    "observations.eyebrow": "关键发现",
+    "observations.title": "<span class=\"i18n-phrase\">注意力头的差异，</span><span class=\"i18n-phrase\">体现在两个方面。</span>",
+    "observations.lead": "对预训练模型的分析揭示了两种差异，也解释了为什么统一的滑动窗口难以兼顾整个模型。",
+    "observations.first": "发现一",
+    "observations.spatialTitle": "关注范围因头而异。",
+    "observations.spatial": "在相同输入长度下，有些头的注意力集中在对角线附近，有些则覆盖整个输入。统一窗口会截断全局信息，却仍在局部头上浪费计算与 KV cache。在 25% 注意力密度、8k 输入长度的实验中，异构弹性规则将检索准确率从 25% 提升至 98%。",
+    "observations.spatialCaption": "Vicuna-7B 的三个注意力头，各自对 256 个 LongEval 样本取平均。同一模型中，局部、中等和全局跨度的注意力头同时存在。",
+    "observations.second": "发现二",
+    "observations.lengthTitle": "窗口随输入长度变化。",
+    "observations.length": "短输入下，许多头看起来都在关注全部内容；输入变长后，差异才逐渐显现。有些头始终保持固定的局部窗口，有些则随输入长度扩大。MoA 用线性规则 <span class=\"observation-rule\">S&nbsp;=&nbsp;&alpha;&nbsp;+&nbsp;&beta;&nbsp;&middot;&nbsp;N</span> 描述这种变化，并为每个头搜索 &alpha; 和 &beta;。",
+    "matrix.heading": "各个头的注意力矩阵",
+    "matrix.length": "输入长度",
+    "matrix.headA": "注意力头 A",
+    "matrix.local": "局部，固定窗口",
+    "matrix.readoutA": "占输入长度的 40%",
+    "matrix.headB": "注意力头 B",
+    "matrix.medium": "中等，固定窗口",
+    "matrix.readoutB": "占输入长度的 100%",
+    "matrix.headC": "注意力头 C",
+    "matrix.global": "全局，弹性窗口",
+    "matrix.readoutC": "占输入长度的 90%",
+    "matrix.caption": "N×N 因果注意力矩阵示意。蓝色区域按窗口规则保留，浅色区域被屏蔽。在 4k 输入下，B 和 C 看起来相似；到 16k 时，B 的窗口保持不变，C 的窗口则继续扩大。",
+    "method.eyebrow": "方法设计",
+    "method.title": "<span class=\"i18n-phrase\">为不同的头，</span><span class=\"i18n-phrase\">搜索合适的窗口。</span>",
+    "method.lead": "MoA 构建弹性窗口的搜索空间，用长上下文校准数据评估注意力的影响，再为各个头选择窗口规则。",
+    "method.caption": "先评估注意力的影响，再优化各个头的弹性规则，最后部署对应的异构滑动窗口。",
+    "method.searchTitle": "弹性搜索空间",
+    "method.search": "候选规则将输入长度映射为窗口跨度，并满足硬件对计算块大小的要求。",
+    "method.profileTitle": "影响度评估",
+    "method.profile": "通过一阶梯度估计：屏蔽不同注意力位置，会怎样改变预测损失。",
+    "method.optimizeTitle": "自动优化",
+    "method.optimize": "在密度约束下搜索各个头的窗口配置，再用未参与搜索的序列长度验证效果。",
+    "calibration.eyebrow": "校准数据",
+    "calibration.title": "<span class=\"i18n-phrase\">校准任务，</span><span class=\"i18n-phrase\">需要真正依赖长上下文。</span>",
+    "calibration.lead": "MoA 采用多文档摘要任务，以原始稠密模型生成的摘要作为参考，评估压缩对长距离信息利用的影响。",
+    "calibration.contextTitle": "跨文档的信息",
+    "calibration.context": "摘要需要综合多篇文档中的内容。",
+    "calibration.lossTitle": "依赖上下文的输出",
+    "calibration.loss": "在生成摘要的部分计算损失。",
+    "calibration.referenceTitle": "与模型一致的参考",
+    "calibration.reference": "以稠密模型生成的摘要作为监督。",
+    "calibration.baselineLabel": "普通校准",
+    "calibration.baselineTitle": "RedPajama 上下文",
+    "calibration.baselineMetric": "检索准确率 0.25 / PPL 4.95",
+    "calibration.moaLabel": "MoA 校准",
+    "calibration.moaTitle": "MultiNews + 稠密模型参考",
+    "calibration.moaMetric": "检索准确率 0.95 / PPL 3.96",
+    "calibration.caption": "表 2：在 25% 注意力密度、8k 输入长度下比较校准方式。长距离依赖和与稠密模型一致的参考输出，都有助于保留模型能力。",
+    "results.eyebrow": "实验结果",
+    "results.title": "<span class=\"i18n-phrase\">兼顾准确率</span><span class=\"i18n-phrase\">与效率。</span>",
+    "results.lead": "从长上下文检索、LV-Eval、LongBench 到困惑度、吞吐量与显存占用，全面评估效果，并验证各项设计的作用。",
+    "results.contextScope": "在 Vicuna-7B 上，MoA 的有效上下文长度最高可达各个头平均注意力跨度的 3.9 倍（图 7）。这里的有效上下文长度，指检索准确率保持在 90% 以上时的最长输入。",
+    "results.retrieval": "相较统一窗口基线的检索准确率，覆盖 Vicuna 和 Llama3。",
+    "results.fa2": "50% 注意力密度下，相较 FlashAttention2 的解码吞吐量。",
+    "results.vllm": "50% 注意力密度下，相较 vLLM 的解码吞吐量。",
+    "results.accuracyTitle": "长上下文任务表现",
+    "results.accuracy": "在 50% 注意力密度下，MoA 在检索、LV-Eval、LongBench 和困惑度方面均接近完整注意力。LV-Eval 和 LongBench 的最大相对降幅分别为 5% 和 3%，检索准确率的平均降幅低于 1%。",
+    "results.accuracyCaption": "COLM 2025 版本的表 4：在 Vicuna-7B、Vicuna-13B、Llama3-8B 和 Llama3-70B 上，与 H2O、InfLLM 和 StreamingLLM 比较。",
+    "results.runtimeTitle": "推理速度与显存效率",
+    "results.runtime": "MoA 减少注意力计算，并限制 KV cache 大小，从而容纳更大的批量；专用 CUDA 内核支持异构窗口。吞吐量实验使用各方法能够支持的最大批量，因此收益同时来自单次计算加速和批量扩大。",
+    "results.runtimeCaption": "表 5：在 A100-80GB GPU 上测试 Vicuna-7B 和 Vicuna-13B，注意力密度为 50%。MoA 的解码吞吐量为 FlashAttention2 的 6.6–8.2 倍、vLLM 的 1.7–1.9 倍。",
+    "results.ablationTitle": "搜索空间消融",
+    "results.ablation": "从统一窗口出发，逐步引入层间差异、头间差异和弹性规则。在 25% 注意力密度下，头间差异和弹性规则带来的检索提升最为明显。",
+    "results.ablationCaption": "在 25% 注意力密度、8k 输入长度下，异构弹性规则将检索准确率从 0.25 提升至 0.98。",
+    "demo.eyebrow": "演示",
+    "demo.title": "从校准到部署",
+    "demo.lead": "完成一次校准，为模型搜索注意力配置，再按照选定的 KV cache 预算进行长上下文推理。",
+    "demo.profile": "用与模型输出一致的长上下文数据进行校准。",
+    "demo.search": "在密度预算内，为各层、各头搜索弹性窗口规则。",
+    "demo.serve": "用固定大小、稀疏且因头而异的 KV cache 配置部署推理。",
+    "team.eyebrow": "研究团队",
+    "team.title": "团队成员",
+    "citation.eyebrow": "引用",
+    "citation.title": "引用我们的工作。",
+    "citation.lead": "如在研究中使用 MoA，欢迎引用我们的论文。",
+    "team.tsinghua": "<sup>1</sup>清华大学",
+    "team.infinigence": "<sup>2</sup>无问芯穹",
+    "team.stanford": "<sup>3</sup>斯坦福大学",
+    "team.sjtu": "<sup>4</sup>上海交通大学",
+    "team.notes": "*同等贡献。Genghan Zhang 在清华大学期间参与了本研究。"
+  },
+  "attributes": {
+    "figures.overview": {
+      "alt": "MoA 概览：注意力模式与弹性窗口规则"
+    },
+    "figures.heads": {
+      "alt": "Vicuna-7B 的三个注意力矩阵，分别关注局部、中等范围与全局"
+    },
+    "figures.workflow": {
+      "alt": "MoA 流程：影响度评估、规则优化与异构窗口部署"
+    },
+    "figures.calibration": {
+      "alt": "MoA 校准数据消融实验"
+    },
+    "figures.accuracy": {
+      "alt": "MoA 与不同方法在长上下文任务上的表现"
+    },
+    "figures.throughput": {
+      "alt": "MoA 与 FlashAttention2、vLLM 的解码吞吐量比较"
+    },
+    "figures.ablation": {
+      "alt": "MoA 搜索空间消融实验"
+    }
+  },
+  "runtime": {
+    "{percent}% of input": "占输入长度的 {percent}%"
+  }
+}

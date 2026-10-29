@@ -3,31 +3,31 @@
   <div class="hero-vignette" aria-hidden="true"></div>
   <div class="hero-content">
     <h1 class="hero-title"><span>Mixture of Attention</span></h1>
-    <p class="hero-subtitle">
+    <p class="hero-subtitle" data-i18n="hero.subtitle">
       Optimizing LLM Inference Efficiency with Heterogeneous Sliding-Window Lengths.
     </p>
 
     <div class="hero-stats">
       <div class="stat-item">
         <div class="stat-value">3.9x</div>
-        <div class="stat-label">Effective Context Length</div>
+        <div class="stat-label" data-i18n="hero.context">Effective Context / Avg. Attention Span</div>
       </div>
       <div class="stat-item">
         <div class="stat-value">6.6-8.2x</div>
-        <div class="stat-label">Throughput vs. FlashAttention2</div>
+        <div class="stat-label" data-i18n="hero.fa2">Decode Throughput vs. FlashAttention2</div>
       </div>
       <div class="stat-item">
         <div class="stat-value">1.7-1.9x</div>
-        <div class="stat-label">Throughput vs. vLLM</div>
+        <div class="stat-label" data-i18n="hero.vllm">Decode Throughput vs. vLLM</div>
       </div>
     </div>
 
     <div class="hero-cta">
       <div class="hero-actions">
-        <a href="https://arxiv.org/pdf/2406.14909" class="btn btn-primary">
+        <a href="https://arxiv.org/pdf/2406.14909" class="btn btn-primary" data-i18n="hero.paper">
           <i class="fas fa-file-lines"></i> Read Paper
         </a>
-        <a href="https://github.com/thu-nics/MoA" class="btn btn-secondary">
+        <a href="https://github.com/thu-nics/MoA" class="btn btn-secondary" data-i18n="hero.code">
           <i class="fab fa-github"></i> View Code
         </a>
         <span class="hero-badge">
@@ -41,9 +41,9 @@
 <section class="section" id="overview">
   <div class="container">
     <div class="section-header reveal">
-      <p class="section-eyebrow">Overview</p>
-      <h2 class="section-title">Short attention spans can still preserve long-context behavior.</h2>
-      <p class="section-subtitle">
+      <p class="section-eyebrow" data-i18n="overview.eyebrow">Overview</p>
+      <h2 class="section-title" data-i18n="overview.title">Short attention spans can still preserve long-context behavior.</h2>
+      <p class="section-subtitle" data-i18n="overview.lead">
         Uniform sliding windows give every head the same local budget. MoA assigns each head its own elastic span rule so local heads stay cheap and global heads keep enough context.
       </p>
     </div>
@@ -52,19 +52,19 @@
       <div class="overview-content">
         <div class="overview-point">
           <div class="overview-point-icon problem"><i class="fas fa-xmark"></i></div>
-          <p><strong>Uniform spans misallocate budget.</strong> Some heads mainly need local context, while others require broad context to preserve retrieval and understanding.</p>
+          <p data-i18n="overview.uniform"><strong data-emphasis="uniform-budget">Uniform spans misallocate budget.</strong> Some heads mainly need local context, while others require broad context to preserve retrieval and understanding.</p>
         </div>
         <div class="overview-point">
           <div class="overview-point-icon solution"><i class="fas fa-check"></i></div>
-          <p><strong>MoA searches per-head elastic rules.</strong> Attention span becomes a head-specific function of input length under a target density constraint.</p>
+          <p data-i18n="overview.elastic"><strong data-emphasis="per-head-rules">MoA searches per-head elastic rules.</strong> Attention span becomes a head-specific function of input length under a target density constraint.</p>
         </div>
         <div class="overview-point">
           <div class="overview-point-icon solution"><i class="fas fa-check"></i></div>
-          <p><strong>The method is training-free.</strong> A calibration pass profiles attention influence, then an optimizer selects the best heterogeneous span plan.</p>
+          <p data-i18n="overview.trainingFree"><strong data-emphasis="training-free">The method is training-free.</strong> A calibration pass profiles attention influence, then an optimizer selects the best heterogeneous span plan.</p>
         </div>
       </div>
       <div class="overview-figure">
-        <img src="./static/images/method_brief.png" alt="MoA overview: attention patterns and elastic rules">
+        <img src="./static/images/method_brief.png" alt="MoA overview: attention patterns and elastic rules" data-i18n-attrs="figures.overview">
       </div>
     </div>
   </div>
@@ -73,41 +73,41 @@
 <section class="section section-dark" id="observations">
   <div class="container">
     <div class="section-header reveal">
-      <p class="section-eyebrow">The Discovery</p>
-      <h2 class="section-title">Attention is heterogeneous in two ways.</h2>
-      <p class="section-subtitle">
+      <p class="section-eyebrow" data-i18n="observations.eyebrow">The Discovery</p>
+      <h2 class="section-title" data-i18n="observations.title">Attention is heterogeneous in two ways.</h2>
+      <p class="section-subtitle" data-i18n="observations.lead">
         Profiling pre-trained LLMs reveals two facts about attention heads. Together they explain why a single uniform sliding window cannot serve a whole model.
       </p>
     </div>
 
     <div class="observation-block reveal">
       <div class="observation-copy">
-        <span class="observation-label">Observation 01</span>
-        <h3>Different heads have different spans.</h3>
-        <p>
-          At a fixed input length, some heads concentrate in a narrow band near the diagonal, while others spread across the entire input. A uniform window truncates the global heads and breaks long-range retrieval, yet still overspends compute and KV cache on the local ones. Matching each head to its own span raises content retrieval accuracy from 25% to 98%.
+        <span class="observation-label" data-i18n="observations.first">Observation 01</span>
+        <h3 data-i18n="observations.spatialTitle">Different heads have different spans.</h3>
+        <p data-i18n="observations.spatial">
+          At a fixed input length, some heads concentrate in a narrow band near the diagonal, while others spread across the entire input. A uniform window truncates the global heads and breaks long-range retrieval, yet still overspends compute and KV cache on the local ones. At 25% attention density and 8k input length, heterogeneous elastic rules raise retrieval accuracy from 25% to 98%.
         </p>
       </div>
       <figure class="observation-figure">
-        <img src="./static/images/oracle.jpg" alt="Attention matrices of three Vicuna-7B heads: a local head, a medium-span head, and a global head">
-        <figcaption>Attention matrices from three Vicuna-7B heads, each averaged over 256 LongEval items: local, medium, and global spans coexist in one model.</figcaption>
+        <img src="./static/images/oracle.jpg" alt="Attention matrices of three Vicuna-7B heads: a local head, a medium-span head, and a global head" data-i18n-attrs="figures.heads">
+        <figcaption data-i18n="observations.spatialCaption">Attention matrices from three Vicuna-7B heads, each averaged over 256 LongEval items: local, medium, and global spans coexist in one model.</figcaption>
       </figure>
     </div>
 
     <div class="observation-block reveal">
       <div class="observation-copy">
-        <span class="observation-label">Observation 02</span>
-        <h3>Spans scale differently as the input grows.</h3>
-        <p>
+        <span class="observation-label" data-i18n="observations.second">Observation 02</span>
+        <h3 data-i18n="observations.lengthTitle">Spans scale differently as the input grows.</h3>
+        <p data-i18n="observations.length">
           At short lengths, many heads look identically dense, and the difference only appears once the input stretches. Some heads keep a fixed local span no matter how long the input gets, while others expand in proportion to it. MoA models each head's span as a linear rule <span class="observation-rule">S&nbsp;=&nbsp;&alpha;&nbsp;+&nbsp;&beta;&nbsp;&middot;&nbsp;N</span> and searches &alpha; and &beta; per head.
         </p>
       </div>
 
       <div class="matrix-stage" id="matrixStage">
         <div class="matrix-stage-header">
-          <span class="matrix-stage-kicker">Attention matrix per head</span>
+          <span class="matrix-stage-kicker" data-i18n="matrix.heading">Attention matrix per head</span>
           <div class="matrix-length-readout">
-            <span class="matrix-length-label">Input length</span>
+            <span class="matrix-length-label" data-i18n="matrix.length">Input length</span>
             <span class="matrix-length-value" id="matrixLengthValue">4k</span>
             <div class="matrix-length-ticks" id="matrixLengthTicks">
               <span data-level="0">4k</span>
@@ -122,32 +122,32 @@
           <div class="matrix-card">
             <canvas class="matrix-canvas" id="matrixHeadA" width="240" height="240"></canvas>
             <div class="matrix-card-title">
-              <span>Head A</span>
-              <h4>Local, fixed</h4>
+              <span data-i18n="matrix.headA">Head A</span>
+              <h4 data-i18n="matrix.local">Local, fixed</h4>
             </div>
             <p class="matrix-rule">S = 1.6k <em>(&beta; = 0)</em></p>
-            <p class="matrix-readout" id="matrixReadoutA">40% of input</p>
+            <p class="matrix-readout" id="matrixReadoutA" data-i18n="matrix.readoutA">40% of input</p>
           </div>
           <div class="matrix-card">
             <canvas class="matrix-canvas" id="matrixHeadB" width="240" height="240"></canvas>
             <div class="matrix-card-title">
-              <span>Head B</span>
-              <h4>Medium, fixed</h4>
+              <span data-i18n="matrix.headB">Head B</span>
+              <h4 data-i18n="matrix.medium">Medium, fixed</h4>
             </div>
             <p class="matrix-rule">S = 5.6k <em>(&beta; = 0)</em></p>
-            <p class="matrix-readout" id="matrixReadoutB">100% of input</p>
+            <p class="matrix-readout" id="matrixReadoutB" data-i18n="matrix.readoutB">100% of input</p>
           </div>
           <div class="matrix-card">
             <canvas class="matrix-canvas" id="matrixHeadC" width="240" height="240"></canvas>
             <div class="matrix-card-title">
-              <span>Head C</span>
-              <h4>Global, elastic</h4>
+              <span data-i18n="matrix.headC">Head C</span>
+              <h4 data-i18n="matrix.global">Global, elastic</h4>
             </div>
             <p class="matrix-rule">S = 0.9 &middot; N <em>(&beta; &gt; 0)</em></p>
-            <p class="matrix-readout" id="matrixReadoutC">90% of input</p>
+            <p class="matrix-readout" id="matrixReadoutC" data-i18n="matrix.readoutC">90% of input</p>
           </div>
         </div>
-        <p class="matrix-stage-note">
+        <p class="matrix-stage-note" data-i18n="matrix.caption">
           Illustrative N&times;N causal attention matrices. Blue cells are kept by each head's rule; faint cells are masked. Heads B and C look alike at 4k. By 16k, one has stayed put while the other has kept growing.
         </p>
       </div>
@@ -159,33 +159,33 @@
 <section class="section section-gray" id="method">
   <div class="container">
     <div class="section-header reveal">
-      <p class="section-eyebrow">Method</p>
-      <h2 class="section-title">Search a heterogeneous attention-span plan.</h2>
-      <p class="section-subtitle">
+      <p class="section-eyebrow" data-i18n="method.eyebrow">Method</p>
+      <h2 class="section-title" data-i18n="method.title">Search a heterogeneous attention-span plan.</h2>
+      <p class="section-subtitle" data-i18n="method.lead">
         MoA constructs a search space of elastic span rules, profiles attention influence on long-context calibration data, and selects the optimal rule for each head.
       </p>
     </div>
 
     <figure class="figure-panel reveal">
-      <img src="./static/images/workflow.png" alt="MoA workflow">
-      <figcaption>MoA profiles attention influence, optimizes per-head elastic rules, and deploys the resulting heterogeneous sliding-window mask.</figcaption>
+      <img src="./static/images/workflow.png" alt="MoA workflow" data-i18n-attrs="figures.workflow">
+      <figcaption data-i18n="method.caption">MoA profiles attention influence, optimizes per-head elastic rules, and deploys the resulting heterogeneous sliding-window mask.</figcaption>
     </figure>
 
     <div class="method-grid reveal">
       <div class="method-card">
         <div class="method-icon"><i class="fas fa-layer-group"></i></div>
-        <h3>Elastic Search Space</h3>
-        <p>Each attention head selects from rules that map input length to a hardware-friendly sliding-window span.</p>
+        <h3 data-i18n="method.searchTitle">Elastic Search Space</h3>
+        <p data-i18n="method.search">Each attention head selects from rules that map input length to a hardware-friendly sliding-window span.</p>
       </div>
       <div class="method-card">
         <div class="method-icon"><i class="fas fa-wave-square"></i></div>
-        <h3>Influence Profiling</h3>
-        <p>First-order gradient profiling estimates how masking attention positions changes the prediction loss.</p>
+        <h3 data-i18n="method.profileTitle">Influence Profiling</h3>
+        <p data-i18n="method.profile">First-order gradient profiling estimates how masking attention positions changes the prediction loss.</p>
       </div>
       <div class="method-card">
         <div class="method-icon"><i class="fas fa-sliders"></i></div>
-        <h3>Automatic Optimization</h3>
-        <p>A density-constrained optimizer finds the best per-head plan, then validates it at an unseen sequence length.</p>
+        <h3 data-i18n="method.optimizeTitle">Automatic Optimization</h3>
+        <p data-i18n="method.optimize">A density-constrained optimizer finds the best per-head plan, then validates it at an unseen sequence length.</p>
       </div>
     </div>
   </div>
@@ -194,10 +194,10 @@
 <section class="section" id="calibration">
   <div class="container">
     <div class="section-header reveal">
-      <p class="section-eyebrow">Calibration</p>
-      <h2 class="section-title">Useful profiling must test long-context dependence.</h2>
-      <p class="section-subtitle">
-        MoA profiles on long summaries and uses the dense model's own output as the reference, so gradients track the behavior compression must preserve.
+      <p class="section-eyebrow" data-i18n="calibration.eyebrow">Calibration</p>
+      <h2 class="section-title" data-i18n="calibration.title">Useful profiling must test long-context dependence.</h2>
+      <p class="section-subtitle" data-i18n="calibration.lead">
+        MoA calibrates on multi-document summarization and uses the dense model's own summaries as references. Profiling then measures how compression affects predictions that depend on distant context.
       </p>
     </div>
 
@@ -207,43 +207,43 @@
           <div class="ingredient-card">
             <div class="ingredient-icon"><i class="fas fa-scroll"></i></div>
             <div>
-              <h3>Long-range content</h3>
-              <p>Summaries depend on evidence across documents.</p>
+              <h3 data-i18n="calibration.contextTitle">Long-range content</h3>
+              <p data-i18n="calibration.context">Summaries depend on evidence across documents.</p>
             </div>
           </div>
           <div class="ingredient-card">
             <div class="ingredient-icon"><i class="fas fa-bullseye"></i></div>
             <div>
-              <h3>Dependent output loss</h3>
-              <p>Compute loss on the generated summary.</p>
+              <h3 data-i18n="calibration.lossTitle">Dependent output loss</h3>
+              <p data-i18n="calibration.loss">Compute loss on the generated summary.</p>
             </div>
           </div>
           <div class="ingredient-card">
             <div class="ingredient-icon"><i class="fas fa-align-left"></i></div>
             <div>
-              <h3>Model-aligned reference</h3>
-              <p>Use dense-model summaries as supervision.</p>
+              <h3 data-i18n="calibration.referenceTitle">Model-aligned reference</h3>
+              <p data-i18n="calibration.reference">Use dense-model summaries as supervision.</p>
             </div>
           </div>
         </div>
 
         <div class="calibration-copy">
           <div class="calibration-comparison">
-            <p class="comparison-label">Weak Profiling</p>
-            <h3>RedPajama context</h3>
-            <div class="comparison-metric">0.25 retrieval / 4.95 PPL</div>
+            <p class="comparison-label" data-i18n="calibration.baselineLabel">Weak Profiling</p>
+            <h3 data-i18n="calibration.baselineTitle">RedPajama context</h3>
+            <div class="comparison-metric" data-i18n="calibration.baselineMetric">0.25 retrieval / 4.95 PPL</div>
           </div>
           <div class="calibration-comparison strong">
-            <p class="comparison-label">MoA Profiling</p>
-            <h3>MultiNews + dense reference</h3>
-            <div class="comparison-metric">0.95 retrieval / 3.96 PPL</div>
+            <p class="comparison-label" data-i18n="calibration.moaLabel">MoA Profiling</p>
+            <h3 data-i18n="calibration.moaTitle">MultiNews + dense reference</h3>
+            <div class="comparison-metric" data-i18n="calibration.moaMetric">0.95 retrieval / 3.96 PPL</div>
           </div>
         </div>
       </div>
 
       <figure class="figure-panel calibration-figure">
-        <img src="./static/images/calibration.png" alt="MoA calibration dataset ablation">
-        <figcaption>Table 2 isolates the useful profiling ingredients: long-range dependence and dense-model alignment.</figcaption>
+        <img src="./static/images/calibration.png" alt="MoA calibration dataset ablation" data-i18n-attrs="figures.calibration">
+        <figcaption data-i18n="calibration.caption">Table 2: calibration ablation at 25% attention density and 8k input length. Long-range dependence and dense-model alignment both improve the result.</figcaption>
       </figure>
     </div>
   </div>
@@ -252,9 +252,9 @@
 <section class="section section-gray" id="results">
   <div class="container">
     <div class="section-header reveal">
-      <p class="section-eyebrow">Experiments</p>
-      <h2 class="section-title">MoA improves the accuracy-efficiency frontier.</h2>
-      <p class="section-subtitle">
+      <p class="section-eyebrow" data-i18n="results.eyebrow">Experiments</p>
+      <h2 class="section-title" data-i18n="results.title">MoA improves the accuracy-efficiency frontier.</h2>
+      <p class="section-subtitle" data-i18n="results.lead">
         Experiments cover long-context retrieval, LV-Eval, LongBench, perplexity, throughput, memory, and search-space ablations.
       </p>
     </div>
@@ -262,32 +262,33 @@
     <div class="results-summary reveal">
       <div class="metric-card">
         <div class="metric-value">1.5-7.1x</div>
-        <div class="metric-label">Retrieval gain over uniform-window baselines across Vicuna and Llama3.</div>
+        <div class="metric-label" data-i18n="results.retrieval">Retrieval accuracy relative to uniform-window baselines across Vicuna and Llama3.</div>
       </div>
       <div class="metric-card">
         <div class="metric-value">6.6-8.2x</div>
-        <div class="metric-label">Decode throughput speedup over FlashAttention2 at 50% density.</div>
+        <div class="metric-label" data-i18n="results.fa2">Decode throughput speedup over FlashAttention2 at 50% density.</div>
       </div>
       <div class="metric-card">
         <div class="metric-value">1.7-1.9x</div>
-        <div class="metric-label">Decode throughput speedup over vLLM with minimal performance impact.</div>
+        <div class="metric-label" data-i18n="results.vllm">Decode throughput speedup over vLLM at 50% density.</div>
       </div>
     </div>
 
     <div class="expandable-section open reveal">
       <div class="expandable-header" onclick="toggleExpand(this)">
-        <div class="expandable-title">Overall Long-Context Performance</div>
+        <div class="expandable-title" data-i18n="results.accuracyTitle">Overall Long-Context Performance</div>
         <div class="expandable-icon"><i class="fas fa-plus"></i></div>
       </div>
       <div class="expandable-content">
         <div class="expandable-content-inner">
           <div class="expandable-inner">
-            <p>
+            <p data-i18n="results.accuracy">
               At 50% density, MoA stays close to full attention across retrieval accuracy, LV-Eval, LongBench, and perplexity. It reduces maximum relative drops to 5% on LV-Eval and 3% on LongBench, while the average retrieval drop stays below 1%.
             </p>
+            <p data-i18n="results.contextScope">For Vicuna-7B, effective context reaches up to 3.9× the average attention span across heads (Figure 7). Effective context is the longest input with retrieval accuracy above 90%.</p>
             <figure class="figure-panel">
-              <img src="./static/images/main_result.png" alt="MoA comparative performance results">
-              <figcaption>Table 4 from the COLM 2025 version compares MoA with H2O, InfLLM, and StreamingLLM across Vicuna-7B, Vicuna-13B, Llama3-8B, and Llama3-70B.</figcaption>
+              <img src="./static/images/main_result.png" alt="MoA comparative performance results" data-i18n-attrs="figures.accuracy">
+              <figcaption data-i18n="results.accuracyCaption">Table 4 from the COLM 2025 version compares MoA with H2O, InfLLM, and StreamingLLM across Vicuna-7B, Vicuna-13B, Llama3-8B, and Llama3-70B.</figcaption>
             </figure>
           </div>
         </div>
@@ -296,18 +297,18 @@
 
     <div class="expandable-section reveal">
       <div class="expandable-header" onclick="toggleExpand(this)">
-        <div class="expandable-title">Runtime and Memory Efficiency</div>
+        <div class="expandable-title" data-i18n="results.runtimeTitle">Runtime and Memory Efficiency</div>
         <div class="expandable-icon"><i class="fas fa-plus"></i></div>
       </div>
       <div class="expandable-content">
         <div class="expandable-content-inner">
           <div class="expandable-inner">
-            <p>
-              The throughput gains come from static KV cache size, reduced attention computation, increased batch capacity, and a CUDA kernel for heterogeneous attention.
+            <p data-i18n="results.runtime">
+              MoA reduces attention computation and bounds KV cache size, allowing larger batches. A dedicated CUDA kernel supports its heterogeneous windows. The throughput comparison uses the largest supported batch size for each method, rather than a fixed batch size.
             </p>
             <figure class="figure-panel">
-              <img src="./static/images/throughput.png" alt="MoA decode throughput comparison">
-              <figcaption>At 50% density, MoA reaches 6.6-8.2x throughput over FlashAttention2 and 1.7-1.9x over vLLM on A100-80GB.</figcaption>
+              <img src="./static/images/throughput.png" alt="MoA decode throughput comparison" data-i18n-attrs="figures.throughput">
+              <figcaption data-i18n="results.runtimeCaption">Table 5: Vicuna-7B and Vicuna-13B decoding on A100-80GB GPUs at 50% attention density. MoA reaches 6.6–8.2× throughput over FlashAttention2 and 1.7–1.9× over vLLM.</figcaption>
             </figure>
           </div>
         </div>
@@ -316,18 +317,18 @@
 
     <div class="expandable-section reveal">
       <div class="expandable-header" onclick="toggleExpand(this)">
-        <div class="expandable-title">Search Space Ablation</div>
+        <div class="expandable-title" data-i18n="results.ablationTitle">Search Space Ablation</div>
         <div class="expandable-icon"><i class="fas fa-plus"></i></div>
       </div>
       <div class="expandable-content">
         <div class="expandable-content-inner">
           <div class="expandable-inner">
-            <p>
+            <p data-i18n="results.ablation">
               Starting from a uniform mask, MoA progressively adds layer heterogeneity, head heterogeneity, and elastic rules. Head heterogeneity and elasticity deliver the largest retrieval improvements at 25% density.
             </p>
             <figure class="figure-panel figure-narrow">
-              <img src="./static/images/ablation.png" alt="MoA ablation study">
-              <figcaption>Elastic heterogeneous rules improve retrieval accuracy from 0.25 to 0.98 at 8k input length under a 25% density budget.</figcaption>
+              <img src="./static/images/ablation.png" alt="MoA ablation study" data-i18n-attrs="figures.ablation">
+              <figcaption data-i18n="results.ablationCaption">Elastic heterogeneous rules improve retrieval accuracy from 0.25 to 0.98 at 8k input length under a 25% density budget.</figcaption>
             </figure>
           </div>
         </div>
@@ -339,10 +340,10 @@
 <section class="section" id="demo">
   <div class="container">
     <div class="section-header reveal">
-      <p class="section-eyebrow">Demo</p>
-      <h2 class="section-title">A plug-and-play compression pipeline for long-context inference.</h2>
-      <p class="section-subtitle">
-        The implementation exposes MoA as a practical attention backend for long-context decoding under controlled KV cache density.
+      <p class="section-eyebrow" data-i18n="demo.eyebrow">Demo</p>
+      <h2 class="section-title" data-i18n="demo.title">From calibration to efficient long-context inference.</h2>
+      <p class="section-subtitle" data-i18n="demo.lead">
+        Calibrate once, search a model-specific attention plan, then use it for long-context decoding within the chosen KV cache budget.
       </p>
     </div>
 
@@ -350,15 +351,15 @@
       <div class="demo-copy">
         <div class="demo-point">
           <span>01</span>
-          <p>Profile an LLM with a model-aligned long-context calibration set.</p>
+          <p data-i18n="demo.profile">Profile an LLM with a model-aligned long-context calibration set.</p>
         </div>
         <div class="demo-point">
           <span>02</span>
-          <p>Search per-layer, per-head elastic window rules under the density budget.</p>
+          <p data-i18n="demo.search">Search per-layer, per-head elastic window rules under the density budget.</p>
         </div>
         <div class="demo-point">
           <span>03</span>
-          <p>Serve with a static, sparse, heterogeneous KV cache plan.</p>
+          <p data-i18n="demo.serve">Serve with a static, sparse, heterogeneous KV cache plan.</p>
         </div>
       </div>
       <div class="video-frame">
@@ -373,8 +374,8 @@
 <section class="section section-gray authors-section" id="authors">
   <div class="container">
     <div class="reveal">
-      <p class="section-eyebrow">Team</p>
-      <h2 class="section-title">Meet the researchers.</h2>
+      <p class="section-eyebrow" data-i18n="team.eyebrow">Team</p>
+      <h2 class="section-title" data-i18n="team.title">Meet the researchers.</h2>
     </div>
 
     <div class="authors-list reveal">
@@ -394,11 +395,13 @@
     </div>
 
     <div class="affiliations reveal">
-      <sup>1</sup>Tsinghua University &nbsp;&nbsp;
-      <sup>2</sup>Infinigence-AI &nbsp;&nbsp;
-      <sup>3</sup>Stanford University &nbsp;&nbsp;
-      <sup>4</sup>Shanghai Jiao Tong University<br>
-      <span style="font-size: 12px;">*Equal contribution. Genghan Zhang made contributions while at Tsinghua University.</span>
+      <div class="i18n-affiliations">
+        <span data-i18n="team.tsinghua"><sup>1</sup>Tsinghua University</span>
+        <span data-i18n="team.infinigence"><sup>2</sup>Infinigence-AI</span>
+        <span data-i18n="team.stanford"><sup>3</sup>Stanford University</span>
+        <span data-i18n="team.sjtu"><sup>4</sup>Shanghai Jiao Tong University</span>
+      </div>
+      <p class="i18n-author-notes" data-i18n="team.notes">*Equal contribution. Genghan Zhang made contributions while at Tsinghua University.</p>
     </div>
   </div>
 </section>
@@ -406,9 +409,9 @@
 <section class="section" id="bibtex">
   <div class="container">
     <div class="section-header reveal">
-      <p class="section-eyebrow">Citation</p>
-      <h2 class="section-title">Cite our work.</h2>
-      <p class="section-subtitle">
+      <p class="section-eyebrow" data-i18n="citation.eyebrow">Citation</p>
+      <h2 class="section-title" data-i18n="citation.title">Cite our work.</h2>
+      <p class="section-subtitle" data-i18n="citation.lead">
         If you find MoA useful for your research, please consider citing our paper.
       </p>
     </div>

@@ -40,15 +40,15 @@
   "html": {
     "hero.subtitle": "<span class=\"i18n-phrase\">投影并融合 KV cache，</span><span class=\"i18n-phrase\">让模型直接交流语义，</span><span class=\"i18n-phrase\">减少信息损失与通信延迟。</span>",
     "hero.accuracyIndividual": "相较接收模型的准确率提升",
-    "hero.accuracyText": "相较文本通信的准确率提升",
-    "hero.speedup": "相较文本通信的延迟加速比",
+    "hero.accuracyText": "相较 T2T的准确率提升",
+    "hero.speedup": "相较 T2T的延迟加速比",
     "hero.paper": "<i class=\"fas fa-file-alt\"></i> 阅读论文",
     "hero.code": "<i class=\"fab fa-github\"></i> 查看代码",
     "hero.models": "🤗 模型权重",
     "overview.eyebrow": "概览",
     "overview.title": "<span class=\"i18n-phrase\">模型交流，</span><span class=\"text-highlight-gradient i18n-phrase\" data-emphasis=\"beyond-text\">不止于文本</span>",
     "overview.lead": "模型各有所长，协作可以取长补短。但仅靠文本交流，既难以完整传递模型的理解，也会增加生成开销。",
-    "overview.textCommunication": "<strong data-emphasis=\"text-communication\">文本通信（T2T）</strong>把模型内部丰富的语义表示压缩成文字，损失部分信息；逐个生成 token 也会带来额外延迟。",
+    "overview.textCommunication": "<strong data-emphasis=\"text-communication\">Text-to-Text（T2T）</strong>把模型内部丰富的语义表示压缩成文字，损失部分信息；逐个生成 token 也会带来额外延迟。",
     "overview.cacheCommunication": "<strong data-emphasis=\"cache-communication\">Cache-to-Cache（C2C）</strong>将共享模型的 KV cache 融入接收模型，直接传递对上下文的理解，省去中间文本的生成。",
     "motivation.eyebrow": "研究动机",
     "motivation.title": "<span class=\"i18n-phrase\">文本通信</span><span class=\"i18n-phrase\">有哪些局限？</span>",
@@ -61,7 +61,7 @@
     "motivation.latency": "每轮交流都要逐个生成 token，通信过程缓慢。",
     "motivation.caption": "<strong data-emphasis=\"example-label\">示例：</strong>文本描述中的歧义会损失结构信息；C2C 直接传递模型内部的语义表示，减少这类信息损失。",
     "insight.eyebrow": "关键发现",
-    "insight.title": "<span class=\"i18n-phrase\">KV cache</span> <span class=\"i18n-phrase\">承载着语义信息。</span>",
+    "insight.title": "<span class=\"i18n-phrase\">KV Cache</span> <span class=\"i18n-phrase\">承载着语义信息。</span>",
     "insight.subtitle": "三组理想化实验表明，缓存中的语义可以增强、转换，并在模型间互补。",
     "insight.enrichmentTag": "可增强",
     "insight.enrichmentTitle": "丰富缓存语义，提升回答质量",
@@ -102,8 +102,8 @@
     "results.allSharers": "全部共享模型",
     "results.allReceivers": "全部接收模型",
     "results.vsReceiver": "相较接收模型的提升（百分点）",
-    "results.vsText": "相较文本通信的提升（百分点）",
-    "results.speedup": "相较文本通信的加速比",
+    "results.vsText": "相较 T2T的提升（百分点）",
+    "results.speedup": "相较 T2T的加速比",
     "results.expand": "查看详细结果",
     "results.loading": "<i class=\"fas fa-chart-bar\"></i> 正在加载结果…",
     "results.receiver": "接收模型",
@@ -112,14 +112,14 @@
     "results.receiverOnly": "仅接收模型",
     "results.sharerOnly": "仅共享模型",
     "results.routing": "模型路由",
-    "results.textCommunication": "文本通信",
+    "results.textCommunication": "Text-to-Text",
     "results.cacheCommunication": "Cache-to-Cache",
     "summary.eyebrow": "研究总结",
     "summary.title": "主要贡献",
     "summary.paradigmTitle": "直接交流语义",
     "summary.paradigm": "通过学习 KV cache 投影与残差融合，实现模型间的直接语义通信。",
     "summary.performanceTitle": "更准确，也更高效",
-    "summary.performance": "以 <span class=\"i18n-nowrap\">Qwen2.5-0.5B</span> 为共享模型，C2C 在四项基准上使 <span class=\"i18n-nowrap\">Qwen3-0.6B</span> 的平均准确率提高 <span class=\"i18n-nowrap\">11.0 个百分点</span>，相较文本通信实现 <span class=\"i18n-nowrap\">3.46×</span> 延迟加速。",
+    "summary.performance": "以 <span class=\"i18n-nowrap\">Qwen2.5-0.5B</span> 为共享模型，C2C 在四项基准上使 <span class=\"i18n-nowrap\">Qwen3-0.6B</span> 的平均准确率提高 <span class=\"i18n-nowrap\">11.0 个百分点</span>，相较 T2T实现 <span class=\"i18n-nowrap\">3.46×</span> 延迟加速。",
     "summary.generalTitle": "适配多种模型",
     "summary.general": "训练融合模块并完成 token 与层的对齐后，可组合不同家族、规模和专长的模型。",
     "team.eyebrow": "研究团队",
@@ -130,12 +130,12 @@
     "citation.subtitle": "如果 C2C 对研究有所帮助，欢迎引用我们的论文。",
     "hero.receiverGain": "+11.0 <small>个百分点</small>",
     "hero.textGain": "+5.4 <small>个百分点</small>",
-    "hero.scope": "<span class=\"i18n-nowrap\">Qwen3-0.6B</span> 接收模型 · <span class=\"i18n-nowrap\">Qwen2.5-0.5B</span> 共享模型 · 四项基准平均值（<a href=\"https://arxiv.org/html/2510.03215v2#S4.T4\">表 4</a>）。",
-    "results.scope": "准确率提升以百分点计；加速比为所选结果的平均 T2T 延迟除以平均 C2C 延迟。单张 A100，批大小为 1；数据见<a href=\"https://arxiv.org/html/2510.03215v2#S4.T4\">论文表 4</a>。"
+    "results.scope": "准确率提升以百分点计；加速比为所选结果的平均 T2T 延迟除以平均 C2C 延迟。单张 A100，批大小为 1；数据见<a href=\"https://arxiv.org/html/2510.03215v2#S4.T4\">论文表 4</a>。",
+    "results.highlightScope": "首屏指标的实验设置：<span class=\"i18n-nowrap\">Qwen3-0.6B</span> 接收模型 · <span class=\"i18n-nowrap\">Qwen2.5-0.5B</span> 共享模型 · 四项基准平均值（<a href=\"https://arxiv.org/html/2510.03215v2#S4.T4\">表 4</a>）。"
   },
   "attributes": {
     "figure.overview": {
-      "alt": "文本通信与 C2C 的流程对比"
+      "alt": "Text-to-Text（T2T）与 Cache-to-Cache（C2C）的流程对比"
     },
     "figure.example": {
       "alt": "文本描述中的语义歧义与 C2C 直接传递语义的示例"

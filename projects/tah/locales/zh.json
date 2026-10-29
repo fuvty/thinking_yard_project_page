@@ -1,0 +1,162 @@
+{
+  "page": {
+    "title": "Think-at-Hard · 自适应循环大模型",
+    "description": "TaH 有选择地精炼困难 token，通过双维因果注意力、深度感知 LoRA 和神经决策器提高推理准确率与迭代效率。",
+    "sections": {
+      "overview": {
+        "label": "概览",
+        "description": "选择性隐空间迭代"
+      },
+      "insight": {
+        "label": "关键发现",
+        "description": "哪些 token 值得继续迭代"
+      },
+      "architecture": {
+        "label": "方法设计",
+        "description": "自适应迭代架构"
+      },
+      "results": {
+        "label": "实验结果",
+        "description": "推理准确率与运行效率"
+      },
+      "contributions": {
+        "label": "研究总结",
+        "description": "主要研究贡献"
+      },
+      "team": {
+        "label": "研究团队",
+        "description": "作者与所属机构"
+      },
+      "bibtex": {
+        "label": "引用",
+        "description": "论文信息与 BibTeX"
+      }
+    }
+  },
+  "html": {
+    "hero.adaptive-looped-llms-that-refine-hard-tokens-and-skip-unnecessary": "<span class=\"i18n-phrase\">自适应循环大模型，</span><span class=\"i18n-phrase\">把迭代留给困难 token。</span>",
+    "hero.5-3-pp": "+5.3 pp",
+    "hero.tah-gain-over-standard": "平均准确率提升（百分点）",
+    "hero.avg-iteration-depth": "平均迭代深度",
+    "hero.looped": "循环",
+    "hero.transformer": "Transformer",
+    "hero.read-paper": "<i class=\"fas fa-file-alt\"></i> 阅读论文",
+    "hero.view-code": "<i class=\"fab fa-github\"></i> 查看代码",
+    "hero.models": "🤗 模型权重",
+    "hero.icml-2026-iclr-2025-lit-workshop-best-paper-shortlist": "<span class=\"hero-badge\"><i class=\"fas fa-award\"></i> ICML 2026</span><span class=\"hero-badge hero-badge-long\"><i class=\"fas fa-star\"></i> ICLR 2025 LIT Workshop 最佳论文候选</span>",
+    "hero.selective": "选择性迭代",
+    "overview.overview": "概览",
+    "overview.iterate-smarter-not-more": "<span class=\"i18n-phrase\">有选择地迭代，</span><span class=\"text-highlight-gradient\" data-emphasis=\"not-more\">而非一味加深</span>",
+    "overview.looped-transformers-refine-token-predictions-through-multiple-lat": "循环 Transformer 通过多次隐空间迭代改进 token 预测。但对所有 token 反复计算，既浪费算力，也可能将原本正确的预测改错，产生<em data-emphasis=\"latent-overthinking\">隐空间过度思考</em>。",
+    "overview.always-iterate-applies-uniform-iterations-to-all-tokens-overthink": "<strong data-emphasis=\"always-iterate\">Always-Iterate</strong> 对所有 token 使用相同深度，简单 token 被过度计算，困难 token 却仍可能思考不足。",
+    "overview.think-at-hard-selectively-iterates-only-on-hard-tokens-improving": "<strong data-emphasis=\"think-at-hard\">Think-at-Hard</strong> 只让困难 token 继续迭代，在提高准确率的同时，让 93% 的 token 跳过额外迭代。",
+    "insight.the-discovery": "关键发现",
+    "insight.most-tokens-don-t-need-to-think-twice": "<span class=\"i18n-phrase\">大多数 token</span><span class=\"text-highlight-gradient\" data-emphasis=\"think-twice\">无需再次迭代</span>",
+    "insight.we-identify-latent-overthinking-where-extra-iterations-hurt-rathe": "我们发现，额外迭代有时会适得其反，导致<em data-emphasis=\"latent-overthinking\">隐空间过度思考</em>。有选择地分配迭代，可以更充分地发挥循环模型的潜力。",
+    "insight.tokens-corrected": "预测得到纠正",
+    "insight.after-a-second-iteration-8-7-of-all-tokens-change-from-incorrect": "在 Ouro 中，第二次迭代让 8.7% 的 token 从预测错误变为正确，比例以全部 token 为分母。",
+    "insight.tokens-overthought": "预测反而变差",
+    "insight.another-2-1-of-all-tokens-change-from-correct-to-incorrect-predic": "与此同时，有 2.1% 的 token 从预测正确变为错误。额外的隐空间计算同样可能带来过度思考。",
+    "insight.oracle-potential": "Oracle 潜力（百分点）",
+    "insight.an-oracle-policy-that-iterates-only-on-mispredicted-tokens-achiev": "仅对预测错误的 token 追加迭代，oracle 策略相较统一迭代两次最多提升 7.3 个百分点；结合 TaH 架构，提升可达 32 个百分点。",
+    "insight.learn-more-about-the-oracle-experiments": "查看 oracle 实验",
+    "insight.oracle-iteration-policy": "Oracle 迭代策略",
+    "insight.we-establish-an-oracle-policy-that-triggers-additional-iterations": "我们定义 oracle 策略 π：只有当参考模型在第一次前向传播中未能预测目标 token 时，才进行额外迭代。以 top-1 预测是否匹配为判据，该策略仅让 12–19% 的 token 继续计算。",
+    "insight.policy": "策略",
+    "insight.always-1-no-iteration": "Always-1（仅一次）",
+    "insight.always-2-iterate-all": "Always-2（全部迭代两次）",
+    "insight.oracle-selective": "Oracle（选择性迭代）",
+    "insight.oracle-w-tah": "Oracle + TaH",
+    "insight.key-insight-tah-s-architecture-better-utilizes-the-oracle-policy": "<strong style=\"color:#0a84ff;\" data-emphasis=\"key-insight\">关键发现：</strong>TaH 能更好地利用 oracle 策略，在部分 oracle 基准上提升超过 25 个百分点，并超越 Qwen3-4B。Oracle 依赖目标 token 或更强模型提供的参考信号；实际部署时，TaH 用神经决策器近似这些决策。",
+    "insight.accuracy-landscape-across-iterations": "不同迭代深度的预测覆盖",
+    "insight.because-ouro-trains-all-iterations-to-predict-all-tokens-predicta": "Ouro 要求每一轮迭代都预测全部 token，不同深度能正确预测的 token 大量重叠，仍有不少 token 始终预测不对。TaH 让更深层迭代专注于困难 token，减少重复覆盖，提高选择性迭代的效果。",
+    "architecture.architecture": "架构",
+    "architecture.tah-design": "TaH 的设计",
+    "architecture.three-architectural-innovations-enable-efficient-selective-latent": "三个协同组件，让选择性隐空间迭代高效运行。",
+    "architecture.tah-overview-a-regular-causal-attention-b-duo-causal-attention-ex": "<strong data-emphasis=\"tah-overview\">TaH 架构概览。</strong>（a）标准因果注意力。（b）双维因果注意力，将因果关系扩展至两个维度。（c）借助 LoRA 适配器和神经迭代决策器，TaH 为每个 token 选择继续迭代或输出。",
+    "architecture.duo-causal-attention": "双维因果注意力",
+    "architecture.2d-causality-across-token-positions-and-iteration-depths-compatib": "同时考虑 token 位置和迭代深度的因果关系，兼容 FlashAttention，无需定制 CUDA 核函数。",
+    "architecture.depth-aware-lora": "深度感知 LoRA",
+    "architecture.lora-adapters-at-d-1-shift-the-objective-from-next-token-predicti": "在 $d > 1$ 时启用 LoRA，将目标从通用的下一 token 预测转为困难 token 的精炼，新增参数少于 3%。",
+    "architecture.neural-iteration-decider": "神经迭代决策器",
+    "architecture.lightweight-mlp-that-predicts-which-tokens-need-deeper-thinking-t": "轻量 MLP 判断哪些 token 需要更深的计算，通过稳定的两阶段训练学习 oracle 策略。",
+    "architecture.input-forward-pass": "输入与前向传播",
+    "architecture.depth-adapter-lora": "深度适配器（LoRA）",
+    "architecture.iteration-decider": "迭代决策器",
+    "architecture.standard-forward-pass-depth-1": "第一次前向传播",
+    "architecture.token-embeddings-enter-the-llm-backbone-for-a-standard-forward-pa": "token 嵌入在深度 $d=1$ 进入 LLM 主干，使用原有预训练权重 $\\theta$，不启用 LoRA。模型先完成标准的下一 token 预测，再由决策器判断是否需要继续精炼。",
+    "architecture.key-the-first-pass-preserves-the-pretrained-model-s-strong-next-t": "<i class=\"fas fa-lightbulb\" style=\"color:#ff9f0a; margin-right:8px;\"></i><strong data-emphasis=\"key\">要点：</strong>第一次计算保留预训练模型的预测能力，只有困难 token 才进入更深的迭代。",
+    "architecture.unlike-standard-causal-attention-1d-attend-to-previous-positions": "标准因果注意力只允许访问此前的位置。双维因果注意力将因果关系扩展到<strong data-emphasis=\"two-dimensions\">两个维度</strong>：此前的 token 位置，<em data-emphasis=\"and\">以及</em>更浅的迭代深度。形式化表示为 $X_{\\le i}^{(\\le d)} = \\{x_j^{(k)} \\mid j \\le i, k \\le d\\}$。",
+    "architecture.key-this-enables-cross-depth-information-flow-deeper-tokens-can-a": "<i class=\"fas fa-lightbulb\" style=\"color:#ff9f0a; margin-right:8px;\"></i><strong data-emphasis=\"key\">要点：</strong>深层迭代可以读取此前所有 token 的浅层表示，实现跨深度的信息流动；同时兼容 FlashAttention，保留并行训练能力。",
+    "architecture.at-deeper-iterations-d-1-lora-adapters-activate-on-top-of-the-sha": "当迭代深度 $d > 1$ 时，在共享主干上启用 LoRA：$\\theta_d = \\theta + \\Delta$。目标由通用的下一 token 预测转为<strong data-emphasis=\"hard-token-refinement\">困难 token 的精炼</strong>，迭代间的残差连接则让精炼过程更易学习。",
+    "architecture.key-lora-adds-less-than-3-extra-parameters-while-enabling-the-mod": "<i class=\"fas fa-lightbulb\" style=\"color:#ff9f0a; margin-right:8px;\"></i><strong data-emphasis=\"key\">要点：</strong>LoRA 仅增加不到 3% 的参数，就能让深层迭代专门处理困难 token。若不使用 LoRA，共享权重需要同时承担两种目标，限制了模型表现。",
+    "architecture.a-lightweight-mlp-mathcal-i-phi-reads-concatenated-hidden-states": "轻量 MLP（$\\mathcal{I}_\\phi$）拼接 LLM 浅层、中层和最后一层的隐藏状态，预测继续迭代的概率 $\\hat{c}_i^{(d)} \\in [0,1]$。若 $\\hat{c}_i^{(d)} < c_{\\text{threshold}}$，则输出 token；否则进入下一次迭代。",
+    "architecture.key-the-decider-is-trained-in-stage-2-to-imitate-the-oracle-polic": "<i class=\"fas fa-lightbulb\" style=\"color:#ff9f0a; margin-right:8px;\"></i><strong data-emphasis=\"key\">要点：</strong>决策器在第二阶段通过加权二元交叉熵学习 oracle 决策，预测准确率约为 83%。例如，“But”和“So”分别有 34% 和 18% 的出现位置被选中继续迭代。",
+    "architecture.two-stage-training-scheme": "两阶段训练",
+    "architecture.the-backbone-llm-and-iteration-decider-are-tightly-coupled-joint": "LLM 主干与迭代决策器紧密耦合，直接联合训练容易不稳定。我们用固定的 oracle 策略 $\\pi$ 将训练分为两个阶段：",
+    "architecture.fine-tune-the-llm-theta-and-lora-delta-with-pi-guided-iteration-l": "在 $\\pi$ 指导的迭代路径上微调 LLM（$\\theta$）和 LoRA（$\\Delta$），以 oracle 指定深度的下一 token 预测作为训练目标。这样既保留简单 token 的首轮预测能力，也让深层迭代学习精炼困难 token。",
+    "architecture.freeze-the-backbone-and-train-the-decider-phi-to-imitate-pi-s-con": "冻结主干，用加权二元交叉熵训练决策器（$\\phi$），使其模仿 $\\pi$ 的继续迭代决策。类别权重用于处理“继续”与“停止”的标签不均衡。",
+    "results.experiments": "实验",
+    "results.benchmark-results": "推理基准结果",
+    "results.results-across-nine-reasoning-benchmarks-at-three-model-scales-ta": "我们在三个模型规模、九项推理基准上评估 TaH。TaH 移除一层主干，以保持与基线相同的参数量；TaH+ 保留完整主干，新增参数不到 3%。下方准确率增益以 TaH+ 相较 Standard 计算。",
+    "results.tah-performance-summary": "TaH+ 结果概览",
+    "results.5-3-pp": "+5.3 pp",
+    "results.vs-standard": "相较 Standard（百分点）",
+    "results.average-accuracy": "平均准确率",
+    "results.method": "方法",
+    "results.average": "平均值",
+    "results.real-world-efficiency-on-a800-gpu": "A800 上的实际运行效率",
+    "results.1-7b-model-aime25-8k-max-token-length-on-a-single-nvidia-a800-gpu": "1.7B 模型在单张 NVIDIA A800 上运行 AIME25，最大输出长度为 8K：",
+    "results.avg-depth": "平均深度",
+    "results.memory-gb": "显存（GB）",
+    "results.latency-s": "延迟（s）",
+    "results.throughput-tok-s": "吞吐量（token/s）",
+    "results.tah-iterates-twice-on-only-6-of-tokens-achieving-1-48-lower-memor": "在此设置下，TaH 仅让 6% 的 token 迭代两次。相较 AlwaysThink，显存占用减少 32%，解码延迟降至约 1/2.48。Standard 的延迟仍然更低。",
+    "contributions.contributions": "研究总结",
+    "contributions.key-contributions": "主要贡献",
+    "contributions.selective-latent-iteration": "选择性隐空间迭代",
+    "contributions.we-identify-latent-overthinking-in-looped-transformers-and-use-se": "我们揭示循环 Transformer 中的隐空间过度思考现象，并通过选择性迭代将计算集中在困难 token 上。",
+    "contributions.specialized-architecture": "为选择性迭代设计的架构",
+    "contributions.duo-causal-attention-depth-aware-lora-and-neural-iteration-decide": "双维因果注意力、深度感知 LoRA 和神经迭代决策器共同支持选择性迭代，并保留完整的训练并行性。",
+    "contributions.efficient-effective": "兼顾效果与效率",
+    "contributions.tah-improves-average-accuracy-over-standard-by-5-3-6-2-percentage": "在 0.6B 和 1.7B 规模上，TaH+ 相较 Standard 的九项基准平均准确率提升 5.3–6.2 个百分点，新增参数不到 3%。TaH 平均迭代 1.07 次，93% 的 token 跳过额外计算。",
+    "team.team": "研究团队",
+    "team.meet-the-researchers": "作者与团队",
+    "team.1tsinghua-university-2infinigence-ai-3shanghai-jiao-tong-universi": "<div class=\"i18n-affiliations\"><span><sup>1</sup>清华大学</span><span><sup>2</sup>无问芯穹</span><span><sup>3</sup>上海交通大学</span></div><span>*共同第一作者</span>",
+    "bibtex.citation": "引用",
+    "bibtex.cite-our-work": "引用我们的工作",
+    "bibtex.if-you-find-tah-useful-for-your-research-please-consider-citing-o": "如果 TaH 对您的研究有帮助，欢迎引用我们的论文。",
+    "hero.telemetry-depth": "深度：",
+    "hero.telemetry-skip": "跳过：",
+    "hero.telemetry-mode": "模式：",
+    "architecture.backbone-training": "阶段一：训练主干",
+    "architecture.decider-training": "阶段二：训练决策器",
+    "insight.oracle-gain": "+7.3 pp"
+  },
+  "attributes": {
+    "figure.1": {
+      "alt": "TaH 概览：隐空间迭代可以纠正错误预测，也可能把正确预测改错"
+    },
+    "figure.2": {
+      "alt": "不同迭代深度的 token 预测覆盖"
+    },
+    "figure.3": {
+      "alt": "TaH 架构概览"
+    }
+  },
+  "runtime": {
+    "UNIFORM": "统一迭代",
+    "TRANSITIONING": "过渡中",
+    "SELECTIVE": "选择性迭代",
+    "position →": "位置 →",
+    "depth →": "深度 →",
+    "iteration {depth}": "迭代 {depth}",
+    "backbone": "主干",
+    "adapter": "适配器",
+    "token →": "token →",
+    "→ output": "→ 输出",
+    "stop → verbalize": "停止 → 输出",
+    "continue → d+1": "继续 → d+1",
+    "+{gain} pp": "+{gain} pp"
+  }
+}

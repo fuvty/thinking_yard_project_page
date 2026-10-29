@@ -1,0 +1,262 @@
+{
+  "page": {
+    "title": "TaH2 · 改善循环大模型的推理时扩展",
+    "description": "TaH2 从迭代收益中学习，为不同 token 分配合适的计算深度，改善循环大模型的推理时扩展能力。",
+    "sections": {
+      "insight": {
+        "label": "关键发现",
+        "description": "自适应深度与推理时扩展"
+      },
+      "tokens": {
+        "label": "研究动机",
+        "description": "额外迭代是否有益"
+      },
+      "method": {
+        "label": "方法设计",
+        "description": "前瞻深度监督"
+      },
+      "demo": {
+        "label": "演示",
+        "description": "token 级迭代过程录像"
+      },
+      "results": {
+        "label": "实验结果",
+        "description": "扩展趋势与训练损失"
+      },
+      "runtime-figure": {
+        "label": "服务延迟",
+        "description": "实际运行效率"
+      },
+      "depth-figure": {
+        "label": "迭代深度",
+        "description": "三条回答中的自适应深度"
+      },
+      "generalization": {
+        "label": "泛化能力",
+        "description": "跨任务与模型规模"
+      },
+      "team": {
+        "label": "研究团队",
+        "description": "作者与所属机构"
+      },
+      "citation": {
+        "label": "引用",
+        "description": "论文信息与 BibTeX"
+      }
+    }
+  },
+  "html": {
+    "hero.skip-to-content": "跳至正文",
+    "hero.better-test-time-scalingfor-looped-llms": "<span class=\"i18n-phrase\">让循环大模型拥有更好的</span><em data-emphasis=\"test-time-scaling\">推理时扩展能力</em>",
+    "hero.53-steeper-slope-than-standard": "<strong data-emphasis=\"53\">+53%</strong><span>扩展斜率提升</span>",
+    "hero.3-4ppgain-over-standard-at-matched-compute": "<strong data-emphasis=\"3-4pp\">+3.4<em data-emphasis=\"pp\">个百分点</em></strong><span>同等计算量下的提升</span>",
+    "hero.2-8depth-that-keeps-helping": "<strong data-emphasis=\"2-8\">2 → 8</strong><span>加深迭代，持续受益</span>",
+    "hero.read-paper": "<svg class=\"ico\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linejoin=\"round\"/><path d=\"M14 2v6h6M8 13h8M8 17h8\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg> 阅读论文",
+    "hero.view-code": "<svg class=\"ico\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m8 6-6 6 6 6m8-12 6 6-6 6m-3-14-2 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg> 查看代码",
+    "hero.citation": "<svg class=\"ico\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M7 7a4 4 0 0 0-4 4v6h6v-6H6a1 1 0 0 1 1-1zm10 0a4 4 0 0 0-4 4v6h6v-6h-3a1 1 0 0 1 1-1z\" fill=\"currentColor\"/></svg> 引用",
+    "insight.the-insight": "关键发现",
+    "insight.adaptive-depth-improvestest-time-scaling": "<span class=\"i18n-phrase\">自适应深度，改善</span><span class=\"grad\" data-emphasis=\"test-time-scaling\">推理时扩展</span>",
+    "insight.with-more-test-time-compute-and-a-higher-depth-ceiling-tah2-keeps": "增加推理时计算量、提高迭代深度上限后，TaH2 仍能持续提升准确率，而固定深度基线的增益逐渐趋缓。",
+    "insight.standard-baselines-4k-16k": "Standard 与其他基线 · 4K–16K",
+    "insight.pause": "暂停",
+    "insight.accuracy": "准确率（%）",
+    "insight.better-test-time-scaling": "更好的<span class=\"i18n-phrase\">推理时扩展</span>",
+    "insight.4k-16k-fitted-scaling-trends": "4K–16K · 拟合的扩展趋势",
+    "insight.53-slope": "斜率 +53%",
+    "insight.test-time-scaling": "推理时扩展",
+    "insight.mean-aime24-26-accuracy-at-output-cutoffs-from-4k-to-16k-fitted-a": "AIME24–26 的平均准确率，输出长度上限从 4K 到 16K。按准确率与计算量对数拟合，每当计算量翻倍，Standard 提升 1.79 个百分点，TaH2 M=2 提升 2.74 个百分点。",
+    "insight.more-depth-more-headroom": "<span class=\"i18n-phrase\">增加深度，</span><span class=\"i18n-phrase\">拓展上限</span>",
+    "insight.16k-output-cutoff-varying-depth-ceilings": "16K 输出上限 · 改变深度上限",
+    "insight.3-9-pp": "+3.9 个百分点",
+    "insight.iteration-depth-scaling": "迭代深度扩展",
+    "insight.at-a-16k-output-cutoff-standard-reaches-10-97-tah2-reaches-13-78": "输出上限为 16K 时，Standard 准确率为 10.97%。TaH2 在深度上限为 2、4、8 时分别达到 13.78%、14.13%、14.86%，解码计算量分别为 Standard 的 1.35、1.82、3.31 倍。",
+    "insight.tah2-turns-more-compute-and-greater-depth-into-higher-accuracy": "TaH2 将更多计算和更深迭代转化为准确率提升。",
+    "tokens.the-observation": "研究动机",
+    "tokens.extra-iterations-helponly-some-tokens": "<span class=\"i18n-phrase\">额外迭代，</span><span class=\"grad\" data-emphasis=\"only-some-tokens\">只对部分 token 有益</span>",
+    "tokens.fixed-depth-looping-spends-compute-on-every-token-even-when-anoth": "固定深度模型对每个 token 重复计算，即使继续迭代几乎没有收益，甚至会让预测变差。",
+    "tokens.the-token-level-analysis": "查看 token 级分析 ↗",
+    "tokens.what-changes-after-more-iterations": "继续迭代后，预测如何变化？",
+    "tokens.iterations-1-2": "迭代 1 → 2",
+    "tokens.3-42m-validation-tokens": "342 万个验证 token",
+    "tokens.little-change-loss-reduction-10-fixed-depth-models-post-trained-f": "“变化很小”指损失下降的绝对值 ≤ 10⁻³。这里的固定深度模型由 Qwen3-1.7B-Base 后训练得到。",
+    "tokens.the-question-is-not-just-is-this-token-hard-it-is-will-another-it": "不只判断“这个 token 难不难”，更要判断<strong data-emphasis=\"will-another-iteration-help\">“再算一次有没有帮助”</strong>。",
+    "method.the-method": "方法",
+    "method.learning-when-to-iterate": "学会何时<span class=\"grad\" data-emphasis=\"iterate\">继续迭代</span>",
+    "method.the-backbone-and-decider-learn-together-using-the-actual-gain-fro": "用额外迭代带来的实际收益，让模型主干与决策器共同学习。",
+    "method.explore-the-method": "查看方法细节 ↗",
+    "method.architectureleft-token-level-depth-right-one-training-step": "<span class=\"mini-label\">架构</span><span class=\"figure-tag\">左：token 级深度 · 右：一次训练步骤</span>",
+    "method.a-learned-decider-gives-each-token-the-depth-it-needs-supervised": "决策器根据再迭代一次的收益，学习为每个 token 分配合适的深度。",
+    "method.01-reinject": "01 / 重新注入",
+    "method.keep-the-input-in-the-loop": "每轮迭代保留输入信息",
+    "method.a-learned-updater-combines-the-original-embedding-with-the-previo": "可学习的更新器融合原始嵌入与上一轮隐藏状态。",
+    "method.02-supervise": "02 / 深度监督",
+    "method.learn-from-iteration-gains": "从迭代收益中学习",
+    "method.online-cost-sensitive-depth-labels-teach-the-decider-where-extra": "在线生成兼顾计算成本的深度标签，让决策器学会把额外计算用在有收益的地方。",
+    "method.03-combine": "03 / 融合预测",
+    "method.use-the-predictions-along-the-way": "利用各轮迭代的预测",
+    "method.stopping-probabilities-weight-predictions-across-the-executed-ite": "依据停止概率，对已执行迭代的预测进行加权。",
+    "method.what-changes-from-tah-to-tah2": "从 TaH 到 TaH2，改变了什么？<span aria-hidden=\"true\">+</span>",
+    "method.tah-uses-staged-training-and-offline-top-1-mismatch-labels-tah2-j": "TaH 分阶段训练，采用离线生成的 top-1 预测不匹配标签。TaH2 引入<strong data-emphasis=\"lookahead-depth-supervision\">前瞻深度监督</strong>，让标签随当前主干的迭代收益更新，并联合训练主干、更新器和决策器。训练与推理都遵循决策器的阈值决策；扩展的双维因果注意力保证 token 位置与迭代深度上的因果关系。",
+    "method.at-inference-a-token-stops-when-its-continuation-probability-is-b": "推理时，继续迭代概率低于 0.5，或达到深度上限，token 就会停止。仅用于训练的前瞻计算在推理时省去。在所研究的模型规模上，更新器和决策器新增的参数不到 3%。",
+    "demo.demo": "演示",
+    "demo.adaptive-depth-token-by-token": "<span class=\"i18n-phrase\">为每个 token</span><span class=\"i18n-phrase\">自适应分配深度</span>",
+    "demo.a-recorded-generation-trace-shows-predictions-across-iterations-w": "生成过程录像展示了各轮迭代的预测，最终输出 token 的颜色对应其迭代深度。",
+    "demo.download-the-tah2-demo-video": "下载 TaH2 演示视频。",
+    "demo.each-token-can-take-a-different-number-of-iterations-colors-indic": "不同 token 可以执行不同次数的迭代，颜色表示最终迭代深度。",
+    "results.the-evidence": "实验结果",
+    "results.compute-accuracy-and-latency": "<span class=\"i18n-phrase\">计算量、准确率</span><span class=\"grad\" data-emphasis=\"and-latency\">与延迟</span>",
+    "results.steeper-sequential-and-parallel-test-time-scaling-lower-loss-thro": "我们从推理时扩展、训练损失、实际服务延迟和 token 级深度分配等方面评估 TaH2。",
+    "results.the-1-7b-study-averages-aime24-26-accuracy-over-32-samples-the-4k": "1.7B 实验在 AIME24–26 上每题采样 32 次并统计平均准确率。4K–16K 范围内，每当计算量翻倍，TaH2 提升 2.74 个百分点，Standard 提升 1.79 个百分点，斜率相对提高 53%。在 32K 评估规模下，同等计算量的准确率增益约为 3.4 个百分点。固定 16K 输出上限时，深度上限从 2 增至 8，带来更多计算，准确率增益由 2.8 增至 3.9 个百分点。",
+    "results.test-time-scaling-training-loss": "推理时扩展与训练损失",
+    "results.pause": "暂停",
+    "results.test-time-scaling": "推理时扩展",
+    "results.output-cutoff-4k": "输出上限 4K",
+    "results.accuracy": "准确率（%）",
+    "results.tah2-scales-better-with-decoding-compute-lighter-segments-extend": "随着解码计算量增加，TaH2 的准确率提升更快。浅色线段表示超出 16K 训练长度的部分。",
+    "results.training": "训练",
+    "results.training-step-0": "训练步数 0",
+    "results.sft-validation-loss": "SFT 验证损失",
+    "results.tah2-maintains-lower-validation-loss-throughout-training-insets-s": "TaH2 在整个训练过程中保持更低的验证损失。内嵌小图展示最终损失与 Standard 的差距。",
+    "results.real-world-servingmini-sglang-a800-aime26": "<span class=\"mini-label\">实际推理服务</span><span class=\"figure-tag\">Mini-SGLang · A800 · AIME26</span>",
+    "results.batch-1": "批大小 1",
+    "results.batch-4": "批大小 4",
+    "results.runtime-efficiency": "运行效率",
+    "results.ratios-relative-to-standard": "倍数均以 Standard 为基准。",
+    "results.accuracy-vs-measured-end-to-end-latency": "准确率与实测端到端延迟",
+    "results.accuracy-vs-latency": "准确率与延迟",
+    "results.tah2-achieves-better-scaling-and-higher-peak-accuracy-in-real-wor": "在实际推理服务中，TaH2 展现出更好的扩展趋势和更高的峰值准确率。浅色线段表示超出 16K 训练长度的部分。",
+    "results.token-level-depthtah2-m-8-three-sampled-correct-responses": "<span class=\"mini-label\">TOKEN 级深度</span><span class=\"figure-tag\">TaH2 M=8 · 三条采样得到的正确回答</span>",
+    "results.text-and-depth-appear-together-darker-colors-mean-more-iterations": "文本随深度一同呈现，颜色越深，迭代次数越多。",
+    "generalization.beyond-one-setting": "跨任务与规模",
+    "generalization.gains-across-tasksand-model-scales": "<span class=\"i18n-phrase\">跨任务</span><span class=\"grad i18n-phrase\" data-emphasis=\"and-model-scales\">与模型规模</span>的提升",
+    "generalization.from-mathematical-reasoning-to-code-knowledge-and-tool-use": "从数学推理，拓展到代码、知识问答和工具调用。",
+    "generalization.4b-model": "4B 模型",
+    "generalization.8b-model": "8B 模型",
+    "generalization.3-2-pp-average-across-nine-benchmarks": "九项基准平均提升 <strong data-emphasis=\"3-2-pp\">3.2 个百分点</strong>",
+    "generalization.tah2-m-2-separate-training-setup-from-the-1-7b-study": "TaH2 M=2 · 此处训练设置与 1.7B 实验不同。",
+    "generalization.all-nine-benchmarks-4b-and-8b": "九项基准完整结果 · 4B 与 8B<span aria-hidden=\"true\">+</span>",
+    "generalization.accuracy-of-standard-and-tah2-at-4b-and-8b-on-nine-benchmarks": "Standard 与 TaH2 在 4B、8B 规模下的九项基准准确率",
+    "generalization.accuracy-across-nine-benchmarks-labels-show-tah2-s-gain-over-stan": "九项基准上的准确率，标注数值为 TaH2 相较 Standard 提升的百分点。",
+    "team.team": "研究团队",
+    "team.meet-the-researchers": "作者与团队",
+    "team.1tsinghua-university-2yale-university-equal-contribution-correspo": "<div class=\"i18n-affiliations\"><span><sup>1</sup>清华大学</span><span><sup>2</sup>耶鲁大学</span></div><span>*共同第一作者 · †通讯作者</span>",
+    "citation.citation": "引用",
+    "citation.cite-our-work": "引用我们的工作",
+    "citation.if-you-find-tah2-useful-for-your-research-please-consider-citing": "如果 TaH2 对您的研究有帮助，欢迎引用我们的论文。"
+  },
+  "attributes": {
+    "figure.1": {
+      "aria-label": "暂停图表动画"
+    },
+    "figure.2": {
+      "aria-label": "选择 token 分析模型"
+    },
+    "figure.3": {
+      "aria-label": "打开架构图 PDF"
+    },
+    "figure.4": {
+      "alt": "TaH2 架构。左图中，每个 token 由决策器选择继续或停止；训练时，已停止的 token 额外执行一次前瞻迭代。右图中，共享主干生成隐藏状态，预测头输出 token 分布，决策器预测继续概率。已执行迭代的预测按停止概率加权，以交叉熵训练；决策器依据前瞻收益标签，以二元交叉熵训练。"
+    },
+    "figure.5": {
+      "aria-label": "TaH2 的 token 级自适应深度演示"
+    },
+    "figure.6": {
+      "aria-label": "暂停两幅图表的动画"
+    },
+    "figure.7": {
+      "aria-label": "选择批大小"
+    },
+    "figure.8": {
+      "aria-label": "运行效率"
+    },
+    "figure.9": {
+      "aria-label": "暂停延迟图表动画"
+    },
+    "figure.10": {
+      "aria-label": "准确率与单条回答的平均端到端延迟"
+    },
+    "figure.11": {
+      "aria-label": "暂停 token 深度动画"
+    },
+    "figure.12": {
+      "aria-label": "选择主干模型规模"
+    }
+  },
+  "runtime": {
+    "Improved": "改善",
+    "Little change": "变化很小",
+    "Worse": "变差",
+    "Iterations 1 → 2": "迭代 1 → 2",
+    "Iterations 1 → 3": "迭代 1 → 3",
+    "MATH": "数学",
+    "CODE": "代码",
+    "KNOWLEDGE": "知识问答",
+    "TOOL USE": "工具调用",
+    "pp": "个百分点",
+    "Static": "静态图",
+    "Resume": "继续",
+    "Pause": "暂停",
+    "Pause animation": "暂停动画",
+    "Resume animation": "继续动画",
+    "Pause both chart animations": "暂停两幅图表的动画",
+    "Resume both chart animations": "继续两幅图表的动画",
+    "TaH2 fixed": "TaH2 固定深度",
+    "TaH2 adaptive": "TaH2 自适应深度",
+    "TaH2 (adaptive)": "TaH2（自适应深度）",
+    "TaH2 (fixed-depth)": "TaH2（固定深度）",
+    "TaH2 fixed · M=2": "TaH2 固定深度 · M=2",
+    "Decoding TFLOPs / response (log₂ scale)": "每条回答的解码 TFLOPs（log₂）",
+    "Decoding FLOPs relative to Standard": "解码 FLOPs / Standard",
+    "Stage 1 · Standard + baselines": "阶段 1 · Standard 与其他基线",
+    "Stage 1 · Add both TaH2 models": "阶段 1 · 加入两种 TaH2 模型",
+    "Stage 2 · Fit → measured polyline": "阶段 2 · 从拟合趋势到实测折线",
+    "Stage 2 · All models at 32K": "阶段 2 · 所有模型的 32K 结果",
+    "Stage 2 · Extend {start}K → {end}K": "阶段 2 · 扩展 {start}K → {end}K",
+    "4K–16K · fitted scaling trends": "4K–16K · 拟合的扩展趋势",
+    "Switching to measured cutoff results": "切换为各输出上限的实测结果",
+    "4K–{budget} · measured cutoff results": "4K–{budget} · 各输出上限的实测结果",
+    "{budget} output cutoff · varying depth ceilings": "{budget} 输出上限 · 改变深度上限",
+    "+53% slope": "斜率 +53%",
+    "+4.24 pp": "+4.24 个百分点",
+    "+3.89 pp": "+3.89 个百分点",
+    "TaH2 turns more compute and greater depth into higher accuracy.": "TaH2 将更多计算和更深迭代转化为准确率提升。",
+    "Accuracy versus decoding FLOPs. Standard and the Ouro and Huginn baselines appear together, then adaptive and fixed-depth TaH2. Fitted trends use 4K–16K output cutoffs.": "准确率与解码 FLOPs。先展示 Standard、Ouro 和 Huginn，再加入自适应和固定深度的 TaH2。拟合范围为 4K–16K 输出上限。",
+    "Measured accuracy-compute polylines, extending to {budget} outputs. At 32K: Standard 11.98%, Ouro 11.81%, Huginn 13.26%, TaH2 fixed 14.65%, TaH2 adaptive 15.49%.": "实测准确率与计算量折线，扩展至 {budget} 输出。在 32K 时，Standard 为 11.98%，Ouro 为 11.81%，Huginn 为 13.26%，固定深度 TaH2 为 14.65%，自适应深度 TaH2 为 15.49%。",
+    "Depth scaling at the {budget} output cutoff. At 32K, Standard reaches 11.98%, and adaptive TaH2 reaches 15.49%, 15.76%, 16.22% at ceilings 2, 4, 8. This compares matched output cutoffs, not matched compute.": "输出上限为 {budget} 时的深度扩展。在 32K 时，Standard 为 11.98%，自适应 TaH2 在深度上限 2、4、8 时分别为 15.49%、15.76%、16.22%。此处对齐输出上限，并未对齐计算量。",
+    "Decoding TFLOPs per response (log₂)": "每条回答的解码 TFLOPs（log₂）",
+    "Animation between reported output cutoffs": "相邻实验输出上限之间的动画插值",
+    "All cutoffs · 4K–32K": "全部输出上限 · 4K–32K",
+    "Output cutoff {cutoff}K": "输出上限 {cutoff}K",
+    "Output cutoff {from}K → {to}K": "输出上限 {from}K → {to}K",
+    "Training steps": "训练步数",
+    "Final loss difference from Standard": "最终损失与 Standard 的差值",
+    "Final loss vs. Standard": "最终损失相较 Standard",
+    "End of post-training · 3 epochs": "后训练结束 · 3 个 epoch",
+    "Training step {step}": "训练步数 {step}",
+    "Accuracy (%)": "准确率（%）",
+    "math": "数学",
+    "code": "代码",
+    "QA": "问答",
+    "tool use": "工具调用",
+    "Metric": "指标",
+    "Runtime efficiency at batch size {batch}": "批大小为 {batch} 时的运行效率",
+    "Batch {batch}": "批大小 {batch}",
+    "Mean end-to-end latency per response (s) · batch size 1": "平均单条回答端到端延迟（s）· 批大小 1",
+    "Iteration depth": "迭代深度",
+    "depth {depth}": "深度 {depth}",
+    "Beginning": "开头",
+    "Ending": "结尾",
+    "Mean depth {depth}": "平均深度 {depth}",
+    "<strong>+{gain} pp</strong> average across nine benchmarks": "九项基准平均提升 <strong>{gain} 个百分点</strong>",
+    "{model}: accuracy versus decoding FLOPs": "{model}：准确率与解码 FLOPs",
+    "{model}: SFT validation loss versus training steps": "{model}：SFT 验证损失与训练步数",
+    "{label}: {cutoff}K, {accuracy}%, {flops} TFLOPs": "{label}：{cutoff}K，{accuracy}%，{flops} TFLOPs",
+    "{label}: step {step}, loss {loss}": "{label}：步数 {step}，损失 {loss}",
+    "{label}: {cutoff}K cutoff, {accuracy}%, {seconds} s": "{label}：{cutoff}K 输出上限，{accuracy}%，{seconds} s",
+    "GFLOPs/token": "GFLOPs/token",
+    "Latency (s)": "延迟（s）",
+    "Tokens/s": "token/s",
+    "{label}, M={depth}: {accuracy}%, {ratio}× decoding FLOPs": "{label}，M={depth}：{accuracy}%，解码 FLOPs 为 {ratio} 倍",
+    " · paused": " · 已暂停"
+  }
+}

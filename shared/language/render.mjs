@@ -16,7 +16,7 @@ export function renderLanguageData({locale, projectRoot, messages}) {
 
 export function renderFallbackNotice(slug) {
   return `<aside class="site-language-notice" data-notice-kind="fallback" data-page="${escape(slug)}" data-open="false" inert aria-hidden="true" aria-label="页面语言" lang="zh-CN">
-    <div class="site-language-inner"><p>此页暂无中文版，暂以英文显示。</p><div class="site-language-actions">
+    <div class="site-language-inner"><p>此页暂无中文版，已显示英文版。</p><div class="site-language-actions">
       <button type="button" data-dismiss-language-notice aria-label="关闭语言提示">关闭 <span aria-hidden="true">×</span></button>
     </div></div>
   </aside>`;

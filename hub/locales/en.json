@@ -28,7 +28,7 @@
       "label": "Route 03",
       "eyebrow": "Find a new path.",
       "title": "Find a new scaling dimension.",
-      "body": "Model size and data scale have long driven LLM progress. Models such as o1 highlighted another dimension: test-time compute. We explore further possibilities, including loop depth, adaptive computation, and context information density."
+      "body": "Model size and data scale have long driven LLM progress. Models such as o1 highlighted another dimension: test-time compute. We explore further possibilities, including loop depth, model adaptivity, and context information density."
     }
   ],
   "chartDescriptions": [

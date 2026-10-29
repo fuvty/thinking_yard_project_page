@@ -1,6 +1,6 @@
 {
   "page": {
-    "title": "AKV · 让智能体自行管理 KV cache",
+    "title": "AKV · 让智能体自行管理 KV Cache",
     "description": "AKV 让执行长程任务的智能体自行管理 KV cache，复用保留状态，减少计算成本并改善任务表现。",
     "sections": {
       "motivation": {
@@ -41,9 +41,9 @@
     "hero.skip-to-content": "跳转到正文",
     "hero.advance-cache-animation": "推进缓存动画",
     "hero.a-serving-system-that-enables-cache": "<span class=\"i18n-phrase\">面向智能体的推理服务，</span><span class=\"i18n-phrase\">支持<strong class=\"i18n-nowrap\" data-emphasis=\"cache-engineering\">缓存工程</strong>。</span>",
-    "hero.27-7-average-inference-cost-across": "<strong data-emphasis=\"inference-cost-reduction\">−27.7<span>%</span></strong><span>平均推理成本</span><small>3 个模型，4 项基准测试</small>",
+    "hero.27-7-average-inference-cost-across": "<strong data-emphasis=\"inference-cost-reduction\">−27.7<span>%</span></strong><span>平均推理成本</span>",
     "hero.1-7-pts-average-benchmark-score": "<strong data-emphasis=\"benchmark-score-gain\">+1.7<span>个百分点</span></strong><span>平均基准得分</span><small>相较于 Standard</small>",
-    "hero.2-67-peak-output-throughput-gain": "<strong data-emphasis=\"output-throughput-gain\">2.67<span>×</span></strong><span>输出吞吐量最高提升</span><small>GPT-OSS-120B · SWE-bench</small>",
+    "hero.2-67-peak-output-throughput-gain": "<strong data-emphasis=\"output-throughput-gain\">2.67<span>×</span></strong><span>输出吞吐量最高提升</span>",
     "hero.read-paper": "<i class=\"fas fa-file-alt\" aria-hidden=\"true\"></i> 阅读论文",
     "hero.view-code": "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m8 6-6 6 6 6m8-12 6 6-6 6m-3-14-2 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg> 查看代码",
     "hero.citation": "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M7 7a4 4 0 0 0-4 4v6h6v-6H6a1 1 0 0 1 1-1zm10 0a4 4 0 0 0-4 4v6h6v-6h-3a1 1 0 0 1 1-1z\" fill=\"currentColor\"/></svg> 引用",
@@ -58,9 +58,9 @@
     "motivation.edit-the-prefix-re-prefill-the": "<span class=\"i18n-phrase\">改写文本前缀，</span><span class=\"i18n-phrase\">就要重算后续缓存。</span>",
     "motivation.editing-the-text-prefix-invalidates-later": "修改文本前缀会使后续 KV 失效，剩余上下文必须重新进行预填充。",
     "motivation.cache-engineering": "缓存工程",
-    "motivation.kv-cache-is-built-for-reuse": "<span class=\"i18n-phrase\">KV cache</span><span class=\"i18n-phrase\">本就用于复用。</span>",
+    "motivation.kv-cache-is-built-for-reuse": "<span class=\"i18n-phrase\">KV Cache</span><span class=\"i18n-phrase\">本就用于复用。</span>",
     "motivation.it-already-stores-the-states-we": "它保存了此前已经计算好的状态。",
-    "motivation.let-agents-manage-their-own-kv": "<span class=\"i18n-phrase\">让智能体自行</span><span class=\"i18n-phrase\">管理 KV cache。</span>",
+    "motivation.let-agents-manage-their-own-kv": "<span class=\"i18n-phrase\">让智能体自行</span><span class=\"i18n-phrase\">管理 KV Cache。</span>",
     "motivation.direct-control-over-which-kv-states": "直接决定保留或移除哪些 KV 状态。",
     "overview.the-core-idea": "核心思路",
     "overview.from-context-engineering-to-cache-engineering": "<span class=\"i18n-phrase\">从上下文工程</span><span class=\"i18n-phrase\">到缓存工程</span>",

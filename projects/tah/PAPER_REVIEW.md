@@ -1,0 +1,22 @@
+# TaH paper review
+
+Reviewed 2026-10-30 against [arXiv 2511.08577](https://arxiv.org/abs/2511.08577), latest **v4, 2026-08-28**. The earlier submissions are v1 (2025-11-11), v2 (2026-04-26), and v3 (2026-06-14). The current title is **Think-at-Hard: Dynamic Looped Transformers for Improved Reasoning**. Page metadata and citation title now use this exact title. Existing author and venue metadata are retained.
+
+## Claims and changes
+
+| Item | Evidence and scope | Page treatment |
+| --- | --- | --- |
+| Accuracy gain | [Table 2](https://arxiv.org/html/2511.08577v4#S6.T2): TaH+ averages 35.2 / 53.7 / 66.8 against Standard 29.9 / 47.5 / 64.6 at 0.6B / 1.7B / 4B. Differences are 5.3 / 6.2 / 2.2 **percentage points**, not relative percentages. | Fix units in the hero, result summary, dynamic model switch, and contribution summary. Preserve table values. Explain TaH versus TaH+ in results: TaH removes a backbone layer to match parameter count; TaH+ retains it and adds under 3% parameters. |
+| 8.7% corrected; 2.1% harmed | [Figure 8](https://arxiv.org/html/2511.08577v4#S6.F8), the Ouro joint-distribution matrix: 71.0 correct→correct, 2.1 correct→wrong, 8.7 wrong→correct, 18.2 wrong→wrong. These cells sum to 100%. The denominator is **all evaluated tokens**, not the initially incorrect/correct subsets. Figure asset is `figure/landscape.png`; the local matching image was visually inspected. [Section 4](https://arxiv.org/html/2511.08577v4#S4) identifies the NTP evaluation as Open-R1 validation top-1 accuracy. | Replace the misleading conditional wording in both languages. These observations describe Ouro, not TaH's deployed skip policy. |
+| 93% skipped, 1.07 average iterations | [Section 6](https://arxiv.org/html/2511.08577v4#S6), hardware-agnostic efficiency, and Appendix A.2.5 report average iteration depth. Section 6’s TaH setup specifies continuation threshold 0.9, with about 7% of tokens iterated twice. 93% describes skipping **additional iterations** with the learned policy; it is not a 93% reduction in total compute or 93% first-pass prediction accuracy. Table 1's Ouro first-pass NTP accuracy is 73.1%. | Remove “reducing computation by 93%” and “correct for ~93% of tokens.” Preserve the concise headline skip/depth values with their correct meaning. |
+| Oracle potential | [Table 1](https://arxiv.org/html/2511.08577v4#S4.T1): oracle vs Always2 gains 2.1 / 7.3 / 2.0 / 2.4 pp; oracle with TaH gains 9.6 / 28.2 / 25.0 / 32.0 pp. Oracle NTP uses target tokens; downstream generation uses Qwen3-8B predictions as proxy labels. | Use pp, and distinguish oracle results from a deployable decider. Avoid presenting the oracle gain as ordinary inference accuracy. |
+| Real hardware | [Table 3](https://arxiv.org/html/2511.08577v4#S6.T3): 1.7B, AIME25, 8K output limit, one A800. AlwaysThink/TaH memory 6.8/4.6 GB and latency 747.2/301.4 s; Standard latency 210.6 s. | Clarify 32% less memory and 2.48× decoding speedup **over AlwaysThink in this setting**. Standard is still faster. Preserve all table measurements. |
+| Architecture/training | [Section 5](https://arxiv.org/html/2511.08577v4#S5): duo-causal attention, depth-aware LoRA, two-stage oracle-guided training, neural iteration decider. | Preserve method logic, equations and the four interactive pipeline stages. |
+
+The abstract's ordering of the TaH+ comparator gains is inconsistent with the explicit Table 2 differences. The page uses the table's directly reproducible comparisons, not an ambiguous abstract paraphrase. The 4B results use a 4K training context; they should not be silently pooled into an identical-setting claim.
+
+## Localization and verification
+
+`content.html` remains the single structural template. `locales/zh.json` contains complete copy blocks, matching semantic emphasis, metadata, image descriptions and runtime labels. Proper names, mathematical notation, experimental values and decorative example tokens remain intact. Canvas diagram labels and model-size summary changes use `SiteI18n.t`. No new runtime resource fetching was added.
+
+Source checks cover translation-key/emphasis contracts, section metadata, unchanged element IDs, JavaScript syntax, table preservation and dynamic summary units. A mocked-Canvas runtime smoke test ran 100 frames in both languages. Desktop/mobile visual QA is performed by the integrating agent; no generated output is maintained in this project folder.

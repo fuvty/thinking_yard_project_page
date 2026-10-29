@@ -1,6 +1,6 @@
 {
   "title": "thu-nics/TaH",
-  "description": "Think-at-Hard (TaH) - Selective Latent Iterations to Improve Reasoning Language Models",
+  "description": "Think-at-Hard: Dynamic Looped Transformers for Improved Reasoning",
   "sections": [
     {
       "id": "overview",

@@ -4,6 +4,8 @@ This page uses the shared project generator, navigation, tokens, CTAs, team pill
 
 ## Content and provenance
 
+Latest paper verification and EN/ZH corrections: [PAPER_REVIEW.md](PAPER_REVIEW.md).
+
 Primary source: the supplied `latex/main.tex`, `macro.tex`, `tex/0_abstract.tex` through `tex/6_conclusion.tex`, and active (uncommented) content in `tex/x_appendix.tex`. Supplementary writing drafts and commented-out experiment tables were not used as current paper claims.
 
 - Hero: “A serving engine for token-level LLM routing.” Links to [the paper PDF](https://arxiv.org/pdf/2610.12242) and [the code](https://github.com/thu-nics/TokenRouter), alongside the NeurIPS 2026 badge. The five-algorithm statistic refers to the paper evaluation, not all available schedulers.
@@ -14,7 +16,7 @@ Primary source: the supplied `latex/main.tex`, `macro.tex`, `tex/0_abstract.tex`
 - Main benchmark: `R2RSysFigures/data/TokenRouter.csv`, forward-filled grouping fields, `agentic_single` excluded as in the original plotting script. All other measured values remain unchanged. Missing values remain null / N/A.
 - Speed / throughput: `R2RSysFigures/data/tradeoff.csv`. Curves connect concurrency in order, not points sorted by speed. The 18.58× comparison is explicitly TokenRouter N=16 vs. official R2R N=1, not an equal-concurrency gain.
 - Threshold sweep: measured rows of `R2RSysFigures/data/delayedBatching.md` only.
-- Ablation: original N=8 figure values (base 132.78, CUDA graphs 230.79, async 296.86, delayed batching 372.48, official 134.90). Effects are cumulative.
+- Ablation: original N=8 figure values (base 132.78, CUDA graphs 230.79, async 296.86, delayed batching 372.48, official 134.90). Effects are cumulative. The visible official-R2R caption follows arXiv v1 Table 6 (134.89); the supplied plotting value remains unchanged in the raw data.
 - Model-pair, deployment and original-algorithm tables: active tables in `tex/x_appendix.tex` and `tex/5_experiment.tex`. These are separate experimental settings, not mixed into the main CSV chart.
 - Authors: supplied by the user, in the supplied order. Tianyu Fu, Yichen You and Yu Wang retain their existing personal/institutional homepage links from the R2R/TaH pages. Tengxuan Liu links to his institutional homepage and Yixin Dong to github.com/ubospica, both supplied by the user. Authors without a supplied or existing homepage stay plain text; OpenReview links are omitted. Tianyu Fu and Tengxuan Liu share the confirmed equal-contribution marker. Yu Wang is marked as corresponding author, as confirmed by the user. The NeurIPS 2026 badge was supplied by the user. Paper/code links and arXiv citation metadata follow the released repository README; affiliations remain unspecified.
 
@@ -52,6 +54,8 @@ Page-specific code:
 
 - `static/js/model.js`: pure selection, comparison, scale and path math.
 - `static/js/index.js`: measured figures, scheduling playback and accessible native controls.
+- `locales/zh.json`: Chinese metadata, complete copy blocks, accessible attributes and dynamic labels.
+- `static/js/i18n.js`: the shared site translation runtime adapter.
 - `static/js/demos.js`: routing granularity and asynchronous request handoff illustrations.
 - `static/js/playback.js`: shared animation lifecycle, scrubbing and reduced-motion behavior.
 - `static/js/hero.js`: decorative road canvas, without text.

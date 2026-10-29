@@ -1,11 +1,12 @@
 'use strict';
+const {t: translate} = globalThis.SiteI18n;
 const DATA = window.TAH2_DATA;
 const $ = id => document.getElementById(id);
 const colors = {tah:'#2166c4',standard:'#777777',fixed:'#1f8a37',ouro:'#8244a8',huginn:'#c8880c'};
 const fmt = (n,d=2)=>Number(n).toFixed(d);
 function pressed(attr,value){document.querySelectorAll(`[${attr}]`).forEach(b=>b.setAttribute('aria-pressed',String(b.getAttribute(attr)===String(value))));}
-function renderInsight(model){const v=model==='ouro'?[26,52.3,21.7]:[50.6,33.5,15.9];const labels=['Improved','Little change','Worse'];const cs=['#30d158','#d2d2d7','#ff9f0a'];$('gain-stack').innerHTML=v.map((n,i)=>`<div style="width:${n}%;background:${cs[i]}"></div>`).join('');$('gain-stack').setAttribute('aria-label',`${model==='ouro'?'Ouro':'Huginn'}: ${v.map((n,i)=>labels[i]+' '+n+'%').join(', ')}`);$('gain-labels').innerHTML=v.map((n,i)=>`<div><strong style="color:${i===1?'#86868b':cs[i]}">${n.toFixed(1)}%</strong><span>${labels[i]}</span></div>`).join('');$('insight-depth').textContent=model==='ouro'?'Iterations 1 → 2':'Iterations 1 → 3';pressed('data-insight',model);}
-function renderDomains(size){const data=DATA.crossDomain[size];const picks=[['MATH','AIME26'],['CODE','LiveCodeBench'],['KNOWLEDGE','SuperGPQA'],['TOOL USE','BFCL v3']];$('domain-cards').innerHTML=picks.map(([category,name])=>{const [a,b]=data[name];return `<article class="domain-card"><span class="domain-category">${category}</span><h3>${name}</h3><div class="domain-gain">+${fmt(b-a,1)}<span>pts</span></div><div class="domain-values"><span>${fmt(a,1)}%</span><span aria-hidden="true">→</span><strong>${fmt(b,1)}%</strong></div><div class="domain-bar-track" aria-hidden="true"><span style="width:${b}%"></span><i style="left:${a}%"></i></div></article>`}).join('');$('scale-average').innerHTML=`<strong>+${size==='4B'?'3.2':'2.4'} pts</strong> average across nine benchmarks`;pressed('data-size',size);}
+function renderInsight(model){const v=model==='ouro'?[26,52.3,21.7]:[50.6,33.5,15.9];const labels=['Improved','Little change','Worse'].map(label => translate(label));const cs=['#30d158','#d2d2d7','#ff9f0a'];$('gain-stack').innerHTML=v.map((n,i)=>`<div style="width:${n}%;background:${cs[i]}"></div>`).join('');$('gain-stack').setAttribute('aria-label',`${model==='ouro'?'Ouro':'Huginn'}: ${v.map((n,i)=>labels[i]+' '+n+'%').join(', ')}`);$('gain-labels').innerHTML=v.map((n,i)=>`<div><strong style="color:${i===1?'#86868b':cs[i]}">${n.toFixed(1)}%</strong><span>${labels[i]}</span></div>`).join('');$('insight-depth').textContent=model==='ouro'?translate('Iterations 1 → 2'):translate('Iterations 1 → 3');pressed('data-insight',model);}
+function renderDomains(size){const data=DATA.crossDomain[size];const picks=[['MATH','AIME26'],['CODE','LiveCodeBench'],['KNOWLEDGE','SuperGPQA'],['TOOL USE','BFCL v3']];$('domain-cards').innerHTML=picks.map(([category,name])=>{const [a,b]=data[name];return `<article class="domain-card"><span class="domain-category">${translate(category)}</span><h3>${name}</h3><div class="domain-gain">+${fmt(b-a,1)}<span>${translate("pp")}</span></div><div class="domain-values"><span>${fmt(a,1)}%</span><span aria-hidden="true">→</span><strong>${fmt(b,1)}%</strong></div><div class="domain-bar-track" aria-hidden="true"><span style="width:${b}%"></span><i style="left:${a}%"></i></div></article>`}).join('');$('scale-average').innerHTML=translate('<strong>+{gain} pp</strong> average across nine benchmarks', {gain: size==='4B'?'3.2':'2.4'});pressed('data-size',size);}
 document.querySelectorAll('[data-insight]').forEach(b=>b.addEventListener('click',()=>renderInsight(b.dataset.insight)));
 document.querySelectorAll('[data-size]').forEach(b=>b.addEventListener('click',()=>renderDomains(b.dataset.size)));
 renderInsight('ouro');renderDomains('4B');
@@ -13,7 +14,7 @@ renderInsight('ouro');renderDomains('4B');
 // ---------- Shared figure helpers ----------
 const clamp=v=>Math.max(0,Math.min(1,v)),lerp=(a,b,t)=>a+(b-a)*t,smooth=t=>t*t*(3-2*t);
 const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
-const svgTx=(x,y,t,attrs='')=>`<text x="${x}" y="${y}" ${attrs.includes('font-size')?'':'font-size="12"'} ${attrs.includes('fill=')?'':'fill="#86868b"'} ${attrs}>${t}</text>`;
+const svgTx=(x,y,t,attrs='')=>`<text x="${x}" y="${y}" ${attrs.includes('font-size')?'':'font-size="12"'} ${attrs.includes('fill=')?'':'fill="#86868b"'} ${attrs}>${translate(String(t))}</text>`;
 const svgPath=(p,xf,yf)=>p.map((v,i)=>`${i?'L':'M'}${xf(v.x).toFixed(2)},${yf(v.y).toFixed(2)}`).join(' ');
 // Plot-area ratios measured from the axes in the source vector PDFs.
 const PAPER_PLOT_RATIO={scaling:196.8345/125.477122,loss:365.383178/237.016216,single:389.49/274.38};
@@ -33,12 +34,12 @@ function looper({end,hold,draw,button,buttons=button?[button]:[],clickTargets=[]
  function tick(now){raf=0;if(paused||!visible.size||document.hidden||reducedMotion.matches){last=null;return;}if(last!==null)elapsed=(elapsed+Math.min(now-last,100))%loop;last=now;render();raf=requestAnimationFrame(tick);}
  function run(){if(!raf&&!paused&&visible.size&&!document.hidden&&!reducedMotion.matches){last=null;raf=requestAnimationFrame(tick);}}
  function stop(){cancelAnimationFrame(raf);raf=0;last=null;}
- function updateControls(){buttons.forEach(b=>{b.disabled=reducedMotion.matches;b.textContent=reducedMotion.matches?'Static':paused?'Resume':'Pause';b.setAttribute('aria-pressed',String(paused));b.setAttribute('aria-label',(paused?'Resume':'Pause')+(roots.length>1?' both chart animations':' animation'));});roots.forEach(r=>r.dataset.paused=String(paused));}
+ function updateControls(){buttons.forEach(b=>{b.disabled=reducedMotion.matches;b.textContent=translate(reducedMotion.matches?'Static':paused?'Resume':'Pause');b.setAttribute('aria-pressed',String(paused));b.setAttribute('aria-label',translate(roots.length>1?(paused?'Resume both chart animations':'Pause both chart animations'):(paused?'Resume animation':'Pause animation')));});roots.forEach(r=>r.dataset.paused=String(paused));}
  function setPaused(p){paused=p;updateControls();if(p)stop();else run();}
  buttons.forEach(b=>b.addEventListener('click',()=>setPaused(!paused)));
  clickTargets.forEach(el=>el.addEventListener('click',e=>{if(!e.target.closest('a,button'))setPaused(!paused);}));
  const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)visible.add(e.target);else visible.delete(e.target);});if(visible.size)run();else stop();},{threshold:.12});
- roots.forEach(r=>observer.observe(r));
+ roots.forEach(r=>{r.style.setProperty('--paused-label',JSON.stringify(translate(' · paused')));observer.observe(r);});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else run();});
  reducedMotion.addEventListener('change',()=>{stop();updateControls();render();run();});
  updateControls();render();
@@ -78,7 +79,7 @@ function registerEvidenceAnimation(draw){
  function axes(xt,yt,xf,yf,label){let s='';yt.forEach(v=>{s+=`<line x1="56" y1="${yf(v)}" x2="522" y2="${yf(v)}" stroke="#e5e5ea" stroke-dasharray="4 5"/>`+svgTx(44,yf(v)+4,v,'text-anchor="end"')});xt.forEach(([v,t])=>s+=svgTx(xf(v),362,t,'text-anchor="middle"'));return s+svgTx(289,385,label,'text-anchor="middle"');}
  plots.forEach(svg=>svg.insertAdjacentHTML('beforeend','<g class="teaser-scene"></g>'));
  const scenes=plots.map(svg=>svg.querySelector('.teaser-scene'));
- $('teaser-legend').innerHTML=models.map(m=>`<span data-teaser-legend="${m.id}"><i style="--series:${m.color}"></i>${m.label}</span>`).join('');
+ $('teaser-legend').innerHTML=models.map(m=>`<span data-teaser-legend="${m.id}"><i style="--series:${m.color}"></i>${translate(m.label)}</span>`).join('');
  function draw(ms){
   const morph=smooth(clamp((ms-MORPH)/(EXTEND-MORPH)));
   const ext=clamp((ms-EXTEND)/(2*SEG))*2,seg=Math.min(1,Math.floor(ext)),segF=ext>=2?1:smooth(clamp(ext-seg));
@@ -96,34 +97,34 @@ function registerEvidenceAnimation(draw){
    if(ms>=EXTEND){for(let i=7;i<=i0;i++)coords.push({x:ps[i].flops,y:ps[i].accuracy});if(fraction>0)coords.push({x:lerp(ps[i0].flops,ps[i1].flops,fraction),y:lerp(ps[i0].accuracy,ps[i1].accuracy,fraction)});}
    compute+=`<path data-curve-kind="${morph===0?'fit':morph===1?'measured':'transition'}" d="${svgPath(coords,x,y)}" fill="none" stroke="${m.color}" stroke-width="${isTah?3.1:2.2}" stroke-linejoin="round" stroke-linecap="round"/>`;
    const count=ms<EXTEND?7:i0+1+(fraction>=.999?1:0);
-   ps.slice(0,count).forEach(p=>compute+=marker(fam,m.color,x(p.flops),y(p.accuracy),lerp(.65,1,morph),`${m.label}: ${p.cutoff}K, ${p.accuracy.toFixed(2)}%, ${p.flops.toFixed(1)} TFLOPs`,m.id==='tah'?4.3:3.5));
-   if(ms>=EXTEND&&fraction>0&&fraction<.999){const tip=coords.at(-1);compute+=marker(fam,m.color,x(tip.x),y(tip.y),1,'Animation between reported output cutoffs',m.id==='tah'?4.3:3.5);}
+   ps.slice(0,count).forEach(p=>compute+=marker(fam,m.color,x(p.flops),y(p.accuracy),lerp(.65,1,morph),translate('{label}: {cutoff}K, {accuracy}%, {flops} TFLOPs', {label:translate(m.label),cutoff:p.cutoff,accuracy:p.accuracy.toFixed(2),flops:p.flops.toFixed(1)}),m.id==='tah'?4.3:3.5));
+   if(ms>=EXTEND&&fraction>0&&fraction<.999){const tip=coords.at(-1);compute+=marker(fam,m.color,x(tip.x),y(tip.y),1,translate('Animation between reported output cutoffs'),m.id==='tah'?4.3:3.5);}
    compute+='</g>';
    depth+=`<defs><clipPath id="td-${m.id}"><rect x="49" y="0" width="${clipWidth}" height="356"/></clipPath></defs><g data-teaser-series="${m.id}" clip-path="url(#td-${m.id})">`;
    if(m.id==='standard')depth+=`<line x1="56" y1="${dy(base.accuracy)}" x2="522" y2="${dy(base.accuracy)}" stroke="${m.color}" stroke-dasharray="4 5" opacity=".45"/>`+marker(fam,m.color,dx(1),dy(base.accuracy),1,`Standard: ${base.accuracy.toFixed(2)}%`)+svgTx(dx(1)+9,dy(base.accuracy)+18,'Standard');
    else{
     const pts=m.depths.map(([ceiling,key])=>{const a=point(key,i0),b=point(key,i1);return{x:lerp(a.flops,b.flops,fraction)/base.flops,y:lerp(a.accuracy,b.accuracy,fraction),ceiling}});
     depth+=`<path d="${svgPath([{x:1,y:base.accuracy},...pts],dx,dy)}" fill="none" stroke="${m.color}" stroke-width="${isTah?3.1:2.2}" stroke-linejoin="round"/>`;
-    pts.forEach(p=>{depth+=marker(fam,m.color,dx(p.x),dy(p.y),1,`${m.label}, M=${p.ceiling}: ${p.y.toFixed(2)}%, ${p.x.toFixed(2)}× decoding FLOPs`,m.id==='tah'?4.3:3.5);if(m.id==='tah')depth+=`<text x="${dx(p.x)+8}" y="${dy(p.y)-11}" fill="${m.color}" font-size="12" font-weight="600">M=${p.ceiling}</text>`});
+    pts.forEach(p=>{depth+=marker(fam,m.color,dx(p.x),dy(p.y),1,translate('{label}, M={depth}: {accuracy}%, {ratio}× decoding FLOPs', {label:translate(m.label),depth:p.ceiling,accuracy:p.y.toFixed(2),ratio:p.x.toFixed(2)}),m.id==='tah'?4.3:3.5);if(m.id==='tah')depth+=`<text x="${dx(p.x)+8}" y="${dy(p.y)-11}" fill="${m.color}" font-size="12" font-weight="600">M=${p.ceiling}</text>`});
    }depth+='</g>';
    document.querySelector(`[data-teaser-legend="${m.id}"]`).style.opacity=reveal>0?'1':'.3';
   });
   scenes[0].innerHTML=compute;scenes[1].innerHTML=depth;
   const [segStart,segEnd]=SEGMENTS[seg];
-  const label=ms<START_TAH?'Stage 1 · Standard + baselines':ms<MORPH?'Stage 1 · Add both TaH2 models':ms<EXTEND?'Stage 2 · Fit → measured polyline':ext>=2?'Stage 2 · All models at 32K':`Stage 2 · Extend ${segStart}K → ${segEnd}K`;
+  const label=ms<START_TAH?translate('Stage 1 · Standard + baselines'):ms<MORPH?translate('Stage 1 · Add both TaH2 models'):ms<EXTEND?translate('Stage 2 · Fit → measured polyline'):ext>=2?translate('Stage 2 · All models at 32K'):translate('Stage 2 · Extend {start}K → {end}K', {start:segStart,end:segEnd});
   if($('teaser-status').textContent!==label)$('teaser-status').textContent=label;
   const settled=ext>=2||segF>=.999||segF<=0,cutoff=ms<EXTEND?16:ext>=2?32:segF>=.999?segEnd:segStart;
   const budget=ms<EXTEND?'16K':settled?cutoff+'K':segStart+'K → '+segEnd+'K';
   $('teaser-budget').textContent=budget;
-  $('teaser-compute-subtitle').textContent=ms<MORPH?'4K–16K · fitted scaling trends':ms<EXTEND?'Switching to measured cutoff results':`4K–${budget} · measured cutoff results`;
-  $('teaser-depth-subtitle').textContent=`${budget} output cutoff · varying depth ceilings`;
-  $('teaser-slope').textContent=ms<MORPH?'+53% slope':ext>=2?'15.49% @32K':'16K → 32K';
-  $('teaser-depth-gain').textContent=ext>=2?'+4.24 pts':ms<EXTEND?'+3.89 pts':'16K → 32K';
+  $('teaser-compute-subtitle').textContent=ms<MORPH?translate('4K–16K · fitted scaling trends'):ms<EXTEND?translate('Switching to measured cutoff results'):translate('4K–{budget} · measured cutoff results', {budget});
+  $('teaser-depth-subtitle').textContent=translate('{budget} output cutoff · varying depth ceilings', {budget});
+  $('teaser-slope').textContent=ms<MORPH?translate('+53% slope'):ext>=2?'15.49% @32K':'16K → 32K';
+  $('teaser-depth-gain').textContent=ext>=2?translate('+4.24 pp'):ms<EXTEND?translate('+3.89 pp'):'16K → 32K';
   const badge=clamp((ms-END_REVEAL)/350);$('teaser-slope').style.opacity=badge;$('teaser-depth-gain').style.opacity=badge;
-  $('teaser-caption-text').textContent='TaH2 turns more compute and greater depth into higher accuracy.';
+  $('teaser-caption-text').textContent=translate('TaH2 turns more compute and greater depth into higher accuracy.');
   $('teaser').dataset.stage=ms<START_TAH?'baselines':ms<MORPH?'tah':ms<EXTEND?'morph':ext>=2?'complete':'extension';
-  plots[0].querySelector('desc').textContent=ms<MORPH?'Accuracy versus decoding FLOPs. Standard and the Ouro and Huginn baselines appear together, then adaptive and fixed-depth TaH2. Fitted trends use 4K–16K output cutoffs.':`Measured accuracy-compute polylines, extending to ${budget} outputs. At 32K: Standard 11.98%, Ouro 11.81%, Huginn 13.26%, TaH2 fixed 14.65%, TaH2 adaptive 15.49%.`;
-  plots[1].querySelector('desc').textContent=`Depth scaling at the ${budget} output cutoff. At 32K, Standard reaches 11.98%, and adaptive TaH2 reaches 15.49%, 15.76%, 16.22% at ceilings 2, 4, 8. This compares matched output cutoffs, not matched compute.`;
+  plots[0].querySelector('desc').textContent=ms<MORPH?translate('Accuracy versus decoding FLOPs. Standard and the Ouro and Huginn baselines appear together, then adaptive and fixed-depth TaH2. Fitted trends use 4K–16K output cutoffs.'):translate('Measured accuracy-compute polylines, extending to {budget} outputs. At 32K: Standard 11.98%, Ouro 11.81%, Huginn 13.26%, TaH2 fixed 14.65%, TaH2 adaptive 15.49%.', {budget});
+  plots[1].querySelector('desc').textContent=translate('Depth scaling at the {budget} output cutoff. At 32K, Standard reaches 11.98%, and adaptive TaH2 reaches 15.49%, 15.76%, 16.22% at ceilings 2, 4, 8. This compares matched output cutoffs, not matched compute.', {budget});
  }
  looper({end:END,hold:HOLD,draw,button:$('teaser-pause'),clickTargets:[document.querySelector('.teaser-grid')],root:$('teaser')});
 })();
@@ -140,7 +141,7 @@ function registerEvidenceAnimation(draw){
  const plot=paperPlot(PAPER_PLOT_RATIO.scaling);
  const x=f=>plot.left+(Math.log2(f)-Math.log2(13))/(Math.log2(950)-Math.log2(13))*plot.width,y=v=>plot.bottom-(v-4.5)/13*plot.height;
  const grid=$('scaling-grid');
- grid.innerHTML=panels.map((p,i)=>`<figure class="scaling-panel"><svg id="scaling-${i}" viewBox="0 0 450 370" data-plot-width="${plot.width}" data-plot-height="${plot.height}" role="img" aria-label="${p.title}: accuracy versus decoding FLOPs"><title>${p.title}</title></svg><div class="panel-legend"><span><i style="--series:${colors.standard}"></i>Standard</span>${p.series.map(([,l,c])=>`<span><i style="--series:${c}"></i>${l}</span>`).join('')}</div></figure>`).join('');
+ grid.innerHTML=panels.map((p,i)=>`<figure class="scaling-panel"><svg id="scaling-${i}" viewBox="0 0 450 370" data-plot-width="${plot.width}" data-plot-height="${plot.height}" role="img" aria-label="${translate("{model}: accuracy versus decoding FLOPs", {model:translate(p.title)})}"><title>${translate(p.title)}</title></svg><div class="panel-legend"><span><i style="--series:${colors.standard}"></i>Standard</span>${p.series.map(([,l,c])=>`<span><i style="--series:${c}"></i>${translate(l)}</span>`).join('')}</div></figure>`).join('');
  const svgs=panels.map((_,i)=>$('scaling-'+i));
  function axes(title){let s=svgTx(52,18,title,'font-weight="600" fill="#1d1d1f" font-size="13"');[6,8,10,12,14,16].forEach(v=>{s+=`<line x1="52" y1="${y(v)}" x2="440" y2="${y(v)}" stroke="#e5e5ea" stroke-dasharray="4 5"/>`+svgTx(42,y(v)+4,v,'text-anchor="end" font-size="11"')});[16,32,64,128,256,512].forEach(v=>s+=svgTx(x(v),326,v,'text-anchor="middle" font-size="11"'));return s+svgTx(246,359,'Decoding TFLOPs per response (log₂)','text-anchor="middle" font-size="11"');}
  function draw(ms){
@@ -157,11 +158,11 @@ function registerEvidenceAnimation(draw){
     const w=fam==='standard'?2:2.6;
     if(dark.length>1)s+=`<path d="${svgPath(dark,x,y)}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"/>`;
     if(light.length>1)s+=`<path d="${svgPath(light,x,y)}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round" opacity=".42"/>`;
-    coords.forEach((c,i)=>{const beyond=i>6;s+=marker(fam,color,x(c.x),y(c.y),beyond?.55:1,c.cutoff?`${label}: ${c.cutoff}K, ${c.y.toFixed(2)}%, ${c.x.toFixed(1)} TFLOPs`:'Animation between reported output cutoffs',fam==='standard'?2.8:3.4);});
+    coords.forEach((c,i)=>{const beyond=i>6;s+=marker(fam,color,x(c.x),y(c.y),beyond?.55:1,c.cutoff?translate('{label}: {cutoff}K, {accuracy}%, {flops} TFLOPs', {label:translate(label),cutoff:c.cutoff,accuracy:c.y.toFixed(2),flops:c.x.toFixed(1)}):translate('Animation between reported output cutoffs'),fam==='standard'?2.8:3.4);});
    });
    svgs[pi].querySelector('g.scene')?.remove();svgs[pi].insertAdjacentHTML('beforeend',`<g class="scene">${s}</g>`);
   });
-  const status=done?'All cutoffs · 4K–32K':fraction<.02?`Output cutoff ${CUTS[i0]}K`:`Output cutoff ${CUTS[i0]}K → ${CUTS[i1]}K`;
+  const status=done?translate('All cutoffs · 4K–32K'):fraction<.02?translate('Output cutoff {cutoff}K', {cutoff:CUTS[i0]}):translate('Output cutoff {from}K → {to}K', {from:CUTS[i0],to:CUTS[i1]});
   if($('scaling-status').textContent!==status)$('scaling-status').textContent=status;
  }
  registerEvidenceAnimation(draw);
@@ -183,7 +184,7 @@ function registerEvidenceAnimation(draw){
  const plot=paperPlot(PAPER_PLOT_RATIO.loss);
  const x=step=>plot.left+8+step/MAX_STEP*(plot.width-16),y=loss=>plot.bottom-(loss-low)/(high-low)*plot.height;
  const grid=$('loss-grid');
- grid.innerHTML=panels.map((p,i)=>`<figure class="scaling-panel"><svg id="loss-${i}" viewBox="0 0 450 370" data-plot-width="${plot.width}" data-plot-height="${plot.height}" role="img" aria-label="${p.title}: SFT validation loss versus training steps"><title>${p.title}</title><defs><clipPath id="loss-clip-${i}"><rect x="${plot.left}" y="${plot.top}" width="${plot.width}" height="${plot.height+5}"/></clipPath></defs></svg><div class="panel-legend"><span><i style="--series:${colors.standard}"></i>Standard</span>${p.series.map(([,l,c])=>`<span><i style="--series:${c}"></i>${p.title.split(' ')[0]} · ${l}</span>`).join('')}</div></figure>`).join('');
+ grid.innerHTML=panels.map((p,i)=>`<figure class="scaling-panel"><svg id="loss-${i}" viewBox="0 0 450 370" data-plot-width="${plot.width}" data-plot-height="${plot.height}" role="img" aria-label="${translate("{model}: SFT validation loss versus training steps", {model:translate(p.title)})}"><title>${translate(p.title)}</title><defs><clipPath id="loss-clip-${i}"><rect x="${plot.left}" y="${plot.top}" width="${plot.width}" height="${plot.height+5}"/></clipPath></defs></svg><div class="panel-legend"><span><i style="--series:${colors.standard}"></i>Standard</span>${p.series.map(([,l,c])=>`<span><i style="--series:${c}"></i>${p.title.split(' ')[0]} · ${translate(l)}</span>`).join('')}</div></figure>`).join('');
  const svgs=panels.map((_,i)=>$('loss-'+i));
  function axes(title){let s=svgTx(52,18,title,'font-weight="600" fill="#1d1d1f" font-size="13"');[0.32,0.36,0.40,0.44].forEach(v=>{s+=`<line x1="52" y1="${y(v)}" x2="440" y2="${y(v)}" stroke="#e5e5ea" stroke-dasharray="4 5"/>`+svgTx(44,y(v)+4,v.toFixed(2),'text-anchor="end" font-size="11"')});[0,2000,4000,6000].forEach(v=>s+=svgTx(x(v),326,v,'text-anchor="middle" font-size="11"'));return s+svgTx(246,359,'Training steps','text-anchor="middle" font-size="11"');}
  // Interpolate a series up to `step` (linear between reported checkpoints).
@@ -193,7 +194,7 @@ function registerEvidenceAnimation(draw){
   const values=p.series.map(([key,label,color])=>({label,color,delta:L[p.id][key].at(-1).loss-standard}));
   const ix=224,iy=57,width=208,rowHeight=23,height=30+values.length*rowHeight;
   const maxDelta=Math.max(...values.map(v=>Math.abs(v.delta))),barStart=ix+59,barWidth=58;
-  let content=`<g class="loss-inset" opacity="${opacity}" aria-label="Final loss difference from Standard"><rect x="${ix}" y="${iy}" width="${width}" height="${height}" rx="7" fill="#fff" fill-opacity=".96" stroke="#e5e5ea"/>`;
+  let content=`<g class="loss-inset" opacity="${opacity}" aria-label="${translate("Final loss difference from Standard")}"><rect x="${ix}" y="${iy}" width="${width}" height="${height}" rx="7" fill="#fff" fill-opacity=".96" stroke="#e5e5ea"/>`;
   content+=svgTx(ix+12,iy+18,'Final loss vs. Standard','class="inset-title" font-size="13" fill="#6e6e73"');
   values.forEach((v,i)=>{
    const cy=iy+39+i*rowHeight,length=Math.abs(v.delta)/maxDelta*barWidth;
@@ -212,13 +213,13 @@ function registerEvidenceAnimation(draw){
    all.forEach(([key,label,color,fam])=>{
     const pts=upTo(L[p.id][key],step);if(!pts.length)return;
     g+=`<path d="${svgPath(pts,x,y)}" fill="none" stroke="${color}" stroke-width="${fam==='standard'?2:2.6}" stroke-linejoin="round" stroke-linecap="round"/>`;
-    pts.forEach(c=>{if(c.step===null)return;g+=marker(fam,color,x(c.x),y(c.y),1,`${label}: step ${c.step}, loss ${c.y.toFixed(4)}`,fam==='standard'?2.6:3.2);});
+    pts.forEach(c=>{if(c.step===null)return;g+=marker(fam,color,x(c.x),y(c.y),1,translate('{label}: step {step}, loss {loss}', {label:translate(label),step:c.step,loss:c.y.toFixed(4)}),fam==='standard'?2.6:3.2);});
    });
    s+=g+'</g>';
    s+=inset(p,clamp((ms-INSET_AT)/500));
    svgs[pi].querySelector('g.scene')?.remove();svgs[pi].insertAdjacentHTML('beforeend',`<g class="scene">${s}</g>`);
   });
-  const status=done?'End of post-training · 3 epochs':`Training step ${Math.round(step/50)*50}`;
+  const status=done?translate('End of post-training · 3 epochs'):translate('Training step {step}', {step:Math.round(step/50)*50});
   if($('loss-status').textContent!==status)$('loss-status').textContent=status;
  }
  registerEvidenceAnimation(draw);
@@ -254,17 +255,17 @@ function registerEvidenceAnimation(draw){
  const R=DATA.runtime;if(!R||!$('runtime-table'))return;
  const cols=[['Standard',''],['TaH2 fixed','M=2'],['TaH2','M=2']];
  function renderTable(b){
-  const rows=Object.entries(R[b]).map(([metric,v])=>`<tr><th scope="row">${metric}</th>${v.map((n,i)=>`<td><strong>${n.toFixed(metric==='GFLOPs/token'?2:1)}</strong><small>${(n/v[0]).toFixed(2)}×</small></td>`).join('')}</tr>`).join('');
-  $('runtime-table').innerHTML=`<thead><tr><th scope="col">Metric</th>${cols.map(([name,detail],i)=>`<th scope="col" class="${i===2?'hl':''}">${name}<span class="runtime-model-detail">${detail||'&nbsp;'}</span></th>`).join('')}</tr></thead><tbody>${rows}</tbody>`;
-  $('runtime-table').setAttribute('aria-label',`Runtime efficiency at batch size ${b}`);
-  $('runtime-batch-label').textContent=`Batch ${b}`;
+  const rows=Object.entries(R[b]).map(([metric,v])=>`<tr><th scope="row">${translate(metric)}</th>${v.map((n,i)=>`<td><strong>${n.toFixed(metric==='GFLOPs/token'?2:1)}</strong><small>${(n/v[0]).toFixed(2)}×</small></td>`).join('')}</tr>`).join('');
+  $('runtime-table').innerHTML=`<thead><tr><th scope="col">${translate("Metric")}</th>${cols.map(([name,detail],i)=>`<th scope="col" class="${i===2?'hl':''}">${translate(name)}<span class="runtime-model-detail">${detail||'&nbsp;'}</span></th>`).join('')}</tr></thead><tbody>${rows}</tbody>`;
+  $('runtime-table').setAttribute('aria-label',translate('Runtime efficiency at batch size {batch}', {batch:b}));
+  $('runtime-batch-label').textContent=translate('Batch {batch}', {batch:b});
   pressed('data-batch',b);
  }
  document.querySelectorAll('[data-batch]').forEach(btn=>btn.addEventListener('click',()=>renderTable(btn.dataset.batch)));
  renderTable('1');
  // Latency chart (paper Fig. 5): DATA.latency has nine cutoffs per model.
  const series=[['Standard','Standard',colors.standard,'standard'],['TaH2 (fixed-depth, M=2)','TaH2 fixed · M=2',colors.fixed,'tah'],['TaH2 (adaptive, M=2)','TaH2 · M=2',colors.tah,'tah']];
- $('latency-legend').innerHTML=series.map(([,l,c])=>`<span><i style="--series:${c}"></i>${l}</span>`).join('');
+ $('latency-legend').innerHTML=series.map(([,l,c])=>`<span><i style="--series:${c}"></i>${translate(l)}</span>`).join('');
  const plot=paperPlot(PAPER_PLOT_RATIO.single);
  const svg=$('latency-chart'),x=s=>plot.left+s/340*plot.width,y=v=>plot.bottom-(v-5.5)/11.5*plot.height,DRAW=5200,HOLD=2800;
  svg.dataset.plotWidth=plot.width;svg.dataset.plotHeight=plot.height;
@@ -281,7 +282,7 @@ function registerEvidenceAnimation(draw){
    const w=fam==='standard'?2:2.6;
    if(dark.length>1)s+=`<path d="${svgPath(dark,x,y)}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"/>`;
    if(light.length>1)s+=`<path d="${svgPath(light,x,y)}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round" opacity=".42"/>`;
-   coords.forEach(c=>{if(c.cutoff===null)return;s+=marker(fam,color,x(c.x),y(c.y),c.cutoff>16?.55:1,`${label}: ${c.cutoff}K cutoff, ${c.y.toFixed(2)}%, ${c.x.toFixed(1)} s`,fam==='standard'?2.6:3.2);});
+   coords.forEach(c=>{if(c.cutoff===null)return;s+=marker(fam,color,x(c.x),y(c.y),c.cutoff>16?.55:1,translate('{label}: {cutoff}K cutoff, {accuracy}%, {seconds} s', {label:translate(label),cutoff:c.cutoff,accuracy:c.y.toFixed(2),seconds:c.x.toFixed(1)}),fam==='standard'?2.6:3.2);});
   });
   svg.querySelector('g.scene')?.remove();svg.insertAdjacentHTML('beforeend',`<g class="scene">${s}</g>`);
  }
@@ -293,12 +294,12 @@ function registerEvidenceAnimation(draw){
  const T=DATA.tokenDepth;if(!T||!$('depth-columns'))return;
  const blues=['','#eff6fc','#d6e5f4','#b7d4ea','#87bddc','#57a0ce','#3181bd','#135fa7','#1c4c87'];
  const names=['HumanEval','OlympiadBench','GPQA'];
- $('depth-legend').innerHTML='<span class="depth-legend-title">Iteration depth</span>'+[1,2,3,4,5,6,7,8].map(d=>`<span class="depth-swatch" style="background:${blues[d]};color:${d>=5?'#fff':'#1d1d1f'}">${d}</span>`).join('');
+ $('depth-legend').innerHTML=`<span class="depth-legend-title">${translate('Iteration depth')}</span>`+[1,2,3,4,5,6,7,8].map(d=>`<span class="depth-swatch" style="background:${blues[d]};color:${d>=5?'#fff':'#1d1d1f'}">${d}</span>`).join('');
  const esc=t=>t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
  // PDF extraction merges adjacent tokens with equal depth into text runs.
  // Reveal those runs in small word-sized pieces, retaining their recorded depth.
- const line=runs=>runs.map(run=>(run.t.match(/\s*\S+|\s+/g)||[]).map(text=>`<span class="tok" data-d="${run.d}" style="--token-color:${blues[run.d]}" title="depth ${run.d}">${esc(text)}</span>`).join('')).join('');
- $('depth-columns').innerHTML=names.map(n=>`<div class="depth-col"><div class="depth-col-heading"><h4>${n}</h4></div>${['beginning','ending'].map((seg,i)=>`${i?'<div class="depth-ellipsis">…</div>':''}<div class="depth-seg-head"><span>${seg[0].toUpperCase()+seg.slice(1)}</span><span class="depth-mean">Mean depth ${T[n][seg].mean.toFixed(2)}</span></div><pre class="depth-text" data-segment="${seg}">${T[n][seg].lines.map(line).join('\n')}</pre>`).join('')}</div>`).join('');
+ const line=runs=>runs.map(run=>(run.t.match(/\s*\S+|\s+/g)||[]).map(text=>`<span class="tok" data-d="${run.d}" style="--token-color:${blues[run.d]}" title="${translate("depth {depth}", {depth:run.d})}">${esc(text)}</span>`).join('')).join('');
+ $('depth-columns').innerHTML=names.map(n=>`<div class="depth-col"><div class="depth-col-heading"><h4>${n}</h4></div>${['beginning','ending'].map((seg,i)=>`${i?'<div class="depth-ellipsis">…</div>':''}<div class="depth-seg-head"><span>${translate(seg[0].toUpperCase()+seg.slice(1))}</span><span class="depth-mean">${translate("Mean depth {depth}", {depth:T[n][seg].mean.toFixed(2)})}</span></div><pre class="depth-text" data-segment="${seg}">${T[n][seg].lines.map(line).join('\n')}</pre>`).join('')}</div>`).join('');
  const columns=[...$('depth-columns').querySelectorAll('.depth-col')].map(col=>({
   segments:[...col.querySelectorAll('.depth-text')].map(pre=>({tokens:[...pre.querySelectorAll('.tok')],mean:pre.previousElementSibling.querySelector('.depth-mean'),count:-1}))
  }));

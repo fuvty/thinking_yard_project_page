@@ -17,36 +17,36 @@
   <!-- Content overlay -->
   <div style="position:relative; z-index:1; display:flex; flex-direction:column; align-items:center;">
     <h1 class="hero-title"><span>Think-at-Hard</span></h1>
-    <p class="hero-subtitle">Selective latent iterations to improve reasoning language models — iterate only on hard tokens, skip the easy ones.</p>
+    <p class="hero-subtitle" data-i18n="hero.adaptive-looped-llms-that-refine-hard-tokens-and-skip-unnecessary">Adaptive looped LLMs that refine hard tokens and skip unnecessary iterations.</p>
 
     <div class="hero-stats">
       <div class="stat-item">
-        <div class="stat-value">+5.3%</div>
-        <div class="stat-label">Avg. Accuracy Gain</div>
+        <div class="stat-value" data-i18n="hero.5-3-pp">+5.3 pp</div>
+        <div class="stat-label" data-i18n="hero.tah-gain-over-standard">Avg. Accuracy Gain</div>
       </div>
       <div class="stat-item">
         <div class="stat-value">1.07×</div>
-        <div class="stat-label">Avg. Iteration Depth</div>
+        <div class="stat-label" data-i18n="hero.avg-iteration-depth">Avg. Iteration Depth</div>
       </div>
       <div class="stat-item">
-        <div class="stat-value">Looped</div>
-        <div class="stat-label">Transformer</div>
+        <div class="stat-value" data-i18n="hero.looped">Looped</div>
+        <div class="stat-label" data-i18n="hero.transformer">Transformer</div>
       </div>
     </div>
 
     <div class="hero-cta">
       <div class="hero-actions">
-        <a href="https://arxiv.org/pdf/2511.08577" class="btn btn-primary">
+        <a href="https://arxiv.org/pdf/2511.08577" class="btn btn-primary" data-i18n="hero.read-paper">
           <i class="fas fa-file-alt"></i> Read Paper
         </a>
-        <a href="https://github.com/thu-nics/TaH" class="btn btn-secondary">
+        <a href="https://github.com/thu-nics/TaH" class="btn btn-secondary" data-i18n="hero.view-code">
           <i class="fab fa-github"></i> View Code
         </a>
-        <a href="https://huggingface.co/nics-efc/TaH" class="btn btn-secondary">
+        <a href="https://huggingface.co/nics-efc/TaH" class="btn btn-secondary" data-i18n="hero.models">
           🤗 Models
         </a>
       </div>
-      <div class="hero-badges">
+      <div class="hero-badges" data-i18n="hero.icml-2026-iclr-2025-lit-workshop-best-paper-shortlist">
         <span class="hero-badge">
           <i class="fas fa-award"></i>
           ICML 2026
@@ -69,15 +69,16 @@
       animation: fadeInUp 0.8s ease-out 0.6s backwards;
       opacity:0.7;
     ">
-      <span>DEPTH: <span id="telDepth">1.07</span>×</span>
-      <span>SKIP: <span id="telSkip">93</span>%</span>
-      <span>MODE: <span id="telMode">SELECTIVE</span></span>
+      <span><span data-i18n="hero.telemetry-depth">DEPTH:</span> <span id="telDepth">1.07</span>×</span>
+      <span><span data-i18n="hero.telemetry-skip">SKIP:</span> <span id="telSkip">93</span>%</span>
+      <span><span data-i18n="hero.telemetry-mode">MODE:</span> <span id="telMode" data-i18n="hero.selective">SELECTIVE</span></span>
     </div>
   </div>
 </section>
 
 <script>
 (function() {
+  const {t: translate} = globalThis.SiteI18n;
   const canvas = document.getElementById('tokenCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
@@ -178,6 +179,8 @@
       [hardTokenIndices[i], hardTokenIndices[j]] = [hardTokenIndices[j], hardTokenIndices[i]];
     }
     seqPointer = 0;
+    seqTimer = 0;
+    activeTokenIdx = -1;
   }
 
   // Track mouse on hero section
@@ -224,7 +227,7 @@
     const curSkip = lerp(0, 93, selectivity);
     if (telDepth) telDepth.textContent = curDepth.toFixed(2);
     if (telSkip) telSkip.textContent = Math.round(curSkip);
-    if (telMode) telMode.textContent = selectivity < 0.3 ? 'UNIFORM' : selectivity < 0.8 ? 'TRANSITIONING' : 'SELECTIVE';
+    if (telMode) telMode.textContent = selectivity < 0.3 ? translate('UNIFORM') : selectivity < 0.8 ? translate('TRANSITIONING') : translate('SELECTIVE');
 
     // Sequential depth cycling with spotlight effect
     if (selectivity > 0.3 && hardTokenIndices.length > 0) {
@@ -373,27 +376,27 @@
 <section class="section" id="overview">
   <div class="container">
     <div class="reveal">
-      <p class="section-eyebrow">Overview</p>
-      <h2 class="section-title">Iterate smarter, <span class="text-highlight-gradient">not more</span></h2>
+      <p class="section-eyebrow" data-i18n="overview.overview">Overview</p>
+      <h2 class="section-title" data-i18n="overview.iterate-smarter-not-more">Iterate smarter, <span class="text-highlight-gradient" data-emphasis="not-more">not more</span></h2>
     </div>
     <div class="overview-grid reveal">
       <div class="overview-content">
-        <p class="overview-lead">
-          Looped transformers refine token predictions through multiple latent iterations — but iterating on every token wastes compute and risks <em>latent overthinking</em>, where correct predictions get flipped to errors.
+        <p class="overview-lead" data-i18n="overview.looped-transformers-refine-token-predictions-through-multiple-lat">
+          Looped transformers refine token predictions through multiple latent iterations — but iterating on every token wastes compute and risks <em data-emphasis="latent-overthinking">latent overthinking</em>, where correct predictions get flipped to errors.
         </p>
         <div class="overview-points">
           <div class="overview-point">
             <div class="overview-point-icon problem"><i class="fas fa-times"></i></div>
-            <div class="overview-point-text"><strong>Always-Iterate</strong> applies uniform iterations to all tokens — overthinking easy tokens while still underthinking hard ones</div>
+            <div class="overview-point-text" data-i18n="overview.always-iterate-applies-uniform-iterations-to-all-tokens-overthink"><strong data-emphasis="always-iterate">Always-Iterate</strong> applies uniform iterations to all tokens — overthinking easy tokens while still underthinking hard ones</div>
           </div>
           <div class="overview-point">
             <div class="overview-point-icon solution"><i class="fas fa-check"></i></div>
-            <div class="overview-point-text"><strong>Think-at-Hard</strong> selectively iterates only on hard tokens — improving accuracy while reducing computation by 93%</div>
+            <div class="overview-point-text" data-i18n="overview.think-at-hard-selectively-iterates-only-on-hard-tokens-improving"><strong data-emphasis="think-at-hard">Think-at-Hard</strong> selectively iterates only on hard tokens — improving accuracy while skipping extra iterations for 93% of tokens</div>
           </div>
         </div>
       </div>
       <div class="overview-figure">
-        <img src="./static/images/idea.png" alt="TaH Overview - Latent iterations can fix wrong predictions but also overthink correct ones">
+        <img src="./static/images/idea.png" alt="TaH Overview - Latent iterations can fix wrong predictions but also overthink correct ones" data-i18n-attrs="figure.1">
       </div>
     </div>
   </div>
@@ -403,26 +406,26 @@
 <section class="section section-dark" id="insight">
   <div class="container">
     <div class="reveal">
-      <p class="section-eyebrow" style="color: #0a84ff;">The Discovery</p>
-      <h2 class="section-title">Most tokens don't need to <span class="text-highlight-gradient">think twice</span>.</h2>
-      <p class="section-subtitle">We identify <em>latent overthinking</em> — where extra iterations hurt rather than help — and show that selective iteration unlocks significant untapped potential.</p>
+      <p class="section-eyebrow" style="color: #0a84ff;" data-i18n="insight.the-discovery">The Discovery</p>
+      <h2 class="section-title" data-i18n="insight.most-tokens-don-t-need-to-think-twice">Most tokens don't need to <span class="text-highlight-gradient" data-emphasis="think-twice">think twice</span>.</h2>
+      <p class="section-subtitle" data-i18n="insight.we-identify-latent-overthinking-where-extra-iterations-hurt-rathe">We identify <em data-emphasis="latent-overthinking">latent overthinking</em> — where extra iterations hurt rather than help — and show that selective iteration unlocks significant untapped potential.</p>
     </div>
 
     <div class="insight-grid reveal">
       <div class="insight-card">
         <div class="insight-percentage green">8.7%</div>
-        <div class="insight-label">Tokens Corrected</div>
-        <div class="insight-desc">The second iteration fixes 8.7% of first-pass mispredictions, showing latent iterations can genuinely help on hard tokens.</div>
+        <div class="insight-label" data-i18n="insight.tokens-corrected">Tokens Corrected</div>
+        <div class="insight-desc" data-i18n="insight.after-a-second-iteration-8-7-of-all-tokens-change-from-incorrect">For Ouro, a second iteration changes 8.7% of all tokens from incorrect to correct predictions.</div>
       </div>
       <div class="insight-card">
         <div class="insight-percentage orange">2.1%</div>
-        <div class="insight-label">Tokens Overthought</div>
-        <div class="insight-desc">But it also flips 2.1% of correct predictions into errors — a latent overthinking phenomenon that mirrors explicit CoT overthinking.</div>
+        <div class="insight-label" data-i18n="insight.tokens-overthought">Tokens Overthought</div>
+        <div class="insight-desc" data-i18n="insight.another-2-1-of-all-tokens-change-from-correct-to-incorrect-predic">Another 2.1% of all tokens change from correct to incorrect predictions. Extra latent computation can also cause overthinking.</div>
       </div>
       <div class="insight-card">
-        <div class="insight-percentage blue">+7.3%</div>
-        <div class="insight-label">Oracle Potential</div>
-        <div class="insight-desc">An oracle policy that iterates only on mispredicted tokens achieves up to 7.3% improvement — and up to 32% with TaH's optimized architecture.</div>
+        <div class="insight-percentage blue" data-i18n="insight.oracle-gain">+7.3 pp</div>
+        <div class="insight-label" data-i18n="insight.oracle-potential">Oracle Potential</div>
+        <div class="insight-desc" data-i18n="insight.an-oracle-policy-that-iterates-only-on-mispredicted-tokens-achiev">An oracle policy that iterates only on mispredicted tokens achieves up to 7.3 percentage points over always iterating twice — and up to 32 percentage points with TaH's optimized architecture.</div>
       </div>
     </div>
 
@@ -430,7 +433,7 @@
     <div class="reveal" style="margin-top:48px;">
       <div class="expandable-section" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);">
         <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title" style="color:#fff;">Learn more about the oracle experiments</span>
+          <span class="expandable-title" style="color:#fff;" data-i18n="insight.learn-more-about-the-oracle-experiments">Learn more about the oracle experiments</span>
           <div class="expandable-icon" style="background:rgba(255,255,255,0.1);">
             <i class="fas fa-plus" style="color:#fff; font-size:12px;"></i>
           </div>
@@ -438,13 +441,13 @@
         <div class="expandable-content">
           <div class="expandable-content-inner">
             <div class="expandable-inner" style="color:rgba(255,255,255,0.8);">
-              <h4 style="color:#30d158; margin-bottom:12px;">Oracle Iteration Policy</h4>
-              <p style="margin-bottom:12px;">We establish an oracle policy π that triggers additional iterations only when the reference LLM mispredicts the target token at the first pass. Using top-1 mismatch as the discrepancy metric, this oracle iterates on only 12–19% of tokens.</p>
+              <h4 style="color:#30d158; margin-bottom:12px;" data-i18n="insight.oracle-iteration-policy">Oracle Iteration Policy</h4>
+              <p style="margin-bottom:12px;" data-i18n="insight.we-establish-an-oracle-policy-that-triggers-additional-iterations">We establish an oracle policy π that triggers additional iterations only when the reference LLM mispredicts the target token at the first pass. Using top-1 mismatch as the discrepancy metric, this oracle iterates on only 12–19% of tokens.</p>
 
               <table style="width:100%; border-collapse:collapse; margin:16px 0; font-size:14px;">
                 <thead>
                   <tr style="background:rgba(255,255,255,0.1);">
-                    <th style="padding:12px; text-align:left; color:#fff;">Policy</th>
+                    <th style="padding:12px; text-align:left; color:#fff;" data-i18n="insight.policy">Policy</th>
                     <th style="padding:12px; text-align:center; color:#fff;">NTP</th>
                     <th style="padding:12px; text-align:center; color:#fff;">AMC23</th>
                     <th style="padding:12px; text-align:center; color:#fff;">MMLU100</th>
@@ -453,28 +456,28 @@
                 </thead>
                 <tbody>
                   <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-                    <td style="padding:12px;">Always-1 (no iteration)</td>
+                    <td style="padding:12px;" data-i18n="insight.always-1-no-iteration">Always-1 (no iteration)</td>
                     <td style="padding:12px; text-align:center;">73.1</td>
                     <td style="padding:12px; text-align:center;">38.1</td>
                     <td style="padding:12px; text-align:center;">56.0</td>
                     <td style="padding:12px; text-align:center;">39.6</td>
                   </tr>
                   <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-                    <td style="padding:12px;">Always-2 (iterate all)</td>
+                    <td style="padding:12px;" data-i18n="insight.always-2-iterate-all">Always-2 (iterate all)</td>
                     <td style="padding:12px; text-align:center;">79.7</td>
                     <td style="padding:12px; text-align:center;">40.6</td>
                     <td style="padding:12px; text-align:center;">60.0</td>
                     <td style="padding:12px; text-align:center;">40.9</td>
                   </tr>
                   <tr style="background:rgba(102,126,234,0.15); border-bottom:1px solid rgba(255,255,255,0.1);">
-                    <td style="padding:12px; font-weight:600;">Oracle (selective)</td>
+                    <td style="padding:12px; font-weight:600;" data-i18n="insight.oracle-selective">Oracle (selective)</td>
                     <td style="padding:12px; text-align:center; font-weight:600;">81.8 <span style="color:#30d158; font-size:12px;">+2.1</span></td>
                     <td style="padding:12px; text-align:center; font-weight:600;">47.9 <span style="color:#30d158; font-size:12px;">+7.3</span></td>
                     <td style="padding:12px; text-align:center; font-weight:600;">62.0 <span style="color:#30d158; font-size:12px;">+2.0</span></td>
                     <td style="padding:12px; text-align:center; font-weight:600;">43.3 <span style="color:#30d158; font-size:12px;">+2.4</span></td>
                   </tr>
                   <tr style="background:rgba(102,126,234,0.25);">
-                    <td style="padding:12px; font-weight:600;">Oracle w. TaH</td>
+                    <td style="padding:12px; font-weight:600;" data-i18n="insight.oracle-w-tah">Oracle w. TaH</td>
                     <td style="padding:12px; text-align:center; font-weight:600;">89.3 <span style="color:#30d158; font-size:12px;">+9.6</span></td>
                     <td style="padding:12px; text-align:center; font-weight:600;">68.8 <span style="color:#30d158; font-size:12px;">+28.2</span></td>
                     <td style="padding:12px; text-align:center; font-weight:600;">85.0 <span style="color:#30d158; font-size:12px;">+25.0</span></td>
@@ -483,8 +486,8 @@
                 </tbody>
               </table>
 
-              <p style="margin-top:16px;">
-                <strong style="color:#0a84ff;">Key insight:</strong> TaH's architecture better utilizes the oracle policy, achieving &gt;25% improvement and surpassing even Qwen3-4B. The oracle requires ground-truth tokens unavailable at inference — TaH approximates it with a neural decider.
+              <p style="margin-top:16px;" data-i18n="insight.key-insight-tah-s-architecture-better-utilizes-the-oracle-policy">
+                <strong style="color:#0a84ff;" data-emphasis="key-insight">Key insight:</strong> TaH's architecture better utilizes the oracle policy, gaining over 25 percentage points on selected oracle benchmarks and surpassing Qwen3-4B there. The oracle uses target tokens or a stronger model as a proxy, which are not available to the deployed decider. TaH learns to approximate these decisions.
               </p>
             </div>
           </div>
@@ -496,7 +499,7 @@
     <div class="reveal" style="margin-top:16px;">
       <div class="expandable-section" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);">
         <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title" style="color:#fff;">Accuracy landscape across iterations</span>
+          <span class="expandable-title" style="color:#fff;" data-i18n="insight.accuracy-landscape-across-iterations">Accuracy landscape across iterations</span>
           <div class="expandable-icon" style="background:rgba(255,255,255,0.1);">
             <i class="fas fa-plus" style="color:#fff; font-size:12px;"></i>
           </div>
@@ -505,9 +508,9 @@
           <div class="expandable-content-inner">
             <div class="expandable-inner" style="color:rgba(255,255,255,0.8);">
               <div style="text-align:center;">
-                <img src="./static/images/landscape.png" alt="Token prediction accuracy landscape" style="max-width:100%; border-radius:12px; margin:16px 0;">
+                <img src="./static/images/landscape.png" alt="Token prediction accuracy landscape" style="max-width:100%; border-radius:12px; margin:16px 0;" data-i18n-attrs="figure.2">
               </div>
-              <p>Because Ouro trains all iterations to predict all tokens, predictable tokens across depths largely overlap, leaving more tokens unpredictable by any iteration. TaH instead specializes deeper iterations for hard tokens, reducing overlap and improving coverage under selective iteration.</p>
+              <p data-i18n="insight.because-ouro-trains-all-iterations-to-predict-all-tokens-predicta">Because Ouro trains all iterations to predict all tokens, predictable tokens across depths largely overlap, leaving more tokens unpredictable by any iteration. TaH instead specializes deeper iterations for hard tokens, reducing overlap and improving coverage under selective iteration.</p>
             </div>
           </div>
         </div>
@@ -520,15 +523,15 @@
 <section class="section" id="architecture">
   <div class="container">
     <div class="reveal">
-      <p class="section-eyebrow">Architecture</p>
-      <h2 class="section-title">TaH Design</h2>
-      <p class="section-subtitle">Three architectural innovations enable efficient selective latent iteration.</p>
+      <p class="section-eyebrow" data-i18n="architecture.architecture">Architecture</p>
+      <h2 class="section-title" data-i18n="architecture.tah-design">TaH Design</h2>
+      <p class="section-subtitle" data-i18n="architecture.three-architectural-innovations-enable-efficient-selective-latent">Three architectural innovations enable efficient selective latent iteration.</p>
     </div>
 
     <div class="reveal" style="text-align:center;">
-      <img src="./static/images/arch.png" alt="TaH Architecture Overview" class="method-figure">
-      <p class="figure-caption">
-        <strong>TaH Overview.</strong> (a) Regular causal attention. (b) Duo-causal attention extends causality to two dimensions. (c) TaH selectively iterates or verbalizes tokens using LoRA adapters and a neural iteration decider.
+      <img src="./static/images/arch.png" alt="TaH Architecture Overview" class="method-figure" data-i18n-attrs="figure.3">
+      <p class="figure-caption" data-i18n="architecture.tah-overview-a-regular-causal-attention-b-duo-causal-attention-ex">
+        <strong data-emphasis="tah-overview">TaH Overview.</strong> (a) Regular causal attention. (b) Duo-causal attention extends causality to two dimensions. (c) TaH selectively iterates or verbalizes tokens using LoRA adapters and a neural iteration decider.
       </p>
     </div>
 
@@ -536,18 +539,18 @@
     <div class="arch-features reveal">
       <div class="arch-feature">
         <canvas id="cvDuoCausal" width="280" height="160" style="width:100%; height:160px; border-radius:12px; margin-bottom:16px;"></canvas>
-        <h4>Duo-Causal Attention</h4>
-        <p>2D causality across token positions and iteration depths — compatible with FlashAttention, no custom CUDA kernels needed</p>
+        <h4 data-i18n="architecture.duo-causal-attention">Duo-Causal Attention</h4>
+        <p data-i18n="architecture.2d-causality-across-token-positions-and-iteration-depths-compatib">2D causality across token positions and iteration depths — compatible with FlashAttention, no custom CUDA kernels needed</p>
       </div>
       <div class="arch-feature">
         <canvas id="cvLoRA" width="280" height="160" style="width:100%; height:160px; border-radius:12px; margin-bottom:16px;"></canvas>
-        <h4>Depth-aware LoRA</h4>
-        <p>LoRA adapters at $d &gt; 1$ shift the objective from next-token prediction to hard-token refinement with &lt;3% extra parameters</p>
+        <h4 data-i18n="architecture.depth-aware-lora">Depth-aware LoRA</h4>
+        <p data-i18n="architecture.lora-adapters-at-d-1-shift-the-objective-from-next-token-predicti">LoRA adapters at $d &gt; 1$ shift the objective from next-token prediction to hard-token refinement with &lt;3% extra parameters</p>
       </div>
       <div class="arch-feature">
         <canvas id="cvDecider" width="280" height="160" style="width:100%; height:160px; border-radius:12px; margin-bottom:16px;"></canvas>
-        <h4>Neural Iteration Decider</h4>
-        <p>Lightweight MLP that predicts which tokens need deeper thinking — trained to imitate the oracle policy in a stable two-stage scheme</p>
+        <h4 data-i18n="architecture.neural-iteration-decider">Neural Iteration Decider</h4>
+        <p data-i18n="architecture.lightweight-mlp-that-predicts-which-tokens-need-deeper-thinking-t">Lightweight MLP that predicts which tokens need deeper thinking — trained to imitate the oracle policy in a stable two-stage scheme</p>
       </div>
     </div>
 
@@ -557,52 +560,52 @@
         <div class="pipeline-steps">
           <div class="pipeline-step active" onclick="switchPipelineStep(0)">
             <div class="pipeline-step-number">1</div>
-            <div class="pipeline-step-name">Input &amp; Forward Pass</div>
+            <div class="pipeline-step-name" data-i18n="architecture.input-forward-pass">Input &amp; Forward Pass</div>
           </div>
           <div class="pipeline-step" onclick="switchPipelineStep(1)">
             <div class="pipeline-step-number">2</div>
-            <div class="pipeline-step-name">Duo-Causal Attention</div>
+            <div class="pipeline-step-name" data-i18n="architecture.duo-causal-attention">Duo-Causal Attention</div>
           </div>
           <div class="pipeline-step" onclick="switchPipelineStep(2)">
             <div class="pipeline-step-number">3</div>
-            <div class="pipeline-step-name">Depth Adapter (LoRA)</div>
+            <div class="pipeline-step-name" data-i18n="architecture.depth-adapter-lora">Depth Adapter (LoRA)</div>
           </div>
           <div class="pipeline-step" onclick="switchPipelineStep(3)">
             <div class="pipeline-step-number">4</div>
-            <div class="pipeline-step-name">Iteration Decider</div>
+            <div class="pipeline-step-name" data-i18n="architecture.iteration-decider">Iteration Decider</div>
           </div>
         </div>
         <div class="pipeline-visualization">
           <div class="pipeline-content active" id="pipeline-0">
-            <h4 style="font-size:20px; font-weight:600; margin-bottom:16px;">Standard Forward Pass (Depth 1)</h4>
-            <p style="font-size:16px; line-height:1.6; color:#444; margin-bottom:16px;">Token embeddings enter the LLM backbone for a standard forward pass at depth $d=1$. The model uses its original pretrained weights $\theta$ without any LoRA adaptation. This first iteration produces standard next-token predictions — correct for ~93% of tokens.</p>
-            <div style="background:var(--apple-light-gray); padding:16px 20px; border-radius:12px; font-size:14px; color:var(--apple-gray);">
+            <h4 style="font-size:20px; font-weight:600; margin-bottom:16px;" data-i18n="architecture.standard-forward-pass-depth-1">Standard Forward Pass (Depth 1)</h4>
+            <p style="font-size:16px; line-height:1.6; color:#444; margin-bottom:16px;" data-i18n="architecture.token-embeddings-enter-the-llm-backbone-for-a-standard-forward-pa">Token embeddings enter the LLM backbone for a standard forward pass at depth $d=1$. The model uses its original pretrained weights $\theta$ without any LoRA adaptation. This first iteration produces standard next-token predictions. The decider then selects tokens for further refinement.</p>
+            <div style="background:var(--apple-light-gray); padding:16px 20px; border-radius:12px; font-size:14px; color:var(--apple-gray);" data-i18n="architecture.key-the-first-pass-preserves-the-pretrained-model-s-strong-next-t">
               <i class="fas fa-lightbulb" style="color:#ff9f0a; margin-right:8px;"></i>
-              <strong>Key:</strong> The first pass preserves the pretrained model's strong next-token prediction ability. Only hard tokens proceed to deeper iterations.
+              <strong data-emphasis="key">Key:</strong> The first pass preserves the pretrained model's strong next-token prediction ability. Only hard tokens proceed to deeper iterations.
             </div>
           </div>
           <div class="pipeline-content" id="pipeline-1">
-            <h4 style="font-size:20px; font-weight:600; margin-bottom:16px;">Duo-Causal Attention</h4>
-            <p style="font-size:16px; line-height:1.6; color:#444; margin-bottom:16px;">Unlike standard causal attention (1D: attend to previous positions), duo-causal attention extends causality to <strong>two dimensions</strong>: tokens attend to both previous positions <em>and</em> shallower iteration depths. Formally: $X_{\le i}^{(\le d)} = \{x_j^{(k)} \mid j \le i, k \le d\}$.</p>
-            <div style="background:var(--apple-light-gray); padding:16px 20px; border-radius:12px; font-size:14px; color:var(--apple-gray);">
+            <h4 style="font-size:20px; font-weight:600; margin-bottom:16px;" data-i18n="architecture.duo-causal-attention">Duo-Causal Attention</h4>
+            <p style="font-size:16px; line-height:1.6; color:#444; margin-bottom:16px;" data-i18n="architecture.unlike-standard-causal-attention-1d-attend-to-previous-positions">Unlike standard causal attention (1D: attend to previous positions), duo-causal attention extends causality to <strong data-emphasis="two-dimensions">two dimensions</strong>: tokens attend to both previous positions <em data-emphasis="and">and</em> shallower iteration depths. Formally: $X_{\le i}^{(\le d)} = \{x_j^{(k)} \mid j \le i, k \le d\}$.</p>
+            <div style="background:var(--apple-light-gray); padding:16px 20px; border-radius:12px; font-size:14px; color:var(--apple-gray);" data-i18n="architecture.key-this-enables-cross-depth-information-flow-deeper-tokens-can-a">
               <i class="fas fa-lightbulb" style="color:#ff9f0a; margin-right:8px;"></i>
-              <strong>Key:</strong> This enables cross-depth information flow — deeper tokens can access shallower representations of all previous tokens — while maintaining full parallel training via FlashAttention compatibility.
+              <strong data-emphasis="key">Key:</strong> This enables cross-depth information flow — deeper tokens can access shallower representations of all previous tokens — while maintaining full parallel training via FlashAttention compatibility.
             </div>
           </div>
           <div class="pipeline-content" id="pipeline-2">
-            <h4 style="font-size:20px; font-weight:600; margin-bottom:16px;">Depth Adapter (LoRA)</h4>
-            <p style="font-size:16px; line-height:1.6; color:#444; margin-bottom:16px;">At deeper iterations ($d &gt; 1$), LoRA adapters activate on top of the shared backbone: $\theta_d = \theta + \Delta$. This shifts the model's objective from general next-token prediction to focused <strong>hard-token refinement</strong>. Residual connections across iterations simplify the refinement process.</p>
-            <div style="background:var(--apple-light-gray); padding:16px 20px; border-radius:12px; font-size:14px; color:var(--apple-gray);">
+            <h4 style="font-size:20px; font-weight:600; margin-bottom:16px;" data-i18n="architecture.depth-adapter-lora">Depth Adapter (LoRA)</h4>
+            <p style="font-size:16px; line-height:1.6; color:#444; margin-bottom:16px;" data-i18n="architecture.at-deeper-iterations-d-1-lora-adapters-activate-on-top-of-the-sha">At deeper iterations ($d &gt; 1$), LoRA adapters activate on top of the shared backbone: $\theta_d = \theta + \Delta$. This shifts the model's objective from general next-token prediction to focused <strong data-emphasis="hard-token-refinement">hard-token refinement</strong>. Residual connections across iterations simplify the refinement process.</p>
+            <div style="background:var(--apple-light-gray); padding:16px 20px; border-radius:12px; font-size:14px; color:var(--apple-gray);" data-i18n="architecture.key-lora-adds-less-than-3-extra-parameters-while-enabling-the-mod">
               <i class="fas fa-lightbulb" style="color:#ff9f0a; margin-right:8px;"></i>
-              <strong>Key:</strong> LoRA adds less than 3% extra parameters while enabling the model to specialize deeper iterations. Without LoRA, the shared weights must handle both objectives, limiting performance.
+              <strong data-emphasis="key">Key:</strong> LoRA adds less than 3% extra parameters while enabling the model to specialize deeper iterations. Without LoRA, the shared weights must handle both objectives, limiting performance.
             </div>
           </div>
           <div class="pipeline-content" id="pipeline-3">
-            <h4 style="font-size:20px; font-weight:600; margin-bottom:16px;">Neural Iteration Decider</h4>
-            <p style="font-size:16px; line-height:1.6; color:#444; margin-bottom:16px;">A lightweight MLP ($\mathcal{I}_\phi$) reads concatenated hidden states from shallow, middle, and final LLM layers to predict a continuation probability $\hat{c}_i^{(d)} \in [0,1]$. If $\hat{c}_i^{(d)} &lt; c_{\text{threshold}}$, the token verbalizes; otherwise it continues to the next iteration depth.</p>
-            <div style="background:var(--apple-light-gray); padding:16px 20px; border-radius:12px; font-size:14px; color:var(--apple-gray);">
+            <h4 style="font-size:20px; font-weight:600; margin-bottom:16px;" data-i18n="architecture.neural-iteration-decider">Neural Iteration Decider</h4>
+            <p style="font-size:16px; line-height:1.6; color:#444; margin-bottom:16px;" data-i18n="architecture.a-lightweight-mlp-mathcal-i-phi-reads-concatenated-hidden-states">A lightweight MLP ($\mathcal{I}_\phi$) reads concatenated hidden states from shallow, middle, and final LLM layers to predict a continuation probability $\hat{c}_i^{(d)} \in [0,1]$. If $\hat{c}_i^{(d)} &lt; c_{\text{threshold}}$, the token verbalizes; otherwise it continues to the next iteration depth.</p>
+            <div style="background:var(--apple-light-gray); padding:16px 20px; border-radius:12px; font-size:14px; color:var(--apple-gray);" data-i18n="architecture.key-the-decider-is-trained-in-stage-2-to-imitate-the-oracle-polic">
               <i class="fas fa-lightbulb" style="color:#ff9f0a; margin-right:8px;"></i>
-              <strong>Key:</strong> The decider is trained in Stage 2 to imitate the oracle policy via weighted binary cross-entropy. It achieves ~83% accuracy at predicting the oracle's decisions. Tokens like "But" (34%) and "So" (18%) are most frequently selected for deeper iteration.
+              <strong data-emphasis="key">Key:</strong> The decider is trained in Stage 2 to imitate the oracle policy via weighted binary cross-entropy. It achieves ~83% accuracy at predicting the oracle's decisions. Tokens like "But" (34%) and "So" (18%) are most frequently selected for deeper iteration.
             </div>
           </div>
         </div>
@@ -612,6 +615,7 @@
     <script>
     // === Mini-vis 1: Duo-Causal Attention ===
     (function() {
+  const {t: translate} = globalThis.SiteI18n;
       const cv = document.getElementById('cvDuoCausal');
       if (!cv) return;
       const ctx = cv.getContext('2d');
@@ -660,11 +664,11 @@
         ctx.font = '9px "SF Mono", monospace';
         ctx.fillStyle = '#999';
         ctx.textAlign = 'center';
-        ctx.fillText('position →', W / 2, H - 5);
+        ctx.fillText(translate('position →'), W / 2, H - 5);
         ctx.save();
         ctx.translate(12, H / 2);
         ctx.rotate(-Math.PI / 2);
-        ctx.fillText('depth →', 0, 0);
+        ctx.fillText(translate('depth →'), 0, 0);
         ctx.restore();
 
         const cycleT = t % totalCycle;
@@ -778,6 +782,7 @@
 
     // === Mini-vis 2: Depth-aware LoRA ===
     (function() {
+  const {t: translate} = globalThis.SiteI18n;
       const cv = document.getElementById('cvLoRA');
       if (!cv) return;
       const ctx = cv.getContext('2d');
@@ -822,7 +827,7 @@
         ctx.font = '10px "SF Mono", monospace';
         ctx.fillStyle = hasLoRA ? '#667eea' : '#999';
         ctx.textAlign = 'center';
-        ctx.fillText('iteration ' + currentDepth, centerX, 14);
+        ctx.fillText(translate('iteration {depth}', {depth: currentDepth}), centerX, 14);
 
         const midY = (bbY + loraY) / 2;
 
@@ -853,7 +858,7 @@
           ctx.fillText('θ', centerX, midY + 4);
           ctx.font = '8px "SF Mono", monospace';
           ctx.fillStyle = '#aaa';
-          ctx.fillText('backbone', centerX, midY + blockH/2 + 12);
+          ctx.fillText(translate('backbone'), centerX, midY + blockH/2 + 12);
 
           // Dot on single path
           const dotX = pathLeft + progress * (pathRight - pathLeft);
@@ -936,7 +941,7 @@
           ctx.fillText('θ', centerX, bbY + 4);
           ctx.font = '8px "SF Mono", monospace';
           ctx.fillStyle = '#aaa';
-          ctx.fillText('backbone', centerX, bbY - blockH/2 - 5);
+          ctx.fillText(translate('backbone'), centerX, bbY - blockH/2 - 5);
 
           // LoRA block (lower)
           const loraInside = progress > 0.25 && progress < 0.7;
@@ -956,7 +961,7 @@
           ctx.fillText('+Δ', centerX, loraY + 4);
           ctx.font = '8px "SF Mono", monospace';
           ctx.fillStyle = `rgba(102, 126, 234, ${loraAlpha * 0.8})`;
-          ctx.fillText('adapter', centerX, loraY + blockH/2 + 12);
+          ctx.fillText(translate('adapter'), centerX, loraY + blockH/2 + 12);
 
           // Animated dots — split into two paths
           let dotBBx, dotBBy, dotLoraX, dotLoraY;
@@ -998,9 +1003,9 @@
         ctx.font = '8px "SF Mono", monospace';
         ctx.fillStyle = '#aaa';
         ctx.textAlign = 'left';
-        ctx.fillText('token →', pathLeft, midY - 10);
+        ctx.fillText(translate('token →'), pathLeft, midY - 10);
         ctx.textAlign = 'right';
-        ctx.fillText('→ output', pathRight, midY - 10);
+        ctx.fillText(translate('→ output'), pathRight, midY - 10);
 
         requestAnimationFrame(draw);
       }
@@ -1009,6 +1014,7 @@
 
     // === Mini-vis 3: Neural Iteration Decider ===
     (function() {
+  const {t: translate} = globalThis.SiteI18n;
       const cv = document.getElementById('cvDecider');
       if (!cv) return;
       const ctx = cv.getContext('2d');
@@ -1069,8 +1075,8 @@
         ctx.fillStyle = '#aaa';
         ctx.font = '8px "SF Mono", monospace';
         ctx.textAlign = 'left';
-        ctx.fillText('stop → verbalize', gateX + 24, 38);
-        ctx.fillText('continue → d+1', gateX + 24, H - 28);
+        ctx.fillText(translate('stop → verbalize'), gateX + 24, 38);
+        ctx.fillText(translate('continue → d+1'), gateX + 24, H - 28);
 
         // Spawn tokens
         spawnTimer += 1/60;
@@ -1135,21 +1141,21 @@
     <div class="reveal" style="margin-top:32px;">
       <div class="expandable-section">
         <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title">Two-stage training scheme</span>
+          <span class="expandable-title" data-i18n="architecture.two-stage-training-scheme">Two-stage training scheme</span>
           <div class="expandable-icon"><i class="fas fa-plus" style="font-size:12px;"></i></div>
         </div>
         <div class="expandable-content">
           <div class="expandable-content-inner">
             <div class="expandable-inner">
-              <p style="font-size:16px; line-height:1.6; color:#444; margin-bottom:16px;">The backbone LLM and iteration decider are tightly coupled — joint training is unstable. We decouple them with a two-stage approach under a fixed oracle policy $\pi$:</p>
+              <p style="font-size:16px; line-height:1.6; color:#444; margin-bottom:16px;" data-i18n="architecture.the-backbone-llm-and-iteration-decider-are-tightly-coupled-joint">The backbone LLM and iteration decider are tightly coupled — joint training is unstable. We decouple them with a two-stage approach under a fixed oracle policy $\pi$:</p>
               <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
                 <div style="background:var(--apple-light-gray); padding:24px; border-radius:16px;">
-                  <h5 style="font-weight:600; margin-bottom:8px; color:var(--apple-blue);">Stage 1: Backbone Training</h5>
-                  <p style="font-size:14px; color:#444; line-height:1.5;">Fine-tune the LLM ($\theta$) and LoRA ($\Delta$) with $\pi$-guided iteration. Loss = standard next-token prediction at the oracle-determined depth. This preserves first-iteration accuracy for easy tokens while training deeper iterations to refine hard ones.</p>
+                  <h5 style="font-weight:600; margin-bottom:8px; color:var(--apple-blue);" data-i18n="architecture.backbone-training">Stage 1: Backbone Training</h5>
+                  <p style="font-size:14px; color:#444; line-height:1.5;" data-i18n="architecture.fine-tune-the-llm-theta-and-lora-delta-with-pi-guided-iteration-l">Fine-tune the LLM ($\theta$) and LoRA ($\Delta$) with $\pi$-guided iteration. Loss = standard next-token prediction at the oracle-determined depth. This preserves first-iteration accuracy for easy tokens while training deeper iterations to refine hard ones.</p>
                 </div>
                 <div style="background:var(--apple-light-gray); padding:24px; border-radius:16px;">
-                  <h5 style="font-weight:600; margin-bottom:8px; color:var(--apple-blue);">Stage 2: Decider Training</h5>
-                  <p style="font-size:14px; color:#444; line-height:1.5;">Freeze the backbone and train the decider ($\phi$) to imitate $\pi$'s continuation decisions via weighted binary cross-entropy. Class weights handle the label imbalance between continue (~7%) and stop (~93%) decisions.</p>
+                  <h5 style="font-weight:600; margin-bottom:8px; color:var(--apple-blue);" data-i18n="architecture.decider-training">Stage 2: Decider Training</h5>
+                  <p style="font-size:14px; color:#444; line-height:1.5;" data-i18n="architecture.freeze-the-backbone-and-train-the-decider-phi-to-imitate-pi-s-con">Freeze the backbone and train the decider ($\phi$) to imitate $\pi$'s continuation decisions via weighted binary cross-entropy. Class weights handle the imbalance between continue and stop labels.</p>
                 </div>
               </div>
             </div>
@@ -1164,9 +1170,9 @@
 <section class="section section-gray" id="results">
   <div class="container">
     <div class="reveal">
-      <p class="section-eyebrow">Experiments</p>
-      <h2 class="section-title">Benchmark Results</h2>
-      <p class="section-subtitle">Consistent gains across nine reasoning benchmarks at three model scales.</p>
+      <p class="section-eyebrow" data-i18n="results.experiments">Experiments</p>
+      <h2 class="section-title" data-i18n="results.benchmark-results">Benchmark Results</h2>
+      <p class="section-subtitle" data-i18n="results.results-across-nine-reasoning-benchmarks-at-three-model-scales-ta">Results across nine reasoning benchmarks at three model scales. TaH matches the baseline parameter count by removing one backbone layer; TaH+ retains the full backbone and adds less than 3% parameters. Accuracy gains below compare TaH+ with Standard.</p>
     </div>
 
     <!-- Model Size Tabs -->
@@ -1179,15 +1185,15 @@
 
       <!-- Summary Card -->
       <div class="results-summary" id="resultsSummary">
-        <div class="summary-title">TaH+ Performance Summary</div>
+        <div class="summary-title" data-i18n="results.tah-performance-summary">TaH+ Performance Summary</div>
         <div class="summary-stats">
           <div class="summary-stat">
-            <div class="summary-value" id="summaryGain">+5.3%</div>
-            <div class="summary-label">vs Standard</div>
+            <div class="summary-value" id="summaryGain" data-i18n="results.5-3-pp">+5.3 pp</div>
+            <div class="summary-label" data-i18n="results.vs-standard">vs Standard</div>
           </div>
           <div class="summary-stat">
             <div class="summary-value" id="summaryAvg">35.2%</div>
-            <div class="summary-label">Average Accuracy</div>
+            <div class="summary-label" data-i18n="results.average-accuracy">Average Accuracy</div>
           </div>
         </div>
       </div>
@@ -1199,7 +1205,7 @@
             <table class="results-table">
               <thead>
                 <tr>
-                  <th>Method</th><th>AIME25</th><th>Olympiad</th><th>AMC23</th><th>MATH500</th><th>GSM8K</th><th>GPQA</th><th>MMLU</th><th>HE++</th><th>MBPP++</th><th>Average</th>
+                  <th data-i18n="results.method">Method</th><th>AIME25</th><th>Olympiad</th><th>AMC23</th><th>MATH500</th><th>GSM8K</th><th>GPQA</th><th>MMLU</th><th>HE++</th><th>MBPP++</th><th data-i18n="results.average">Average</th>
                 </tr>
               </thead>
               <tbody>
@@ -1222,7 +1228,7 @@
             <table class="results-table">
               <thead>
                 <tr>
-                  <th>Method</th><th>AIME25</th><th>Olympiad</th><th>AMC23</th><th>MATH500</th><th>GSM8K</th><th>GPQA</th><th>MMLU</th><th>HE++</th><th>MBPP++</th><th>Average</th>
+                  <th data-i18n="results.method">Method</th><th>AIME25</th><th>Olympiad</th><th>AMC23</th><th>MATH500</th><th>GSM8K</th><th>GPQA</th><th>MMLU</th><th>HE++</th><th>MBPP++</th><th data-i18n="results.average">Average</th>
                 </tr>
               </thead>
               <tbody>
@@ -1245,7 +1251,7 @@
             <table class="results-table">
               <thead>
                 <tr>
-                  <th>Method</th><th>AIME25</th><th>Olympiad</th><th>AMC23</th><th>MATH500</th><th>GSM8K</th><th>GPQA</th><th>MMLU</th><th>HE++</th><th>MBPP++</th><th>Average</th>
+                  <th data-i18n="results.method">Method</th><th>AIME25</th><th>Olympiad</th><th>AMC23</th><th>MATH500</th><th>GSM8K</th><th>GPQA</th><th>MMLU</th><th>HE++</th><th>MBPP++</th><th data-i18n="results.average">Average</th>
                 </tr>
               </thead>
               <tbody>
@@ -1265,25 +1271,25 @@
     <div class="reveal" style="margin-top:32px;">
       <div class="expandable-section">
         <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title">Real-world efficiency on A800 GPU</span>
+          <span class="expandable-title" data-i18n="results.real-world-efficiency-on-a800-gpu">Real-world efficiency on A800 GPU</span>
           <div class="expandable-icon"><i class="fas fa-plus" style="font-size:12px;"></i></div>
         </div>
         <div class="expandable-content">
           <div class="expandable-content-inner">
             <div class="expandable-inner">
-              <p style="font-size:16px; line-height:1.6; color:#444; margin-bottom:16px;">1.7B model, AIME25, 8K max token length on a single NVIDIA A800 GPU:</p>
+              <p style="font-size:16px; line-height:1.6; color:#444; margin-bottom:16px;" data-i18n="results.1-7b-model-aime25-8k-max-token-length-on-a-single-nvidia-a800-gpu">1.7B model, AIME25, 8K max token length on a single NVIDIA A800 GPU:</p>
               <div class="results-table-wrapper">
                 <table class="results-table">
                   <thead><tr><th></th><th>Standard</th><th>AlwaysThink</th><th style="background:linear-gradient(135deg, rgba(102,126,234,0.15), rgba(118,75,162,0.15));">TaH</th></tr></thead>
                   <tbody>
-                    <tr><td style="font-weight:600;">Avg. Depth</td><td>1.00</td><td>2.00</td><td style="background:linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));">1.06</td></tr>
-                    <tr><td style="font-weight:600;">Memory (GB)</td><td>4.3</td><td>6.8</td><td style="background:linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));">4.6</td></tr>
-                    <tr><td style="font-weight:600;">Latency (s)</td><td>210.6</td><td>747.2</td><td style="background:linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));">301.4</td></tr>
-                    <tr><td style="font-weight:600;">Throughput (tok/s)</td><td>38.9</td><td>11.0</td><td style="background:linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));">27.2</td></tr>
+                    <tr><td style="font-weight:600;" data-i18n="results.avg-depth">Avg. Depth</td><td>1.00</td><td>2.00</td><td style="background:linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));">1.06</td></tr>
+                    <tr><td style="font-weight:600;" data-i18n="results.memory-gb">Memory (GB)</td><td>4.3</td><td>6.8</td><td style="background:linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));">4.6</td></tr>
+                    <tr><td style="font-weight:600;" data-i18n="results.latency-s">Latency (s)</td><td>210.6</td><td>747.2</td><td style="background:linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));">301.4</td></tr>
+                    <tr><td style="font-weight:600;" data-i18n="results.throughput-tok-s">Throughput (tok/s)</td><td>38.9</td><td>11.0</td><td style="background:linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));">27.2</td></tr>
                   </tbody>
                 </table>
               </div>
-              <p style="margin-top:16px; font-size:14px; color:var(--apple-gray);">TaH iterates twice on only 6% of tokens, achieving 1.48× lower memory overhead and 2.48× faster decoding than AlwaysThink.</p>
+              <p style="margin-top:16px; font-size:14px; color:var(--apple-gray);" data-i18n="results.tah-iterates-twice-on-only-6-of-tokens-achieving-1-48-lower-memor">TaH iterates twice on only 6% of tokens. Compared with AlwaysThink, it uses 32% less memory and has a 2.48× decoding speedup in this setting. Standard remains faster.</p>
             </div>
           </div>
         </div>
@@ -1296,24 +1302,24 @@
 <section class="section" id="contributions">
   <div class="container">
     <div class="reveal">
-      <p class="section-eyebrow">Contributions</p>
-      <h2 class="section-title">Key Contributions</h2>
+      <p class="section-eyebrow" data-i18n="contributions.contributions">Contributions</p>
+      <h2 class="section-title" data-i18n="contributions.key-contributions">Key Contributions</h2>
     </div>
     <div class="contributions-grid reveal">
       <div class="contribution-card">
         <div class="contribution-icon"><i class="fas fa-lightbulb"></i></div>
-        <h4>Selective Latent Iteration</h4>
-        <p>First to identify latent overthinking in looped transformers and propose selective iteration as a new design principle — iterate only on hard tokens for better quality and efficiency.</p>
+        <h4 data-i18n="contributions.selective-latent-iteration">Selective Latent Iteration</h4>
+        <p data-i18n="contributions.we-identify-latent-overthinking-in-looped-transformers-and-use-se">We identify latent overthinking in looped transformers and use selective iteration to concentrate computation on hard tokens.</p>
       </div>
       <div class="contribution-card">
         <div class="contribution-icon"><i class="fas fa-microchip"></i></div>
-        <h4>Specialized Architecture</h4>
-        <p>Duo-causal attention, depth-aware LoRA, and neural iteration decider — three components that natively support selective iteration with full training parallelism.</p>
+        <h4 data-i18n="contributions.specialized-architecture">Specialized Architecture</h4>
+        <p data-i18n="contributions.duo-causal-attention-depth-aware-lora-and-neural-iteration-decide">Duo-causal attention, depth-aware LoRA, and neural iteration decider — three components that natively support selective iteration with full training parallelism.</p>
       </div>
       <div class="contribution-card">
         <div class="contribution-icon"><i class="fas fa-tachometer-alt"></i></div>
-        <h4>Efficient &amp; Effective</h4>
-        <p>+5.3–6.2% accuracy gains across nine benchmarks with &lt;3% extra parameters and only 1.07× average iteration depth — 93% of tokens need just one pass.</p>
+        <h4 data-i18n="contributions.efficient-effective">Efficient &amp; Effective</h4>
+        <p data-i18n="contributions.tah-improves-average-accuracy-over-standard-by-5-3-6-2-percentage">TaH+ improves average accuracy over Standard by 5.3–6.2 percentage points at 0.6B and 1.7B, with less than 3% extra parameters. TaH averages 1.07 iterations, skipping extra computation for 93% of tokens.</p>
       </div>
     </div>
   </div>
@@ -1323,8 +1329,8 @@
 <section class="section section-gray authors-section" id="team">
   <div class="container">
     <div class="reveal">
-      <p class="section-eyebrow">Team</p>
-      <h2 class="section-title">Meet the researchers.</h2>
+      <p class="section-eyebrow" data-i18n="team.team">Team</p>
+      <h2 class="section-title" data-i18n="team.meet-the-researchers">Meet the researchers.</h2>
     </div>
 
     <div class="authors-list reveal">
@@ -1344,7 +1350,7 @@
       </a>
     </div>
 
-    <div class="affiliations reveal">
+    <div class="affiliations reveal" data-i18n="team.1tsinghua-university-2infinigence-ai-3shanghai-jiao-tong-universi">
       <sup>1</sup>Tsinghua University &nbsp;&nbsp;
       <sup>2</sup>Infinigence AI &nbsp;&nbsp;
       <sup>3</sup>Shanghai Jiao Tong University<br>
@@ -1357,9 +1363,9 @@
 <section class="section" id="bibtex">
   <div class="container">
     <div class="reveal">
-      <p class="section-eyebrow">Citation</p>
-      <h2 class="section-title">Cite our work.</h2>
-      <p class="section-subtitle">
+      <p class="section-eyebrow" data-i18n="bibtex.citation">Citation</p>
+      <h2 class="section-title" data-i18n="bibtex.cite-our-work">Cite our work.</h2>
+      <p class="section-subtitle" data-i18n="bibtex.if-you-find-tah-useful-for-your-research-please-consider-citing-o">
         If you find TaH useful for your research, please consider citing our paper.
       </p>
     </div>
