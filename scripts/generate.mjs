@@ -53,7 +53,7 @@ ${renderBackToTop()}
     await writeFile(resolve(output,'index.html'),html);
   }
   await writeFile(resolve(root,'public/.nojekyll'),'');
-  const urls = [siteURL(),...projects.map(p=>`${siteURL()}projects/${p.slug}/`)];
+  const urls = [siteURL(),`${siteURL()}zh/`,...projects.map(p=>`${siteURL()}projects/${p.slug}/`)];
   await writeFile(resolve(root,'public/sitemap.xml'),`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.map(url=>`<url><loc>${escape(url)}</loc></url>`).join('')}</urlset>`);
   await writeFile(resolve(root,'public/robots.txt'),`User-agent: *\nAllow: /\nSitemap: ${siteURL()}sitemap.xml\n`);
   console.log(`Generated ${projects.length} project pages (${base || '/'}).`);

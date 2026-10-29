@@ -3,18 +3,39 @@
     "id": "adaptivity",
     "label": "Adaptivity Scaling",
     "shortLabel": "Adaptivity",
-    "description": "Allocate reasoning effort dynamically, where and when it is useful."
+    "description": "Allocate reasoning effort dynamically, where and when it is useful.",
+    "translations": {
+      "zh": {
+        "label": "自适应扩展",
+        "shortLabel": "自适应扩展",
+        "description": "根据推理需要动态分配算力。"
+      }
+    }
   },
   {
     "id": "context",
     "label": "Context Scaling",
     "shortLabel": "Context",
-    "description": "Scale what models can exchange beyond text-only communication."
+    "description": "Scale what models can exchange beyond text-only communication.",
+    "translations": {
+      "zh": {
+        "label": "上下文扩展",
+        "shortLabel": "上下文扩展",
+        "description": "让模型交换更丰富的上下文信息，不局限于文本。"
+      }
+    }
   },
   {
     "id": "compression",
     "label": "Model Compression",
     "shortLabel": "Model Compression",
-    "description": "Reduce the cost of tokens and attention without discarding what matters."
+    "description": "Reduce the cost of tokens and attention without discarding what matters.",
+    "translations": {
+      "zh": {
+        "label": "模型压缩",
+        "shortLabel": "模型压缩",
+        "description": "保留关键信息，减少 token 和注意力计算的开销。"
+      }
+    }
   }
 ]

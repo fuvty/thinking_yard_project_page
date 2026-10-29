@@ -8,31 +8,61 @@
       "id": "overview",
       "label": "Overview",
       "group": "routes",
-      "description": "One frontier, three routes"
+      "description": "Three ways to scale intelligence",
+      "translations": {
+        "zh": {
+          "label": "概览",
+          "description": "提升智能的三条路径"
+        }
+      }
     },
     {
       "id": "route-one",
-      "label": "Continue scaling",
+      "label": "Existing scaling path",
       "group": "routes",
-      "description": "Continue the current frontier"
+      "description": "Invest more to raise the ceiling",
+      "translations": {
+        "zh": {
+          "label": "沿现有路径",
+          "description": "沿现有路径增加投入，提升上限"
+        }
+      }
     },
     {
       "id": "route-two",
       "label": "Better trade-off",
       "group": "routes",
-      "description": "Improve the cost\u2013intelligence trade-off"
+      "description": "Improve the cost–intelligence trade-off",
+      "translations": {
+        "zh": {
+          "label": "提高效率",
+          "description": "以更低成本达到同样能力"
+        }
+      }
     },
     {
       "id": "route-three",
-      "label": "New scaling axis",
+      "label": "New scaling dimension",
       "group": "routes",
-      "description": "Introduce a new scaling axis"
+      "description": "Find a new dimension for improvement",
+      "translations": {
+        "zh": {
+          "label": "寻找新维度",
+          "description": "找到新的提升维度"
+        }
+      }
     },
     {
       "id": "projects",
       "label": "Projects",
       "group": "projects",
-      "description": "Explore the research projects"
+      "description": "Explore the research projects",
+      "translations": {
+        "zh": {
+          "label": "研究项目",
+          "description": "查看我们的具体工作"
+        }
+      }
     }
   ]
 }

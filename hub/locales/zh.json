@@ -1,0 +1,99 @@
+{
+  "title": "提升智能的三条路径",
+  "description": "探索提升大模型能力的三条路径：增加投入、提高效率、寻找新的提升维度。",
+  "stages": [
+    {
+      "id": "overview",
+      "label": "概览",
+      "eyebrow": "成本与能力",
+      "title": "提升智能的三条路径。",
+      "body": "Scaling 是大模型研究的核心课题之一。我们探索三条路径：沿现有维度增加投入、提高计算效率，以及寻找新的提升维度。"
+    },
+    {
+      "id": "route-one",
+      "label": "路径 01",
+      "eyebrow": "沿现有路径",
+      "title": "增加投入，提升上限。",
+      "body": "扩大模型规模、增加训练数据，或投入更多推理计算，都能沿现有路径继续提升能力。随着收益递减，每一步提升所需的投入也越来越大。"
+    },
+    {
+      "id": "route-two",
+      "label": "路径 02",
+      "eyebrow": "提高效率",
+      "title": "同样的能力，更低的成本。",
+      "body": "提高效率，是为了用更少的资源获得相近的模型能力。量化、稀疏注意力、推测解码、自适应计算等方法，分别从存储、计算或延迟等方面降低开销。"
+    },
+    {
+      "id": "route-three",
+      "label": "路径 03",
+      "eyebrow": "寻找新的路径",
+      "title": "找到新的提升维度。",
+      "body": "模型规模和数据规模长期推动着大模型能力的提升。o1 等模型又展现了推理时计算的潜力。我们继续探索新的维度，循环深度、自适应计算、上下文信息密度等都是其中的方向。"
+    }
+  ],
+  "chartDescriptions": [
+    "黑色表示现有的成本与能力曲线。紫色沿原路径延伸，绿色提高效率，蓝色引入新的提升维度。",
+    "紫色曲线沿原路径继续延伸，进一步提升能力需要越来越高的成本。",
+    "绿色曲线在中间区间以同等成本获得更强能力，最终与黑色曲线到达同一终点。",
+    "蓝色分支从黑色曲线上的不同位置出发，沿新维度提升能力。它们的上包络线表示各个预算下的最佳结果。"
+  ],
+  "chart": {
+    "start": "起点",
+    "optimalEnd": "最优点 / 终点",
+    "optimal": "最优点",
+    "end": "终点",
+    "cost": "成本",
+    "intelligence": "智能水平",
+    "current": "现有能力曲线",
+    "routeOne": "路径 01",
+    "routeTwo": "路径 02",
+    "routeThree": "路径 03",
+    "sameEndpoint": "相同终点"
+  },
+  "skip": "跳至主要内容",
+  "chartTitle": "成本与智能：三条提升路径",
+  "axes": "横轴为成本，纵轴为智能水平。",
+  "legendLabel": "三条路径",
+  "legend": [
+    "01 沿现有路径",
+    "02 提高效率",
+    "03 寻找新维度"
+  ],
+  "variablesLabel": "已有的扩展维度",
+  "variables": [
+    "参数",
+    "数据",
+    "推理"
+  ],
+  "routeTwoProjects": "路径二的研究项目",
+  "routeThreeProjects": "路径三的研究项目",
+  "research": "研究项目",
+  "projectsTitle": "我们的研究",
+  "projectsLead": "我们围绕这三条路径，在算法、系统等多层次联合优化。",
+  "projectPage": "项目主页",
+  "routes": {
+    "02": "路径 02",
+    "03": "路径 03"
+  },
+  "navigation": {
+    "home": "首页",
+    "allProjects": "全部项目",
+    "contents": "页面目录",
+    "teamNavigation": "团队导航",
+    "homeLabel": "Scaling Paths 首页",
+    "categories": "项目分类",
+    "dismiss": "关闭项目菜单",
+    "pageNavigation": "页面导航"
+  },
+  "groupLabels": {
+    "routes": "三条路径",
+    "projects": "研究项目"
+  },
+  "footer": {
+    "research": "研究项目",
+    "home": "首页",
+    "allProjects": "全部项目",
+    "label": "页脚导航"
+  },
+  "backToTop": "回到顶部"
+}

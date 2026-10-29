@@ -49,6 +49,19 @@ npm run new:project -- my-project "My Project" context
 
 随后填写正文、引用和页面元信息，并在清单中完善简介、logo 与 `route`（`02` 或 `03`）。
 
+## 主页中英文
+
+内容修改遵循[内容与中英文写作规范](docs/design-system/content.md)：提炼讨论中的意图，保留必要逻辑，两种语言各自自然成文，不机械压缩或逐句翻译。
+
+主页共用 `app/[[...lang]]/page.tsx` 和 `hub/ScalingPaths.tsx`，静态导出英文 `/` 与中文 `/zh/`。页脚始终提供「中文 / English」普通链接，刷新、直接访问和 GitHub Pages 均可用；研究项目页保持英文。
+
+默认入口保持英文，不自动跳转。`hub/LanguagePreference.tsx` 根据浏览器语言偏好，在英文首页为偏好中文的访客显示一次可关闭的提示；访客切换或选择 Keep English 后，将选择存于本地（`thinking-yard-home-language`），不再提示。禁用本地存储或 JavaScript 时，页脚链接仍可使用。检测逻辑独立在 `hub/language-preference.mjs`，与项目清单无关。
+
+- 主页文案（包括画布标注、无障碍说明）：`hub/locales/en.json`、`zh.json`，保持键名和章节 `id` 一致。
+- 新增项目仍只登记 `config/projects.json`。英文简介放在 `description`，中文放在可选的 `translations.zh.description`；缺少中文时自动使用英文。两种语言共用项目名称、logo、分类、路由和排序。
+- 分类和主页目录的翻译分别随条目维护在 `config/categories.json`、`config/site.json` 的 `translations.zh` 中。
+- `hub/i18n.mjs` 统一处理语言选择、英文回退和主页路径；共享导航与页脚的默认文案保持英文。
+
 ## 检查与发布
 
 构建前先停止开发服务，避免同时写入生成目录。

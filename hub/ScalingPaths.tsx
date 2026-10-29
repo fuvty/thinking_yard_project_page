@@ -13,6 +13,10 @@ import {
 } from "./curve-math";
 import type { Point } from "./curve-math";
 
+import { getCopy, localize } from "./i18n.mjs";
+import type { Locale } from "./i18n.mjs";
+import { selectStoryChapter } from "./story-chapters.mjs";
+
 import registry from "../config/projects.json";
 import projectCategories from "../config/categories.json";
 
@@ -23,50 +27,11 @@ const projectCards = registry.map(project => ({
   url: `${base}/projects/${project.slug}/`,
   logo: `${base}/${project.logo}`,
 }));
-const projects = Object.fromEntries(projectCards.map(project => [project.name, project.url]));
-const routeMeta = {
-  "02": { label: "Route 02", className: "route-two" },
-  "03": { label: "Route 03", className: "route-three" },
+const routeClasses = {
+  "02": "route-two",
+  "03": "route-three",
 } as const;
 const projectsByRoute = [...projectCards].sort((a, b) => a.route.localeCompare(b.route));
-
-const stages = [
-  {
-    id: "overview",
-    label: "Overview",
-    eyebrow: "Three ways to scale intelligence",
-    title: "One frontier. Three routes.",
-    body: "Purple continues the current state. Green transforms that frontier point by point. Blue is the outer envelope induced by a new scaling axis.",
-  },
-  {
-    id: "route-one",
-    label: "Route 01",
-    eyebrow: "Continue scaling up.",
-    title: "Raise the ceiling.",
-    body: "Spend more parameters, data, and compute to continue along the same logarithmic frontier, where each linear intelligence gain demands an exponentially larger cost.",
-  },
-  {
-    id: "route-two",
-    label: "Route 02",
-    eyebrow: "Better trade-off.",
-    title: "Reach the same ceiling sooner.",
-    body: "Transform the current-state frontier point by point. Every intermediate operating point improves, while the green curve remains attached to the same final endpoint.",
-  },
-  {
-    id: "route-three",
-    label: "Route 03",
-    eyebrow: "New scaling axis.",
-    title: "Change the curve.",
-    body: "Each blue branch is another instance of the logarithmic scaling form, initialized from a model on the black frontier. Their upper envelope keeps the best instance at every budget.",
-  },
-];
-
-const chartDescriptions = [
-  "Complete comparison: the black current state, a purple continuation, a green pointwise transformation of the black frontier, and the blue outer envelope generated from multiple black-frontier seeds.",
-  "Route 1 focus: the purple path continues from the black endpoint along the same exponential-cost scaling law.",
-  "Route 2 focus: a green copy deforms away from the black frontier point by point, then rejoins its exact cost-intelligence endpoint.",
-  "Route 3 focus: every blue branch is a full scaling instance initialized from a point on the black frontier. It passes its envelope contact, reaches the same cost boundary as black, then recedes into context.",
-];
 
 // Screen-space trails keep motion legible at every viewport size.
 const TRAVELER_SPEED = 340;
@@ -209,16 +174,26 @@ function scrollToStoryStage(id: OverviewRouteId) {
   }
 }
 
-function ProjectLink({ name }: { name: keyof typeof projects }) {
+function ProjectLink({ name, url }: { name: string; url: string }) {
   return (
-    <a href={projects[name]} className="project-pill">
+    <a href={url} className="project-pill">
       <strong>{name}</strong>
       <span aria-hidden="true">↗</span>
     </a>
   );
 }
 
-export default function Home() {
+// Keep short Chinese clauses together; long clauses can still wrap on narrow screens.
+function StoryBody({ text, locale }: { text: string; locale: Locale }) {
+  if (locale !== "zh") return <>{text}</>;
+  return <>{text.match(/[^，。；！？：]+[，。；！？：]?/gu)?.map((phrase, index) => (
+    <span className="story-phrase" key={index}>{phrase}</span>
+  ))}</>;
+}
+
+export default function Home({ locale = "en" }: { locale?: Locale }) {
+  const copy = getCopy(locale);
+  const { stages, chartDescriptions } = copy;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stepRefs = useRef<Array<HTMLElement | null>>([]);
   const frameRef = useRef(0);
@@ -525,12 +500,12 @@ export default function Home() {
         ctx.fill();
         ctx.font = `650 ${compact ? 8 : 9}px ${getComputedStyle(document.body).fontFamily}`;
         ctx.textBaseline = "middle";
-        ctx.fillText("START", anchor.x + 9, anchor.y + 11);
+        ctx.fillText(copy.chart.start, anchor.x + 9, anchor.y + 11);
         if (optimalIsEnd) {
-          ctx.fillText("OPTIMAL / END", end.x + 9, end.y - 9);
+          ctx.fillText(copy.chart.optimalEnd, end.x + 9, end.y - 9);
         } else {
-          ctx.fillText("OPTIMAL", optimal.x + 9, optimal.y - 9);
-          ctx.fillText("END", end.x + 9, end.y - 9);
+          ctx.fillText(copy.chart.optimal, optimal.x + 9, optimal.y - 9);
+          ctx.fillText(copy.chart.end, end.x + 9, end.y - 9);
         }
         ctx.restore();
       }
@@ -692,11 +667,11 @@ export default function Home() {
     ctx.fillStyle = "#86868b";
     ctx.textAlign = "right";
     ctx.textBaseline = "alphabetic";
-    ctx.fillText("COST", plot.right + 10, plot.bottom + 22);
+    ctx.fillText(copy.chart.cost, plot.right + 10, plot.bottom + 22);
     ctx.translate(plot.left - (compact ? 20 : 30), (plot.top + plot.bottom) / 2);
     ctx.rotate(-Math.PI / 2);
     ctx.textAlign = "center";
-    ctx.fillText("INTELLIGENCE", 0, 0);
+    ctx.fillText(copy.chart.intelligence, 0, 0);
     ctx.restore();
 
     ctx.font = `600 ${compact ? 10 : 11}px ${fontFamily}`;
@@ -720,16 +695,16 @@ export default function Home() {
     };
 
     label(
-      "CURRENT STATE",
+      copy.chart.current,
       BASE_CURVE[91],
       16,
       22,
       "#1d1d1f",
       animatedAlpha(baselineAlpha * inspectionFade, currentFrontierProgress, baselineIsDrawing, 0.68),
     );
-    label("ROUTE 01", ROUTE_ONE_EXTENSION.at(-1)!, -62, -18, "#7b3a8a", routeOneTerminalAlpha);
+    label(copy.chart.routeOne, ROUTE_ONE_EXTENSION.at(-1)!, -62, -18, "#7b3a8a", routeOneTerminalAlpha);
     label(
-      "ROUTE 02",
+      copy.chart.routeTwo,
       routeTwoRenderedCurve[70],
       compact ? -32 : -58,
       -17,
@@ -737,7 +712,7 @@ export default function Home() {
       animatedAlpha(routeTwoAlpha * inspectionFade, routeTwoProgress, routeTwoIsDrawing, 0.48),
     );
     label(
-      "ROUTE 03",
+      copy.chart.routeThree,
       ROUTE_THREE_CURVE.at(-1)!,
       compact ? -55 : 14,
       compact ? -16 : -2,
@@ -750,10 +725,10 @@ export default function Home() {
       ctx.globalAlpha = routeTwoFocus * terminalReveal(routeTwoProgress);
       ctx.fillStyle = "#467d32";
       ctx.textAlign = "right";
-      ctx.fillText("SAME ENDPOINT", baseEnd.x - 14, baseEnd.y - 14);
+      ctx.fillText(copy.chart.sameEndpoint, baseEnd.x - 14, baseEnd.y - 14);
       ctx.restore();
     }
-  }, []);
+  }, [copy]);
 
   useEffect(() => {
     stageRef.current = -1;
@@ -831,19 +806,13 @@ export default function Home() {
 
     const update = (forceDraw = false) => {
       frameRef.current = 0;
-      const centers = stepRefs.current.map((element) => {
-        if (!element) return 0;
-        const rect = element.getBoundingClientRect();
-        return rect.top + window.scrollY + rect.height / 2;
-      });
-      if (!centers.every(Boolean)) return;
-
-      // On compact layouts the chart occupies the sticky upper half. Read the
-      // active chapter from the center of the unobscured text region below it.
-      const readingLine = window.scrollY + window.innerHeight * (window.innerWidth < 980 ? 0.72 : 0.5);
-      const nextStage = centers.reduce((closestIndex, center, index) => (
-        Math.abs(center - readingLine) < Math.abs(centers[closestIndex] - readingLine) ? index : closestIndex
-      ), 0);
+      const chapters = stepRefs.current.map(element => element?.querySelector('.story-copy')?.getBoundingClientRect());
+      if (chapters.some(rect => !rect)) return;
+      const languageOffset = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--home-language-offset')) || 0;
+      const readingTop = window.innerWidth < 980
+        ? (canvasRef.current?.parentElement?.getBoundingClientRect().bottom ?? window.innerHeight / 2) + 20
+        : languageOffset + 76;
+      const nextStage = selectStoryChapter(chapters as DOMRect[], readingTop, window.innerHeight - 32, stageRef.current);
       const nextFocus = stages.map((_, index) => index === nextStage ? 1 : 0);
 
       if (stageRef.current !== nextStage) {
@@ -1059,8 +1028,7 @@ export default function Home() {
 
   return (
     <main>
-      <a className="skip-link" href="#scale-story">Skip to scaling paths</a>
-
+      <a className="skip-link" href="#scale-story">{copy.skip}</a>
 
 
       <section className="scale-story" id="scale-story">
@@ -1069,9 +1037,9 @@ export default function Home() {
           role="group"
           aria-labelledby="chart-title chart-description"
         >
-          <h2 className="sr-only" id="chart-title">Three scaling routes</h2>
+          <h2 className="sr-only" id="chart-title">{copy.chartTitle}</h2>
           <canvas ref={canvasRef} aria-hidden="true" />
-          <figcaption className="sr-only" id="chart-description">Cost on the horizontal axis; intelligence on the vertical axis. {chartDescriptions[activeStage]}</figcaption>
+          <figcaption className="sr-only" id="chart-description">{copy.axes} {chartDescriptions[activeStage]}</figcaption>
         </figure>
 
         <div className="story-steps">
@@ -1087,38 +1055,33 @@ export default function Home() {
                 <div className="story-meta">
                   <div className="story-stage-label">{stage.label}</div>
                 </div>
-                <p className="story-eyebrow">{stage.eyebrow}</p>
+                {index !== 0 && <p className="story-eyebrow">{stage.eyebrow}</p>}
                 {index === 0 ? <h1>{stage.title}</h1> : <h2>{stage.title}</h2>}
-                <p className="story-body">{stage.body}</p>
+                {index === 0 && <p className="story-subtitle">{stage.eyebrow}</p>}
+                <div className="story-body">
+                  {stage.body.split("\n\n").map((paragraph, paragraphIndex) => (
+                    <p key={paragraphIndex}><StoryBody text={paragraph} locale={locale} /></p>
+                  ))}
+                </div>
 
                 {index === 0 && (
-                  <div className="overview-legend" aria-label="Route colors">
-                    <a href="#route-one"><i className="route-one-dot" />01 Continue</a>
-                    <a href="#route-two"><i className="route-two-dot" />02 Improve</a>
-                    <a href="#route-three"><i className="route-three-dot" />03 Change</a>
+                  <div className="overview-legend" aria-label={copy.legendLabel}>
+                    <a href="#route-one"><i className="route-one-dot" />{copy.legend[0]}</a>
+                    <a href="#route-two"><i className="route-two-dot" />{copy.legend[1]}</a>
+                    <a href="#route-three"><i className="route-three-dot" />{copy.legend[2]}</a>
                   </div>
                 )}
                 {index === 1 && (
-                  <div className="variable-row" aria-label="Traditional scaling variables">
-                    <span>Parameters</span><i>+</i><span>Data</span><i>+</i><span>Compute</span>
+                  <div className="variable-row" aria-label={copy.variablesLabel}>
+                    <span>{copy.variables[0]}</span><i>+</i><span>{copy.variables[1]}</span><i>+</i><span>{copy.variables[2]}</span>
                   </div>
                 )}
-                {index === 2 && (
-                  <div className="project-pills" aria-label="Route 2 projects">
-                    {projectCards.filter(project => project.route === "02").map(project => <ProjectLink key={project.slug} name={project.name} />)}
+                {(index === 2 || index === 3) && (
+                  <div className="project-pills" aria-label={index === 2 ? copy.routeTwoProjects : copy.routeThreeProjects}>
+                    {projectCards.filter(project => project.route === (index === 2 ? "02" : "03")).map(project => (
+                      <ProjectLink key={project.slug} name={project.name} url={project.url} />
+                    ))}
                   </div>
-                )}
-                {index === 3 && (
-                  <>
-                    <div className="formula-row" aria-label="Route 3 budget-allocation equation">
-                      <span>C(p,s) = C₀(p−s) + C₁(s)</span>
-                      <span className="formula-definition">C₀(x) = α log(1+x/τ) · C₁(s) = α log(1+s/τ)</span>
-                      <small>shared α and τ · max over 0 ≤ s ≤ p</small>
-                    </div>
-                    <div className="project-pills" aria-label="Route 3 projects">
-                      {projectCards.filter(project => project.route === "03").map(project => <ProjectLink key={project.slug} name={project.name} />)}
-                    </div>
-                  </>
                 )}
               </div>
             </article>
@@ -1128,14 +1091,13 @@ export default function Home() {
 
       <section className="projects-section" id="projects" aria-labelledby="projects-title">
         <div className="projects-inner">
-          <p className="projects-eyebrow" data-reveal>Research</p>
-          <h2 className="projects-title" id="projects-title" data-reveal>Project highlights</h2>
+          <p className="projects-eyebrow" data-reveal>{copy.research}</p>
+          <h2 className="projects-title" id="projects-title" data-reveal>{copy.projectsTitle}</h2>
           <p className="projects-lead" data-reveal>
-            Each project turns one of the scaling routes above into a working system, with a public page for the paper, code, and demos.
+            {copy.projectsLead}
           </p>
           <div className="projects-grid">
             {projectsByRoute.map((project) => {
-              const route = routeMeta[project.route];
               const category = projectCategories.find((item) => item.id === project.category);
               return (
                 <a
@@ -1151,14 +1113,14 @@ export default function Home() {
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={project.logo} alt="" />
                     </span>
-                    <span className={`project-card-route ${route.className}`}>
-                      {route.label} · {category?.shortLabel}
+                    <span className={`project-card-route ${routeClasses[project.route]}`}>
+                      {copy.routes[project.route]} · {category && localize(category, locale).shortLabel}
                     </span>
                   </span>
                   <strong className="project-card-name">{project.name}</strong>
-                  <span className="project-card-desc">{project.description}</span>
+                  <span className="project-card-desc">{localize(project, locale).description}</span>
                   <span className="project-card-cta">
-                    Project page <span aria-hidden="true">↗</span>
+                    {copy.projectPage} <span aria-hidden="true">↗</span>
                   </span>
                 </a>
               );

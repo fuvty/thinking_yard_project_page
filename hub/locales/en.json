@@ -1,0 +1,99 @@
+{
+  "title": "Three Ways to Scale Intelligence",
+  "description": "Three paths to stronger LLMs: greater investment, better efficiency, and new scaling dimensions.",
+  "stages": [
+    {
+      "id": "overview",
+      "label": "Overview",
+      "eyebrow": "Cost and intelligence",
+      "title": "Three ways to scale intelligence.",
+      "body": "Scaling is central to progress in LLMs. We explore three paths: invest more along existing dimensions, improve computational efficiency, and find new dimensions for growth."
+    },
+    {
+      "id": "route-one",
+      "label": "Route 01",
+      "eyebrow": "Along the existing path.",
+      "title": "Invest more. Raise the ceiling.",
+      "body": "Increasing model parameters, training data, and reasoning effort can extend capabilities along an existing scaling path. As returns diminish, each further gain requires greater investment."
+    },
+    {
+      "id": "route-two",
+      "label": "Route 02",
+      "eyebrow": "Better trade-off.",
+      "title": "The same capability, at lower cost.",
+      "body": "Improving efficiency means reaching comparable capabilities with fewer resources. Quantization, sparse attention, speculative decoding, and adaptive compute offer different ways to reduce memory use, computation, or latency."
+    },
+    {
+      "id": "route-three",
+      "label": "Route 03",
+      "eyebrow": "Find a new path.",
+      "title": "Find a new scaling dimension.",
+      "body": "Model size and data scale have long driven LLM progress. Models such as o1 highlighted another dimension: test-time compute. We explore further possibilities, including loop depth, adaptive computation, and context information density."
+    }
+  ],
+  "chartDescriptions": [
+    "Black shows the current relationship between cost and intelligence. Purple extends it, green improves efficiency, and blue introduces a new scaling dimension.",
+    "The purple curve extends the current path: further gains in intelligence require increasingly higher costs.",
+    "The green curve offers greater intelligence at intermediate costs and meets the black curve at the same endpoint.",
+    "Blue branches extend different points on the black curve along a new scaling dimension. Their outer envelope shows the best result at each budget."
+  ],
+  "chart": {
+    "start": "START",
+    "optimalEnd": "OPTIMAL / END",
+    "optimal": "OPTIMAL",
+    "end": "END",
+    "cost": "COST",
+    "intelligence": "INTELLIGENCE",
+    "current": "CURRENT STATE",
+    "routeOne": "ROUTE 01",
+    "routeTwo": "ROUTE 02",
+    "routeThree": "ROUTE 03",
+    "sameEndpoint": "SAME ENDPOINT"
+  },
+  "skip": "Skip to scaling paths",
+  "chartTitle": "Three scaling routes",
+  "axes": "Cost on the horizontal axis; intelligence on the vertical axis.",
+  "legendLabel": "Route colors",
+  "legend": [
+    "01 Continue",
+    "02 Improve",
+    "03 New dimension"
+  ],
+  "variablesLabel": "Established scaling dimensions",
+  "variables": [
+    "Parameters",
+    "Data",
+    "Reasoning"
+  ],
+  "routeTwoProjects": "Route 2 projects",
+  "routeThreeProjects": "Route 3 projects",
+  "research": "Research",
+  "projectsTitle": "Project highlights",
+  "projectsLead": "We pursue these paths through joint optimization across algorithms and systems.",
+  "projectPage": "Project page",
+  "routes": {
+    "02": "Route 02",
+    "03": "Route 03"
+  },
+  "navigation": {
+    "home": "Home",
+    "allProjects": "All projects",
+    "contents": "On this page",
+    "teamNavigation": "Team navigation",
+    "homeLabel": "Scaling Paths home",
+    "categories": "Project categories",
+    "dismiss": "Dismiss projects menu",
+    "pageNavigation": "Page navigation"
+  },
+  "groupLabels": {
+    "routes": "Scaling routes",
+    "projects": "Projects"
+  },
+  "footer": {
+    "research": "Research projects",
+    "home": "Home",
+    "allProjects": "All projects",
+    "label": "Footer"
+  },
+  "backToTop": "Back to top"
+}

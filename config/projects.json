@@ -5,7 +5,12 @@
     "category": "adaptivity",
     "route": "02",
     "description": "Token-level routing for reasoning LLMs",
-    "logo": "shared/assets/r2r.png"
+    "logo": "shared/assets/r2r.png",
+    "translations": {
+      "zh": {
+        "description": "面向推理大模型的 token 级路由"
+      }
+    }
   },
   {
     "slug": "tokenrouter",
@@ -13,7 +18,12 @@
     "category": "adaptivity",
     "route": "02",
     "description": "A serving engine for token-level LLM routing",
-    "logo": "shared/assets/tokenrouter.png"
+    "logo": "shared/assets/tokenrouter.png",
+    "translations": {
+      "zh": {
+        "description": "支持 token 级大模型路由的推理服务引擎"
+      }
+    }
   },
   {
     "slug": "tah",
@@ -21,7 +31,12 @@
     "category": "adaptivity",
     "route": "03",
     "description": "Adaptive Looped LLMs",
-    "logo": "shared/assets/tah.png"
+    "logo": "shared/assets/tah.png",
+    "translations": {
+      "zh": {
+        "description": "自适应循环大语言模型"
+      }
+    }
   },
   {
     "slug": "tah2",
@@ -29,7 +44,12 @@
     "category": "adaptivity",
     "route": "03",
     "description": "Better test-time scaling for looped LLMs",
-    "logo": "shared/assets/tah2.png"
+    "logo": "shared/assets/tah2.png",
+    "translations": {
+      "zh": {
+        "description": "让循环大模型更有效地利用测试时计算"
+      }
+    }
   },
   {
     "slug": "c2c",
@@ -37,7 +57,12 @@
     "category": "context",
     "route": "03",
     "description": "Communicate through KV-Cache between LLMs",
-    "logo": "shared/assets/c2c.png"
+    "logo": "shared/assets/c2c.png",
+    "translations": {
+      "zh": {
+        "description": "让大模型通过 KV-Cache 交换信息"
+      }
+    }
   },
   {
     "slug": "framefusion",
@@ -45,7 +70,12 @@
     "category": "compression",
     "route": "02",
     "description": "Efficient video token reduction for LVLMs",
-    "logo": "shared/assets/framefusion.png"
+    "logo": "shared/assets/framefusion.png",
+    "translations": {
+      "zh": {
+        "description": "高效压缩视觉语言大模型的视频 token"
+      }
+    }
   },
   {
     "slug": "moa",
@@ -53,7 +83,12 @@
     "category": "compression",
     "route": "02",
     "description": "Mixture of attention for efficient LLMs",
-    "logo": "shared/assets/moa.png"
+    "logo": "shared/assets/moa.png",
+    "translations": {
+      "zh": {
+        "description": "通过混合注意力提高大模型推理效率"
+      }
+    }
   },
   {
     "slug": "akv",
@@ -61,6 +96,11 @@
     "category": "context",
     "route": "03",
     "description": "Cache engineering for efficient long-horizon agents",
-    "logo": "shared/assets/akv.png"
+    "logo": "shared/assets/akv.png",
+    "translations": {
+      "zh": {
+        "description": "为执行长程任务的智能体设计高效缓存"
+      }
+    }
   }
 ]

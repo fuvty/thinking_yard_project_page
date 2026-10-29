@@ -1,7 +1,7 @@
 const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const icon = paths => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
-export function renderBackToTop() {
-  return `<button type="button" class="sp-back-to-top" id="scrollTop" aria-label="Back to top" title="Back to top" aria-hidden="true" inert>${icon('<path d="m6 14 6-6 6 6"/>')}</button>`;
+export function renderBackToTop(label = 'Back to top') {
+  return `<button type="button" class="sp-back-to-top" id="scrollTop" aria-label="${escape(label)}" title="${escape(label)}" aria-hidden="true" inert>${icon('<path d="m6 14 6-6 6 6"/>')}</button>`;
 }
 export function renderCitation(bibtex) {
   const empty = !String(bibtex).trim();
@@ -14,9 +14,13 @@ export function renderCitation(bibtex) {
   </div>`;
 }
 
-export function renderFooter({base = '', name = 'Scaling Paths', team = 'NICS-EFC'} = {}) {
+/** @param {{base?:string, name?:string, team?:string, homeHref?:string, labels?:{research:string,home:string,allProjects:string,label:string}, languageSwitch?:{locale:string,englishHref:string,chineseHref:string}}} [options] */
+export function renderFooter({base = '', name = 'Scaling Paths', team = 'NICS-EFC', homeHref = `${base}/`, labels = {research:'Research projects', home:'Home', allProjects:'All projects', label:'Footer'}, languageSwitch} = {}) {
+  const languages = languageSwitch ? `<span class="sp-footer-languages" role="group" aria-label="中文 / English">
+    <a href="${escape(languageSwitch.chineseHref)}" data-home-language="zh" lang="zh-CN" hreflang="zh-CN"${languageSwitch.locale === 'zh' ? ' aria-current="page"' : ''}>中文</a><span aria-hidden="true">/</span><a href="${escape(languageSwitch.englishHref)}" data-home-language="en" lang="en" hreflang="en"${languageSwitch.locale === 'en' ? ' aria-current="page"' : ''}>English</a>
+  </span>` : '';
   return `<footer class="sp-footer"><div class="sp-footer-inner">
-    <div class="sp-footer-identity"><strong>${escape(team)}</strong><p>${escape(name)} · Research projects</p></div>
-    <nav class="sp-footer-links" aria-label="Footer"><a href="${escape(base)}/">Home</a><a href="${escape(base)}/#projects">All projects</a></nav>
+    <div class="sp-footer-identity"><strong>${escape(team)}</strong><p>${escape(name)} · ${escape(labels.research)}</p></div>
+    <nav class="sp-footer-links" aria-label="${escape(labels.label)}"><a href="${escape(homeHref)}">${escape(labels.home)}</a><a href="${escape(homeHref)}#projects">${escape(labels.allProjects)}</a>${languages}</nav>
   </div></footer>`;
 }

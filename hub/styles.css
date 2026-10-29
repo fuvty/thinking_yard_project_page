@@ -145,6 +145,7 @@ a {
   min-height: 100vh;
   min-height: 100svh;
   padding: 108px 40px 48px;
+  position: relative;
   pointer-events: none;
   scroll-snap-align: start;
   scroll-snap-stop: always;
@@ -152,11 +153,11 @@ a {
 
 .story-copy {
   border-left: 1px solid var(--line-strong);
-  opacity: .25;
+  opacity: .5;
   padding: 8px 0 8px 38px;
   pointer-events: auto;
   position: relative;
-  transform: translateX(14px);
+  transform: translateY(20px);
   transition: opacity 500ms ease, transform 650ms cubic-bezier(.22, 1, .36, 1);
   width: calc(var(--story-panel-width) - 80px);
 }
@@ -177,7 +178,7 @@ a {
 
 .story-step.is-active .story-copy {
   opacity: 1;
-  transform: translateX(0);
+  transform: translateY(0);
 }
 
 .story-meta {
@@ -190,7 +191,7 @@ a {
 .story-stage-label {
   color: var(--muted);
   font-family: inherit;
-  font-size: 10px;
+  font-size: 12px;
   font-variant-numeric: tabular-nums;
   font-weight: 540;
   letter-spacing: .1em;
@@ -286,39 +287,6 @@ a {
   color: var(--muted);
   font-size: 11px;
   font-style: normal;
-}
-
-.formula-row {
-  align-items: baseline;
-  border-top: 1px solid var(--line);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 18px;
-  justify-content: space-between;
-  margin-top: 28px;
-  padding-top: 14px;
-}
-
-.formula-row span {
-  color: var(--route-blue);
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-  font-size: 11px;
-  letter-spacing: -.035em;
-}
-
-.formula-row .formula-definition {
-  color: var(--muted);
-  flex-basis: 100%;
-  font-size: 10px;
-}
-
-.formula-row small {
-  color: var(--muted);
-  font-family: inherit;
-  font-size: 9px;
-  font-weight: 540;
-  letter-spacing: .08em;
-  text-transform: uppercase;
 }
 
 .project-pills {
@@ -542,7 +510,7 @@ a {
     background: var(--surface);
     height: clamp(300px, calc(50svh - 44px), 430px);
     position: sticky;
-    top: 44px;
+    top: calc(44px + var(--home-language-offset));
     z-index: 10;
   }
 
@@ -640,7 +608,6 @@ a {
   }
 
   .overview-legend,
-  .formula-row,
   .project-pills,
   .variable-row {
     margin-top: 18px;
@@ -678,11 +645,73 @@ a {
   }
 }
 
+
+/* Chinese uses the same grid and type scale, with natural CJK spacing. */
+html:lang(zh-CN) body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", "PingFang SC", "Microsoft YaHei", Arial, sans-serif; }
+html:lang(zh-CN) :is(.story-copy h1, .story-copy h2, .projects-title) { letter-spacing: -.025em; line-height: 1.2; text-wrap: balance; }
+html:lang(zh-CN) :is(.story-body, .projects-lead) { line-height: 1.75; letter-spacing: 0; }
+html:lang(zh-CN) :is(.story-eyebrow, .project-card-desc, .sp-description small, .sp-contents-description) { letter-spacing: 0; }
+
+/* Prefer clause boundaries over splitting a short Chinese phrase mid-word. */
+html:lang(zh-CN) .story-body { max-width: none; line-break: strict; }
+.story-phrase { display: inline-block; max-width: 100%; vertical-align: top; }
+
+.story-body p + p { margin-top: .85em; }
+
+/* One offset keeps the optional language bar, navigation and story aligned. */
+html { --home-language-offset: 0px; scroll-padding-top: var(--home-language-offset); }
+html:has(.home-language-notice[data-open="true"]) { --home-language-offset: 52px; }
+body { padding-top: var(--home-language-offset); transition: padding-top 280ms cubic-bezier(.22,1,.36,1); }
+body .sp-global, body .sp-local { top: var(--home-language-offset); transition: top 280ms cubic-bezier(.22,1,.36,1), transform .35s ease, opacity .25s ease; }
+body .sp-projects { max-height: calc(100dvh - 68px - var(--home-language-offset)); }
+body .sp-contents { max-height: calc(100dvh - 76px - var(--home-language-offset)); }
+body .sp-backdrop { height: calc(100dvh - 44px - var(--home-language-offset)); }
+.home-language-notice { position: fixed; z-index: 10001; inset: 0 0 auto; background: var(--apple-light-gray); border-bottom: 1px solid rgba(0,0,0,.06); color: var(--apple-black); font: 400 13px/1.5 var(--font-sans); opacity: 0; visibility: hidden; transform: translateY(-100%); transition: opacity 180ms ease, transform 280ms cubic-bezier(.22,1,.36,1), visibility 280ms; }
+.home-language-notice[data-open="true"] { opacity: 1; visibility: visible; transform: translateY(0); }
+.home-language-inner { display: flex; align-items: center; justify-content: center; gap: 32px; min-height: 51px; max-width: 1200px; margin: auto; padding: 0 22px; }
+.home-language-notice p { margin: 0; font-weight: 500; }
+.home-language-actions { display: flex; align-items: center; gap: 24px; }
+.home-language-actions a, .home-language-actions button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0; border: 0; background: none; font: inherit; text-decoration: none; cursor: pointer; }
+.home-language-actions a { color: var(--apple-blue); }
+.home-language-actions button { color: #6e6e73; }
+.home-language-actions :is(a,button):hover { color: var(--apple-blue-hover); }
+.home-language-actions :is(a,button):focus-visible { outline: 2px solid var(--apple-blue); outline-offset: 3px; border-radius: 3px; }
+@media (min-width: 980px) {
+  .scale-story { min-height: calc(400svh - 4 * var(--home-language-offset)); }
+  .chart-sticky { top: var(--home-language-offset); height: calc(100svh - var(--home-language-offset)); }
+  .story-steps { margin-top: calc(-100svh + var(--home-language-offset)); }
+  .story-step { min-height: calc(100svh - var(--home-language-offset)); }
+}
+@media (max-width: 600px) {
+  html:has(.home-language-notice[data-open="true"]) { --home-language-offset: 80px; }
+  .home-language-inner { min-height: 79px; flex-direction: column; gap: 0; padding: 10px 16px 0; }
+}
+
+/* Each route has a distinct reading interval and a visible chapter boundary. */
+.story-step + .story-step::after { content: ""; position: absolute; top: 0; right: 40px; width: calc(var(--story-panel-width) - 80px); height: 1px; background: var(--line-strong); }
+.story-subtitle { margin-top: 18px; color: var(--ink); font-size: 17px; font-weight: 500; letter-spacing: -.01em; }
+.story-copy-0 .story-body { margin-top: 18px; }
+@media (min-width: 980px) {
+  .story-steps { display: grid; row-gap: 12svh; }
+  .scale-story .story-step { scroll-margin-top: 0; }
+}
+@media (max-width: 979px) {
+  html { scroll-snap-type: y proximity; }
+  .scale-story .story-step { scroll-snap-align: none; }
+  .scale-story .story-step:first-child { scroll-snap-align: start; }
+  .story-step:not(:first-child) .story-copy { scroll-snap-align: start; scroll-snap-stop: always; scroll-margin-top: calc(clamp(300px, calc(50svh - 44px), 430px) + 68px); }
+  .story-step + .story-step { padding-top: 80px; }
+  .story-step + .story-step::after { right: 0; width: 100%; }
+  .story-copy { opacity: .72; transform: none; }
+  .story-subtitle { margin-top: 14px; font-size: 16px; }
+}
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
     scroll-snap-type: none;
   }
+
+  body, body .sp-global, body .sp-local, .home-language-notice { transition: none; }
 
   *, *::before, *::after {
     animation-duration: .01ms !important;
@@ -690,5 +719,3 @@ a {
     transition-duration: .01ms !important;
   }
 }
-
-/* Collapsed project navigation */

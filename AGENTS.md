@@ -26,6 +26,8 @@ This is the unified Thinking Yard / NICS-EFC research site. Work only in source 
 
 ## Preservation and verification
 
+Before revising page copy, read `docs/design-system/content.md`. Treat discussion as intent rather than verbatim copy; preserve clarity and necessary detail instead of applying a fixed length limit. Chinese and English should read naturally in their own language.
+
 Preserve paper content, author order and roles, figures, tables, videos and each project's interactions: CSV filtering, model/batch selectors, token traces, matrix demos, playback and measured charts. Consult the relevant project's README for data provenance and behavior. Preserve the hub's curve math. Do not maintain a second project inventory in these instructions.
 
 Run `npm run check` and `GITHUB_PAGES=true npm run build` for changes to shared rendering, configuration, or routing. Check desktop and mobile when changing visuals. The validator checks local resources and anchors; browser testing checks runtime data and layout. No deployment is needed for routine local changes unless requested.

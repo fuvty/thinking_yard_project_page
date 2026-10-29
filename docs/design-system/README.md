@@ -8,6 +8,7 @@ The guide consolidates the local `alpha_design_system` foundations and project-p
 
 | Task | Guide |
 | --- | --- |
+| Write or revise copy, including Chinese and English home content | [Content and bilingual writing](content.md) |
 | Choose type, colors, spacing, surfaces or icons | [Foundations](foundations.md) |
 | Compose a hero, research narrative, figure, team or citation | [Page patterns and components](components.md) |
 | Change global or section navigation | [Navigation](navigation.md) |
