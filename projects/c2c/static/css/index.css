@@ -878,3 +878,9 @@
 .section[id] { scroll-margin-top: 68px; }
 
 /* Wide screens expose the three research categories directly. */
+
+/* Keep the measurement scope visible beside the reported research results. */
+.c2c-scope { position: relative; z-index: 2; max-width: 660px; margin: -16px auto 24px; padding: 0 12px; color: var(--apple-gray); font-size: 13px; line-height: 1.6; }
+.c2c-results-note { max-width: 760px; margin: 20px auto 32px; color: var(--apple-gray); font-size: 14px; line-height: 1.6; text-align: center; }
+.c2c-scope a, .c2c-results-note a { color: var(--apple-blue); }
+.stat-value small { font-size: .3em; font-weight: 500; white-space: nowrap; }

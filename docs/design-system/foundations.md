@@ -22,7 +22,9 @@ Charts may use additional colors when they encode models, routes or outcomes. Ke
 
 ## Typography
 
-Use the Apple system stack in `--font-sans`: `-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif`. Use installed system fonts; no webfont download is needed. Code uses `--font-mono`. Do not restore the old kit's Inter/JetBrains Mono imports or legacy Google Sans/Noto Sans template typography.
+Use the Apple system stack in `--font-sans`; Chinese uses `--font-sans-zh`, with PingFang SC and Microsoft YaHei fallbacks. Both are maintained in the shared tokens, not copied into each page. Use installed system fonts; no webfont download is needed. Code uses `--font-mono`. Do not restore the old kit's Inter/JetBrains Mono imports or legacy Google Sans/Noto Sans template typography.
+
+The defaults below describe English typography. Chinese project headings use normal tracking and a 1.3 line-height; Chinese hero and section introductions use approximately 1.65. Apply language rules through the shared language stylesheet according to the content's actual `lang`, including English fallback pages inside the Chinese site.
 
 | Role | Default treatment |
 | --- | --- |
@@ -35,7 +37,7 @@ Use the Apple system stack in `--font-sans`: `-apple-system, BlinkMacSystemFont,
 | Navigation label | Shared 13px token; project title distinguished by weight |
 | Figure caption / code | 13–15px caption; 13px / 1.6 monospace citation |
 
-Adjust display type for long titles and compact screens. Do not reduce the resource-pill font independently for one project. Prefer meaningful line breaks or `text-wrap: balance`; avoid forcing desktop line breaks when they make mobile copy awkward.
+Readable phrasing takes priority over equal line lengths. `text-wrap: balance` can improve a short heading's shape, but does not understand Chinese word boundaries. Keep paragraphs fluid; avoid forced desktop line breaks, blanket no-wrap rules, or shrinking Chinese type to make a translation fit. Check narrow screens and enlarged text as well as desktop. Shared phrase and term treatments are documented in [localization](../localization.md#中文排版实现). Do not reduce the resource-pill font independently for one project.
 
 ## Space, shape and elevation
 

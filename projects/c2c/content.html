@@ -13,18 +13,20 @@
 
   <div class="hero-stats" style="position:relative;z-index:2;">
     <div class="stat-item">
-      <div class="stat-value">+10.5%</div>
-      <div class="stat-label" data-i18n="hero.accuracyIndividual">Accuracy vs Individual</div>
+      <div class="stat-value" data-i18n="hero.receiverGain">+11.0 pp</div>
+      <div class="stat-label" data-i18n="hero.accuracyIndividual">Accuracy gain vs Receiver</div>
     </div>
     <div class="stat-item">
-      <div class="stat-value">+5.0%</div>
-      <div class="stat-label" data-i18n="hero.accuracyText">Accuracy vs Text-to-Text</div>
+      <div class="stat-value" data-i18n="hero.textGain">+5.4 pp</div>
+      <div class="stat-label" data-i18n="hero.accuracyText">Accuracy gain vs T2T</div>
     </div>
     <div class="stat-item">
-      <div class="stat-value">2.5×</div>
-      <div class="stat-label" data-i18n="hero.speedup">Speedup</div>
+      <div class="stat-value">3.46×</div>
+      <div class="stat-label" data-i18n="hero.speedup">Latency speedup vs T2T</div>
     </div>
   </div>
+
+  <p class="c2c-scope" data-i18n="hero.scope">Qwen3-0.6B Receiver · Qwen2.5-0.5B Sharer · four-benchmark average (<a href="https://arxiv.org/html/2510.03215v2#S4.T4">Table 4</a>).</p>
 
   <div class="hero-cta" style="position:relative;z-index:2;">
     <a href="https://arxiv.org/pdf/2510.03215" class="btn btn-primary" data-i18n="hero.paper">
@@ -69,9 +71,7 @@
             <div class="overview-point-icon solution">
               <i class="fas fa-check"></i>
             </div>
-            <div class="overview-point-text" data-i18n="overview.cacheCommunication">
-              <strong data-emphasis="cache-communication">Cache-to-Cache (C2C)</strong> projects and fuses KV caches directly, preserving semantics with 2.5× average speedup
-            </div>
+            <div class="overview-point-text" data-i18n="overview.cacheCommunication"><strong data-emphasis="cache-communication">Cache-to-Cache (C2C)</strong> fuses the Sharer’s KV cache into the Receiver’s, sharing contextual understanding without intermediate text generation.</div>
           </div>
         </div>
       </div>
@@ -217,9 +217,7 @@
 
     <div class="reveal" style="text-align: center;">
       <img src="./static/images/model_arch.png" alt="C2C Architecture" class="method-figure" data-i18n-attrs="figure.architecture">
-      <p class="figure-caption" data-i18n="architecture.caption">
-        <strong data-emphasis="c2c-fuser">C2C Fuser:</strong> Projects and fuses KV caches from Sharer into Receiver through (1) Projection, (2) Dynamic Weighting, and (3) Learnable Gating modules.
-      </p>
+      <p class="figure-caption" data-i18n="architecture.caption"><strong data-emphasis="fuser-name">C2C Fuser:</strong> Projects and combines both models’ KV caches, then adds the result to the Receiver’s cache through a learnable gate.</p>
     </div>
 
     <div class="arch-features reveal">
@@ -242,7 +240,7 @@
           <i class="fas fa-toggle-on"></i>
         </div>
         <h4 data-i18n="architecture.gatingTitle">Learnable Gating</h4>
-        <p data-i18n="architecture.gating">Per-layer trainable gates that select which layers benefit from cache fusion</p>
+        <p data-i18n="architecture.gating">Trainable per-layer gates control fusion; input-aware weights modulate how much information is added.</p>
       </div>
     </div>
 
@@ -258,8 +256,10 @@
     <div class="results-header reveal">
       <p class="section-eyebrow" data-i18n="results.eyebrow">Experiments</p>
       <h2 class="section-title" data-i18n="results.title">Benchmark Results</h2>
-      <p class="section-subtitle" data-i18n="results.subtitle">Evaluate C2C performance across different model combinations</p>
+      <p class="section-subtitle" data-i18n="results.subtitle">Qwen3-0.6B Receiver with three Sharers across four benchmarks.</p>
     </div>
+
+    <p class="c2c-results-note" data-i18n="results.scope">Accuracy gains are percentage-point differences. Speedup is mean T2T latency divided by mean C2C latency over the selected rows. Single A100, batch size 1; <a href="https://arxiv.org/html/2510.03215v2#S4.T4">paper Table 4</a>.</p>
 
     <div class="results-controls reveal">
       <div class="model-selector">
@@ -293,11 +293,11 @@
       <div class="summary-stat-grid">
         <div class="summary-stat-item">
           <div class="summary-stat-value" id="summaryImprovement">—</div>
-          <div class="summary-stat-label" data-i18n="results.vsReceiver">C2C vs Receiver</div>
+          <div class="summary-stat-label" data-i18n="results.vsReceiver">Accuracy gain vs Receiver (pp)</div>
         </div>
         <div class="summary-stat-item">
           <div class="summary-stat-value" id="summaryVsT2T">—</div>
-          <div class="summary-stat-label" data-i18n="results.vsText">C2C vs Text-to-Text</div>
+          <div class="summary-stat-label" data-i18n="results.vsText">Accuracy gain vs T2T (pp)</div>
         </div>
         <div class="summary-stat-item">
           <div class="summary-stat-value" id="summarySpeedup">—</div>
@@ -361,21 +361,21 @@
           <i class="fas fa-lightbulb"></i>
         </div>
         <h4 data-i18n="summary.paradigmTitle">Novel Paradigm</h4>
-        <p data-i18n="summary.paradigm">First direct semantic communication between LLMs beyond text-based interfaces</p>
+        <p data-i18n="summary.paradigm">Direct semantic communication through learned KV cache projection and residual fusion.</p>
       </div>
       <div class="contribution-card">
         <div class="contribution-icon">
           <i class="fas fa-bolt"></i>
         </div>
         <h4 data-i18n="summary.performanceTitle">Effective & Efficient</h4>
-        <p data-i18n="summary.performance">6.4-14.2% higher accuracy; 3.1-5.4% better than text communication; 2.5× faster</p>
+        <p data-i18n="summary.performance">With Qwen2.5-0.5B as Sharer, C2C improves Qwen3-0.6B accuracy by 11.0 percentage points and cuts T2T latency by a factor of 3.46, averaged across four benchmarks.</p>
       </div>
       <div class="contribution-card">
         <div class="contribution-icon">
           <i class="fas fa-expand-arrows-alt"></i>
         </div>
         <h4 data-i18n="summary.generalTitle">Flexible & General</h4>
-        <p data-i18n="summary.general">Works across model families, sizes, and specializations</p>
+        <p data-i18n="summary.general">Supports different model families, sizes, and specializations through trained fusers with token and layer alignment.</p>
       </div>
     </div>
   </div>

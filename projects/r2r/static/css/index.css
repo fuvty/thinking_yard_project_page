@@ -817,3 +817,6 @@
     display: none;
   }
 }
+
+.paper-evaluation-note { max-width: 760px; margin: 24px auto; color: var(--apple-gray); font-size: 14px; line-height: 1.6; }
+.paper-evaluation-note a { color: var(--apple-blue); }

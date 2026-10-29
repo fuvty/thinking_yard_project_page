@@ -142,41 +142,21 @@
         return;
       }
 
-      let totalC2CvsReceiver = 0;
-      let totalC2CvsT2T = 0;
-      let totalSpeedup = 0;
-      let countAccuracy = 0;
-      let countTime = 0;
-
-      data.forEach(row => {
-        const receiverAcc = parseFloat(row.Receiver_Acc);
-        const t2tAcc = parseFloat(row.T2T_Acc);
-        const c2cAcc = parseFloat(row.C2C_Acc);
-        const t2tTime = parseFloat(row.T2T_Time);
-        const c2cTime = parseFloat(row.C2C_Time);
-
-        if (!isNaN(receiverAcc) && !isNaN(c2cAcc)) {
-          totalC2CvsReceiver += (c2cAcc - receiverAcc);
-          countAccuracy++;
-        }
-
-        if (!isNaN(t2tAcc) && !isNaN(c2cAcc)) {
-          totalC2CvsT2T += (c2cAcc - t2tAcc);
-        }
-
-        if (!isNaN(t2tTime) && !isNaN(c2cTime) && t2tTime > 0 && c2cTime > 0) {
-          totalSpeedup += (t2tTime / c2cTime);
-          countTime++;
-        }
-      });
-
-      const avgImprovement = countAccuracy > 0 ? (totalC2CvsReceiver / countAccuracy).toFixed(1) : 0;
-      const avgVsT2T = countAccuracy > 0 ? (totalC2CvsT2T / countAccuracy).toFixed(1) : 0;
-      const avgSpeedup = countTime > 0 ? (totalSpeedup / countTime).toFixed(1) : 0;
-
-      document.getElementById('summaryImprovement').textContent = avgImprovement > 0 ? `+${avgImprovement}%` : `${avgImprovement}%`;
-      document.getElementById('summaryVsT2T').textContent = avgVsT2T > 0 ? `+${avgVsT2T}%` : `${avgVsT2T}%`;
-      document.getElementById('summarySpeedup').textContent = avgSpeedup > 0 ? `${avgSpeedup}×` : '—';
+      // Accuracy columns are percentages, so their differences are percentage points.
+      const meanGain = baseline => {
+        const pairs = data.map(row => [parseFloat(row.C2C_Acc), parseFloat(row[baseline])])
+          .filter(pair => pair.every(Number.isFinite));
+        if (!pairs.length) return '—';
+        const gain = pairs.reduce((sum, [c2c, other]) => sum + c2c - other, 0) / pairs.length;
+        return `${gain > 0 ? '+' : ''}${gain.toFixed(1)} ${c2cText('pp')}`;
+      };
+      // Match paper §4.2: ratio of mean latencies, not mean of row-wise ratios.
+      const times = data.map(row => [parseFloat(row.T2T_Time), parseFloat(row.C2C_Time)])
+        .filter(pair => pair.every(value => Number.isFinite(value) && value > 0));
+      const totals = times.reduce(([t2t, c2c], [a, b]) => [t2t + a, c2c + b], [0, 0]);
+      document.getElementById('summaryImprovement').textContent = meanGain('Receiver_Acc');
+      document.getElementById('summaryVsT2T').textContent = meanGain('T2T_Acc');
+      document.getElementById('summarySpeedup').textContent = times.length ? `${(totals[0] / totals[1]).toFixed(2)}×` : '—';
     }
 
 
