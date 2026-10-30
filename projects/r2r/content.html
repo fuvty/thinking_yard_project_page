@@ -594,14 +594,14 @@
 
     <!-- Learn More Expandable -->
     <div class="reveal" style="margin-top: 48px;">
-      <div class="expandable-section" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
-        <div class="expandable-header" onclick="toggleExpand(this)">
+      <div data-legacy-disclosure class="expandable-section" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
+        <button type="button" class="expandable-header" aria-controls="r2r-dark-detail-1" aria-expanded="false">
           <span class="expandable-title" style="color: #fff;" data-i18n="insight.details.title">Learn more about token classification</span>
-          <div class="expandable-icon" style="background: rgba(255,255,255,0.1);">
+          <span class="expandable-icon" style="background: rgba(255,255,255,0.1);" aria-hidden="true">
             <i class="fas fa-plus" style="color: #fff; font-size: 12px;"></i>
-          </div>
-        </div>
-        <div class="expandable-content">
+          </span>
+        </button>
+        <div class="expandable-content" id="r2r-dark-detail-1" inert>
           <div class="expandable-content-inner">
             <div class="expandable-inner" style="color: rgba(255,255,255,0.8);">
               <p style="margin-bottom: 16px;" data-i18n="insight.details.identical">
@@ -744,26 +744,18 @@
 
     <!-- Video Demo -->
     <div class="reveal" style="margin-top: 48px;">
-      <div class="expandable-section">
-        <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title" data-i18n="demo.video.title">Watch Video Demo</span>
-          <div class="expandable-icon">
-            <i class="fas fa-plus" style="font-size: 12px;"></i>
-          </div>
-        </div>
-        <div class="expandable-content">
-          <div class="expandable-content-inner">
-            <div class="expandable-inner">
+      <details class="sp-fold">
+        <summary><span data-i18n="demo.video.title">Watch Video Demo</span><span class="sp-fold-icon" aria-hidden="true"></span></summary>
+        <div class="sp-fold-body" data-ui-surface="white">
               <div class="demo-video" style="margin: 0;">
                 <video src="./static/videos/R2R_demo.mp4" loop muted playsinline controls></video>
               </div>
               <p style="text-align: center; color: var(--apple-gray); font-size: 14px; margin-top: 16px;" data-i18n="demo.video.caption">
                 Side-by-side comparison: R1-32B (left) vs R2R (right). Red tokens are routed to LLM.
               </p>
-            </div>
-          </div>
+
         </div>
-      </div>
+      </details>
     </div>
   </div>
 </section>
@@ -785,16 +777,9 @@
 
     <!-- Expandable Method Details -->
     <div class="reveal">
-      <div class="expandable-section">
-        <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title" data-i18n="method.data.title">Automatic Data Generation Pipeline</span>
-          <div class="expandable-icon">
-            <i class="fas fa-plus" style="font-size: 12px;"></i>
-          </div>
-        </div>
-        <div class="expandable-content">
-          <div class="expandable-content-inner">
-            <div class="expandable-inner">
+      <details class="sp-fold">
+        <summary><span data-i18n="method.data.title">Automatic Data Generation Pipeline</span><span class="sp-fold-icon" aria-hidden="true"></span></summary>
+        <div class="sp-fold-body" data-ui-surface="white">
               <p style="margin-bottom: 16px;" data-i18n="method.data.intro">
                 A key contribution of R2R is an <strong data-emphasis="automatic-token-labeling">automatic pipeline for generating token-level routing labels</strong> without expensive human annotation:
               </p>
@@ -803,21 +788,13 @@
                 This pipeline produces large-scale training data automatically, enabling the router to learn which token differences actually matter for reasoning.
               </p>
               <img src="./static/images/data_gen_overview.png" alt="Data Generation Pipeline" style="width: 100%; border-radius: 12px; margin-top: 16px;" data-i18n-attrs="figure.1">
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="expandable-section">
-        <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title" data-i18n="method.path.title">Path-Following Routing Strategy</span>
-          <div class="expandable-icon">
-            <i class="fas fa-plus" style="font-size: 12px;"></i>
-          </div>
         </div>
-        <div class="expandable-content">
-          <div class="expandable-content-inner">
-            <div class="expandable-inner">
+      </details>
+
+      <details class="sp-fold">
+        <summary><span data-i18n="method.path.title">Path-Following Routing Strategy</span><span class="sp-fold-icon" aria-hidden="true"></span></summary>
+        <div class="sp-fold-body" data-ui-surface="white">
               <p style="margin-bottom: 16px;" data-i18n="method.path.intro">
                 When generating routing labels, we compare the next-token predictions of the SLM and LLM. Identical predictions can use the SLM output. For differing predictions, continuation and verification determine whether the difference is:
               </p>
@@ -826,21 +803,13 @@
                 <li data-i18n="method.path.divergent"><strong data-emphasis="divergent-tokens">Divergent:</strong> Alters the reasoning path (route to LLM)</li>
               </ul>
               <p data-i18n="method.path.summary">Sentence-level verification provides offline training labels. During inference, the neural router predicts divergence from SLM features and invokes the LLM when its score exceeds a threshold. It approximates the labeling strategy rather than verifying every continuation.</p>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="expandable-section">
-        <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title" data-i18n="method.router.title">Neural Router Architecture</span>
-          <div class="expandable-icon">
-            <i class="fas fa-plus" style="font-size: 12px;"></i>
-          </div>
         </div>
-        <div class="expandable-content">
-          <div class="expandable-content-inner">
-            <div class="expandable-inner">
+      </details>
+
+      <details class="sp-fold">
+        <summary><span data-i18n="method.router.title">Neural Router Architecture</span><span class="sp-fold-icon" aria-hidden="true"></span></summary>
+        <div class="sp-fold-body" data-ui-surface="white">
               <p style="margin-bottom: 16px;" data-i18n="method.router.intro">
                 The router is a lightweight <strong data-emphasis="router-network">56M-parameter feed-forward network</strong> that takes three inputs from the SLM:
               </p>
@@ -850,21 +819,13 @@
                 <li data-i18n="method.router.hidden"><strong data-emphasis="last-layer-hidden-states">Last-layer hidden states:</strong> Provides semantic context for the current generation step</li>
               </ul>
               <p style="margin-top: 16px;" data-i18n="method.router.output">A divergence score enables <strong data-emphasis="immediate-routing">immediate routing decisions</strong>. Adjusting the threshold changes LLM usage without retraining; the reported configuration uses the LLM for 11–15% of tokens.</p>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="expandable-section">
-        <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title" data-i18n="method.indicators.title">Predictive Indicators of Divergence</span>
-          <div class="expandable-icon">
-            <i class="fas fa-plus" style="font-size: 12px;"></i>
-          </div>
         </div>
-        <div class="expandable-content">
-          <div class="expandable-content-inner">
-            <div class="expandable-inner">
+      </details>
+
+      <details class="sp-fold">
+        <summary><span data-i18n="method.indicators.title">Predictive Indicators of Divergence</span><span class="sp-fold-icon" aria-hidden="true"></span></summary>
+        <div class="sp-fold-body" data-ui-surface="white">
               <div class="observations-grid routing-observations">
                 <div>
                   <img src="./static/images/entropy_distribution.png" alt="Entropy Distribution" style="width: 100%; border-radius: 12px; margin-bottom: 12px;" data-i18n-attrs="figure.2">
@@ -877,10 +838,9 @@
                   <p style="font-size: 14px; color: var(--apple-gray);" data-i18n="method.frequency.body">Low-frequency tokens are more likely to be divergent in the training data, suggesting token rarity is a useful predictive signal.</p>
                 </div>
               </div>
-            </div>
-          </div>
+
         </div>
-      </div>
+      </details>
     </div>
   </div>
 </section>
@@ -949,16 +909,9 @@
 
     <!-- Expandable Results Details -->
     <div class="reveal">
-      <div class="expandable-section">
-        <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title" data-i18n="results.table.title">Detailed Benchmark Results</span>
-          <div class="expandable-icon">
-            <i class="fas fa-plus" style="font-size: 12px;"></i>
-          </div>
-        </div>
-        <div class="expandable-content">
-          <div class="expandable-content-inner">
-            <div class="expandable-inner">
+      <details class="sp-fold">
+        <summary><span data-i18n="results.table.title">Detailed Benchmark Results</span><span class="sp-fold-icon" aria-hidden="true"></span></summary>
+        <div class="sp-fold-body" data-ui-surface="white">
               <p class="paper-evaluation-note" data-i18n="results.tableScope">Table 2 setup: AIME 2024–2025, LiveCodeBench (Aug 2024–Jan 2025), and GPQA-Diamond; greedy decoding with a 32K output limit. The last column averages activated parameters across benchmarks.</p>
               <div style="overflow-x: auto;">
                 <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
@@ -1010,36 +963,27 @@
                   </tbody>
                 </table>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="expandable-section">
-        <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title" data-i18n="results.behavior.title">Routing Behavior Analysis</span>
-          <div class="expandable-icon">
-            <i class="fas fa-plus" style="font-size: 12px;"></i>
-          </div>
         </div>
-        <div class="expandable-content">
-          <div class="expandable-content-inner">
-            <div class="expandable-inner">
+      </details>
+
+      <details class="sp-fold">
+        <summary><span data-i18n="results.behavior.title">Routing Behavior Analysis</span><span class="sp-fold-icon" aria-hidden="true"></span></summary>
+        <div class="sp-fold-body" data-ui-surface="white">
               <img src="./static/images/routing_observation.png" alt="Routing Behavior" style="width: 100%; max-width: 600px; border-radius: 12px; margin-bottom: 16px;" data-i18n-attrs="figure.5">
               <p style="color: var(--apple-gray); font-size: 14px;" data-i18n="results.behavior.body">
                 R2R naturally learns efficient routing patterns: fewer LLM calls during straightforward reply phases,
                 and more at the beginning and end of each thought where reasoning direction is determined.
               </p>
-            </div>
-          </div>
+
         </div>
-      </div>
+      </details>
     </div>
   </div>
 </section>
 
 <!-- Authors Section -->
-<section class="section section-gray authors-section" id="team">
+<section class="section section-gray authors-section sp-authors" id="team">
   <div class="container">
     <div class="reveal">
       <p class="section-eyebrow" data-i18n="team.eyebrow">Team</p>
@@ -1047,34 +991,34 @@
     </div>
 
     <div class="authors-list reveal">
-      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/TianyuFu" class="author-tag">
+      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/TianyuFu" class="author-tag" aria-describedby="author-affiliations">
         Tianyu Fu<sup>1,2*</sup>
       </a>
-      <span class="author-tag" style="cursor: default;">Yi Ge<sup>1*</sup></span>
-      <a href="https://youyc22.com/" class="author-tag">
+      <span class="author-tag" aria-describedby="author-affiliations" style="cursor: default;">Yi Ge<sup>1*</sup></span>
+      <a href="https://youyc22.com/" class="author-tag" aria-describedby="author-affiliations">
         Yichen You<sup>1</sup>
       </a>
-      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/EnshuLiu" class="author-tag">
+      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/EnshuLiu" class="author-tag" aria-describedby="author-affiliations">
         Enshu Liu<sup>1</sup>
       </a>
-      <a href="https://zhihang.cc/" class="author-tag">
+      <a href="https://zhihang.cc/" class="author-tag" aria-describedby="author-affiliations">
         Zhihang Yuan<sup>2</sup>
       </a>
-      <a href="https://dai.sjtu.edu.cn/pepledetail.html?id=218" class="author-tag">
+      <a href="https://dai.sjtu.edu.cn/pepledetail.html?id=218" class="author-tag" aria-describedby="author-affiliations">
         Guohao Dai<sup>3,2</sup>
       </a>
-      <span class="author-tag" style="cursor: default;">Shengen Yan<sup>2</sup></span>
-      <span class="author-tag" style="cursor: default;">Huazhong Yang<sup>1</sup></span>
-      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/YuWang" class="author-tag">
+      <span class="author-tag" aria-describedby="author-affiliations" style="cursor: default;">Shengen Yan<sup>2</sup></span>
+      <span class="author-tag" aria-describedby="author-affiliations" style="cursor: default;">Huazhong Yang<sup>1</sup></span>
+      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/YuWang" class="author-tag" aria-describedby="author-affiliations">
         Yu Wang<sup>1</sup>
       </a>
     </div>
 
-    <div class="affiliations reveal" data-i18n="team.affiliations">
+    <div class="affiliations reveal" id="author-affiliations" data-i18n="team.affiliations">
       <sup>1</sup>Tsinghua University &nbsp;&nbsp;
       <sup>2</sup>Infinigence AI &nbsp;&nbsp;
       <sup>3</sup>Shanghai Jiao Tong University<br>
-      <span style="font-size: 12px;">*Equal contribution</span>
+      <span class="author-note">*Equal contribution</span>
     </div>
   </div>
 </section>
@@ -1100,19 +1044,12 @@
 
 
 <script>
-// Expandable sections with smooth animation
-function toggleExpand(header) {
-  const section = header.parentElement;
-  const isOpening = !section.classList.contains('open');
-
-  // Close other sections in the same container for accordion effect (optional)
-  // const siblings = section.parentElement.querySelectorAll('.expandable-section.open');
-  // siblings.forEach(s => { if (s !== section) s.classList.remove('open'); });
-
-  section.classList.toggle('open');
-  const icon = header.querySelector('.expandable-icon i');
-  icon.className = section.classList.contains('open') ? 'fas fa-minus' : 'fas fa-plus';
-}
+// Stop the video as soon as its panel starts closing, including native fallback.
+document.querySelectorAll('.sp-fold video').forEach(video => {
+  const panel = video.closest('.sp-fold');
+  panel.addEventListener('sp-fold-change', event => { if (!event.detail.open) video.pause(); });
+  panel.addEventListener('toggle', () => { if (!panel.open) video.pause(); });
+});
 
 // Scroll reveal animation
 function reveal() {

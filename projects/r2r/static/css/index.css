@@ -168,30 +168,9 @@
       gap: 12px;
     }
 
-    .workflow-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: none;
-      background: var(--apple-light-gray);
-      color: var(--apple-black);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-    }
+    .workflow-btn { display:grid; place-items:center; font-size:16px; }
 
-    .workflow-btn:hover {
-      background: var(--apple-blue);
-      color: #fff;
-    }
 
-    .workflow-btn:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
 
     .workflow-stages {
       display: flex;
@@ -529,12 +508,6 @@
     }
 
     /* Authors Section */
-
-    .affiliations {
-      margin-top: 24px;
-      font-size: 14px;
-      color: var(--apple-gray);
-    }
 
     /* Footer */
 

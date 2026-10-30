@@ -62,3 +62,9 @@ Page-specific code:
 - `static/css/index.css`: responsive layouts and diagram treatments.
 
 All resource paths work beneath the configurable GitHub Pages prefix. Generated `public/` and `out/` are not source files.
+
+## Shared interaction components
+
+The page loads opt-in modules from `shared/ui/components/` and follows [the shared controls contract](../../docs/design-system/controls.md). Supplementary sections use independent native `details.sp-fold` rows with neutral plus/minus icons outside translated labels. Each has one measurable `.sp-fold-body`; closed or closing contents leave keyboard focus. Author lists opt into `.sp-authors`, while verified names, links and contribution roles remain page-owned.
+
+The workload selector keeps its native options and change event while using the shared picker presentation. Its explicit label stays outside the enhanced trigger. Routing, handoff and scheduling playback retain their own timelines, scrubbers and replay behavior; their shared icon buttons expose localized action labels and tooltips without replacing SVG content. The dark handoff illustration uses the supported dark action treatment; disclosures remain on light surfaces.

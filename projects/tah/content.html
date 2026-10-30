@@ -431,20 +431,21 @@
 
     <!-- Oracle Experiments Expandable -->
     <div class="reveal" style="margin-top:48px;">
-      <div class="expandable-section" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);">
-        <div class="expandable-header" onclick="toggleExpand(this)">
+      <div data-legacy-disclosure class="expandable-section" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);">
+        <button type="button" class="expandable-header" aria-controls="tah-dark-detail-1" aria-expanded="false">
           <span class="expandable-title" style="color:#fff;" data-i18n="insight.learn-more-about-the-oracle-experiments">Learn more about the oracle experiments</span>
-          <div class="expandable-icon" style="background:rgba(255,255,255,0.1);">
+          <span class="expandable-icon" style="background:rgba(255,255,255,0.1);" aria-hidden="true">
             <i class="fas fa-plus" style="color:#fff; font-size:12px;"></i>
-          </div>
-        </div>
-        <div class="expandable-content">
+          </span>
+        </button>
+        <div class="expandable-content" id="tah-dark-detail-1" inert>
           <div class="expandable-content-inner">
             <div class="expandable-inner" style="color:rgba(255,255,255,0.8);">
-              <h4 style="color:#30d158; margin-bottom:12px;" data-i18n="insight.oracle-iteration-policy">Oracle Iteration Policy</h4>
+              <h4 id="oracle-policy-title" style="color:#30d158; margin-bottom:12px;" data-i18n="insight.oracle-iteration-policy">Oracle Iteration Policy</h4>
               <p style="margin-bottom:12px;" data-i18n="insight.we-establish-an-oracle-policy-that-triggers-additional-iterations">We establish an oracle policy π that triggers additional iterations only when the reference LLM mispredicts the target token at the first pass. Using top-1 mismatch as the discrepancy metric, this oracle iterates on only 12–19% of tokens.</p>
 
-              <table style="width:100%; border-collapse:collapse; margin:16px 0; font-size:14px;">
+              <div class="oracle-table-scroll" role="region" tabindex="0" aria-labelledby="oracle-policy-title">
+              <table style="width:100%; border-collapse:collapse; font-size:14px;">
                 <thead>
                   <tr style="background:rgba(255,255,255,0.1);">
                     <th style="padding:12px; text-align:left; color:#fff;" data-i18n="insight.policy">Policy</th>
@@ -485,6 +486,7 @@
                   </tr>
                 </tbody>
               </table>
+              </div>
 
               <p style="margin-top:16px;" data-i18n="insight.key-insight-tah-s-architecture-better-utilizes-the-oracle-policy">
                 <strong style="color:#0a84ff;" data-emphasis="key-insight">Key insight:</strong> TaH's architecture better utilizes the oracle policy, gaining over 25 percentage points on selected oracle benchmarks and surpassing Qwen3-4B there. The oracle uses target tokens or a stronger model as a proxy, which are not available to the deployed decider. TaH learns to approximate these decisions.
@@ -497,14 +499,14 @@
 
     <!-- Accuracy Landscape Expandable -->
     <div class="reveal" style="margin-top:16px;">
-      <div class="expandable-section" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);">
-        <div class="expandable-header" onclick="toggleExpand(this)">
+      <div data-legacy-disclosure class="expandable-section" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);">
+        <button type="button" class="expandable-header" aria-controls="tah-dark-detail-2" aria-expanded="false">
           <span class="expandable-title" style="color:#fff;" data-i18n="insight.accuracy-landscape-across-iterations">Accuracy landscape across iterations</span>
-          <div class="expandable-icon" style="background:rgba(255,255,255,0.1);">
+          <span class="expandable-icon" style="background:rgba(255,255,255,0.1);" aria-hidden="true">
             <i class="fas fa-plus" style="color:#fff; font-size:12px;"></i>
-          </div>
-        </div>
-        <div class="expandable-content">
+          </span>
+        </button>
+        <div class="expandable-content" id="tah-dark-detail-2" inert>
           <div class="expandable-content-inner">
             <div class="expandable-inner" style="color:rgba(255,255,255,0.8);">
               <div style="text-align:center;">
@@ -1139,16 +1141,11 @@
 
     <!-- Two-Stage Training Expandable -->
     <div class="reveal" style="margin-top:32px;">
-      <div class="expandable-section">
-        <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title" data-i18n="architecture.two-stage-training-scheme">Two-stage training scheme</span>
-          <div class="expandable-icon"><i class="fas fa-plus" style="font-size:12px;"></i></div>
-        </div>
-        <div class="expandable-content">
-          <div class="expandable-content-inner">
-            <div class="expandable-inner">
+      <details class="sp-fold">
+        <summary><span data-i18n="architecture.two-stage-training-scheme">Two-stage training scheme</span><span class="sp-fold-icon" aria-hidden="true"></span></summary>
+        <div class="sp-fold-body" data-ui-surface="white">
               <p style="font-size:16px; line-height:1.6; color:#444; margin-bottom:16px;" data-i18n="architecture.the-backbone-llm-and-iteration-decider-are-tightly-coupled-joint">The backbone LLM and iteration decider are tightly coupled — joint training is unstable. We decouple them with a two-stage approach under a fixed oracle policy $\pi$:</p>
-              <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+              <div class="training-stages">
                 <div style="background:var(--apple-light-gray); padding:24px; border-radius:16px;">
                   <h5 style="font-weight:600; margin-bottom:8px; color:var(--apple-blue);" data-i18n="architecture.backbone-training">Stage 1: Backbone Training</h5>
                   <p style="font-size:14px; color:#444; line-height:1.5;" data-i18n="architecture.fine-tune-the-llm-theta-and-lora-delta-with-pi-guided-iteration-l">Fine-tune the LLM ($\theta$) and LoRA ($\Delta$) with $\pi$-guided iteration. Loss = standard next-token prediction at the oracle-determined depth. This preserves first-iteration accuracy for easy tokens while training deeper iterations to refine hard ones.</p>
@@ -1158,10 +1155,9 @@
                   <p style="font-size:14px; color:#444; line-height:1.5;" data-i18n="architecture.freeze-the-backbone-and-train-the-decider-phi-to-imitate-pi-s-con">Freeze the backbone and train the decider ($\phi$) to imitate $\pi$'s continuation decisions via weighted binary cross-entropy. Class weights handle the imbalance between continue and stop labels.</p>
                 </div>
               </div>
-            </div>
-          </div>
+
         </div>
-      </div>
+      </details>
     </div>
   </div>
 </section>
@@ -1269,14 +1265,9 @@
 
     <!-- Efficiency Expandable -->
     <div class="reveal" style="margin-top:32px;">
-      <div class="expandable-section">
-        <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title" data-i18n="results.real-world-efficiency-on-a800-gpu">Real-world efficiency on A800 GPU</span>
-          <div class="expandable-icon"><i class="fas fa-plus" style="font-size:12px;"></i></div>
-        </div>
-        <div class="expandable-content">
-          <div class="expandable-content-inner">
-            <div class="expandable-inner">
+      <details class="sp-fold">
+        <summary><span data-i18n="results.real-world-efficiency-on-a800-gpu">Real-world efficiency on A800 GPU</span><span class="sp-fold-icon" aria-hidden="true"></span></summary>
+        <div class="sp-fold-body" data-ui-surface="white">
               <p style="font-size:16px; line-height:1.6; color:#444; margin-bottom:16px;" data-i18n="results.1-7b-model-aime25-8k-max-token-length-on-a-single-nvidia-a800-gpu">1.7B model, AIME25, 8K max token length on a single NVIDIA A800 GPU:</p>
               <div class="results-table-wrapper">
                 <table class="results-table">
@@ -1290,10 +1281,9 @@
                 </table>
               </div>
               <p style="margin-top:16px; font-size:14px; color:var(--apple-gray);" data-i18n="results.tah-iterates-twice-on-only-6-of-tokens-achieving-1-48-lower-memor">TaH iterates twice on only 6% of tokens. Compared with AlwaysThink, it uses 32% less memory and has a 2.48× decoding speedup in this setting. Standard remains faster.</p>
-            </div>
-          </div>
+
         </div>
-      </div>
+      </details>
     </div>
   </div>
 </section>
@@ -1326,7 +1316,7 @@
 </section>
 
 <!-- Authors Section -->
-<section class="section section-gray authors-section" id="team">
+<section class="section section-gray authors-section sp-authors" id="team">
   <div class="container">
     <div class="reveal">
       <p class="section-eyebrow" data-i18n="team.team">Team</p>
@@ -1334,27 +1324,27 @@
     </div>
 
     <div class="authors-list reveal">
-      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/TianyuFu" class="author-tag">
+      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/TianyuFu" class="author-tag" aria-describedby="author-affiliations">
         Tianyu Fu<sup>1,2*</sup>
       </a>
-      <a href="https://youyc22.com/" class="author-tag">
+      <a href="https://youyc22.com/" class="author-tag" aria-describedby="author-affiliations">
         Yichen You<sup>1*</sup>
       </a>
-      <span class="author-tag" style="cursor: default;">Zekai Chen<sup>1</sup></span>
-      <a href="https://dai.sjtu.edu.cn/pepledetail.html?id=218" class="author-tag">
+      <span class="author-tag" aria-describedby="author-affiliations" style="cursor: default;">Zekai Chen<sup>1</sup></span>
+      <a href="https://dai.sjtu.edu.cn/pepledetail.html?id=218" class="author-tag" aria-describedby="author-affiliations">
         Guohao Dai<sup>3,2</sup>
       </a>
-      <span class="author-tag" style="cursor: default;">Huazhong Yang<sup>1</sup></span>
-      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/YuWang" class="author-tag">
+      <span class="author-tag" aria-describedby="author-affiliations" style="cursor: default;">Huazhong Yang<sup>1</sup></span>
+      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/YuWang" class="author-tag" aria-describedby="author-affiliations">
         Yu Wang<sup>1</sup>
       </a>
     </div>
 
-    <div class="affiliations reveal" data-i18n="team.1tsinghua-university-2infinigence-ai-3shanghai-jiao-tong-universi">
+    <div class="affiliations reveal" id="author-affiliations" data-i18n="team.1tsinghua-university-2infinigence-ai-3shanghai-jiao-tong-universi">
       <sup>1</sup>Tsinghua University &nbsp;&nbsp;
       <sup>2</sup>Infinigence AI &nbsp;&nbsp;
       <sup>3</sup>Shanghai Jiao Tong University<br>
-      <span style="font-size: 12px;">*Equal contribution</span>
+      <span class="author-note">*Equal contribution</span>
     </div>
   </div>
 </section>

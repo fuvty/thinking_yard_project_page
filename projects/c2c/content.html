@@ -161,14 +161,14 @@
 
     <!-- Learn More Expandable -->
     <div class="reveal" style="margin-top: 48px;">
-      <div class="expandable-section" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
-        <div class="expandable-header" onclick="toggleExpand(this)">
+      <div data-legacy-disclosure class="expandable-section" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
+        <button type="button" class="expandable-header" aria-controls="c2c-dark-detail-1" aria-expanded="false">
           <span class="expandable-title" style="color: #fff;" data-i18n="oracle.expand">Learn more about our oracle experiments</span>
-          <div class="expandable-icon" style="background: rgba(255,255,255,0.1);">
+          <span class="expandable-icon" style="background: rgba(255,255,255,0.1);" aria-hidden="true">
             <i class="fas fa-plus" style="color: #fff; font-size: 12px;"></i>
-          </div>
-        </div>
-        <div class="expandable-content">
+          </span>
+        </button>
+        <div class="expandable-content" id="c2c-dark-detail-1" inert>
           <div class="expandable-content-inner">
             <div class="expandable-inner" style="color: rgba(255,255,255,0.8);">
               <div class="oracle-details">
@@ -266,7 +266,7 @@
           <label for="sharerSelect" class="model-selector-label" data-i18n="results.sharerLabel">
             <i class="fas fa-share-alt"></i> Sharer
           </label>
-          <select id="sharerSelect" class="model-select sp-select" onchange="updatePerformanceTable()">
+          <select id="sharerSelect" class="model-select sp-select" data-picker onchange="updatePerformanceTable()">
             <option value="all" data-i18n="results.allSharers">All Sharers</option>
             <option value="Qwen2.5-0.5B">Qwen2.5-0.5B</option>
             <option value="Llama3.2-1B">Llama3.2-1B</option>
@@ -280,7 +280,7 @@
           <label for="receiverSelect" class="model-selector-label" data-i18n="results.receiverLabel">
             <i class="fas fa-inbox"></i> Receiver
           </label>
-          <select id="receiverSelect" class="model-select sp-select" onchange="updatePerformanceTable()">
+          <select id="receiverSelect" class="model-select sp-select" data-picker onchange="updatePerformanceTable()">
             <option value="all" data-i18n="results.allReceivers">All Receivers</option>
             <option value="Qwen3-0.6B" selected>Qwen3-0.6B</option>
           </select>
@@ -306,16 +306,9 @@
     </div>
 
     <div class="reveal" style="margin-top: 24px;">
-      <div class="expandable-section">
-        <div class="expandable-header" onclick="toggleExpand(this)">
-          <span class="expandable-title" data-i18n="results.expand">View Detailed Results</span>
-          <div class="expandable-icon">
-            <i class="fas fa-plus" style="font-size: 12px;"></i>
-          </div>
-        </div>
-        <div class="expandable-content">
-          <div class="expandable-content-inner">
-            <div class="expandable-inner">
+      <details class="sp-fold">
+        <summary><span data-i18n="results.expand">View Detailed Results</span><span class="sp-fold-icon" aria-hidden="true"></span></summary>
+        <div class="sp-fold-body" data-ui-surface="white">
               <div class="results-count" id="resultsCount" data-i18n="results.loading">
                 <i class="fas fa-chart-bar"></i> Loading results...
               </div>
@@ -338,10 +331,9 @@
                   </tbody>
                 </table>
               </div>
-            </div>
-          </div>
+
         </div>
-      </div>
+      </details>
     </div>
   </div>
 </section>
@@ -381,7 +373,7 @@
 </section>
 
 <!-- Authors Section -->
-<section class="section section-gray authors-section" id="team">
+<section class="section section-gray authors-section sp-authors" id="team">
   <div class="container">
     <div class="reveal">
       <p class="section-eyebrow" data-i18n="team.eyebrow">Team</p>
@@ -389,32 +381,32 @@
     </div>
 
     <div class="authors-list reveal">
-      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/TianyuFu" class="author-tag">
+      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/TianyuFu" class="author-tag" aria-describedby="author-affiliations">
         Tianyu Fu<sup>1,2*</sup>
       </a>
-      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/ZihanMin" class="author-tag">
+      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/ZihanMin" class="author-tag" aria-describedby="author-affiliations">
         Zihan Min<sup>1*</sup>
       </a>
-      <span class="author-tag">Hanling Zhang<sup>3*</sup></span>
-      <span class="author-tag">Jichao Yan<sup>1</sup></span>
-      <a href="https://dai.sjtu.edu.cn/pepledetail.html?id=218" class="author-tag">
+      <span class="author-tag" aria-describedby="author-affiliations">Hanling Zhang<sup>3*</sup></span>
+      <span class="author-tag" aria-describedby="author-affiliations">Jichao Yan<sup>1</sup></span>
+      <a href="https://dai.sjtu.edu.cn/pepledetail.html?id=218" class="author-tag" aria-describedby="author-affiliations">
         Guohao Dai<sup>5,2</sup>
       </a>
-      <a href="https://wlouyang.github.io/" class="author-tag">
+      <a href="https://wlouyang.github.io/" class="author-tag" aria-describedby="author-affiliations">
         Wanli Ouyang<sup>3,4</sup>
       </a>
-      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/YuWang" class="author-tag">
+      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/YuWang" class="author-tag" aria-describedby="author-affiliations">
         Yu Wang<sup>1†</sup>
       </a>
     </div>
 
-    <div class="affiliations reveal" data-i18n="team.affiliations">
+    <div class="affiliations reveal" id="author-affiliations" data-i18n="team.affiliations">
       <sup>1</sup>Tsinghua University &nbsp;&nbsp;
       <sup>2</sup>Infinigence AI &nbsp;&nbsp;
       <sup>3</sup>The Chinese University of Hong Kong<br>
       <sup>4</sup>Shanghai AI Laboratory &nbsp;&nbsp;
       <sup>5</sup>Shanghai Jiao Tong University<br>
-      <span style="font-size: 12px;">*Equal contribution &nbsp;&nbsp; †Corresponding author</span>
+      <span class="author-note">*Equal contribution &nbsp;&nbsp; †Corresponding author</span>
     </div>
   </div>
 </section>

@@ -36,7 +36,7 @@ This is a structural example for `content.html`. Replace the placeholders with s
     </div>
   </section>
   <!-- Add method and evaluation sections appropriate to the paper. -->
-  <section id="team" class="section section-gray authors-section">
+  <section id="team" class="section section-gray authors-section sp-authors">
     <div class="container">
       <p class="section-eyebrow">Team</p>
       <h2 class="section-title">Meet the researchers.</h2>

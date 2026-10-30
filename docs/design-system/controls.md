@@ -24,7 +24,7 @@ All pages receive `shared/ui/styles.css` and `controller.js`. These provide basi
 | Icon playback | `button.sp-control.sp-media-button` | `media.css` |
 | Author list | `.sp-authors` containing `.authors-list` | None; `authors.css` is imported by shared styles |
 
-The interactive preview loads the same modules as production pages. Its `preview.js` only demonstrates state changes; never load it in a project. The surface comparison also documents `.sp-disclosure`, a compatibility treatment still used by existing pages. Use `.sp-fold` for new expandable content. Migrate existing controls deliberately, preserving their hooks and lifecycle instead of replacing classes globally.
+The interactive preview loads the same modules as production pages. Its `preview.js` only demonstrates state changes; never load it in a project. Both previews use `.sp-fold` for expandable content. Migrate existing controls deliberately, preserving their hooks and lifecycle instead of replacing classes globally.
 
 ## Backgrounds
 
@@ -37,7 +37,7 @@ The interactive preview loads the same modules as production pages. Its `preview
 | Enhanced select | Supported | Supported | Unsupported |
 | Expandable content / authors | Supported | Supported | Unsupported |
 
-An unsupported component needs a light wrapper with the matching surface declaration. Do not infer backgrounds from computed colors or override global color tokens for one control. Keep controls distinct through contrast and spacing, without stacked outlines. Keyboard focus uses a visible ring; pointer clicks do not. Touch targets are at least 44px.
+An unsupported component needs a light wrapper with the matching surface declaration. Do not infer backgrounds from computed colors or override global color tokens for one control. The shared `[hidden]` rule must take precedence over component and project display styles, including the native select replaced by an enhanced picker. Keep controls distinct through contrast and spacing, without stacked outlines. Keyboard focus uses a visible ring; pointer clicks do not. Touch targets are at least 44px.
 
 ## Segmented choices
 
@@ -80,6 +80,8 @@ Keep `popoverTargetElement` linked to the trigger and prevent the native click t
 
 Use one direct `summary` and one direct `.sp-fold-body`. Keep the neutral plus/minus icon outside translated text. Panels open independently; add `open` for a default-open panel. `.sp-fold--row` provides a ruled row; add `.sp-fold--compact` for a smaller inline note. Optional `.sp-help-mark` labels help without a popover.
 
+Adjacent ruled rows form one continuous group with a single divider between items. Leave their spacing to the shared component; remove legacy per-item margins when migrating. Put spacing around the group instead.
+
 The title stays in place. Hover subtly changes only the trigger; click, Enter or Space expands the content. The plus retracts into a minus, with neutral fill and strokes in both states. Panel body spacing is 24px above content, 20px on mobile. Keep page styles limited to content layout rather than duplicating the shell.
 
 Height animates for 360ms with the same easing as selection, starting from the visible height on interruption. Resizing content retargets an opening animation. Reduced motion settles immediately. Native details remains usable without enhancement.
@@ -93,6 +95,8 @@ During animated closing, `open` remains true until the animation finishes; the b
 - Native `toggle`: remains available for default state, programmatic changes and unenhanced pages.
 
 Observe the inner content for visibility. Playback requires visible, expanded content and a visible browser tab; reopening must preserve an explicit user pause. Use one animation clock even if several events can resume it. Document navigation has its own hover-open behavior and should not reuse content disclosures.
+
+Existing dark figure shells use `[data-legacy-disclosure]` with a native `button.expandable-header` and a uniquely identified direct `.expandable-content`. The shared script synchronizes expanded state, icon and inert contents. This compatibility adapter preserves their existing surface; it does not add dark support to `.sp-fold`. New content should use the documented light-surface variants.
 
 ## Playback
 
@@ -118,12 +122,12 @@ Observe the inner content for visibility. Playback requires visible, expanded co
     </a>
   </div>
   <div class="affiliations" id="affiliations">
-    <sup>1</sup>Institution<br><span>*Equal contribution</span>
+    <sup>1</sup>Institution<br><span class="author-note">*Equal contribution</span>
   </div>
 </div>
 ```
 
-Borderless soft-gray name pills wrap in a centered list. Linked names turn blue on hover and expose keyboard focus; unlinked names use `span.author-tag`. Institutions and contribution notes sit below the list. Keep verified names, links, order and contribution marks in page content. Existing lists without `.sp-authors` retain their compatibility styling.
+Borderless soft-gray name pills wrap in a centered list. Linked names turn blue on hover and expose keyboard focus; unlinked names use `span.author-tag`. Institutions and contribution notes sit below the list; only `.author-note` uses the smaller note text. Keep verified names, links, order and contribution marks in page content. Existing lists without `.sp-authors` retain their compatibility styling.
 
 ## Verify changes
 

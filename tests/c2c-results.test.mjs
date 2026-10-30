@@ -4,7 +4,8 @@ import vm from 'node:vm';
 import {readFile} from 'node:fs/promises';
 
 const head = await readFile(new URL('../projects/c2c/head.html',import.meta.url),'utf8');
-const script = head.slice(head.indexOf('    function updateSummary(data)'),head.lastIndexOf('</script>'));
+const start = head.indexOf('    function updateSummary(data)');
+const script = head.slice(start, head.indexOf('</script>', start));
 const csv = (await readFile(new URL('../projects/c2c/static/data/performance_general.csv',import.meta.url),'utf8')).trim().split('\n').map(line=>line.split(','));
 const rows = csv.slice(1).map(values=>Object.fromEntries(csv[0].map((key,i)=>[key,values[i]])));
 function summary(data,unit='pp') {

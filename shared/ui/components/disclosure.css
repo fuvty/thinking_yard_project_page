@@ -72,10 +72,19 @@
   .sp-fold > summary,.sp-fold-icon,.sp-fold-icon::after { transition:none; }
 }
 
-.sp-fold--compact > summary { min-height:48px; padding-block:12px; font-size:14px; font-weight:500; }
+.sp-fold--compact > summary { min-height:48px; padding-block:12px; font-size:14px; font-weight:500; gap:10px; }
 
 .sp-fold:not(.sp-fold--row)[open] { box-shadow:0 6px 28px #00000012; }
 .sp-fold--row .sp-fold-icon { background:transparent; }
 .sp-help-mark { flex:0 0 18px; height:18px; display:grid; place-items:center; border:1.5px solid currentColor; border-radius:50%; color:#86868b; font:600 12px/1 var(--font-sans); }
-.sp-fold--compact > summary { gap:10px; }
 .sp-fold--compact .sp-fold-body { padding-top:14px; font-size:14px; }
+
+/* Compatibility shell; the surrounding page still owns its dark figure styling. */
+[data-legacy-disclosure] > button.expandable-header {
+  width:100%; border:0; background:transparent; color:inherit; font:inherit; text-align:left;
+}
+[data-legacy-disclosure] > button.expandable-header:focus-visible {
+  outline:2px solid var(--apple-blue-dark); outline-offset:-4px; border-radius:inherit;
+}
+[data-legacy-disclosure].open .expandable-icon,
+[data-legacy-disclosure].open .expandable-icon i { transform:none; }

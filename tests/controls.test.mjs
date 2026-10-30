@@ -26,17 +26,16 @@ test('adopted controls keep native semantics, selection state and supported surf
     assert(states.every(s=>s==='true'||s==='false'),`${slug}: every choice exposes state`);
     assert.equal(states.filter(s=>s==='true').length,1,`${slug}: exactly one selected choice`);
    }
-   if(classes.includes('sp-disclosure')||classes.includes('sp-fold')){
+   assert(!classes.includes('sp-disclosure'),`${slug}: use the shared sp-fold component`);
+   if(classes.includes('sp-fold')){
     disclosures++;
     assert.equal(node.tagName,'details');
     assert.notEqual(surface,'dark',`${slug}: disclosure must be on a light surface`);
     assert.equal(node.childNodes.find(n=>n.tagName)?.tagName,'summary');
-    if(classes.includes('sp-fold')){
-     const hasClass=(n,name)=>n.attrs?.some(a=>a.name==='class'&&a.value.split(/\s+/).includes(name));
-     assert.equal(node.childNodes.filter(n=>hasClass(n,'sp-fold-body')).length,1,`${slug}: one direct measurable disclosure body`);
-     const summary=node.childNodes.find(n=>n.tagName==='summary');
-     assert(summary.childNodes.some(n=>hasClass(n,'sp-fold-icon')),`${slug}: icon stays outside translated labels`);
-    }
+    const hasClass=(n,name)=>n.attrs?.some(a=>a.name==='class'&&a.value.split(/\s+/).includes(name));
+    assert.equal(node.childNodes.filter(n=>hasClass(n,'sp-fold-body')).length,1,`${slug}: one direct measurable disclosure body`);
+    const summary=node.childNodes.find(n=>n.tagName==='summary');
+    assert(summary.childNodes.some(n=>hasClass(n,'sp-fold-icon')),`${slug}: icon stays outside translated labels`);
    }
    if(classes.includes('sp-select'))assert.equal(node.tagName,'select');
    for(const child of node.childNodes||[])visit(child,surface);

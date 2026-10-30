@@ -56,20 +56,6 @@
 
     window.addEventListener('scroll', reveal);
 
-    // Toggle expandable sections
-    function toggleExpand(header) {
-      const section = header.parentElement;
-      section.classList.toggle('open');
-      const icon = header.querySelector('.expandable-icon i');
-      icon.className = section.classList.contains('open') ? 'fas fa-minus' : 'fas fa-plus';
-    }
-
-    function resetFilters() {
-      document.getElementById('receiverSelect').value = 'Qwen3-0.6B';
-      document.getElementById('sharerSelect').value = 'all';
-      updatePerformanceTable();
-    }
-
     function updatePerformanceTable() {
       const selectedReceiver = document.getElementById('receiverSelect').value;
       const selectedSharer = document.getElementById('sharerSelect').value;
@@ -161,3 +147,8 @@
 
 
   </script>
+
+<link rel="stylesheet" href="{{base}}/shared/ui/components/disclosure.css">
+<script defer src="{{base}}/shared/ui/components/disclosure.js"></script>
+<link rel="stylesheet" href="{{base}}/shared/ui/components/select.css">
+<script defer src="{{base}}/shared/ui/components/select.js"></script>

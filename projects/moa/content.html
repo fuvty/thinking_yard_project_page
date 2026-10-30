@@ -274,14 +274,9 @@
       </div>
     </div>
 
-    <div class="expandable-section open reveal">
-      <div class="expandable-header" onclick="toggleExpand(this)">
-        <div class="expandable-title" data-i18n="results.accuracyTitle">Overall Long-Context Performance</div>
-        <div class="expandable-icon"><i class="fas fa-plus"></i></div>
-      </div>
-      <div class="expandable-content">
-        <div class="expandable-content-inner">
-          <div class="expandable-inner">
+    <details id="accuracy-details" class="sp-fold reveal" open>
+      <summary><span data-i18n="results.accuracyTitle">Overall Long-Context Performance</span><span class="sp-fold-icon" aria-hidden="true"></span></summary>
+      <div class="sp-fold-body research-details" data-ui-surface="white">
             <p data-i18n="results.accuracy">
               At 50% density, MoA stays close to full attention across retrieval accuracy, LV-Eval, LongBench, and perplexity. It reduces maximum relative drops to 5% on LV-Eval and 3% on LongBench, while the average retrieval drop stays below 1%.
             </p>
@@ -290,19 +285,13 @@
               <img src="./static/images/main_result.png" alt="MoA comparative performance results" data-i18n-attrs="figures.accuracy">
               <figcaption data-i18n="results.accuracyCaption">Table 4 from the COLM 2025 version compares MoA with H2O, InfLLM, and StreamingLLM across Vicuna-7B, Vicuna-13B, Llama3-8B, and Llama3-70B.</figcaption>
             </figure>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="expandable-section reveal">
-      <div class="expandable-header" onclick="toggleExpand(this)">
-        <div class="expandable-title" data-i18n="results.runtimeTitle">Runtime and Memory Efficiency</div>
-        <div class="expandable-icon"><i class="fas fa-plus"></i></div>
       </div>
-      <div class="expandable-content">
-        <div class="expandable-content-inner">
-          <div class="expandable-inner">
+    </details>
+
+    <details id="runtime-details" class="sp-fold reveal">
+      <summary><span data-i18n="results.runtimeTitle">Runtime and Memory Efficiency</span><span class="sp-fold-icon" aria-hidden="true"></span></summary>
+      <div class="sp-fold-body research-details" data-ui-surface="white">
             <p data-i18n="results.runtime">
               MoA reduces attention computation and bounds KV cache size, allowing larger batches. A dedicated CUDA kernel supports its heterogeneous windows. The throughput comparison uses the largest supported batch size for each method, rather than a fixed batch size.
             </p>
@@ -310,19 +299,13 @@
               <img src="./static/images/throughput.png" alt="MoA decode throughput comparison" data-i18n-attrs="figures.throughput">
               <figcaption data-i18n="results.runtimeCaption">Table 5: Vicuna-7B and Vicuna-13B decoding on A100-80GB GPUs at 50% attention density. MoA reaches 6.6–8.2× throughput over FlashAttention2 and 1.7–1.9× over vLLM.</figcaption>
             </figure>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="expandable-section reveal">
-      <div class="expandable-header" onclick="toggleExpand(this)">
-        <div class="expandable-title" data-i18n="results.ablationTitle">Search Space Ablation</div>
-        <div class="expandable-icon"><i class="fas fa-plus"></i></div>
       </div>
-      <div class="expandable-content">
-        <div class="expandable-content-inner">
-          <div class="expandable-inner">
+    </details>
+
+    <details id="ablation-details" class="sp-fold reveal">
+      <summary><span data-i18n="results.ablationTitle">Search Space Ablation</span><span class="sp-fold-icon" aria-hidden="true"></span></summary>
+      <div class="sp-fold-body research-details" data-ui-surface="white">
             <p data-i18n="results.ablation">
               Starting from a uniform mask, MoA progressively adds layer heterogeneity, head heterogeneity, and elastic rules. Head heterogeneity and elasticity deliver the largest retrieval improvements at 25% density.
             </p>
@@ -330,10 +313,9 @@
               <img src="./static/images/ablation.png" alt="MoA ablation study" data-i18n-attrs="figures.ablation">
               <figcaption data-i18n="results.ablationCaption">Elastic heterogeneous rules improve retrieval accuracy from 0.25 to 0.98 at 8k input length under a 25% density budget.</figcaption>
             </figure>
-          </div>
-        </div>
+
       </div>
-    </div>
+    </details>
   </div>
 </section>
 
@@ -371,7 +353,7 @@
   </div>
 </section>
 
-<section class="section section-gray authors-section" id="authors">
+<section class="section section-gray authors-section sp-authors" id="authors">
   <div class="container">
     <div class="reveal">
       <p class="section-eyebrow" data-i18n="team.eyebrow">Team</p>
@@ -379,29 +361,29 @@
     </div>
 
     <div class="authors-list reveal">
-      <a href="https://fuvty.simple.ink/" class="author-tag">Tianyu Fu<sup>1,2,*</sup></a>
-      <a href="https://github.com/jason-huang03" class="author-tag">Haofeng Huang<sup>1,2,*</sup></a>
-      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/XuefeiNing" class="author-tag">Xuefei Ning<sup>1,*</sup></a>
-      <a href="https://zhang677.github.io/" class="author-tag">Genghan Zhang<sup>3</sup></a>
-      <a href="https://nicsefc.ee.tsinghua.edu.cn/people.html" class="author-tag">Boju Chen<sup>1</sup></a>
-      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/TianqiWu" class="author-tag">Tianqi Wu<sup>1,2</sup></a>
-      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/HongyiWang" class="author-tag">Hongyi Wang<sup>1,2</sup></a>
-      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/ZixiaoHuang" class="author-tag">Zixiao Huang<sup>1,2</sup></a>
-      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/ShiyaoLi" class="author-tag">Shiyao Li<sup>1,2</sup></a>
-      <a href="https://scholar.google.com/citations?user=SvE3bdUAAAAJ&hl=en" class="author-tag">Shengen Yan<sup>1,2</sup></a>
-      <a href="https://dai.sjtu.edu.cn/pepledetail.html?id=218" class="author-tag">Guohao Dai<sup>2,4</sup></a>
-      <a href="https://www.ee.tsinghua.edu.cn/en/info/1067/1292.htm" class="author-tag">Huazhong Yang<sup>1</sup></a>
-      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/YuWang" class="author-tag">Yu Wang<sup>1</sup></a>
+      <a href="https://fuvty.simple.ink/" class="author-tag" aria-describedby="author-affiliations">Tianyu Fu<sup>1,2,*</sup></a>
+      <a href="https://github.com/jason-huang03" class="author-tag" aria-describedby="author-affiliations">Haofeng Huang<sup>1,2,*</sup></a>
+      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/XuefeiNing" class="author-tag" aria-describedby="author-affiliations">Xuefei Ning<sup>1,*</sup></a>
+      <a href="https://zhang677.github.io/" class="author-tag" aria-describedby="author-affiliations">Genghan Zhang<sup>3</sup></a>
+      <a href="https://nicsefc.ee.tsinghua.edu.cn/people.html" class="author-tag" aria-describedby="author-affiliations">Boju Chen<sup>1</sup></a>
+      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/TianqiWu" class="author-tag" aria-describedby="author-affiliations">Tianqi Wu<sup>1,2</sup></a>
+      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/HongyiWang" class="author-tag" aria-describedby="author-affiliations">Hongyi Wang<sup>1,2</sup></a>
+      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/ZixiaoHuang" class="author-tag" aria-describedby="author-affiliations">Zixiao Huang<sup>1,2</sup></a>
+      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/ShiyaoLi" class="author-tag" aria-describedby="author-affiliations">Shiyao Li<sup>1,2</sup></a>
+      <a href="https://scholar.google.com/citations?user=SvE3bdUAAAAJ&hl=en" class="author-tag" aria-describedby="author-affiliations">Shengen Yan<sup>1,2</sup></a>
+      <a href="https://dai.sjtu.edu.cn/pepledetail.html?id=218" class="author-tag" aria-describedby="author-affiliations">Guohao Dai<sup>2,4</sup></a>
+      <a href="https://www.ee.tsinghua.edu.cn/en/info/1067/1292.htm" class="author-tag" aria-describedby="author-affiliations">Huazhong Yang<sup>1</sup></a>
+      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/YuWang" class="author-tag" aria-describedby="author-affiliations">Yu Wang<sup>1</sup></a>
     </div>
 
-    <div class="affiliations reveal">
+    <div class="affiliations reveal" id="author-affiliations">
       <div class="i18n-affiliations">
         <span data-i18n="team.tsinghua"><sup>1</sup>Tsinghua University</span>
         <span data-i18n="team.infinigence"><sup>2</sup>Infinigence-AI</span>
         <span data-i18n="team.stanford"><sup>3</sup>Stanford University</span>
         <span data-i18n="team.sjtu"><sup>4</sup>Shanghai Jiao Tong University</span>
       </div>
-      <p class="i18n-author-notes" data-i18n="team.notes">*Equal contribution. Genghan Zhang made contributions while at Tsinghua University.</p>
+      <p class="i18n-author-notes author-note" data-i18n="team.notes">*Equal contribution. Genghan Zhang made contributions while at Tsinghua University.</p>
     </div>
   </div>
 </section>

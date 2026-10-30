@@ -905,92 +905,12 @@ canvas {
   opacity: 0.9;
 }
 
-.expandable-section {
-  margin: 24px 0;
-  overflow: hidden;
-  border-radius: var(--radius-lg);
-  background: #fff;
-  box-shadow: var(--shadow-card);
-  transition: box-shadow 0.4s var(--ease);
-}
-
-.expandable-section:hover {
-  box-shadow: var(--shadow-card-hover);
-}
-
-.expandable-section.open {
-  box-shadow: var(--shadow-card-hover);
-}
-
-.expandable-header {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 24px 32px;
-  cursor: pointer;
-  transition: background 0.3s var(--ease);
-}
-
-.expandable-header::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  background: var(--ff-gradient);
-  opacity: 0.14;
-  transition: width 0.4s var(--ease), opacity 0.4s var(--ease);
-}
-
-.expandable-title {
-  position: relative;
-  z-index: 1;
-  color: var(--apple-black);
-  font-size: 17px;
-  font-weight: 600;
-  transition: transform 0.3s var(--ease);
-}
-
-.expandable-icon {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: var(--apple-light-gray);
-  color: var(--apple-black);
-  font-size: 12px;
-  transition: transform 0.4s var(--ease-spring), background 0.3s var(--ease), color 0.3s var(--ease);
-}
-
-.expandable-section.open .expandable-icon {
-  background: var(--ff-gradient);
-  color: #fff;
-  transform: rotate(45deg);
-}
-
-.expandable-content {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.5s var(--ease);
-}
-
-.expandable-inner {
-  padding: 0 32px 32px;
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: opacity 0.4s var(--ease) 0.1s, transform 0.4s var(--ease) 0.1s;
-}
-
-.expandable-inner .content {
+.research-details .content {
   margin: 0;
+}
+
+.research-details .content h3.title:first-child {
+  margin-top: 0;
 }
 
 /* Video and chart blocks */
@@ -1024,7 +944,7 @@ canvas {
   margin: 64px 0 24px;
 }
 
-.expandable-inner .performance-section-header {
+.research-details .performance-section-header {
   margin-top: 0;
 }
 
@@ -1097,7 +1017,7 @@ canvas {
   margin: 24px 0 64px;
 }
 
-.expandable-inner .modern-table-wrapper {
+.research-details .modern-table-wrapper {
   margin-bottom: 0;
 }
 
@@ -1362,14 +1282,6 @@ input[type="range"].slider,
   text-align: center;
 }
 
-.affiliations {
-  margin: 24px auto 0;
-  color: var(--apple-gray);
-  font-size: 14px;
-  line-height: 1.8;
-  text-align: center;
-}
-
 @media screen and (max-width: 1024px) {
   .idea-flow,
 .stage-grid {
@@ -1478,13 +1390,13 @@ input[type="range"].slider,
     font-size: 34px;
   }
 
-  .modern-table-wrapper {
-    margin-right: -24px;
-    margin-left: -24px;
-    border-radius: 0;
-  }
 }
 
 /* Collapsed global navigation */
 
 /* Keep project tiles consistent with the team hub. */
+
+/* Shared disclosures own the shell; page rules only arrange research content. */
+#results .sp-fold:first-of-type { margin-top:24px; }
+.custom-select .sp-picker,
+.custom-select .sp-picker-trigger { width:100%; }

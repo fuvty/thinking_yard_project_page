@@ -24,7 +24,7 @@ await writeFile(resolve(directory,'content.html'),`<section class="hero"><h1 cla
 <section class="section" id="overview"><div class="container"><p class="section-eyebrow">Overview</p><h2 class="section-title">${e(name)}</h2></div></section>
 <section class="section section-dark" id="method"><div class="container"><p class="section-eyebrow">Method</p><h2 class="section-title">Method</h2></div></section>
 <section class="section" id="results"><div class="container"><p class="section-eyebrow">Experiments</p><h2 class="section-title">Results</h2></div></section>
-<section class="section section-gray" id="team"><div class="container"><p class="section-eyebrow">Team</p><h2 class="section-title">Meet the researchers.</h2></div></section>
+<section class="section section-gray sp-authors" id="team"><div class="container"><p class="section-eyebrow">Team</p><h2 class="section-title">Meet the researchers.</h2></div></section>
 <section class="section" id="bibtex"><div class="container"><p class="section-eyebrow">Citation</p><h2 class="section-title">Cite our work.</h2>{{citation}}</div></section>\n`);
 projects.push({slug,name,category,route:category==='context'?'03':'02',description:`Research project: ${name}`,logo:'shared/assets/project-placeholder.svg'});
 await writeFile(projectsPath,JSON.stringify(projects,null,2)+'\n');

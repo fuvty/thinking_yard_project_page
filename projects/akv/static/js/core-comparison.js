@@ -66,10 +66,13 @@
     container.dataset.stage = String(stageIndex);
   }
   function updateControls() {
+    button.disabled = motion.matches;
     scenes.forEach(({svg}) => { svg.dataset.paused = String(paused); });
-    // Match the concise playback labels used by the other AKV demos.
-    button.textContent = paused ? translate('Play') : translate('Pause');
-    button.setAttribute('aria-pressed', String(paused));
+    const label = translate(paused ? 'Play' : 'Pause');
+    button.setAttribute('aria-label', label);
+    button.title = label;
+
+    button.setAttribute('aria-pressed', String(!paused && !motion.matches));
   }
   function tick(now) {
     request = null;

@@ -11,11 +11,6 @@
     });
   }
 
-  window.toggleExpand = function toggleExpand(header) {
-    const section = header && header.parentElement;
-    if (!section) return;
-    section.classList.toggle("open");
-  };
 
   // ── Hero: heterogeneous elastic attention field ──────────────────
   // Each cropped causal matrix represents one attention head. Heads share

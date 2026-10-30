@@ -52,4 +52,22 @@
     body.inert = !expanded;
     summary.setAttribute('aria-expanded', String(expanded));
   });
+
+  // Preserve existing dark figure shells while sharing keyboard and focus behavior.
+  document.querySelectorAll('[data-legacy-disclosure]').forEach(section => {
+    const trigger = section.querySelector(':scope > button.expandable-header');
+    const body = section.querySelector(':scope > .expandable-content');
+    if (!trigger || !body) return;
+    trigger.setAttribute('aria-controls', body.id);
+    const icon = trigger.querySelector('.expandable-icon i');
+    const sync = () => {
+      const open = section.classList.contains('open');
+      trigger.setAttribute('aria-expanded', String(open));
+      body.inert = !open;
+      icon?.classList.toggle('fa-plus', !open);
+      icon?.classList.toggle('fa-minus', open);
+    };
+    trigger.addEventListener('click', () => { section.classList.toggle('open'); sync(); });
+    sync();
+  });
 })();

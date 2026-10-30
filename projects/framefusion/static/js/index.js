@@ -596,21 +596,29 @@ function initializeFrameFusionHero() {
     requestAnimationFrame(drawHeroFrame);
 }
 
-function toggleExpand(header) {
-    const section = header.closest('.expandable-section');
-    if (!section) return;
+function initializeDisclosures() {
+    const runtimePanel = document.getElementById('runtime-results');
+    const resizeRuntimeChart = () => {
+        if (!runtimePanel.open) return;
+        if (runtimeChart) runtimeChart.resize();
+        else updateRuntimeChart();
+    };
+    runtimePanel.addEventListener('sp-fold-settled', event => {
+        if (event.detail.open) resizeRuntimeChart();
+    });
+    // Native details still operates if the optional enhancement is unavailable.
+    runtimePanel.addEventListener('toggle', () => {
+        if (!runtimePanel.querySelector('summary').hasAttribute('aria-expanded')) resizeRuntimeChart();
+    });
 
-    section.classList.toggle('open');
-
-    if (section.classList.contains('open') && section.querySelector('#runtimeChart')) {
-        setTimeout(() => {
-            if (runtimeChart) {
-                runtimeChart.resize();
-            } else {
-                updateRuntimeChart();
-            }
-        }, 520);
-    }
+    const videoPanel = document.getElementById('video-demo');
+    const pauseVideo = () => videoPanel.querySelector('video').pause();
+    videoPanel.addEventListener('sp-fold-change', event => {
+        if (!event.detail.open) pauseVideo();
+    });
+    videoPanel.addEventListener('toggle', () => {
+        if (!videoPanel.open) pauseVideo();
+    });
 }
 
 const embeddedCSVData = `Model,Size,Method,VideoNIAH_Edit,VideoNIAH_Insert1,VideoNIAH_Insert2,VideoNIAH_Avg,NExT-QA_MC,NExT-QA_OE,NExT-QA_Avg,VideoMME_wo_sub,VideoMME_w_sub,VideoMME_Avg,EgoSchema,MVBench,Average\nLlava-Video,7B,Original,90.7,50.7,88.0,76.5,83.2,32.1,57.7,63.2,69.8,66.5,53.4,61.9,65.9\nLlava-Video,7B,StreamingLLM,26.0,15.3,28.7,23.3,79.0,30.3,54.7,54.7,65.5,60.1,46.6,55.2,44.6\nLlava-Video,7B,FastV,69.3,28.7,76.7,58.2,81.1,31.2,56.2,58.7,67.0,62.9,50.1,58.0,57.9\nLlava-Video,7B,PruMerge,83.3,36.0,83.3,67.5,79.4,30.8,55.1,60.0,68.6,64.3,50.7,56.0,60.9\nLlava-Video,7B,FrameFusion,90.0,48.7,87.3,75.3,81.8,31.7,56.8,61.3,69.9,65.6,53.0,59.7,64.8\nLlava-Video,72B,Original,89.3,66.0,88.0,81.1,85.3,32.3,58.8,70.9,77.3,74.1,65.0,63.9,70.9\nLlava-Video,72B,StreamingLLM,33.3,20.0,35.3,29.5,81.9,30.6,56.3,62.6,72.9,67.8,60.2,58.0,50.5\nLlava-Video,72B,FastV,22.0,48.7,77.3,49.3,83.7,31.5,57.6,65.9,73.7,69.8,62.6,61.7,58.6\nLlava-Video,72B,PruMerge,85.3,58.0,86.0,76.4,82.0,31.4,56.7,66.7,74.8,70.8,62.6,58.6,67.3\nLlava-Video,72B,FrameFusion,90.0,63.3,88.0,80.4,84.6,32.0,58.3,69.0,76.7,72.9,63.2,63.0,70.0\nNVILA,2B,Original,90.0,22.0,87.3,66.4,71.2,6.6,38.9,50.9,53.2,52.1,42.3,50.7,52.7\nNVILA,2B,StreamingLLM,26.0,12.7,34.7,24.5,69.0,5.8,37.4,45.7,50.1,47.9,40.7,49.1,37.1\nNVILA,2B,FastV,50.7,14.7,56.7,40.7,70.7,7.2,39.0,46.7,50.6,48.7,41.1,50.1,43.2\nNVILA,2B,PruMerge,27.3,31.3,81.3,46.6,67.7,11.1,39.4,47.3,50.4,48.9,42.2,48.0,45.2\nNVILA,2B,FrameFusion,89.3,27.3,87.3,68.0,71.8,20.1,46.0,50.4,53.1,51.8,45.2,49.5,54.9\nNVILA,8B,Original,98.7,40.7,100.0,79.8,81.7,33.0,57.4,63.9,68.3,66.1,52.0,67.5,67.3\nNVILA,8B,StreamingLLM,30.0,17.3,41.3,29.5,78.4,30.8,54.6,54.3,63.7,59.0,46.2,58.1,46.7\nNVILA,8B,FastV,87.3,33.3,90.7,70.4,80.4,32.5,56.5,59.5,66.8,63.2,50.5,64.5,62.8\nNVILA,8B,PruMerge,4.7,32.0,93.3,43.3,77.1,31.4,54.3,56.9,65.1,61.0,49.4,57.9,52.0\nNVILA,8B,FrameFusion,96.0,38.0,98.7,77.6,80.7,32.5,56.6,61.1,68.2,64.7,52.5,65.0,65.9\nNVILA,15B,Original,95.3,42.0,100.0,79.1,78.7,30.9,54.8,65.8,72.3,69.1,58.2,60.5,67.1\nNVILA,15B,StreamingLLM,34.0,18.7,34.0,28.9,74.0,28.5,51.3,58.5,65.1,61.8,53.7,55.0,46.8\nNVILA,15B,FastV,48.7,24.7,80.7,51.4,77.0,30.6,53.8,60.6,69.1,64.9,56.7,57.3,56.2\nNVILA,15B,PruMerge,19.3,43.3,98.0,53.5,72.4,30.0,51.2,59.3,68.4,63.9,52.3,52.8,55.1\nNVILA,15B,FrameFusion,94.0,52.7,99.3,82.0,77.7,31.2,54.5,63.5,70.8,67.2,57.8,58.4,67.3\nMiniCPM-V,8B,Original,88.7,36.7,88.7,71.4,78.9,13.8,46.4,58.5,60.3,59.4,53.4,55.0,59.3\nMiniCPM-V,8B,StreamingLLM,22.0,15.3,28.7,22.0,76.0,23.2,49.6,53.8,56.7,55.3,48.2,51.3,41.7\nMiniCPM-V,8B,FastV,82.7,26.7,71.3,60.2,78.0,14.8,46.4,56.7,58.2,57.5,51.8,53.2,54.8\nMiniCPM-V,8B,FrameFusion,89.3,41.3,89.3,73.3,78.2,16.3,47.3,57.4,59.5,58.5,52.3,53.6,59.7`;
@@ -692,6 +700,7 @@ $(document).ready(function() {
 
     // Initialize Runtime Comparison Chart
     initializeRuntimeChart();
+    initializeDisclosures();
 });
 
 // Performance Table functionality
@@ -1115,6 +1124,7 @@ function toggleBenchmark(benchmarkName) {
 function resetTable() {
     // Reset filters
     document.getElementById('modelFilter').value = '';
+    document.getElementById('modelFilter').dispatchEvent(new Event('change', { bubbles: true }));
     document.getElementById('sizeFilter').value = '';
     document.getElementById('sizeFilter').disabled = true;
     document.getElementById('sizeFilter').innerHTML = '<option value="">Select a model family first</option>';

@@ -31,9 +31,10 @@
     figure.dataset.historyPaused=String(paused);
   }
   function controls() {
-    toggle.textContent=paused?translate('Play'):translate('Pause');
-    toggle.setAttribute('aria-pressed',String(paused));
+    toggle.disabled = motion.matches;
+    toggle.setAttribute('aria-pressed',String(!paused && !motion.matches));
     toggle.setAttribute('aria-label',translate('{action} cache-history animation', {action: translate(paused ? 'Play' : 'Pause')}));
+    toggle.title = toggle.getAttribute('aria-label');
   }
   function tick(now) {
     request=null;
@@ -50,7 +51,7 @@
   }
   toggle.addEventListener('click',()=>{ paused=!paused; controls(); draw(); schedule(); });
   replay.addEventListener('click',()=>{
-    elapsed=0; paused=false; controls(); draw(); schedule();
+    elapsed=motion.matches?23:0; paused=motion.matches; controls(); draw(); schedule();
   });
   stages.forEach((button,index)=>button.addEventListener('click',()=>{
     elapsed=motion.matches?renderer.stages[index].still:renderer.stages[index].start;

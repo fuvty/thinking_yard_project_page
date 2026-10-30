@@ -146,9 +146,9 @@ function renderTime(next) {
 function stop() { cancelAnimationFrame(frame); frame = null; previousFrame = null; }
 function updateControls() {
   toggle.disabled = reducedMotion.matches;
-  toggle.textContent = reducedMotion.matches ? translate('Static') : paused ? translate('Play') : translate('Pause');
   toggle.setAttribute('aria-label',reducedMotion.matches ? translate('Animation disabled for reduced motion') : translate('{action} animation', {action:translate(paused ? 'Play' : 'Pause')}));
-  toggle.setAttribute('aria-pressed',String(paused));
+  toggle.title = toggle.getAttribute('aria-label');
+  toggle.setAttribute('aria-pressed',String(!paused && !reducedMotion.matches));
 }
 function tick(now) {
   frame = null;

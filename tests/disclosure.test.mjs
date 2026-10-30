@@ -21,7 +21,7 @@ function fixture({open=false,reduced=false}={}) {
   details.animate=(frames,options)=>{const animation={frames,options,cancel(){this.cancelled=true;}};animations.push(animation);return animation;};
   const motion={matches:reduced,addEventListener:(_type,fn)=>motion.change=fn};
   vm.runInNewContext(source,{
-    document:{querySelectorAll:()=>[details]},matchMedia:()=>motion,
+    document:{querySelectorAll:selector=>selector==='.sp-fold'?[details]:[]},matchMedia:()=>motion,
     getComputedStyle:()=>({borderTopWidth:'0',borderBottomWidth:'0'}),
     ResizeObserver:class {constructor(fn){resize=fn;}observe(){}},
     CustomEvent:class {constructor(type,options){this.type=type;this.detail=options.detail;}}
@@ -57,4 +57,23 @@ test('resizing open content retargets height without changing selection or lifec
   assert.equal(f.animations[1].frames[1].height,'316px');
   assert.equal(f.events.filter(e=>e.type==='sp-fold-change').length,1);
   f.finish();assert.equal(f.details.style.height,undefined);
+});
+
+test('legacy dark shells expose state and exclude collapsed contents from focus',()=>{
+  const attrs=new Map(), classes=new Set(), icons=new Set(['fa-plus']);
+  const classList=set=>({contains:key=>set.has(key),toggle(key,on=!set.has(key)){on?set.add(key):set.delete(key);}});
+  let click;
+  const body={id:'figure-content'},icon={classList:classList(icons)};
+  const trigger={setAttribute:(key,value)=>attrs.set(key,value),querySelector:()=>icon,addEventListener:(_name,fn)=>{click=fn;}};
+  const section={classList:classList(classes),querySelector:selector=>selector.includes('button')?trigger:body};
+  vm.runInNewContext(source,{document:{querySelectorAll:selector=>selector==='[data-legacy-disclosure]'?[section]:[]},matchMedia:()=>({})});
+  assert.equal(body.inert,true);
+  assert.equal(attrs.get('aria-controls'),body.id);
+  click();
+  assert.equal(attrs.get('aria-expanded'),'true');
+  assert.equal(body.inert,false);
+  assert(icons.has('fa-minus')&&!icons.has('fa-plus'));
+  click();
+  assert.equal(attrs.get('aria-expanded'),'false');
+  assert.equal(body.inert,true);
 });

@@ -24,8 +24,6 @@
 #overview .akv-core-stages button,.akv-history-stages button { color:var(--akv-figure-muted); border-color:var(--akv-figure-border); }
 #overview .akv-core-stages button[aria-current='step'],.akv-history-stages button[aria-current='step'] { color:var(--akv-figure-accent); border-color:var(--akv-figure-accent); }
 .akv-history-stages button::before { background:var(--akv-figure-accent); }
-#overview .akv-core-controls button,#overview #operation-playback,.akv-history-playback button,.akv-interface-controls button { border-color:var(--akv-figure-border); color:var(--akv-figure-accent); }
-#system :is(.akv-history-playback button,.akv-interface-controls button) { background:var(--akv-figure-well); }
 /* Preserve the same message identity across core, operations and system figures. */
 #overview .akv-old { background:#fff0dc; border-color:#d7a65e; color:#544b5e; }
 #overview .akv-thought { background:#e5eedc; border-color:#91ac72; color:#544b5e; }

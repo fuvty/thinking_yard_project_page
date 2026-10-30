@@ -56,9 +56,10 @@
     scene.dataset.progress = String(elapsed);
   }
   function updateControl() {
-    playback.textContent = paused ? translate('Play') : translate('Pause');
+    playback.disabled = motion.matches;
     playback.setAttribute('aria-label', translate('{action} {operation} animation', {action: translate(paused ? 'Play' : 'Pause'), operation}));
-    playback.setAttribute('aria-pressed', String(!paused));
+    playback.title = playback.getAttribute('aria-label');
+    playback.setAttribute('aria-pressed', String(!paused && !motion.matches));
   }
   function tick(now) {
     frame = null;
@@ -71,7 +72,7 @@
     if (frame !== null) cancelAnimationFrame(frame);
     frame = null;
     previous = null;
-    if (!paused && visible && details.open && !document.hidden) frame = requestAnimationFrame(tick);
+    if (!paused && visible && details.open && !details.hasAttribute('data-fold-closing') && !document.hidden) frame = requestAnimationFrame(tick);
   }
   function restart() {
     paused = motion.matches;
@@ -89,7 +90,9 @@
     paused = !paused;
     updateControl(); schedule();
   });
-  details.addEventListener('toggle', () => { if (details.open) restart(); else schedule(); });
+  details.addEventListener('sp-fold-change', event => { if (!event.detail.open) { cancelAnimationFrame(frame); frame = null; previous = null; } });
+  details.addEventListener('sp-fold-settled', schedule);
+  details.addEventListener('toggle', schedule);
   new IntersectionObserver(entries => { visible = entries[0].isIntersecting; schedule(); }).observe(scene.closest('.akv-operation-demo'));
   document.addEventListener('visibilitychange', schedule);
   motion.addEventListener('change', restart);

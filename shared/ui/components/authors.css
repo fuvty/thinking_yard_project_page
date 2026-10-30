@@ -4,7 +4,7 @@
 .author-tag sup { font-size: 10px; opacity: .6; }
 .sp-authors { text-align:center; --sp-author-border:0; --sp-author-fill:var(--apple-light-gray); }
 .sp-authors .affiliations { margin-top:24px; font-size:14px; color:var(--apple-gray); line-height:1.8; }
-.sp-authors .affiliations span { font-size:12px; }
+.sp-authors .author-note { font-size:12px; }
 .author-tag:focus-visible { outline:2px solid var(--apple-blue); outline-offset:4px; }
 @media (hover:hover) and (pointer:fine) {
   a.author-tag:hover { background:var(--apple-blue); color:#fff; }

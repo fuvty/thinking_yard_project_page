@@ -385,14 +385,9 @@
     </div>
 
     <!-- Demo Video -->
-    <div class="expandable-section reveal">
-      <div class="expandable-header" onclick="toggleExpand(this)">
-        <span class="expandable-title">View Demo Video</span>
-        <div class="expandable-icon"><i class="fas fa-plus"></i></div>
-      </div>
-      <div class="expandable-content">
-        <div class="expandable-content-inner">
-          <div class="expandable-inner">
+    <details id="video-demo" class="sp-fold reveal">
+      <summary><span>View Demo Video</span><span class="sp-fold-icon" aria-hidden="true"></span></summary>
+      <div class="sp-fold-body research-details" data-ui-surface="white">
             <div class="content">
         <h3 class="title is-4">Demo Video</h3>
         <p>Watch FrameFusion in action: See how our method efficiently processes video content while maintaining visual quality.</p>
@@ -409,20 +404,14 @@
             </div>
         </div>
     </div>
-          </div>
-        </div>
+
       </div>
-    </div>
+    </details>
 
     <!-- Interactive Performance Table -->
-    <div class="expandable-section reveal">
-      <div class="expandable-header" onclick="toggleExpand(this)">
-        <span class="expandable-title">View Detailed Benchmark Results</span>
-        <div class="expandable-icon"><i class="fas fa-plus"></i></div>
-      </div>
-      <div class="expandable-content">
-        <div class="expandable-content-inner">
-          <div class="expandable-inner">
+    <details id="benchmark-results" class="sp-fold reveal">
+      <summary><span>View Detailed Benchmark Results</span><span class="sp-fold-icon" aria-hidden="true"></span></summary>
+      <div class="sp-fold-body research-details" data-ui-surface="white">
             <div class="content">
         <div class="performance-section-header">
           <h3 class="title is-4">Performance Comparison</h3>
@@ -433,9 +422,9 @@
         <div class="performance-controls">
           <div class="filters-wrapper">
             <div class="filter-item">
-              <label class="filter-label">Model Family</label>
+              <label class="filter-label" for="modelFilter">Model Family</label>
               <div class="custom-select">
-                <select class="sp-select" id="modelFilter">
+                <select class="sp-select" data-picker id="modelFilter">
                   <option value="">All Models</option>
                   <option value="Llava-Video">Llava-Video</option>
                   <option value="NVILA">NVILA</option>
@@ -445,9 +434,9 @@
             </div>
 
             <div class="filter-item">
-              <label class="filter-label">Model Size</label>
+              <label class="filter-label" for="sizeFilter">Model Size</label>
               <div class="custom-select">
-                <select class="sp-select" id="sizeFilter" disabled>
+                <select class="sp-select" data-picker id="sizeFilter" disabled>
                   <option value="">Select a model family first</option>
                 </select>
               </div>
@@ -527,20 +516,14 @@
           </div>
         </div>
     </div>
-          </div>
-        </div>
+
       </div>
-    </div>
+    </details>
 
     <!-- Interactive Runtime Comparison -->
-    <div class="expandable-section reveal">
-      <div class="expandable-header" onclick="toggleExpand(this)">
-        <span class="expandable-title">View Runtime Breakdown</span>
-        <div class="expandable-icon"><i class="fas fa-plus"></i></div>
-      </div>
-      <div class="expandable-content">
-        <div class="expandable-content-inner">
-          <div class="expandable-inner">
+    <details id="runtime-results" class="sp-fold reveal">
+      <summary><span>View Runtime Breakdown</span><span class="sp-fold-icon" aria-hidden="true"></span></summary>
+      <div class="sp-fold-body research-details" data-ui-surface="white">
             <div class="content">
         <h3 class="title is-4">Runtime Comparison</h3>
         <p>FrameFusion runtime performance with different token budgets and frame counts. Select a model and cost level to see the comparison with the original model. </p>
@@ -550,9 +533,9 @@
         <div class="runtime-controls">
             <div class="filters-wrapper">
                 <div class="filter-item" style="flex: 1; min-width: 200px;">
-                    <label class="filter-label">Model</label>
+                    <label class="filter-label" for="runtimeModelSelect">Model</label>
                     <div class="custom-select">
-                        <select class="sp-select" id="runtimeModelSelect">
+                        <select class="sp-select" data-picker id="runtimeModelSelect">
                             <option value="Llava-Video-7B">Llava-Video-7B</option>
                             <option value="Llava-Video-32B">Llava-Video-32B</option>
                             <option value="Llava-Video-72B">Llava-Video-72B</option>
@@ -560,9 +543,9 @@
                     </div>
                 </div>
                 <div class="filter-item" style="flex: 1; min-width: 200px;">
-                    <label class="filter-label">Token Budget</label>
+                    <label class="filter-label" for="runtimeCostSelect">Token Budget</label>
                     <div class="custom-select">
-                        <select class="sp-select" id="runtimeCostSelect">
+                        <select class="sp-select" data-picker id="runtimeCostSelect">
                             <option value="0.3">30% (0.3)</option>
                             <option value="0.5">50% (0.5)</option>
                             <option value="0.7">70% (0.7)</option>
@@ -589,10 +572,9 @@
             </div>
         </div>
     </div>
-          </div>
-        </div>
+
       </div>
-    </div>
+    </details>
 
     <!-- Performance vs Budget
     <div class="content">
@@ -685,26 +667,26 @@
 </section>
 
 
-<section class="section section-gray authors-section" id="team">
+<section class="section section-gray authors-section sp-authors" id="team">
   <div class="container">
     <div class="section-header section-header-centered reveal">
       <p class="section-eyebrow">Team</p>
       <h2 class="section-title">Meet the researchers.</h2>
     </div>
     <div class="authors-list reveal">
-      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/TianyuFu" class="author-tag">Tianyu Fu<sup>1,2*</sup></a>
-      <span class="author-tag">Tengxuan Liu<sup>1,2*</sup></span>
-      <span class="author-tag">Qinghao Han<sup>3*</sup></span>
-      <a href="https://dai.sjtu.edu.cn/pepledetail.html?id=218" class="author-tag">Guohao Dai<sup>4,2</sup></a>
-      <span class="author-tag">Shengen Yan<sup>2</sup></span>
-      <span class="author-tag">Huazhong Yang<sup>1</sup></span>
-      <span class="author-tag">Xuefei Ning<sup>1</sup></span>
-      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/YuWang" class="author-tag">Yu Wang<sup>1</sup></a>
+      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/TianyuFu" class="author-tag" aria-describedby="author-affiliations">Tianyu Fu<sup>1,2*</sup></a>
+      <span class="author-tag" aria-describedby="author-affiliations">Tengxuan Liu<sup>1,2*</sup></span>
+      <span class="author-tag" aria-describedby="author-affiliations">Qinghao Han<sup>3*</sup></span>
+      <a href="https://dai.sjtu.edu.cn/pepledetail.html?id=218" class="author-tag" aria-describedby="author-affiliations">Guohao Dai<sup>4,2</sup></a>
+      <span class="author-tag" aria-describedby="author-affiliations">Shengen Yan<sup>2</sup></span>
+      <span class="author-tag" aria-describedby="author-affiliations">Huazhong Yang<sup>1</sup></span>
+      <span class="author-tag" aria-describedby="author-affiliations">Xuefei Ning<sup>1</sup></span>
+      <a href="https://nicsefc.ee.tsinghua.edu.cn/people/YuWang" class="author-tag" aria-describedby="author-affiliations">Yu Wang<sup>1</sup></a>
     </div>
-    <p class="affiliations reveal">
+    <p class="affiliations reveal" id="author-affiliations">
       <sup>1</sup>Tsinghua University &nbsp;&nbsp; <sup>2</sup>Infinigence-AI &nbsp;&nbsp; <sup>3</sup>Peking University &nbsp;&nbsp; <sup>4</sup>Shanghai Jiao Tong University
       <br>
-      <sup>*</sup>Equal contribution
+      <span class="author-note"><sup>*</sup>Equal contribution</span>
     </p>
   </div>
 </section>

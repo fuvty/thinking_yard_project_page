@@ -130,7 +130,7 @@
     "generalization.accuracy-across-nine-benchmarks-labels-show-tah2-s-gain-over-stan": "九项基准上的准确率，标注数值为 TaH2 相较 Standard 提升的百分点。",
     "team.team": "研究团队",
     "team.meet-the-researchers": "作者与团队",
-    "team.1tsinghua-university-2yale-university-equal-contribution-correspo": "<div class=\"i18n-affiliations\"><span><sup>1</sup>清华大学</span><span><sup>2</sup>耶鲁大学</span></div><span>*共同第一作者 · †通讯作者</span>",
+    "team.1tsinghua-university-2yale-university-equal-contribution-correspo": "<div class=\"i18n-affiliations\"><span><sup>1</sup>清华大学</span><span><sup>2</sup>耶鲁大学</span></div><span class=\"author-note\">*共同第一作者 · †通讯作者</span>",
     "citation.citation": "引用",
     "citation.cite-our-work": "引用我们的工作",
     "citation.if-you-find-tah2-useful-for-your-research-please-consider-citing": "如果 TaH2 对您的研究有帮助，欢迎引用我们的论文。",

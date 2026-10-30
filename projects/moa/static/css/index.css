@@ -764,91 +764,8 @@ video {
 }
 
 /* Expandable result sections */
-.expandable-section {
-  margin: 24px 0;
-  border-radius: 16px;
-  overflow: hidden;
-  background: #fff;
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
-  transition: box-shadow 0.4s var(--ease);
-}
 
-.expandable-section:hover {
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
-}
-
-.expandable-section.open {
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
-}
-
-.expandable-header {
-  padding: 24px 32px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  transition: all 0.3s var(--ease);
-  position: relative;
-}
-
-.expandable-header::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 0;
-  background: var(--moa-gradient);
-  transition: width 0.4s var(--ease);
-  opacity: 0.1;
-}
-
-.expandable-title {
-  font-size: 17px;
-  font-weight: 600;
-  transition: transform 0.3s var(--ease);
-}
-
-.expandable-icon {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: var(--apple-light-gray);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.4s var(--spring);
-  flex-shrink: 0;
-}
-
-.expandable-icon i {
-  font-size: 12px;
-  color: var(--apple-black);
-}
-
-.expandable-section.open .expandable-icon {
-  transform: rotate(45deg);
-  background: var(--moa-gradient);
-}
-
-.expandable-section.open .expandable-icon i {
-  color: #fff;
-}
-
-.expandable-content {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.5s var(--ease);
-}
-
-.expandable-inner {
-  padding: 0 32px 32px;
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: opacity 0.4s var(--ease) 0.1s, transform 0.4s var(--ease) 0.1s;
-}
-
-.expandable-inner p {
+.research-details p {
   color: #444;
   font-size: 16px;
   line-height: 1.6;
@@ -856,7 +773,9 @@ video {
   margin: 0 auto;
 }
 
-.expandable-inner .figure-panel {
+.research-details p + p { margin-top:16px; }
+
+.research-details .figure-panel {
   margin-top: 28px;
 }
 
@@ -897,12 +816,6 @@ video {
 .authors-section {
   text-align: center;
   padding: 80px 0;
-}
-
-.affiliations {
-  margin-top: 24px;
-  font-size: 14px;
-  color: var(--apple-gray);
 }
 
 /* BibTeX */
@@ -953,14 +866,6 @@ video {
 
   .section-header {
     margin-bottom: 36px;
-  }
-
-  .expandable-header {
-    padding: 20px 22px;
-  }
-
-  .expandable-inner {
-    padding: 0 22px 24px;
   }
 }
 
@@ -1036,3 +941,6 @@ video {
 /* Collapsed global navigation */
 
 /* Keep project tiles consistent with the team hub. */
+
+/* Shared disclosures own the shell; page rules only arrange research content. */
+#results .sp-fold:first-of-type { margin-top:24px; }

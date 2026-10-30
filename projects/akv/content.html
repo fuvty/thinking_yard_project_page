@@ -116,10 +116,9 @@
       <div id="core-animation-stages" class="akv-core-stages" role="group" aria-label="Animation stages" hidden data-i18n-attrs="overview.core-animation-stages"></div>
       <div class="akv-core-controls">
         <p id="core-animation-stage-description" class="akv-core-stage-description" hidden></p>
-        <button id="core-animation-toggle" type="button" aria-pressed="false" aria-controls="core-context-animation core-animation" hidden data-i18n="overview.pause">Pause</button>
+        <button id="core-animation-toggle" type="button" aria-pressed="true" aria-controls="core-context-animation core-animation" hidden aria-label="Pause animation" class="sp-control sp-media-button"><svg viewBox="0 0 20 20" aria-hidden="true"><path data-play d="M6 3.8a.8.8 0 0 1 1.2-.7l10 6.2a.8.8 0 0 1 0 1.4l-10 6.2a.8.8 0 0 1-1.2-.7Z"/><path data-pause d="M5 3h3v14H5zm7 0h3v14h-3z"/></svg></button>
       </div>
-        <details id="method" class="akv-detail akv-method-detail sp-disclosure">
-          <summary data-i18n="overview.explore-the-three-operations">Explore the three operations <span aria-hidden="true">+</span></summary>
+        <details id="method" class="akv-detail akv-method-detail sp-fold sp-fold--row"><summary><span data-i18n="overview.explore-the-three-operations">Explore the three operations</span><span class="sp-fold-icon" aria-hidden="true"></span></summary><div class="sp-fold-body">
           <div class="akv-operations">
             <p class="akv-body" data-i18n="overview.to-enable-cache-engineering-we-define">To enable cache engineering, we define three cache operations: <strong data-emphasis="cache-operations">Append, Drop, and Repos</strong>. Agents combine them to control the active cache throughout execution.</p>
           </div>
@@ -130,7 +129,7 @@
               <button type="button" data-operation="drop" aria-pressed="false" aria-controls="operation-scene operation-caption" data-i18n="overview.2-drop">2. Drop</button>
               <button type="button" data-operation="repos" aria-pressed="false" aria-controls="operation-scene operation-caption" data-i18n="overview.3-repos">3. Repos</button>
             </div>
-            <button id="operation-playback" type="button" aria-controls="operation-scene" hidden data-i18n="overview.pause-2">Pause</button>
+            <button id="operation-playback" type="button" aria-controls="operation-scene" hidden aria-label="Pause animation" class="sp-control sp-media-button"><svg viewBox="0 0 20 20" aria-hidden="true"><path data-play d="M6 3.8a.8.8 0 0 1 1.2-.7l10 6.2a.8.8 0 0 1 0 1.4l-10 6.2a.8.8 0 0 1-1.2-.7Z"/><path data-pause d="M5 3h3v14H5zm7 0h3v14h-3z"/></svg></button>
             </div>
             <div class="akv-cache-scene" id="operation-scene" data-stage="append">
               <div class="akv-cache-row"><span class="akv-row-label" data-i18n="overview.logical-tokens">Logical tokens</span><div class="akv-blocks"><span class="akv-block akv-old">A</span><span class="akv-block akv-thought">B</span><span class="akv-block akv-recent">C</span><span class="akv-block akv-new" data-i18n="overview.d-new-token">D<small>New token</small></span></div></div>
@@ -138,7 +137,7 @@
               <p class="akv-operation-caption" id="operation-caption" aria-live="polite" data-i18n="overview.append-compute-new-tokens-against-the"><strong data-emphasis="append-operation">Append.</strong> Compute new tokens against the active cache, append their KV states, and advance the logical sequence and encoding positions.</p>
             </div>
           </div>
-        </details>
+        </div></details>
     </div>
   </section>
 
@@ -152,7 +151,7 @@
       <figure id="radix-tree" class="akv-history" aria-labelledby="history-title">
         <div class="akv-history-header">
           <div><p class="akv-number" data-i18n="system.why-cache-history-matters">WHY CACHE HISTORY MATTERS</p><h3 id="history-title" data-i18n="system.the-same-tokens-different-kv-states">The same tokens.<br> Different KV states.</h3></div>
-          <div class="akv-history-playback" hidden><button type="button" id="history-replay" aria-label="Replay cache-history animation" data-i18n-attrs="system.history-replay" data-i18n="system.replay">↺ <span>Replay</span></button><button type="button" id="history-toggle" aria-pressed="false" data-i18n="system.pause">Pause</button></div>
+          <div class="akv-history-playback" hidden><button type="button" class="sp-control" id="history-replay" aria-label="Replay cache-history animation" data-i18n-attrs="system.history-replay" data-i18n="system.replay">↺ <span>Replay</span></button><button type="button" id="history-toggle" aria-pressed="true" aria-label="Pause animation" class="sp-control sp-media-button"><svg viewBox="0 0 20 20" aria-hidden="true"><path data-play d="M6 3.8a.8.8 0 0 1 1.2-.7l10 6.2a.8.8 0 0 1 0 1.4l-10 6.2a.8.8 0 0 1-1.2-.7Z"/><path data-pause d="M5 3h3v14H5zm7 0h3v14h-3z"/></svg></button></div>
         </div>
         <div id="history-animation" class="akv-history-animation" hidden>
           <div class="akv-history-panel"><h4 data-i18n="system.three-operation-histories">Three operation histories</h4><svg id="history-trajectories" viewBox="0 0 440 450" role="img" aria-labelledby="history-trajectories-title history-trajectories-description"><title id="history-trajectories-title" data-i18n="system.messages-and-active-kv-along-three">Messages and active KV along three histories</title><desc id="history-trajectories-description" data-i18n="system.a-dashed-empty-kv-block-represents">A dashed, empty KV block represents a message being computed. It points to earlier KV available for attention, then fills and gains inset colors representing historical information. In history 1, B attends to A, and C attends to A and B before A is dropped. History 2 reuses A and B, drops A, then computes C attending only to B. History 3 starts from B alone; C attends to this different B. All retain B and C. Dropping KV leaves messages unchanged.</desc><g data-history-scene></g></svg></div>
@@ -163,8 +162,7 @@
         <figcaption data-i18n="system.a-drop-a-s-kv-insets"><span><b>ΔA</b> = drop A’s KV</span><span>Insets show information carried from earlier messages.</span></figcaption>
       </figure>
 
-      <details class="akv-detail akv-system-mechanisms sp-disclosure">
-        <summary data-i18n="system.three-mechanisms-behind-akv-serving">Three mechanisms behind AKV serving <span aria-hidden="true">+</span></summary>
+      <details class="akv-detail akv-system-mechanisms sp-fold sp-fold--row"><summary><span data-i18n="system.three-mechanisms-behind-akv-serving">Three mechanisms behind AKV serving</span><span class="sp-fold-icon" aria-hidden="true"></span></summary><div class="sp-fold-body">
         <div class="akv-system-designs">
           <article class="akv-system-design">
             <p class="akv-number" data-i18n="system.01-reuse">01 / REUSE</p>
@@ -182,14 +180,13 @@
             <p data-i18n="system.missing-states-are-reconstructed-with-segment">Missing states are reconstructed with segment-batch attention. It reproduces historical attention visibility and positions in one prefill pass.</p>
           </article>
         </div>
-      </details>
+      </div></details>
 
-      <details id="stateless-interface" class="akv-detail akv-stateless sp-disclosure">
-        <summary data-i18n="system.stateless-interface-three-requests-one-server">Stateless interface: three requests, one server <span aria-hidden="true">+</span></summary>
+      <details id="stateless-interface" class="akv-detail akv-stateless sp-fold sp-fold--row"><summary><span data-i18n="system.stateless-interface-three-requests-one-server">Stateless interface: three requests, one server</span><span class="sp-fold-icon" aria-hidden="true"></span></summary><div class="sp-fold-body">
         <div class="akv-stateless-body">
           <div class="akv-interface-demo-heading">
             <p class="akv-stateless-intro" data-i18n="system.every-request-carries-its-full-message">Every request carries its full message and operation histories. The server reuses compatible KV states when available and restores missing states.</p>
-            <div class="akv-interface-controls" hidden><button id="interface-replay" type="button" aria-label="Replay all three requests" data-i18n-attrs="system.interface-replay">↺</button><button id="interface-toggle" type="button" aria-pressed="false" data-i18n="system.pause-2">Pause</button></div>
+            <div class="akv-interface-controls" hidden><button class="sp-control sp-control--icon" id="interface-replay" type="button" aria-label="Replay all three requests" data-i18n-attrs="system.interface-replay">↺</button><button id="interface-toggle" type="button" aria-pressed="true" aria-label="Pause animation" class="sp-control sp-media-button"><svg viewBox="0 0 20 20" aria-hidden="true"><path data-play d="M6 3.8a.8.8 0 0 1 1.2-.7l10 6.2a.8.8 0 0 1 0 1.4l-10 6.2a.8.8 0 0 1-1.2-.7Z"/><path data-pause d="M5 3h3v14H5zm7 0h3v14h-3z"/></svg></button></div>
           </div>
           <div class="akv-interface-stages" role="group" aria-label="Stateless requests" hidden data-i18n-attrs="system.stateless-requests"></div>
           <div class="akv-stateless-example">
@@ -224,7 +221,7 @@
             </div>
           </div>
         </div>
-      </details>
+      </div></details>
 
     </div>
   </section>
@@ -248,8 +245,7 @@
       <p class="akv-fine akv-results-note" data-i18n="results.costs-are-api-equivalent-estimates-from">Costs are API-equivalent estimates from active input and generated output lengths. They use Groq's GPT-OSS-120B rates, MiniMax's MiniMax-M2.7 rates, and the official Qwen3-30B-A3B rates for MiroThinker-1.7-Mini. Repositioned tokens count as cache hits.</p>
       <noscript data-i18n="results.benchmark-fallback"><p>Average accuracy / cost (cents per task), Standard → AKV: GPT-OSS-120B 51.0 / 11.2 → 53.1 / 7.3; MiniMax-M2.7 52.4 / 5.0 → 53.7 / 4.4; MiroThinker-1.7-Mini 44.1 / 20.4 → 45.8 / 14.8.</p></noscript>
       <div id="benchmark-improvements" class="akv-benchmark-details">
-      <details class="akv-detail akv-improvement-analysis sp-disclosure" id="benchmark-accuracy">
-        <summary data-i18n="results.accuracy-analysis">Accuracy analysis <span aria-hidden="true">+</span></summary>
+      <details class="akv-detail akv-improvement-analysis sp-fold sp-fold--row" id="benchmark-accuracy"><summary><span data-i18n="results.accuracy-analysis">Accuracy analysis</span><span class="sp-fold-icon" aria-hidden="true"></span></summary><div class="sp-fold-body">
         <div class="akv-analysis-row">
           <div>
             <h3 data-i18n="results.preserving-information-on-longer-trajectories">Preserving information on longer trajectories.</h3>
@@ -261,9 +257,8 @@
             <figcaption data-i18n="results.gpt-oss-120b-browsecomp-plus-accuracy">GPT-OSS-120B · BrowseComp-Plus. Accuracy grouped by logical sequence length.</figcaption>
           </figure>
         </div>
-      </details>
-      <details class="akv-detail akv-improvement-analysis sp-disclosure" id="benchmark-cost">
-        <summary data-i18n="results.cost-analysis">Cost analysis <span aria-hidden="true">+</span></summary>
+      </div></details>
+      <details class="akv-detail akv-improvement-analysis sp-fold sp-fold--row" id="benchmark-cost"><summary><span data-i18n="results.cost-analysis">Cost analysis</span><span class="sp-fold-icon" aria-hidden="true"></span></summary><div class="sp-fold-body">
         <div class="akv-analysis-row">
           <div>
             <h3 data-i18n="results.lower-costs-from-reads-and-re">Lower costs from reads and re-prefill.</h3>
@@ -275,32 +270,30 @@
             <figcaption data-i18n="results.browsecomp-plus-cost-breakdown-values-are">BrowseComp-Plus cost breakdown. Values are USD per task; the reductions above refer to individual cost components.</figcaption>
           </figure>
         </div>
-      </details>
-      <details class="akv-detail akv-improvement-analysis sp-disclosure" id="benchmark-settings">
-        <summary data-i18n="results.summarization-settings">Summarization settings <span aria-hidden="true">+</span></summary>
+      </div></details>
+      <details class="akv-detail akv-improvement-analysis sp-fold sp-fold--row" id="benchmark-settings"><summary><span data-i18n="results.summarization-settings">Summarization settings</span><span class="sp-fold-icon" aria-hidden="true"></span></summary><div class="sp-fold-body">
         <div class="akv-settings-body">
           <p data-i18n="results.standard-summarization-is-triggered-at-96k"><strong data-emphasis="standard-baseline">Standard.</strong> Summarization is triggered at 96K tokens for GPT-OSS-120B (128K context window) and MiniMax-M2.7 (200K context window), and at 192K tokens for MiroThinker-1.7-Mini (256K context window).</p>
           <p data-i18n="results.text-engineering-all-three-models-use"><strong data-emphasis="text-engineering-baseline">Text Engineering.</strong> All three models use a lower summarization threshold of 48K tokens.</p>
           <p data-i18n="results.both-baselines-use-a-pi-derived">Both baselines use a Pi-derived policy with its prompts, conversation serialization, cut-point selection, and default retention and summary-output budgets. Summarization is triggered by exact prompt token counts.</p>
           <p data-i18n="results.summaries-use-the-agent-s-model">Summaries use the agent’s model and reasoning settings, replacing older dialogue while preserving system/developer instructions and selected recent messages. Empty summaries are rejected; failures follow the benchmark error protocol without retry.</p>
         </div>
-      </details>
+      </div></details>
       </div>
       <div class="akv-budget-heading">
         <h3 data-i18n="results.more-solved-tasks-less-gpu-time">More solved tasks.<br>Less GPU time.</h3>
         <p class="section-subtitle" data-i18n="results.these-gains-also-translate-into-better">These gains also translate into better task outcomes under a GPU budget. In a separate 100-task SWE-bench Verified experiment, AKV reaches a higher final success rate with fewer GPU hours.</p>
       </div>
       <figure class="akv-replay" id="replay-figure">
-        <div class="akv-replay-top"><div><strong data-i18n="results.task-success-under-a-gpu-budget" data-emphasis="task-success-under-a-gpu-budget">Task success under a GPU budget</strong><span data-i18n="results.gpt-oss-120b-100-swe-bench">GPT-OSS-120B · 100 SWE-bench Verified tasks · 8 A800 GPUs</span></div><div class="akv-replay-tools"><button type="button" id="replay-toggle" aria-label="Pause animation" aria-pressed="false" data-i18n-attrs="results.replay-toggle" data-i18n="results.pause">Pause</button></div></div>
+        <div class="akv-replay-top"><div><strong data-i18n="results.task-success-under-a-gpu-budget" data-emphasis="task-success-under-a-gpu-budget">Task success under a GPU budget</strong><span data-i18n="results.gpt-oss-120b-100-swe-bench">GPT-OSS-120B · 100 SWE-bench Verified tasks · 8 A800 GPUs</span></div><div class="akv-replay-tools"><button type="button" id="replay-toggle" aria-label="Pause animation" aria-pressed="true" data-i18n-attrs="results.replay-toggle" class="sp-control sp-media-button"><svg viewBox="0 0 20 20" aria-hidden="true"><path data-play d="M6 3.8a.8.8 0 0 1 1.2-.7l10 6.2a.8.8 0 0 1 0 1.4l-10 6.2a.8.8 0 0 1-1.2-.7Z"/><path data-pause d="M5 3h3v14H5zm7 0h3v14h-3z"/></svg></button></div></div>
         <div class="akv-legend"><span><i class="akv-key standard"></i>Standard <small>C=12</small></span><span><i class="akv-key text"></i>Text Engineering <small>C=14</small></span><span><i class="akv-key ours"></i>AKV <small>C=14</small></span></div>
         <div class="akv-chart-wrap"><svg id="replay-chart" viewBox="0 0 900 420" role="img" aria-labelledby="replay-title replay-description"><title id="replay-title" data-i18n="results.cumulative-success-rate-versus-gpu-hours">Cumulative success rate versus GPU hours</title><desc id="replay-description" data-i18n="results.automatically-looping-cumulative-success-rate-curves">Automatically looping cumulative success-rate curves from observed task completions. The curves show the mean of three runs. Pause the animation to inspect a point in time.</desc></svg></div>
         <div class="akv-replay-status"><span id="replay-time">0.0 GPU h</span></div>
         <div class="akv-replay-readout" id="replay-readout"></div>
         <figcaption id="replay-caption" data-i18n="results.successes-accumulated-out-of-100-tasks">Successes accumulated out of 100 tasks. Mean of three runs; shading shows the min–max range. C denotes concurrency.</figcaption>
-        <details class="akv-setting-note" id="replay-concurrency">
-          <summary data-i18n="results.why-standard-uses-c-12">Why Standard uses C=12</summary>
+        <details class="akv-setting-note sp-fold sp-fold--row sp-fold--compact" id="replay-concurrency"><summary><span data-i18n="results.why-standard-uses-c-12">Why Standard uses C=12</span><span class="sp-fold-icon" aria-hidden="true"></span></summary><div class="sp-fold-body">
           <p data-i18n="results.c-12-gives-standard-its-highest">C=12 gives Standard its highest input and output throughput in the separate concurrency sweep below. At C=14 and C=16, KV cache pressure increases re-prefill and degrades serving performance. Using C=12 avoids those degraded settings for Standard; Text Engineering and AKV use C=14. This task-success comparison therefore uses different concurrency settings.</p>
-        </details>
+        </div></details>
         <noscript data-i18n="results.replay-fallback"><img src="static/figures/swe_gpu_hours_cumulative_pass_rate.svg" alt="Figure 9(a): AKV reaches approximately 47% cumulative pass rate, Standard 40.7%, and Text Engineering 32.3%."><p>Enable JavaScript to play the animation.</p></noscript>
       </figure>
     </div>
@@ -318,7 +311,7 @@
           <figure><h3 data-i18n="efficiency.p95-time-to-first-token">P95 time to first token</h3><p data-i18n="efficiency.seconds-lower-is-better">Seconds · Lower is better</p><svg id="serving-ttft" viewBox="0 0 480 290" role="img" aria-labelledby="serving-ttft-title serving-ttft-desc"><title id="serving-ttft-title" data-i18n="efficiency.p95-time-to-first-token-by">P95 time to first token by concurrency</title><desc id="serving-ttft-desc" data-i18n="efficiency.table-2-measurements-at-concurrency-8-3">Table 2 measurements at concurrency 8, 10, 12, 14 and 16.</desc></svg></figure>
           <figure><h3 data-i18n="efficiency.p95-request-latency">P95 request latency</h3><p data-i18n="efficiency.seconds-lower-is-better-2">Seconds · Lower is better</p><svg id="serving-latency" viewBox="0 0 480 290" role="img" aria-labelledby="serving-latency-title serving-latency-desc"><title id="serving-latency-title" data-i18n="efficiency.p95-request-latency-by-concurrency">P95 request latency by concurrency</title><desc id="serving-latency-desc" data-i18n="efficiency.table-2-measurements-at-concurrency-8-4">Table 2 measurements at concurrency 8, 10, 12, 14 and 16.</desc></svg></figure>
         </div>
-        <details class="akv-detail sp-disclosure"><summary data-i18n="efficiency.full-results-and-measurement-details">Full results and measurement details <span aria-hidden="true">+</span></summary>
+        <details class="akv-detail sp-fold sp-fold--row"><summary><span data-i18n="efficiency.full-results-and-measurement-details">Full results and measurement details</span><span class="sp-fold-icon" aria-hidden="true"></span></summary><div class="sp-fold-body">
           <div class="akv-table-wrap" tabindex="0" role="region" aria-label="Scrollable serving performance table" data-i18n-attrs="efficiency.scrollable-serving-performance-table"><table id="serving-table"></table></div>
           <div class="akv-protocol">
             <p data-i18n="efficiency.hardware-eight-a800-80gb-gpus-serve"><strong data-emphasis="hardware">Hardware.</strong> Eight A800-80GB GPUs serve GPT-OSS-120B in BF16: four for prefill and four for decode, each with tensor parallelism 4. Both baselines use SGLang; AKV extends it with cache-operation support.</p>
@@ -326,12 +319,11 @@
             <p data-i18n="efficiency.measurement-windows-akv-runs-at-c"><strong data-emphasis="measurement-windows">Measurement windows.</strong> AKV runs at C=14 and C=16 are measured through the first 30 task completions, including all requests within the window. High-concurrency Standard runs use a one-hour window. Replacement tasks maintain concurrency; unfinished requests may remain at cutoff.</p>
             <p data-i18n="efficiency.metrics-ttft-measures-time-to-first"><strong data-emphasis="metrics">Metrics.</strong> TTFT measures time to first token; TPOT measures time per output token. Lower TPOT alone does not imply higher overall throughput.</p>
           </div>
-        </details>
+        </div></details>
         <noscript data-i18n="efficiency.serving-fallback"><p>At C=8 / 10 / 12 / 14 / 16, input throughput (tokens/s): Standard 25200 / 30108 / 33832 / 12767 / 10866; Text Engineering 17313 / 18533 / 19945 / 19992 / 19595; AKV 39227 / 46002 / 48923 / 51837 / 50817. P95 TTFT (s): Standard 8.42 / 9.76 / 9.99 / 88.29 / 223.57; Text Engineering 22.99 / 34.07 / 37.98 / 47.36 / 52.71; AKV 5.99 / 7.36 / 8.17 / 8.62 / 13.02.</p><p>At C=8 / 10 / 12 / 14 / 16, output throughput (tokens/s): Standard 217 / 254 / 313 / 146 / 138; Text Engineering 228 / 246 / 264 / 267 / 267; AKV 245 / 295 / 339 / 369 / 369. P95 latency (s): Standard 43.57 / 45.03 / 43.16 / 108.86 / 229.90; Text Engineering 43.57 / 50.27 / 52.82 / 60.67 / 69.96; AKV 25.93 / 27.11 / 27.18 / 28.49 / 30.63.</p></noscript>
       </div>
       <div class="akv-serving-stats"><div><strong class="akv-gradient" data-emphasis="input-throughput-gain">4.68×</strong><span data-i18n="efficiency.input-throughput-2">Input throughput</span></div><div><strong class="akv-gradient" data-emphasis="output-throughput-gain">2.67×</strong><span data-i18n="efficiency.output-throughput-2">Output throughput</span></div><div><strong class="akv-gradient" data-emphasis="ttft-speedup">17.17×</strong><span data-i18n="efficiency.p95-ttft-speedup">P95 TTFT speedup</span></div><div><strong class="akv-gradient" data-emphasis="request-latency-speedup">7.51×</strong><span data-i18n="efficiency.p95-request-latency-speedup">P95 request latency speedup</span></div></div><p class="akv-serving-note" data-i18n="efficiency.versus-standard-at-concurrency-16-in">Versus Standard at concurrency 16, in the separate 80-task workload replay.</p>
-      <details class="akv-detail akv-improvement-analysis sp-disclosure" id="serving-improvements">
-        <summary data-i18n="efficiency.source-of-improvements">Source of improvements <span aria-hidden="true">+</span></summary>
+      <details class="akv-detail akv-improvement-analysis sp-fold sp-fold--row" id="serving-improvements"><summary><span data-i18n="efficiency.source-of-improvements">Source of improvements</span><span class="sp-fold-icon" aria-hidden="true"></span></summary><div class="sp-fold-body">
         <div class="akv-analysis-row">
           <div>
             <h3 data-i18n="efficiency.less-time-spent-on-full-attention">Less time spent on full attention.</h3>
@@ -347,7 +339,7 @@
           <h3 data-i18n="efficiency.why-the-gap-grows-at-high">Why the gap grows at high concurrency.</h3>
           <p data-i18n="efficiency.at-the-tested-concurrency-levels-above">At the tested concurrency levels above 12 (C=14 and C=16), KV cache pressure makes Standard spend more time on re-prefill, leaving fewer requests decoding concurrently. Its TPOT can decrease even as request latency rises and throughput falls. The four charts above capture the overall serving benefit.</p>
         </div>
-      </details>
+      </div></details>
     </div>
   </section>
 
@@ -355,7 +347,7 @@
     <div class="container akv-strategy-grid"><div><p class="section-eyebrow" data-i18n="strategies.recursive-self-improvement">Recursive self-improvement</p><h2 class="section-title" data-i18n="strategies.agents-can-self-improve">Agents can self-improve.</h2><p class="section-subtitle" data-i18n="strategies.rolling-drop-is-a-starting-point">Rolling drop is a starting point. AKV’s cache interface also lets agents search, evaluate, and refine their own cache policies.</p><div class="akv-strategy"><p data-i18n="strategies.on-browsecomp-plus-minimax-m2-7">On BrowseComp-Plus, MiniMax-M2.7 reduces cost by <strong data-emphasis="rsi-cost-reduction">17.8% relative to Standard</strong> at iteration 6 while meeting Standard’s accuracy baseline.</p></div></div><figure class="akv-figure akv-rsi"><div class="akv-figure-label"><span data-i18n="strategies.lower-cost-at-baseline-accuracy">LOWER COST AT BASELINE ACCURACY</span></div><img src="static/figures/minimax_self_evolution.svg" alt="MiniMax-M2.7 policy search. Best policies reduce per-task cost by 15.6% at iteration 3 and 17.8% at iteration 6 relative to Standard while meeting baseline accuracy." width="520" height="336" loading="lazy" data-i18n-attrs="strategies.minimax-m2-7-policy-search-best"><figcaption data-i18n="strategies.human-expert-design-rolling-drop-k">Human expert design: rolling drop (K=12).</figcaption></figure></div>
   </section>
 
-  <section id="team" class="section section-gray authors-section">
+  <section id="team" class="section section-gray authors-section sp-authors">
     <div class="container">
       <p class="section-eyebrow" data-i18n="team.team">Team</p>
       <h2 class="section-title" data-i18n="team.meet-the-researchers">Meet the researchers.</h2>
@@ -373,8 +365,8 @@
       <div class="affiliations">
         <span data-i18n="team.affiliation-tsinghua"><sup>1</sup>Tsinghua University</span> &nbsp;&nbsp;
         <span data-i18n="team.affiliation-cuhk"><sup>2</sup>The Chinese University of Hong Kong</span><br>
-        <span id="equal-contribution" class="akv-author-note" data-i18n="team.equal-contribution">*Equal contribution</span> &nbsp;&nbsp;
-        <span id="corresponding-author" class="akv-author-note" data-i18n="team.corresponding-author">†Corresponding author</span>
+        <span id="equal-contribution" class="author-note" data-i18n="team.equal-contribution">*Equal contribution</span> &nbsp;&nbsp;
+        <span id="corresponding-author" class="author-note" data-i18n="team.corresponding-author">†Corresponding author</span>
       </div>
     </div>
   </section>

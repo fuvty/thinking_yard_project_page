@@ -206,9 +206,10 @@ globalThis.AKVInterfaceScene = (() => {
     disclosure.dataset.interfaceOperation=state.operation??'';
   }
   function updateButton() {
-    button.textContent=paused?translate('Play'):translate('Pause');
-    button.setAttribute('aria-pressed',String(paused));
+    button.disabled = motion.matches;
+    button.setAttribute('aria-pressed',String(!paused && !motion.matches));
     button.setAttribute('aria-label',translate('{action} request sequence', {action: translate(paused ? 'Play' : 'Pause')}));
+    button.title = button.getAttribute('aria-label');
   }
   function tick(now) {
     request=null;
@@ -220,10 +221,12 @@ globalThis.AKVInterfaceScene = (() => {
   function schedule() {
     if(request!==null) cancelAnimationFrame(request);
     request=null;previous=null;painted=null;
-    if(disclosure.open&&visible&&!paused&&!document.hidden) request=requestAnimationFrame(tick);
+    if(disclosure.open&&!disclosure.hasAttribute('data-fold-closing')&&visible&&!paused&&!document.hidden) request=requestAnimationFrame(tick);
   }
   button.addEventListener('click',()=>{paused=!paused;updateButton();paint();schedule();});
   disclosure.querySelector('#interface-replay').addEventListener('click',()=>{elapsed=motion.matches?renderer.requests[0].still:0;paused=motion.matches;updateButton();paint();schedule();});
+  disclosure.addEventListener('sp-fold-change',event=>{if(!event.detail.open){cancelAnimationFrame(request);request=null;previous=null;painted=null;}});
+  disclosure.addEventListener('sp-fold-settled',schedule);
   disclosure.addEventListener('toggle',schedule);
   document.addEventListener('visibilitychange',schedule);
   motion.addEventListener('change',()=>{paused=motion.matches;elapsed=paused?renderer.requests.at(-1).still:0;updateButton();paint();schedule();});

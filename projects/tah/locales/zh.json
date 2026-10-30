@@ -122,7 +122,7 @@
     "contributions.tah-improves-average-accuracy-over-standard-by-5-3-6-2-percentage": "在 0.6B 和 1.7B 规模上，TaH+ 相较 Standard 的九项基准平均准确率提升 5.3–6.2 个百分点，新增参数不到 3%。TaH 平均迭代 1.07 次，93% 的 token 跳过额外计算。",
     "team.team": "研究团队",
     "team.meet-the-researchers": "作者与团队",
-    "team.1tsinghua-university-2infinigence-ai-3shanghai-jiao-tong-universi": "<div class=\"i18n-affiliations\"><span><sup>1</sup>清华大学</span><span><sup>2</sup>无问芯穹</span><span><sup>3</sup>上海交通大学</span></div><span>*共同第一作者</span>",
+    "team.1tsinghua-university-2infinigence-ai-3shanghai-jiao-tong-universi": "<div class=\"i18n-affiliations\"><span><sup>1</sup>清华大学</span><span><sup>2</sup>无问芯穹</span><span><sup>3</sup>上海交通大学</span></div><span class=\"author-note\">*共同第一作者</span>",
     "bibtex.citation": "引用",
     "bibtex.cite-our-work": "引用我们的工作",
     "bibtex.if-you-find-tah-useful-for-your-research-please-consider-citing-o": "如果 TaH 对您的研究有帮助，欢迎引用我们的论文。",

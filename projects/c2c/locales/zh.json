@@ -124,7 +124,7 @@
     "summary.general": "训练融合模块并完成 token 与层的对齐后，可组合不同家族、规模和专长的模型。",
     "team.eyebrow": "研究团队",
     "team.title": "团队成员",
-    "team.affiliations": "<span class=\"i18n-affiliations\"><span><sup>1</sup>清华大学</span><span><sup>2</sup>无问芯穹</span><span><sup>3</sup>香港中文大学</span><span><sup>4</sup>上海人工智能实验室</span><span><sup>5</sup>上海交通大学</span></span><span class=\"i18n-author-notes\">*同等贡献 · †通讯作者</span>",
+    "team.affiliations": "<span class=\"i18n-affiliations\"><span><sup>1</sup>清华大学</span><span><sup>2</sup>无问芯穹</span><span><sup>3</sup>香港中文大学</span><span><sup>4</sup>上海人工智能实验室</span><span><sup>5</sup>上海交通大学</span></span><span class=\"i18n-author-notes author-note\">*同等贡献 · †通讯作者</span>",
     "citation.eyebrow": "引用",
     "citation.title": "引用本研究",
     "citation.subtitle": "如果 C2C 对研究有所帮助，欢迎引用我们的论文。",

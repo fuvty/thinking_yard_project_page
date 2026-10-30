@@ -114,13 +114,6 @@
 
 /* Authors Section */
 
-.affiliations {
-  margin-top: 24px;
-  font-size: 14px;
-  color: var(--apple-gray);
-  line-height: 1.8;
-}
-
 /* Problem Section */
 
 /* Overview Section */
@@ -1026,8 +1019,29 @@
   background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
 }
 
+.oracle-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+
+.oracle-table-scroll:focus-visible {
+  outline: 2px solid var(--apple-blue-dark);
+  outline-offset: -2px;
+}
+
+.training-stages {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
 /* Responsive additions for TaH-specific elements */
 @media (max-width: 768px) {
+  .training-stages {
+    grid-template-columns: 1fr;
+  }
+
   .pipeline-steps {
     flex-wrap: wrap;
   }
@@ -1037,7 +1051,7 @@
   }
 
   .model-tabs.sp-segmented {
-  width: fit-content;
+    width: fit-content;
     flex-wrap: wrap;
   }
 
@@ -1051,7 +1065,3 @@
     min-width: 100%;
   }
 }
-
-/* Collapsed global navigation */
-
-/* Keep project tiles consistent with the team hub. */

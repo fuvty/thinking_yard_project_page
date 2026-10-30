@@ -139,7 +139,7 @@
     "results.behavior.body": "R2R 在直接作答时较少调用大模型，在每段思考的开头和结尾则更频繁。这些位置往往决定后续推理的方向。",
     "team.eyebrow": "研究团队",
     "team.title": "作者",
-    "team.affiliations": "<span class=\"i18n-affiliations\"><span><sup>1</sup>清华大学</span><span><sup>2</sup>无问芯穹</span><span><sup>3</sup>上海交通大学</span></span><span class=\"i18n-author-notes\">*共同第一作者</span>",
+    "team.affiliations": "<span class=\"i18n-affiliations\"><span><sup>1</sup>清华大学</span><span><sup>2</sup>无问芯穹</span><span><sup>3</sup>上海交通大学</span></span><span class=\"i18n-author-notes author-note\">*共同第一作者</span>",
     "citation.eyebrow": "引用",
     "citation.title": "引用本研究",
     "citation.subtitle": "如果 R2R 对研究有所帮助，欢迎引用我们的论文。",

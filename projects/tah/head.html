@@ -37,14 +37,6 @@
 
     window.addEventListener('scroll', reveal);
 
-    // Toggle expandable sections
-    function toggleExpand(header) {
-      const section = header.parentElement;
-      section.classList.toggle('open');
-      const icon = header.querySelector('.expandable-icon i');
-      icon.className = section.classList.contains('open') ? 'fas fa-minus' : 'fas fa-plus';
-    }
-
     // Switch model size for results tables
     function switchModelSize(size) {
       // Update active tab
@@ -86,3 +78,6 @@
       document.getElementById('pipeline-' + step).classList.add('active');
     }
   </script>
+
+<link rel="stylesheet" href="{{base}}/shared/ui/components/disclosure.css">
+<script defer src="{{base}}/shared/ui/components/disclosure.js"></script>
