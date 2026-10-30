@@ -1,0 +1,5 @@
+/* Icon playback controls; page code owns playback and accessible labels. */
+.sp-media-button.sp-control.sp-control { display:grid; place-items:center; padding:0; width:44px; height:44px; border-radius:50%; }
+.sp-media-button svg { width:18px; height:18px; fill:currentColor; }
+.sp-media-button [data-pause],.sp-media-button[aria-pressed="true"] [data-play] { display:none; }
+.sp-media-button[aria-pressed="true"] [data-pause] { display:block; }

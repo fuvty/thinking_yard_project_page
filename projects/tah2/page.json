@@ -22,12 +22,6 @@
       "description": "Lookahead depth supervision"
     },
     {
-      "id": "demo",
-      "label": "Demo",
-      "group": "research",
-      "description": "Recorded token-level iteration trace"
-    },
-    {
       "id": "results",
       "label": "Results",
       "group": "evaluation",
@@ -40,16 +34,22 @@
       "description": "Measured wall-clock efficiency"
     },
     {
-      "id": "depth-figure",
-      "label": "Token-level depth",
-      "group": "evaluation",
-      "description": "Adaptive depth in three responses"
-    },
-    {
       "id": "generalization",
       "label": "Generalization",
       "group": "evaluation",
       "description": "Tasks and model scales"
+    },
+    {
+      "id": "demo",
+      "label": "Demo & examples",
+      "group": "evaluation",
+      "description": "Generation video and sampled responses"
+    },
+    {
+      "id": "depth-figure",
+      "label": "Response examples",
+      "group": "evaluation",
+      "description": "Adaptive depth in three responses"
     },
     {
       "id": "team",

@@ -8,6 +8,7 @@ This is the unified Thinking Yard / NICS-EFC research site. Work only in source 
 - Category labels and order: `config/categories.json` — Adaptivity Scaling, Context Scaling, Model Compression.
 - All navigation markup, state and styling: `shared/navigation/`.
 - Footer, back-to-top and citation markup/behavior, CTA and author-pill styling: `shared/ui/`. Do not reintroduce project-specific copies.
+- Research controls: `shared/ui/controls.css` and opt-in modules in `shared/ui/components/`; loading, background support and markup contracts: `docs/design-system/controls.md`. Use the shared opt-in classes for equivalent controls. Keep shared components and previews project-neutral; page-specific behavior belongs in the project README. Declare custom immediate surfaces with `data-ui-surface`; reset nested white cards, and do not put light-only disclosures directly on dark backgrounds.
 - Visual tokens: `shared/styles/tokens.css`; common components: `shared/styles/components.css` and `research.css`.
 - Read `docs/design-system/README.md` before broad visual changes, then the relevant chapter. This repo-local guide replaces the external `alpha_design_system` prototype; shared implementation files remain the source of truth.
 - A project contains `page.json`, `head.html`, `content.html`, `citation.bib`, and `static/`. Place exactly one `{{citation}}` slot in content.html. Do not duplicate navigation, footer or embed another project registry in it. The generator appends the shared footer automatically.

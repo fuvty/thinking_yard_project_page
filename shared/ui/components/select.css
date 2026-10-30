@@ -1,0 +1,19 @@
+/* Opt-in select enhancement. The native select remains the data owner. */
+.sp-picker { display:inline-block; max-width:100%; }
+.sp-picker-trigger { display:flex; align-items:center; justify-content:space-between; gap:28px; min-height:44px; max-width:100%; padding:11px 14px; border:0; border-radius:12px; background:var(--sp-control-fill); color:var(--sp-control-ink); font:400 14px/1.4 var(--font-sans-zh); cursor:pointer; transition:background-color 180ms ease; }
+.sp-picker-trigger svg { width:16px; height:16px; flex-shrink:0; color:#86868b; }
+.sp-picker-trigger:disabled { opacity:.5; cursor:default; }
+.sp-picker-trigger[aria-expanded="true"] { background:var(--sp-control-hover); }
+.sp-picker-menu { position:fixed; inset:auto; margin:0; padding:6px; border:1px solid #0000000a; border-radius:14px; background:#fff; color:#1d1d1f; box-shadow:0 12px 40px #00000024,0 2px 8px #0000000a; overflow:auto; overscroll-behavior:contain; }
+.sp-picker-menu:popover-open { animation:picker-in 180ms cubic-bezier(.22,1,.36,1); }
+.sp-picker-option { display:flex; align-items:center; justify-content:space-between; gap:24px; min-height:44px; padding:10px 12px; border-radius:9px; font:400 14px/1.4 var(--font-sans-zh); cursor:pointer; }
+.sp-picker-option[aria-selected="true"] { color:#0071e3; font-weight:500; }
+.sp-picker-option[data-active] { background:#f0f0f5; }
+.sp-picker-option[aria-disabled="true"] { opacity:.4; cursor:default; }
+.sp-picker-option svg { width:16px; height:16px; visibility:hidden; }
+.sp-picker-option[aria-selected="true"] svg { visibility:visible; }
+.sp-picker-trigger:focus:not(:focus-visible) { outline:none; }
+.sp-picker-trigger:focus-visible { outline:2px solid #0071e3; outline-offset:3px; }
+@media(hover:hover) and (pointer:fine) { .sp-picker-trigger:not(:disabled):hover { background:var(--sp-control-hover); } }
+@keyframes picker-in { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:translateY(0); } }
+@media(prefers-reduced-motion:reduce) { .sp-picker-menu:popover-open { animation:none; }.sp-picker-trigger { transition:none; } }

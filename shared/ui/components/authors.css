@@ -1,0 +1,14 @@
+/* Shared author lists. Opt in with sp-authors for borderless name pills. */
+.authors-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 32px; }
+.author-tag { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 10px 18px; border: var(--sp-author-border, 1px solid var(--sp-control-border)); background: var(--sp-author-fill, var(--sp-control-fill)); border-radius: 980px; color: var(--apple-black); font: 500 14px/1.4 var(--font-sans); text-decoration: none; transition: background var(--sp-control-duration) ease,color var(--sp-control-duration) ease; }
+.author-tag sup { font-size: 10px; opacity: .6; }
+.sp-authors { text-align:center; --sp-author-border:0; --sp-author-fill:var(--apple-light-gray); }
+.sp-authors .affiliations { margin-top:24px; font-size:14px; color:var(--apple-gray); line-height:1.8; }
+.sp-authors .affiliations span { font-size:12px; }
+.author-tag:focus-visible { outline:2px solid var(--apple-blue); outline-offset:4px; }
+@media (hover:hover) and (pointer:fine) {
+  a.author-tag:hover { background:var(--apple-blue); color:#fff; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .author-tag { transition:none; }
+}

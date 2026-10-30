@@ -49,7 +49,11 @@
     function switchModelSize(size) {
       // Update active tab
       const tabs = document.querySelectorAll('.model-tab');
-      tabs.forEach(tab => tab.classList.toggle('active', tab.textContent.trim() === size));
+      tabs.forEach(tab => {
+        const active = tab.textContent.trim() === size;
+        tab.classList.toggle('active', active);
+        tab.setAttribute('aria-pressed', String(active));
+      });
 
       // Hide all results, show selected
       const allResults = document.querySelectorAll('.model-results');

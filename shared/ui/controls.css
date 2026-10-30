@@ -1,0 +1,179 @@
+/* Opt-in research controls. Surface scopes describe the immediate background,
+   not a theme: reset white cards nested inside gray/dark sections explicitly. */
+:root, :where(.section), [data-ui-surface="white"] {
+  --sp-control-fill: #f5f5f7;
+  --sp-control-hover: #eaeaf0;
+  --sp-control-ink: #1d1d1f;
+  --sp-control-muted: #62626a;
+  --sp-control-border: #dedee3;
+  --sp-control-accent: #0071e3;
+  --sp-group-fill: #f5f5f7;
+  --sp-selected-fill: #fff;
+  --sp-panel-fill: #f5f5f7;
+}
+:where(.section-gray, .team-section), [data-ui-surface="gray"] {
+  --sp-control-ink: #1d1d1f;
+  --sp-control-muted: #62626a;
+  --sp-control-border: #dedee3;
+  --sp-control-accent: #0071e3;
+  --sp-selected-fill: #fff;
+  --sp-control-fill: #fff;
+  --sp-control-hover: #eeeef2;
+  --sp-group-fill: #e8e8ed;
+  --sp-panel-fill: #fff;
+}
+:where(.section-dark), [data-ui-surface="dark"] {
+  --sp-control-fill: #323236;
+  --sp-control-hover: #414146;
+  --sp-control-ink: #f5f5f7;
+  --sp-control-muted: #c3c3ca;
+  --sp-control-border: #56565d;
+  --sp-control-accent: #8fc5ff;
+  --sp-group-fill: #29292d;
+  --sp-selected-fill: #505058;
+}
+.sp-control.sp-control, .sp-select.sp-select {
+  box-sizing: border-box;
+  min-height: 44px;
+  border: 1px solid transparent;
+  background-color: var(--sp-control-fill);
+  color: var(--sp-control-ink);
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+.sp-control.sp-control { border-radius: 980px; padding: 8px 16px; font-size: 13px; font-weight: 500; }
+.sp-control.sp-control--icon { width:44px; padding:0; border-radius:50%; }
+.sp-control[aria-pressed="true"] { background-color:var(--sp-control-hover); color:var(--sp-control-accent); }
+.sp-select.sp-select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 11px 40px 11px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.4;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='m5 6.5 3 3 3-3' fill='none' stroke='%2386868b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+}
+.sp-segmented.sp-segmented {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  max-width: 100%;
+  gap: 3px;
+  padding: 3px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--sp-group-fill);
+}
+.sp-segmented.sp-segmented > button {
+  position: relative;
+  z-index: 1;
+  appearance: none;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 8px 15px;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--sp-control-muted);
+  font: 500 13px/1.4 var(--font-sans);
+  cursor: pointer;
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+.sp-segmented.sp-segmented > button:is([aria-pressed="true"], .active) {
+  background: var(--sp-selected-fill);
+  color: var(--sp-control-ink);
+  border-color: transparent;
+  box-shadow: 0 1px 4px #00000010;
+}
+/* One highlight travels between choices, including unequal-width labels. */
+.sp-segmented[data-selection-ready]::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: var(--sp-selection-width);
+  height: var(--sp-selection-height);
+  transform: translate(var(--sp-selection-x), var(--sp-selection-y));
+  border-radius: 11px;
+  background: var(--sp-selected-fill);
+  box-shadow: 0 1px 4px #00000010;
+  pointer-events: none;
+}
+.sp-segmented[data-selection-animate]::before {
+  transition: transform 360ms cubic-bezier(.42,0,.12,1),
+              width 360ms cubic-bezier(.42,0,.12,1),
+              height 360ms cubic-bezier(.42,0,.12,1);
+}
+.sp-segmented.sp-segmented[data-selection-ready] > button {
+  background: transparent;
+  box-shadow: none;
+}
+/* Disclosures support white/gray only; use a light surface in dark sections. */
+.sp-disclosure.sp-disclosure {
+  border-block: 1px solid var(--sp-control-border);
+  color: var(--sp-control-ink);
+}
+.sp-disclosure.sp-disclosure > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 56px;
+  padding: 20px 0;
+  list-style: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.sp-disclosure > summary::-webkit-details-marker { display:none; }
+.sp-disclosure.sp-disclosure > summary > span[aria-hidden="true"]:last-child {
+  display: grid;
+  place-items: center;
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  margin-left: auto;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--sp-control-muted);
+  font: 400 20px/1 var(--font-sans);
+  transition: transform 240ms cubic-bezier(.22,1,.36,1);
+}
+.sp-disclosure[open] > summary > span[aria-hidden="true"]:last-child { transform:rotate(45deg); }
+.sp-disclosure.sp-disclosure--panel {
+  padding: 0 24px;
+  border: 1px solid var(--sp-control-border);
+  border-radius: 18px;
+  background: var(--sp-panel-fill);
+}
+:is(.sp-control,.sp-select,.sp-segmented > button,.sp-disclosure > summary):focus:not(:focus-visible) {
+  outline: none;
+}
+:is(.sp-control,.sp-select,.sp-segmented > button,.sp-disclosure > summary):focus-visible {
+  outline: 2px solid var(--sp-control-accent);
+  outline-offset: 3px;
+}
+:is(.sp-control,.sp-select,.sp-segmented > button):disabled { opacity:.5; cursor:default; }
+@media (hover:hover) and (pointer:fine) {
+  .sp-control.sp-control:not(:disabled):hover,.sp-select.sp-select:not(:disabled):hover {
+    background-color:var(--sp-control-hover);
+    color:var(--sp-control-accent);
+  }
+  .sp-segmented.sp-segmented > button:not(:disabled):hover { color:var(--sp-control-accent); }
+  .sp-disclosure > summary:hover { color:var(--sp-control-accent); }
+}
+@media (max-width:600px) {
+  .sp-disclosure.sp-disclosure--panel { padding-inline:18px; }
+  .sp-segmented.sp-segmented > button { padding-inline:12px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .sp-segmented[data-selection-animate]::before,
+  .sp-control.sp-control,.sp-select.sp-select,.sp-segmented.sp-segmented > button,
+  .sp-disclosure.sp-disclosure > summary > span[aria-hidden="true"]:last-child { transition:none; }
+}

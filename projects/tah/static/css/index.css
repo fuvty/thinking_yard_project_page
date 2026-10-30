@@ -1005,34 +1005,12 @@
 }
 
 /* Model Size Tabs */
-.model-tabs {
+.model-tabs.sp-segmented {
+  width: fit-content;
   display: flex;
   justify-content: center;
   gap: 8px;
-  margin-bottom: 24px;
-}
-
-.model-tab {
-  padding: 10px 24px;
-  border-radius: 980px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  background: #fff;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: var(--apple-black);
-}
-
-.model-tab:hover {
-  border-color: var(--apple-blue);
-  color: var(--apple-blue);
-}
-
-.model-tab.active {
-  background: var(--tah-gradient);
-  color: #fff;
-  border-color: transparent;
+  margin: 0 auto 24px;
 }
 
 .model-results {
@@ -1058,7 +1036,8 @@
     min-width: calc(50% - 4px);
   }
 
-  .model-tabs {
+  .model-tabs.sp-segmented {
+  width: fit-content;
     flex-wrap: wrap;
   }
 

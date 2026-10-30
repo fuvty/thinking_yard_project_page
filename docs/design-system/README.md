@@ -12,6 +12,7 @@ The guide consolidates the local `alpha_design_system` foundations and project-p
 | Localize project pages, emphasis, line wrapping and language URLs | [Localization](../localization.md) |
 | Choose type, colors, spacing, surfaces or icons | [Foundations](foundations.md) |
 | Compose a hero, research narrative, figure, team or citation | [Page patterns and components](components.md) |
+| Reuse controls across white, gray and dark surfaces | [Shared controls and surfaces](controls.md) |
 | Change global or section navigation | [Navigation](navigation.md) |
 | Add a background animation or explanatory interaction | [Motion and interaction](motion.md) |
 | Add a project, verify a change or maintain these docs | [Authoring workflow](authoring.md) |

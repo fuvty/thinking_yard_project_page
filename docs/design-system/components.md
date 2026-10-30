@@ -28,7 +28,7 @@ Paper, GitHub and conference icons are small and inherit the text color. A confe
 
 ## Figures, results and controls
 
-Put the research content first: a large readable figure, short explanation, then controls and caption close to the evidence. Use an open layout or one restrained surface around a coherent interactive figure. Native selects, segmented buttons, playback controls and sliders can vary with their purpose; not every control is a large hero pill.
+Put the research content first: a large readable figure, short explanation, then controls and caption close to the evidence. Use an open layout or one restrained surface around a coherent interactive figure. Reuse the [shared controls and surface contract](controls.md) for native selects, segmented buttons, neutral playback actions and native disclosures. Sliders and diagram-specific controls can vary with their purpose; not every control is a large hero pill.
 
 - Keep axis labels, units, legend and measurement conditions visible. Preserve raw values, unavailable measurements and the order of a sweep.
 - Keep measured results distinct from explanatory simulations and decorative animation. Label illustrative timing or token assignments as illustrative.

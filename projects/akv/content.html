@@ -118,14 +118,14 @@
         <p id="core-animation-stage-description" class="akv-core-stage-description" hidden></p>
         <button id="core-animation-toggle" type="button" aria-pressed="false" aria-controls="core-context-animation core-animation" hidden data-i18n="overview.pause">Pause</button>
       </div>
-        <details id="method" class="akv-detail akv-method-detail">
+        <details id="method" class="akv-detail akv-method-detail sp-disclosure">
           <summary data-i18n="overview.explore-the-three-operations">Explore the three operations <span aria-hidden="true">+</span></summary>
           <div class="akv-operations">
             <p class="akv-body" data-i18n="overview.to-enable-cache-engineering-we-define">To enable cache engineering, we define three cache operations: <strong data-emphasis="cache-operations">Append, Drop, and Repos</strong>. Agents combine them to control the active cache throughout execution.</p>
           </div>
           <div class="akv-operation-demo">
             <div class="akv-operation-toolbar">
-            <div class="akv-segmented" role="group" aria-label="Cache operation" data-i18n-attrs="overview.cache-operation">
+            <div class="akv-segmented sp-segmented" role="group" aria-label="Cache operation" data-i18n-attrs="overview.cache-operation">
               <button type="button" data-operation="append" aria-pressed="true" aria-controls="operation-scene operation-caption" data-i18n="overview.1-append">1. Append</button>
               <button type="button" data-operation="drop" aria-pressed="false" aria-controls="operation-scene operation-caption" data-i18n="overview.2-drop">2. Drop</button>
               <button type="button" data-operation="repos" aria-pressed="false" aria-controls="operation-scene operation-caption" data-i18n="overview.3-repos">3. Repos</button>
@@ -163,7 +163,7 @@
         <figcaption data-i18n="system.a-drop-a-s-kv-insets"><span><b>ΔA</b> = drop A’s KV</span><span>Insets show information carried from earlier messages.</span></figcaption>
       </figure>
 
-      <details class="akv-detail akv-system-mechanisms">
+      <details class="akv-detail akv-system-mechanisms sp-disclosure">
         <summary data-i18n="system.three-mechanisms-behind-akv-serving">Three mechanisms behind AKV serving <span aria-hidden="true">+</span></summary>
         <div class="akv-system-designs">
           <article class="akv-system-design">
@@ -184,7 +184,7 @@
         </div>
       </details>
 
-      <details id="stateless-interface" class="akv-detail akv-stateless">
+      <details id="stateless-interface" class="akv-detail akv-stateless sp-disclosure">
         <summary data-i18n="system.stateless-interface-three-requests-one-server">Stateless interface: three requests, one server <span aria-hidden="true">+</span></summary>
         <div class="akv-stateless-body">
           <div class="akv-interface-demo-heading">
@@ -238,7 +238,7 @@
         <article><strong data-emphasis="project-name">AKV</strong><p data-i18n="results.drop-older-tool-response-kv-keeping">Drop older tool-response KV, keeping only the latest 12 rounds.</p></article>
       </div>
       <p class="akv-fine akv-experiment-label" data-i18n="results.three-models-four-agent-benchmarks">Three models · Four agent benchmarks</p>
-      <div class="akv-results-toolbar"><div class="akv-segmented" role="group" aria-label="Benchmark model" data-i18n-attrs="results.benchmark-model"><button data-model="gpt" aria-pressed="true">GPT-OSS-120B</button><button data-model="minimax" aria-pressed="false">MiniMax-M2.7</button><button data-model="miro" aria-pressed="false">MiroThinker-1.7-Mini</button></div><div class="akv-segmented akv-metric-picker" role="group" aria-label="Benchmark metric" data-i18n-attrs="results.benchmark-metric"><button data-metric="score" aria-pressed="true" data-i18n="results.accuracy">Accuracy</button><button data-metric="cost" aria-pressed="false" data-i18n="results.cost">Cost</button></div></div>
+      <div class="akv-results-toolbar"><div class="akv-segmented sp-segmented" role="group" aria-label="Benchmark model" data-i18n-attrs="results.benchmark-model"><button data-model="gpt" aria-pressed="true">GPT-OSS-120B</button><button data-model="minimax" aria-pressed="false">MiniMax-M2.7</button><button data-model="miro" aria-pressed="false">MiroThinker-1.7-Mini</button></div><div class="akv-segmented akv-metric-picker sp-segmented" role="group" aria-label="Benchmark metric" data-i18n-attrs="results.benchmark-metric"><button data-metric="score" aria-pressed="true" data-i18n="results.accuracy">Accuracy</button><button data-metric="cost" aria-pressed="false" data-i18n="results.cost">Cost</button></div></div>
       <figure class="akv-benchmark-figure">
         <div class="akv-benchmark-top"><span id="benchmark-chart-label" data-i18n="results.accuracy-higher-is-better">Accuracy (%) · Higher is better</span><div class="akv-bar-legend"><span><i class="akv-bar-standard"></i>Standard</span><span><i class="akv-bar-text"></i>Text Engineering</span><span><i class="akv-bar-ours"></i>AKV</span></div></div>
         <div class="akv-benchmark-scroll" tabindex="0" role="region" aria-label="Scrollable benchmark bar chart" data-i18n-attrs="results.scrollable-benchmark-bar-chart"><svg id="benchmark-chart" viewBox="0 0 1060 370" role="img" aria-labelledby="benchmark-chart-title benchmark-chart-desc"><title id="benchmark-chart-title" data-i18n="results.accuracy-across-agent-benchmarks">Accuracy across agent benchmarks</title><desc id="benchmark-chart-desc" data-i18n="results.grouped-bars-compare-standard-text-engineering">Grouped bars compare Standard, Text Engineering and AKV on four benchmarks and their average.</desc></svg></div>
@@ -248,7 +248,7 @@
       <p class="akv-fine akv-results-note" data-i18n="results.costs-are-api-equivalent-estimates-from">Costs are API-equivalent estimates from active input and generated output lengths. They use Groq's GPT-OSS-120B rates, MiniMax's MiniMax-M2.7 rates, and the official Qwen3-30B-A3B rates for MiroThinker-1.7-Mini. Repositioned tokens count as cache hits.</p>
       <noscript data-i18n="results.benchmark-fallback"><p>Average accuracy / cost (cents per task), Standard → AKV: GPT-OSS-120B 51.0 / 11.2 → 53.1 / 7.3; MiniMax-M2.7 52.4 / 5.0 → 53.7 / 4.4; MiroThinker-1.7-Mini 44.1 / 20.4 → 45.8 / 14.8.</p></noscript>
       <div id="benchmark-improvements" class="akv-benchmark-details">
-      <details class="akv-detail akv-improvement-analysis" id="benchmark-accuracy">
+      <details class="akv-detail akv-improvement-analysis sp-disclosure" id="benchmark-accuracy">
         <summary data-i18n="results.accuracy-analysis">Accuracy analysis <span aria-hidden="true">+</span></summary>
         <div class="akv-analysis-row">
           <div>
@@ -262,7 +262,7 @@
           </figure>
         </div>
       </details>
-      <details class="akv-detail akv-improvement-analysis" id="benchmark-cost">
+      <details class="akv-detail akv-improvement-analysis sp-disclosure" id="benchmark-cost">
         <summary data-i18n="results.cost-analysis">Cost analysis <span aria-hidden="true">+</span></summary>
         <div class="akv-analysis-row">
           <div>
@@ -276,7 +276,7 @@
           </figure>
         </div>
       </details>
-      <details class="akv-detail akv-improvement-analysis" id="benchmark-settings">
+      <details class="akv-detail akv-improvement-analysis sp-disclosure" id="benchmark-settings">
         <summary data-i18n="results.summarization-settings">Summarization settings <span aria-hidden="true">+</span></summary>
         <div class="akv-settings-body">
           <p data-i18n="results.standard-summarization-is-triggered-at-96k"><strong data-emphasis="standard-baseline">Standard.</strong> Summarization is triggered at 96K tokens for GPT-OSS-120B (128K context window) and MiniMax-M2.7 (200K context window), and at 192K tokens for MiroThinker-1.7-Mini (256K context window).</p>
@@ -318,7 +318,7 @@
           <figure><h3 data-i18n="efficiency.p95-time-to-first-token">P95 time to first token</h3><p data-i18n="efficiency.seconds-lower-is-better">Seconds · Lower is better</p><svg id="serving-ttft" viewBox="0 0 480 290" role="img" aria-labelledby="serving-ttft-title serving-ttft-desc"><title id="serving-ttft-title" data-i18n="efficiency.p95-time-to-first-token-by">P95 time to first token by concurrency</title><desc id="serving-ttft-desc" data-i18n="efficiency.table-2-measurements-at-concurrency-8-3">Table 2 measurements at concurrency 8, 10, 12, 14 and 16.</desc></svg></figure>
           <figure><h3 data-i18n="efficiency.p95-request-latency">P95 request latency</h3><p data-i18n="efficiency.seconds-lower-is-better-2">Seconds · Lower is better</p><svg id="serving-latency" viewBox="0 0 480 290" role="img" aria-labelledby="serving-latency-title serving-latency-desc"><title id="serving-latency-title" data-i18n="efficiency.p95-request-latency-by-concurrency">P95 request latency by concurrency</title><desc id="serving-latency-desc" data-i18n="efficiency.table-2-measurements-at-concurrency-8-4">Table 2 measurements at concurrency 8, 10, 12, 14 and 16.</desc></svg></figure>
         </div>
-        <details class="akv-detail"><summary data-i18n="efficiency.full-results-and-measurement-details">Full results and measurement details <span aria-hidden="true">+</span></summary>
+        <details class="akv-detail sp-disclosure"><summary data-i18n="efficiency.full-results-and-measurement-details">Full results and measurement details <span aria-hidden="true">+</span></summary>
           <div class="akv-table-wrap" tabindex="0" role="region" aria-label="Scrollable serving performance table" data-i18n-attrs="efficiency.scrollable-serving-performance-table"><table id="serving-table"></table></div>
           <div class="akv-protocol">
             <p data-i18n="efficiency.hardware-eight-a800-80gb-gpus-serve"><strong data-emphasis="hardware">Hardware.</strong> Eight A800-80GB GPUs serve GPT-OSS-120B in BF16: four for prefill and four for decode, each with tensor parallelism 4. Both baselines use SGLang; AKV extends it with cache-operation support.</p>
@@ -330,7 +330,7 @@
         <noscript data-i18n="efficiency.serving-fallback"><p>At C=8 / 10 / 12 / 14 / 16, input throughput (tokens/s): Standard 25200 / 30108 / 33832 / 12767 / 10866; Text Engineering 17313 / 18533 / 19945 / 19992 / 19595; AKV 39227 / 46002 / 48923 / 51837 / 50817. P95 TTFT (s): Standard 8.42 / 9.76 / 9.99 / 88.29 / 223.57; Text Engineering 22.99 / 34.07 / 37.98 / 47.36 / 52.71; AKV 5.99 / 7.36 / 8.17 / 8.62 / 13.02.</p><p>At C=8 / 10 / 12 / 14 / 16, output throughput (tokens/s): Standard 217 / 254 / 313 / 146 / 138; Text Engineering 228 / 246 / 264 / 267 / 267; AKV 245 / 295 / 339 / 369 / 369. P95 latency (s): Standard 43.57 / 45.03 / 43.16 / 108.86 / 229.90; Text Engineering 43.57 / 50.27 / 52.82 / 60.67 / 69.96; AKV 25.93 / 27.11 / 27.18 / 28.49 / 30.63.</p></noscript>
       </div>
       <div class="akv-serving-stats"><div><strong class="akv-gradient" data-emphasis="input-throughput-gain">4.68×</strong><span data-i18n="efficiency.input-throughput-2">Input throughput</span></div><div><strong class="akv-gradient" data-emphasis="output-throughput-gain">2.67×</strong><span data-i18n="efficiency.output-throughput-2">Output throughput</span></div><div><strong class="akv-gradient" data-emphasis="ttft-speedup">17.17×</strong><span data-i18n="efficiency.p95-ttft-speedup">P95 TTFT speedup</span></div><div><strong class="akv-gradient" data-emphasis="request-latency-speedup">7.51×</strong><span data-i18n="efficiency.p95-request-latency-speedup">P95 request latency speedup</span></div></div><p class="akv-serving-note" data-i18n="efficiency.versus-standard-at-concurrency-16-in">Versus Standard at concurrency 16, in the separate 80-task workload replay.</p>
-      <details class="akv-detail akv-improvement-analysis" id="serving-improvements">
+      <details class="akv-detail akv-improvement-analysis sp-disclosure" id="serving-improvements">
         <summary data-i18n="efficiency.source-of-improvements">Source of improvements <span aria-hidden="true">+</span></summary>
         <div class="akv-analysis-row">
           <div>

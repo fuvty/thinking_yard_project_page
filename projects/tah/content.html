@@ -1177,10 +1177,10 @@
 
     <!-- Model Size Tabs -->
     <div class="reveal" style="margin-top:32px;">
-      <div class="model-tabs" style="display:flex; justify-content:center; gap:8px; margin-bottom:24px;">
-        <button class="model-tab active" onclick="switchModelSize('0.6B')">0.6B</button>
-        <button class="model-tab" onclick="switchModelSize('1.7B')">1.7B</button>
-        <button class="model-tab" onclick="switchModelSize('4B')">4B</button>
+      <div role="group" class="model-tabs sp-segmented" style="display:flex; justify-content:center; gap:8px; margin-bottom:24px;">
+        <button class="model-tab active" aria-pressed="true" onclick="switchModelSize('0.6B')">0.6B</button>
+        <button class="model-tab" aria-pressed="false" onclick="switchModelSize('1.7B')">1.7B</button>
+        <button class="model-tab" aria-pressed="false" onclick="switchModelSize('4B')">4B</button>
       </div>
 
       <!-- Summary Card -->

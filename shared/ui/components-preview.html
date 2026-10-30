@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>交互组件 · Thinking Yard</title>
+<link rel="stylesheet" href="../styles/tokens.css"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="components/disclosure.css"><link rel="stylesheet" href="components/select.css"><link rel="stylesheet" href="components/media.css">
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#fff;color:var(--apple-black);font:17px/1.6 var(--font-sans-zh);-webkit-font-smoothing:antialiased}a{color:var(--apple-blue);text-decoration:none}a:hover{text-decoration:underline}header,main,footer{max-width:1100px;margin:auto;padding-inline:32px}header{padding-top:72px;padding-bottom:44px}.eyebrow{font-size:12px;letter-spacing:.1em;color:#6e6e73;font-weight:600}h1{font-size:clamp(36px,5vw,56px);line-height:1.15;letter-spacing:-.04em;margin:12px 0 18px}header p{color:#6e6e73;max-width:660px;margin:0}nav{display:flex;gap:24px;margin-top:24px;font-size:14px}h2{font-size:28px;line-height:1.3;letter-spacing:-.02em;margin:0 0 10px}.lead{margin:0 0 28px;color:#6e6e73;font-size:15px}.preview-section{padding:42px 0;scroll-margin-top:24px}.comparison{display:grid;grid-template-columns:1fr 1fr;gap:24px}.surface{padding:28px;border-radius:22px;min-width:0}.surface-white{border:1px solid #ebebef;background:white}.surface-gray{background:#f5f5f7}.surface h3{font-size:13px;color:#6e6e73;font-weight:500;margin:0 0 20px}.sp-fold-body{font-size:15px;color:#62626a}.sp-fold-body p{margin:0 0 16px}.fold-heading{display:flex;flex-direction:column;gap:4px}.fold-heading small{font-size:13px;color:#86868b;font-weight:400}.sp-fold-body table{border-collapse:collapse;width:100%;font-size:14px}.sp-fold-body th,.sp-fold-body td{text-align:left;padding:10px 8px;border-bottom:1px solid #dedee3}.sp-fold-body th{font-weight:500;color:#1d1d1f}.form-row{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0}.form-row label{font-size:13px;min-width:42px}.control-stack{display:grid;gap:24px}.control-label{display:block;font-size:14px;margin-bottom:10px}.buttons{display:flex;flex-wrap:wrap;gap:10px}.preview-note{font-size:14px;color:#6e6e73;padding:22px 0;margin:0}.decision{border-top:1px solid #e8e8ed;padding-top:28px;display:grid;grid-template-columns:repeat(3,1fr);gap:32px}.decision h3{font-size:16px;margin:0 0 8px}.decision p{font-size:14px;color:#6e6e73;margin:0}.demo-message{font-size:13px;min-height:22px;color:#6e6e73;margin:8px 0 0}footer{padding-top:30px;padding-bottom:50px;font-size:13px;color:#86868b;border-top:1px solid #e8e8ed}@media(max-width:760px){header,main,footer{padding-inline:20px}header{padding-top:42px}.comparison,.decision{grid-template-columns:1fr}.surface{padding:20px}.preview-section{padding:28px 0}nav{gap:18px;flex-wrap:wrap}.sp-fold-body table{font-size:13px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+<script defer src="controller.js"></script><script defer src="components/disclosure.js"></script><script defer src="components/select.js"></script>
+</head>
+<body>
+<header><span class="eyebrow">THINKING YARD · COMPONENTS</span><h1>交互组件预览</h1><p>悬停有反馈，展开有连续性，选中状态清楚。</p><nav aria-label="预览目录"><a href="#disclosures">内容展开</a><a href="#controls">选择与操作</a><a href="#authors">作者与机构</a><a href="#rules">交互规则</a></nav></header>
+<main>
+<section class="preview-section" id="disclosures"><h2>内容展开</h2><p class="lead">悬停时标题区轻微变色；点击后平滑展开，再次点击可收起。各项可以同时展开。</p>
+<div class="comparison">
+<section class="surface surface-white" data-ui-surface="white"><h3>白色背景</h3>
+<details class="sp-fold"><summary><span class="fold-heading">生成演示<small>从输入到回答的完整过程</small></span><span class="sp-fold-icon" aria-hidden="true"></span></summary><div class="sp-fold-body"><p>白色卡片配合柔和阴影。展开内容与标题之间留出间隔，让图表和正文易于阅读。</p><a href="#controls">查看播放控件</a></div></details>
+<details class="sp-fold"><summary><span class="fold-heading">回答示例<small>两项内容可以独立展开</small></span><span class="sp-fold-icon" aria-hidden="true"></span></summary><div class="sp-fold-body" data-ui-surface="white"><p>标题保持原位，加号切换为减号，保持中性色。内容高度随实际内容变化，连续点击也能反向接续。</p><div class="form-row"><label for="white-model">模型</label><select id="white-model" class="sp-select" data-picker><option>模型 A</option><option>模型 B</option></select></div><p>收起后，内部的选择器和链接退出键盘焦点顺序。</p></div></details>
+</section>
+<section class="surface surface-gray" data-ui-surface="gray"><h3>灰色背景</h3>
+<details class="sp-fold"><summary><span class="fold-heading">生成演示<small>从输入到回答的完整过程</small></span><span class="sp-fold-icon" aria-hidden="true"></span></summary><div class="sp-fold-body"><p>灰底衬托白色卡片，标题区悬停时轻微变灰。展开后的正文与标题保持清楚的间隔。</p><a href="#controls">查看播放控件</a></div></details>
+<details class="sp-fold"><summary><span class="fold-heading">回答示例<small>两项内容可以独立展开</small></span><span class="sp-fold-icon" aria-hidden="true"></span></summary><div class="sp-fold-body" data-ui-surface="white"><p>同样的组件在不同背景上保持清晰。展开和收起都使用与选项切换一致的非线性节奏。</p><div class="form-row"><label for="gray-model">模型</label><select id="gray-model" class="sp-select" data-picker><option>模型 A</option><option>模型 B</option></select></div></div></details>
+</section>
+</div>
+<div class="comparison" style="margin-top:24px">
+<section class="surface surface-white" data-ui-surface="white"><h3>分隔行 · 补充图表与方法</h3>
+<details class="sp-fold sp-fold--row"><summary>实验设置<span class="sp-fold-icon" aria-hidden="true"></span></summary><div class="sp-fold-body"><table><thead><tr><th>模型</th><th>比较的迭代</th></tr></thead><tbody><tr><td>模型 A</td><td>1 → 2</td></tr><tr><td>模型 B</td><td>1 → 3</td></tr></tbody></table></div></details>
+<details class="sp-fold sp-fold--row"><summary>测量说明<span class="sp-fold-icon" aria-hidden="true"></span></summary><div class="sp-fold-body"><p>适合放在结果图旁的补充信息，不再为每项说明增加一层卡片。</p><a href="#rules">查看交互规则</a></div></details>
+</section>
+<section class="surface surface-gray" data-ui-surface="gray"><h3>紧凑行 · 简短注释</h3>
+<details class="sp-fold sp-fold--row sp-fold--compact"><summary><span class="sp-help-mark" aria-hidden="true">?</span>为什么选择这个设置？<span class="sp-fold-icon" aria-hidden="true"></span></summary><div class="sp-fold-body"><p>问号标识补充说明，内容仍在原位展开。点击区域至少 44px，不使用悬浮弹窗。</p></div></details>
+<details class="sp-fold sp-fold--row sp-fold--compact" open><summary>默认展开的说明<span class="sp-fold-icon" aria-hidden="true"></span></summary><div class="sp-fold-body"><p>关键说明可以默认展开，也允许收起；不会强制关闭相邻内容。</p></div></details>
+</section></div>
+<p class="preview-note">展开组件支持白色与灰色背景，不支持直接用于深色背景。</p>
+</section>
+<section class="preview-section" id="controls"><h2>选择与操作</h2><p class="lead">少量互斥选项用滑动切换，多项筛选使用紧凑菜单。播放与暂停用图标表达。</p>
+<div class="comparison">
+<section class="surface surface-white" data-ui-surface="white"><h3>白色背景</h3><div class="control-stack"><div><span class="control-label">模型规模</span><div class="sp-segmented" role="group" aria-label="白底模型规模"><button aria-pressed="true">4B 模型</button><button aria-pressed="false">8B 模型</button></div></div><div><label class="control-label" for="white-filter">模型筛选</label><select id="white-filter" class="sp-select" data-picker><option>模型 A</option><option>模型 B</option><option>所有模型</option></select></div><div><span class="control-label">操作按钮</span><div class="buttons"><button class="sp-control sp-media-button" data-demo-play aria-pressed="false" aria-label="播放" title="播放"><svg viewBox="0 0 20 20" aria-hidden="true"><path data-play d="M6 3.8a.8.8 0 0 1 1.2-.7l10 6.2a.8.8 0 0 1 0 1.4l-10 6.2a.8.8 0 0 1-1.2-.7Z"/><path data-pause d="M5 3h3v14H5zm7 0h3v14h-3z"/></svg></button><button class="sp-control sp-media-button" disabled aria-label="播放（暂不可用）" title="暂不可用"><svg viewBox="0 0 20 20" aria-hidden="true"><path data-play d="M6 3.8a.8.8 0 0 1 1.2-.7l10 6.2a.8.8 0 0 1 0 1.4l-10 6.2a.8.8 0 0 1-1.2-.7Z"/><path data-pause d="M5 3h3v14H5zm7 0h3v14h-3z"/></svg></button></div><p class="demo-message" aria-live="polite"></p></div></div></section>
+<section class="surface surface-gray" data-ui-surface="gray"><h3>灰色背景</h3><div class="control-stack"><div><span class="control-label">展示范围</span><div class="sp-segmented" role="group" aria-label="灰底展示范围"><button aria-pressed="true">16K 以内</button><button aria-pressed="false">32K 以内</button><button aria-pressed="false">完整结果</button></div></div><div><label class="control-label" for="gray-filter">模型筛选</label><select id="gray-filter" class="sp-select" data-picker><option>模型 A</option><option>模型 B</option><option>所有模型</option></select></div><div><span class="control-label">操作按钮</span><div class="buttons"><button class="sp-control sp-media-button" data-demo-play aria-pressed="false" aria-label="播放" title="播放"><svg viewBox="0 0 20 20" aria-hidden="true"><path data-play d="M6 3.8a.8.8 0 0 1 1.2-.7l10 6.2a.8.8 0 0 1 0 1.4l-10 6.2a.8.8 0 0 1-1.2-.7Z"/><path data-pause d="M5 3h3v14H5zm7 0h3v14h-3z"/></svg></button><button class="sp-control sp-media-button" disabled aria-label="播放（暂不可用）" title="暂不可用"><svg viewBox="0 0 20 20" aria-hidden="true"><path data-play d="M6 3.8a.8.8 0 0 1 1.2-.7l10 6.2a.8.8 0 0 1 0 1.4l-10 6.2a.8.8 0 0 1-1.2-.7Z"/><path data-pause d="M5 3h3v14H5zm7 0h3v14h-3z"/></svg></button></div><p class="demo-message" aria-live="polite"></p></div></div></section>
+</div></section>
+<section class="preview-section" id="authors"><h2>作者与机构</h2><p class="lead">无描边姓名胶囊，悬停链接时变为蓝底白字。机构与贡献说明置于列表下方。</p><div class="comparison"><section class="surface surface-white sp-authors" data-ui-surface="white"><h3>白色背景</h3>
+<div class="authors-list">
+<a class="author-tag" href="#authors-white-note" aria-describedby="authors-white-note">作者甲<sup>1*</sup></a>
+<a class="author-tag" href="#authors-white-note" aria-describedby="authors-white-note">作者乙<sup>1*</sup></a>
+<a class="author-tag" href="#authors-white-note" aria-describedby="authors-white-note">作者丙<sup>2*</sup></a>
+</div><div class="affiliations" id="authors-white-note"><sup>1</sup>机构一 &nbsp; <sup>2</sup>机构二<br><span>*共同第一作者</span></div></section><section class="surface surface-gray sp-authors" data-ui-surface="gray"><h3>灰色背景</h3>
+<div class="authors-list">
+<a class="author-tag" href="#authors-gray-note" aria-describedby="authors-gray-note">作者甲<sup>1*</sup></a>
+<a class="author-tag" href="#authors-gray-note" aria-describedby="authors-gray-note">作者乙<sup>1*</sup></a>
+<a class="author-tag" href="#authors-gray-note" aria-describedby="authors-gray-note">作者丙<sup>2*</sup></a>
+</div><div class="affiliations" id="authors-gray-note"><sup>1</sup>机构一 &nbsp; <sup>2</sup>机构二<br><span>*共同第一作者</span></div></section></div></section>
+<section class="preview-section" id="rules"><h2>统一反馈，保留各自的用途。</h2><p class="lead">内容展开、选项切换和播放控制各自保持清楚的用途。</p><div class="decision"><div><h3>内容展开</h3><p>悬停提示可点击，点击、Enter 或空格展开。支持连续反向切换，减少动态效果时立即完成。</p></div><div><h3>导航下拉</h3><p>继续使用现有的悬停展开和离开延迟，保留 Escape 关闭与键盘访问。</p></div><div><h3>图表与播放</h3><p>组件管理外壳，页面管理数据。收起时暂停内容，展开完成后重新测量图表。</p></div></div></section>
+</main><footer>共享组件 · <a href="controls-preview.html">背景适配与原生控件</a></footer>
+<script src="preview.js"></script>
+</body></html>

@@ -50,6 +50,30 @@
   window.addEventListener('scroll', updateTopButton, { passive: true });
   updateTopButton();
 
+  // Follow each page's semantic selection; this layer only moves the highlight.
+  document.querySelectorAll('.sp-segmented').forEach(group => {
+    const buttons = Array.from(group.querySelectorAll(':scope > button'));
+    let selected;
+    const updateSelection = () => {
+      const next = buttons.find(button => button.getAttribute('aria-pressed') === 'true');
+      if (!next || !next.offsetWidth) return;
+      group.toggleAttribute('data-selection-animate', Boolean(selected && selected !== next));
+      group.style.setProperty('--sp-selection-x', `${next.offsetLeft}px`);
+      group.style.setProperty('--sp-selection-y', `${next.offsetTop}px`);
+      group.style.setProperty('--sp-selection-width', `${next.offsetWidth}px`);
+      group.style.setProperty('--sp-selection-height', `${next.offsetHeight}px`);
+      group.setAttribute('data-selection-ready', '');
+      selected = next;
+    };
+    new MutationObserver(records => {
+      if (records.some(record => buttons.includes(record.target))) updateSelection();
+    }).observe(group, { attributes: true, subtree: true, attributeFilter: ['aria-pressed'] });
+    const resize = new ResizeObserver(updateSelection);
+    resize.observe(group);
+    buttons.forEach(button => resize.observe(button));
+    updateSelection();
+  });
+
   const fallbackCopy = text => {
     const previousFocus = document.activeElement;
     const field = document.createElement('textarea');
