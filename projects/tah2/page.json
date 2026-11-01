@@ -1,5 +1,5 @@
 {
-  "title": "TaH2 · Improving Test-Time Scaling with Adaptive Looped Transformers",
+  "title": "TaH2 · Improving Test-Time Scaling for Looped LLMs",
   "description": "TaH2 improves test-time scaling for looped LLMs by learning from iteration gains and allocating depth where additional computation helps.",
   "theme": "research",
   "sections": [

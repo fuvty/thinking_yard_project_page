@@ -1,6 +1,6 @@
 {
   "page": {
-    "title": "Cache-to-Cache · 大语言模型间的直接语义通信",
+    "title": "C2C · 大语言模型间的直接语义通信",
     "description": "C2C 通过 KV cache 投影与融合，让大语言模型直接交流语义，提高多模型协作的准确率与推理效率。",
     "sections": {
       "overview": {

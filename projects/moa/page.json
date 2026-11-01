@@ -1,5 +1,5 @@
 {
-  "title": "thu-nics/MoA",
+  "title": "MoA · Efficient Long-Context Inference with Heterogeneous Attention Windows",
   "description": "MoA: Mixture of Attention Spans - optimizing LLM inference efficiency with heterogeneous sliding-window lengths.",
   "sections": [
     {

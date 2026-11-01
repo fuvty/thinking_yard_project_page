@@ -1,5 +1,5 @@
 {
-  "title": "AKV \u00b7 Cache Engineering for Agents",
+  "title": "AKV \u00b7 Letting Agents Manage Their Own KV Cache",
   "description": "AKV gives agents direct control over their KV cache, reusing retained states to reduce cost and improve long-horizon task performance.",
   "theme": "research",
   "sections": [

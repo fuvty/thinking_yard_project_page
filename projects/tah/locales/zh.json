@@ -1,6 +1,6 @@
 {
   "page": {
-    "title": "Think-at-Hard · 自适应循环大模型",
+    "title": "TaH · 自适应循环大模型",
     "description": "TaH 有选择地精炼困难 token，通过双维因果注意力、深度感知 LoRA 和神经决策器提高推理准确率与迭代效率。",
     "sections": {
       "overview": {
